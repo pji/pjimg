@@ -1,0 +1,31 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.rstcheck]
+report_level = "WARNING"
+ignore_directives = ["autoclass", "autofunction"]
+
+[project]
+name = "{PROJECT_NAME}"
+version = "0.0.1"
+authors = [
+    {name="Paul J. Iutzi", email="pji@mac.com"},
+]
+description = "{PROJECT_DESCRIPTION}"
+readme = "README.rst"
+requires-python = ">=3.12"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+dependencies = []
+
+[project.urls]
+"Homepage" = "https://{PROJECT_NAME}.readthedocs.io/en/latest/index.html#"
+"Documentation" = "https://{PROJECT_NAME}.readthedocs.io/en/latest/index.html#"
+"Source" = "https://github.com/pji/{PROJECT_NAME}"
+
+[project.scripts]
+filereader = "{SCRIPT_FILE}:{FUNCTION_NAME}"

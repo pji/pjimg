@@ -1,0 +1,14 @@
+# Ignore compiled files.
+*.pyc
+*__pycache__
+/build
+/dist
+*.egg-info
+
+# Ignore virtual environment.
+.venv
+
+# Ignore OS/IDE files.
+.DS_Store
+*BBEdit*
+.idea
