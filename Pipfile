@@ -4,6 +4,7 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
+numpy = "*"
 
 [dev-packages]
 sphinx = "*"
@@ -17,6 +18,7 @@ tox = "*"
 wheel = "*"
 build = "*"
 twine = "*"
+pjimg = {file = ".", editable = true}
 
 [requires]
 python_version = "3.12"

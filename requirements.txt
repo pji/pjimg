@@ -1,0 +1,2 @@
+-i https://pypi.org/simple
+numpy==1.26.0; python_version < '3.13' and python_version >= '3.9'
