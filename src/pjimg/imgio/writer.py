@@ -3,6 +3,10 @@ writer
 ~~~~~~
 
 Write image and video data to files.
+
+.. autofunction:: pjimg.imgio.write
+.. autofunction:: pjimg.imgio.write_image
+.. autofunction:: pjimg.imgio.write_video
 """
 from copy import deepcopy
 from functools import wraps

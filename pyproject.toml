@@ -6,6 +6,10 @@ build-backend = "setuptools.build_meta"
 report_level = "WARNING"
 ignore_directives = ["autoclass", "autofunction"]
 
+[tool.pytest.ini_options]
+addopts = ["--import-mode=importlib",]
+markers = ['codec', 'ext', 'path',]
+
 [project]
 name = "pjimg"
 version = "0.0.1"
