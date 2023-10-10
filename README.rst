@@ -1,3 +1,5 @@
 #####
 pjimg
 #####
+
+Procedural image generation.
