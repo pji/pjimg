@@ -6,7 +6,11 @@ Data conversion utilities.
 """
 import numpy as np
 
-from pjimg.util import ArrayLike, IntAry
+from pjimg.util.model import ArrayLike, IntAry
+
+
+# Exported names.
+__all__ = ['float_to_uint8',]
 
 
 # Functions.
