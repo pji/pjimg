@@ -4,7 +4,7 @@ model
 
 Common types used by :mod:`pjimg`.
 """
-from typing import Callable, TypeVar, Union
+from typing import Callable, Sequence, TypeVar, Union
 
 import numpy as np
 from numpy.typing import ArrayLike, NDArray
@@ -23,7 +23,7 @@ IntAry = NDArray[np.uint8]
 Loc = tuple[int, int, int]
 Numeric = Union[np.bool_, np.integer, np.inexact]
 RatioAry = NDArray[np.float_]
-Size = tuple[int, int, int]
+Size = Sequence[int]
 
 # Compound types.
 T = TypeVar('T', bound=Numeric)
