@@ -3,6 +3,8 @@ debug
 ~~~~~
 
 Utilities useful for debugging code that uses :mod:`pjimg`.
+
+.. autofunction:: pjimg.util.debug.print_array
 """
 import numpy as np
 

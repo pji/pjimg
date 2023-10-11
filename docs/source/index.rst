@@ -14,6 +14,7 @@ Procedural image generation.
    
    self
    /imgio.rst
+   /util.rst
    /requirements.rst
 
 

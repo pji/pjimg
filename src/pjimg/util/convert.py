@@ -3,6 +3,8 @@ convert
 ~~~~~~~
 
 Data conversion utilities.
+
+.. autofunction:: pjimg.util.float_to_uint8
 """
 import numpy as np
 
