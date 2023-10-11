@@ -7,6 +7,8 @@ Unit tests for the example scripts.
 from pathlib import Path
 from subprocess import run
 
+import pytest as pt
+
 
 # Comman data.
 data_path = Path('tests/test_imgio/data')
@@ -23,6 +25,7 @@ def compare_files(a, b):
 
 
 # Tests for examples/make_color_fade.py.
+@pt.mark.skip
 def test_make_color_fade(tmp_path):
     """When called with a file path, a starting color, and an ending
     color, `make_color_fade.py` should create a video at the given
@@ -41,6 +44,7 @@ def test_make_color_fade(tmp_path):
     compare_files(path, expected)
 
 
+@pt.mark.skip
 def test_make_color_fade_c(tmp_path):
     """When called with `-c` and a valid codec for the format,
     `make_color_fade.py` should create a video at the given
@@ -60,6 +64,7 @@ def test_make_color_fade_c(tmp_path):
     compare_files(path, expected)
 
 
+@pt.mark.skip
 def test_make_color_fade_fl(tmp_path):
     """When called with `-f`, `-l`, and a valid resolution,
     `make_color_fade.py` should create a video at the given

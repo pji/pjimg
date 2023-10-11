@@ -69,65 +69,70 @@ def make_random(size: Size, path: Path) -> None:
     """Create the example images for random noise sources."""
     unit = (1, size[Y] // 5, size[Y] // 5)
     srcs = [
+        # imggen.noise
         ig.Noise(seed='spam'),
         ig.Embers(depth=6, seed='spam'),
         
-#         ig.UnitNoise(
-#             unit=unit,
-#             seed='spam'
-#         ),
-#         ig.BorktaveCosineCurtains(
-#             unit=unit,
-#             octaves=3,
-#             persistence=-4,
-#             amplitude=24,
-#             frequency=4,
-#             seed='spam'
-#         ),        
-#         ig.Curtains(
-#             unit=unit,
-#             seed='spam'
-#         ),
-#         ig.CosineCurtains(
-#             unit=unit,
-#             seed='spam'
-#         ),
-#         ig.OctaveUnitNoise(
-#             unit=(1, size[Y] * 9 // 2, size[Y] * 9 // 2),
-#             octaves=6,
-#             persistence=-4,
-#             amplitude=48,
-#             frequency=4,
-#             seed='spam'
-#         ),
-#         ig.OctaveCurtains(
-#             unit=unit,
-#             octaves=3,
-#             persistence=-4,
-#             amplitude=24,
-#             frequency=4,
-#             seed='spam'
-#         ),
-#         ig.OctaveCosineCurtains(
-#             unit=unit,
-#             octaves=3,
-#             persistence=-4,
-#             amplitude=24,
-#             frequency=4,
-#             seed='spam'
-#         ),
-#         ig.Perlin(
-#             unit=unit,
-#             seed='spam'
-#         ),
-#         ig.OctavePerlin(
-#             unit=(1, size[Y] * 9 // 2, size[Y] * 9 // 2),
-#             octaves=6,
-#             persistence=-4,
-#             amplitude=24,
-#             frequency=4,
-#             seed='spam'
-#         ),
+        # imggen.unitnoise
+        ig.UnitNoise(
+            unit=unit,
+            seed='spam'
+        ),
+        ig.BorktaveCosineCurtains(
+            unit=unit,
+            octaves=3,
+            persistence=-4,
+            amplitude=24,
+            frequency=4,
+            seed='spam'
+        ),        
+        ig.Curtains(
+            unit=unit,
+            seed='spam'
+        ),
+        ig.CosineCurtains(
+            unit=unit,
+            seed='spam'
+        ),
+        ig.OctaveUnitNoise(
+            unit=(1, size[Y] * 9 // 2, size[Y] * 9 // 2),
+            octaves=6,
+            persistence=-4,
+            amplitude=48,
+            frequency=4,
+            seed='spam'
+        ),
+        ig.OctaveCurtains(
+            unit=unit,
+            octaves=3,
+            persistence=-4,
+            amplitude=24,
+            frequency=4,
+            seed='spam'
+        ),
+        ig.OctaveCosineCurtains(
+            unit=unit,
+            octaves=3,
+            persistence=-4,
+            amplitude=24,
+            frequency=4,
+            seed='spam'
+        ),
+
+        # imggen.perlin
+        ig.Perlin(
+            unit=unit,
+            seed='spam'
+        ),
+        ig.OctavePerlin(
+            unit=(1, size[Y] * 9 // 2, size[Y] * 9 // 2),
+            octaves=6,
+            persistence=-4,
+            amplitude=24,
+            frequency=4,
+            seed='spam'
+        ),
+
 #         ig.Maze(
 #             unit=(1, size[Y] // 18, size[Y] // 18),
 #             seed='spam'

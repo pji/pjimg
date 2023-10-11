@@ -1,6 +1,6 @@
 """
 noise
-~~~~~
+=====
 
 Sources that generate psuedorandom noise.
 

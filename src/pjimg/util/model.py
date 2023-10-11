@@ -12,15 +12,16 @@ from numpy.typing import ArrayLike, NDArray
 
 # Exported names.
 __all__ = [
-    'ArrayLike', 'ImgAry', 'IntAry', 'Interpolator', 'Loc', 'NumAry',
-    'Numeric', 'RatioAry', 'Size', 'T'
+    'ArrayLike', 'ImgAry', 'IntAry', 'IntAry64', 'Interpolator', 'Loc',
+    'NumAry', 'Numeric', 'RatioAry', 'Size', 'T'
 ]
 
 
 # Basic types.
 ImgAry = NDArray[np.float_]
 IntAry = NDArray[np.uint8]
-Loc = tuple[int, int, int]
+IntAry64 = NDArray[np.int64]
+Loc = Sequence[int]
 Numeric = Union[np.bool_, np.integer, np.inexact]
 RatioAry = NDArray[np.float_]
 Size = Sequence[int]

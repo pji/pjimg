@@ -199,7 +199,7 @@
 <span id="module-pjimg.imggen"></span><h1>imggen<a class="headerlink" href="#imggen" title="Link to this heading">#</a></h1>
 <p>Image and video data generation.</p>
 <section id="sources">
-<h2>Sources<a class="headerlink" href="#sources" title="Link to this heading">#</a></h2>
+<h2>sources<a class="headerlink" href="#sources" title="Link to this heading">#</a></h2>
 <p>An image data source is a class with a <code class="xref py py-meth docutils literal notranslate"><span class="pre">Source.fill()</span></code> method that
 generates image data.</p>
 <dl class="py function">
@@ -633,6 +633,385 @@ generated noise.</p></li>
 </dd></dl>
 
 </section>
+<section id="unitnoise">
+<span id="module-pjimg.imggen.unitnoise"></span><h3>unitnoise<a class="headerlink" href="#unitnoise" title="Link to this heading">#</a></h3>
+<p>Unit noise splits the image space into a grid of units, then randomly
+distributes values at the positions on the grid. Image data is then
+generated using an easing function that provides values for the pixels
+between the positions on the grid.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="pjimg.imggen.UnitNoise">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pjimg.imggen.</span></span><span class="sig-name descname"><span class="pre">UnitNoise</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">unit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Sequence" title="(in Python v3.12)"><span class="pre">Sequence</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><span class="pre">float</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">255</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">repeats</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.12)"><span class="pre">bytes</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pjimg/imggen/unitnoise.html#UnitNoise"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pjimg.imggen.UnitNoise" title="Link to this definition">#</a></dt>
+<dd><p>Create image noise that is based on a unit grid.</p>
+<figure class="align-default" id="id14">
+<img alt="A picture of an image created from the output of :class:`UnitNoise`." src="_images/unitnoise.jpg" />
+<figcaption>
+<p><span class="caption-text">Output of <a class="reference internal" href="#pjimg.imggen.UnitNoise" title="pjimg.imggen.UnitNoise"><code class="xref py py-class docutils literal notranslate"><span class="pre">UnitNoise</span></code></a>.</span><a class="headerlink" href="#id14" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>unit</strong> – The number of pixels between vertices along an
+axis on the unit grid. The vertices are the locations where
+colors for the gradient are set. This is involved in setting
+the maximum size of noise that can be generated from
+the object.</p></li>
+<li><p><strong>min</strong> – (Optional.) The minimum value of a vertex of the unit
+grid. This is involved in setting the maximum size of noise
+that can be generated from the object.</p></li>
+<li><p><strong>max</strong> – (Optional.) The maximum value of a vertex of the unit
+grid. This is involved in setting the maximum size of noise
+that can be generated from the object.</p></li>
+<li><p><strong>repeats</strong> – (Optional.) The number of times each value can
+appear on the unit grid. This is involved in setting the
+maximum size of noise that can be generated from the object.</p></li>
+<li><p><strong>seed</strong> – (Optional.) An int, bytes, or string used to seed
+therandom number generator used to generate the image data.
+If no value is passed, the RNG will not be seeded, so
+serialized versions of this source will not produce the
+same values. Note: strings that are passed to seed will
+be converted to UTF-8 bytes before being converted to
+integers for seeding.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>An instance of <a class="reference internal" href="#pjimg.imggen.UnitNoise" title="pjimg.imggen.UnitNoise"><code class="xref py py-class docutils literal notranslate"><span class="pre">UnitNoise</span></code></a>.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#pjimg.imggen.UnitNoise" title="pjimg.imggen.unitnoise.UnitNoise">imggen.unitnoise.UnitNoise</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<section id="curtains">
+<h4>Curtains<a class="headerlink" href="#curtains" title="Link to this heading">#</a></h4>
+<p>Curtains are unit noise that is generated in only one dimension of an image.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="pjimg.imggen.CosineCurtains">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pjimg.imggen.</span></span><span class="sig-name descname"><span class="pre">CosineCurtains</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">unit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Sequence" title="(in Python v3.12)"><span class="pre">Sequence</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><span class="pre">float</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">255</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">repeats</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.12)"><span class="pre">bytes</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pjimg/imggen/unitnoise.html#CosineCurtains"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pjimg.imggen.CosineCurtains" title="Link to this definition">#</a></dt>
+<dd><p>Unit noise that creates vertical lines with a cosine-based ease
+on the color change between grid points, making them appear to
+flow more like curtains.</p>
+<figure class="align-default" id="id15">
+<img alt="A picture of an image created from the output of :class:`CosineCurtains`." src="_images/cosinecurtains.jpg" />
+<figcaption>
+<p><span class="caption-text">Output of <a class="reference internal" href="#pjimg.imggen.CosineCurtains" title="pjimg.imggen.CosineCurtains"><code class="xref py py-class docutils literal notranslate"><span class="pre">CosineCurtains</span></code></a>.</span><a class="headerlink" href="#id15" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>unit</strong> – The number of pixels between vertices along an
+axis on the unit grid. The vertices are the locations where
+colors for the gradient are set. This is involved in setting
+the maximum size of noise that can be generated from
+the object.</p></li>
+<li><p><strong>min</strong> – (Optional.) The minimum value of a vertex of the unit
+grid. This is involved in setting the maximum size of noise
+that can be generated from the object.</p></li>
+<li><p><strong>max</strong> – (Optional.) The maximum value of a vertex of the unit
+grid. This is involved in setting the maximum size of noise
+that can be generated from the object.</p></li>
+<li><p><strong>repeats</strong> – (Optional.) The number of times each value can
+appear on the unit grid. This is involved in setting the
+maximum size of noise that can be generated from the object.</p></li>
+<li><p><strong>seed</strong> – (Optional.) An int, bytes, or string used to seed
+therandom number generator used to generate the image data.
+If no value is passed, the RNG will not be seeded, so
+serialized versions of this source will not produce the
+same values. Note: strings that are passed to seed will
+be converted to UTF-8 bytes before being converted to
+integers for seeding.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>An instance of <a class="reference internal" href="#pjimg.imggen.UnitNoise" title="pjimg.imggen.UnitNoise"><code class="xref py py-class docutils literal notranslate"><span class="pre">UnitNoise</span></code></a>.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#pjimg.imggen.UnitNoise" title="pjimg.imggen.unitnoise.UnitNoise">imggen.unitnoise.UnitNoise</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pjimg.imggen.Curtains">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pjimg.imggen.</span></span><span class="sig-name descname"><span class="pre">Curtains</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">unit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Sequence" title="(in Python v3.12)"><span class="pre">Sequence</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><span class="pre">float</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">255</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">repeats</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.12)"><span class="pre">bytes</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pjimg/imggen/unitnoise.html#Curtains"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pjimg.imggen.Curtains" title="Link to this definition">#</a></dt>
+<dd><p>Unit noise that creates vertical lines, like curtains.</p>
+<figure class="align-default" id="id16">
+<img alt="A picture of an image created from the output of :class:`Curtains`." src="_images/curtains.jpg" />
+<figcaption>
+<p><span class="caption-text">Output of <a class="reference internal" href="#pjimg.imggen.Curtains" title="pjimg.imggen.Curtains"><code class="xref py py-class docutils literal notranslate"><span class="pre">Curtains</span></code></a>.</span><a class="headerlink" href="#id16" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>unit</strong> – The number of pixels between vertices along an
+axis on the unit grid. The vertices are the locations where
+colors for the gradient are set. This is involved in setting
+the maximum size of noise that can be generated from
+the object.</p></li>
+<li><p><strong>min</strong> – (Optional.) The minimum value of a vertex of the unit
+grid. This is involved in setting the maximum size of noise
+that can be generated from the object.</p></li>
+<li><p><strong>max</strong> – (Optional.) The maximum value of a vertex of the unit
+grid. This is involved in setting the maximum size of noise
+that can be generated from the object.</p></li>
+<li><p><strong>repeats</strong> – (Optional.) The number of times each value can
+appear on the unit grid. This is involved in setting the
+maximum size of noise that can be generated from the object.</p></li>
+<li><p><strong>seed</strong> – (Optional.) An int, bytes, or string used to seed
+therandom number generator used to generate the image data.
+If no value is passed, the RNG will not be seeded, so
+serialized versions of this source will not produce the
+same values. Note: strings that are passed to seed will
+be converted to UTF-8 bytes before being converted to
+integers for seeding.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>An instance of <a class="reference internal" href="#pjimg.imggen.UnitNoise" title="pjimg.imggen.UnitNoise"><code class="xref py py-class docutils literal notranslate"><span class="pre">UnitNoise</span></code></a>.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#pjimg.imggen.UnitNoise" title="pjimg.imggen.unitnoise.UnitNoise">imggen.unitnoise.UnitNoise</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="octave-noise">
+<h4>Octave Noise<a class="headerlink" href="#octave-noise" title="Link to this heading">#</a></h4>
+<p>Octave noise creates more intricate patterns by adding together multiple
+layers of unit noise.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="pjimg.imggen.OctaveUnitNoise">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pjimg.imggen.</span></span><span class="sig-name descname"><span class="pre">OctaveUnitNoise</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">octaves</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">persistence</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">8</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">amplitude</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">8</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frequency</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Sequence" title="(in Python v3.12)"><span class="pre">Sequence</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><span class="pre">float</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">(1024,</span> <span class="pre">1024,</span> <span class="pre">1024)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">255</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">repeats</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.12)"><span class="pre">bytes</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pjimg.imggen.OctaveUnitNoise" title="Link to this definition">#</a></dt>
+<dd><p>A source for octave noise. Parameters are similar to the
+<a class="reference internal" href="#pjimg.imggen.UnitNoise" title="pjimg.imggen.UnitNoise"><code class="xref py py-class docutils literal notranslate"><span class="pre">UnitNoise</span></code></a> being octaved, with the following additions.</p>
+<figure class="align-default" id="id17">
+<img alt="A picture of an image created from the output of :class:`OctaveUnitNoise`." src="_images/octaveunitnoise.jpg" />
+<figcaption>
+<p><span class="caption-text">Output of <a class="reference internal" href="#pjimg.imggen.OctaveUnitNoise" title="pjimg.imggen.OctaveUnitNoise"><code class="xref py py-class docutils literal notranslate"><span class="pre">OctaveUnitNoise</span></code></a>.</span><a class="headerlink" href="#id17" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>octaves</strong> – The number of octaves of noise in the image. An
+octave is a layer of the noise with a different number of
+points added on top of other layers of noise.</p></li>
+<li><p><strong>persistence</strong> – How the weight of each octave changes.</p></li>
+<li><p><strong>amplitude</strong> – The weight of the first octave.</p></li>
+<li><p><strong>frequency</strong> – How the number of points in each octave changes.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>An octave version of the base class.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>imggen.imggen.Source</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pjimg.imggen.OctaveCosineCurtains">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pjimg.imggen.</span></span><span class="sig-name descname"><span class="pre">OctaveCosineCurtains</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">octaves</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">persistence</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">8</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">amplitude</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">8</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frequency</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Sequence" title="(in Python v3.12)"><span class="pre">Sequence</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><span class="pre">float</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">(1024,</span> <span class="pre">1024,</span> <span class="pre">1024)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">255</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">repeats</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.12)"><span class="pre">bytes</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pjimg.imggen.OctaveCosineCurtains" title="Link to this definition">#</a></dt>
+<dd><p>A source for octave noise. Parameters are similar to the
+<a class="reference internal" href="#pjimg.imggen.UnitNoise" title="pjimg.imggen.UnitNoise"><code class="xref py py-class docutils literal notranslate"><span class="pre">UnitNoise</span></code></a> being octaved, with the following additions.</p>
+<figure class="align-default" id="id18">
+<img alt="A picture of an image created from the output of :class:`OctaveCosineCurtains`." src="_images/octavecosinecurtains.jpg" />
+<figcaption>
+<p><span class="caption-text">Output of <a class="reference internal" href="#pjimg.imggen.OctaveCosineCurtains" title="pjimg.imggen.OctaveCosineCurtains"><code class="xref py py-class docutils literal notranslate"><span class="pre">OctaveCosineCurtains</span></code></a>.</span><a class="headerlink" href="#id18" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>octaves</strong> – The number of octaves of noise in the image. An
+octave is a layer of the noise with a different number of
+points added on top of other layers of noise.</p></li>
+<li><p><strong>persistence</strong> – How the weight of each octave changes.</p></li>
+<li><p><strong>amplitude</strong> – The weight of the first octave.</p></li>
+<li><p><strong>frequency</strong> – How the number of points in each octave changes.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>An octave version of the base class.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>imggen.imggen.Source</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pjimg.imggen.OctaveCurtains">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pjimg.imggen.</span></span><span class="sig-name descname"><span class="pre">OctaveCurtains</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">octaves</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">persistence</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">8</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">amplitude</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">8</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frequency</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Sequence" title="(in Python v3.12)"><span class="pre">Sequence</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><span class="pre">float</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">(1024,</span> <span class="pre">1024,</span> <span class="pre">1024)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">255</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">repeats</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.12)"><span class="pre">bytes</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pjimg.imggen.OctaveCurtains" title="Link to this definition">#</a></dt>
+<dd><p>A source for octave noise. Parameters are similar to the
+<a class="reference internal" href="#pjimg.imggen.UnitNoise" title="pjimg.imggen.UnitNoise"><code class="xref py py-class docutils literal notranslate"><span class="pre">UnitNoise</span></code></a> being octaved, with the following additions.</p>
+<figure class="align-default" id="id19">
+<img alt="A picture of an image created from the output of :class:`OctaveCurtains`." src="_images/octavecurtains.jpg" />
+<figcaption>
+<p><span class="caption-text">Output of <a class="reference internal" href="#pjimg.imggen.OctaveCurtains" title="pjimg.imggen.OctaveCurtains"><code class="xref py py-class docutils literal notranslate"><span class="pre">OctaveCurtains</span></code></a>.</span><a class="headerlink" href="#id19" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>octaves</strong> – The number of octaves of noise in the image. An
+octave is a layer of the noise with a different number of
+points added on top of other layers of noise.</p></li>
+<li><p><strong>persistence</strong> – How the weight of each octave changes.</p></li>
+<li><p><strong>amplitude</strong> – The weight of the first octave.</p></li>
+<li><p><strong>frequency</strong> – How the number of points in each octave changes.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>An octave version of the base class.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>imggen.imggen.Source</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pjimg.imggen.BorktaveCosineCurtains">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pjimg.imggen.</span></span><span class="sig-name descname"><span class="pre">BorktaveCosineCurtains</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">octaves</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">persistence</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">8</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">amplitude</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">8</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frequency</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Sequence" title="(in Python v3.12)"><span class="pre">Sequence</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><span class="pre">float</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">(1024,</span> <span class="pre">1024,</span> <span class="pre">1024)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">255</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">repeats</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.12)"><span class="pre">bytes</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pjimg.imggen.BorktaveCosineCurtains" title="Link to this definition">#</a></dt>
+<dd><dl>
+<dt>A source for octave noise. Parameters are similar to the</dt><dd><p><a class="reference internal" href="#pjimg.imggen.UnitNoise" title="pjimg.imggen.UnitNoise"><code class="xref py py-class docutils literal notranslate"><span class="pre">UnitNoise</span></code></a> being octaved, with the following additions.</p>
+<figure class="align-default" id="id20">
+<img alt="A picture of an image created from the output of :class:`BorktaveCosineCurtains`." src="_images/borktavecosinecurtains.jpg" />
+<figcaption>
+<p><span class="caption-text">Output of <a class="reference internal" href="#pjimg.imggen.BorktaveCosineCurtains" title="pjimg.imggen.BorktaveCosineCurtains"><code class="xref py py-class docutils literal notranslate"><span class="pre">BorktaveCosineCurtains</span></code></a>.</span><a class="headerlink" href="#id20" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<dl class="field-list simple">
+<dt class="field-odd">param octaves<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The number of octaves of noise in the image. An
+octave is a layer of the noise with a different number of
+points added on top of other layers of noise.</p>
+</dd>
+<dt class="field-even">param persistence<span class="colon">:</span></dt>
+<dd class="field-even"><p>How the weight of each octave changes.</p>
+</dd>
+<dt class="field-odd">param amplitude<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The weight of the first octave.</p>
+</dd>
+<dt class="field-even">param frequency<span class="colon">:</span></dt>
+<dd class="field-even"><p>How the number of points in each octave changes.</p>
+</dd>
+<dt class="field-odd">return<span class="colon">:</span></dt>
+<dd class="field-odd"><p>An octave version of the base class.</p>
+</dd>
+<dt class="field-even">rtype<span class="colon">:</span></dt>
+<dd class="field-even"><p>imggen.imggen.Source</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>This octave class is borked. That means the operation
+used to calculate the unit size for each octave
+multiplies by the frequency rather than divides. This
+reproduces a bug in earlier versions of this code which
+caused some interesting behavior. It generates output
+just fine. It just won’t be the same output generated
+with the real octave algorithm.</p>
+</div>
+</dd></dl>
+
+</section>
+</section>
+<section id="perlin">
+<span id="module-pjimg.imggen.perlin"></span><h3>perlin<a class="headerlink" href="#perlin" title="Link to this heading">#</a></h3>
+<p>Perlin noise is a specific type of unit noise that uses procedures developed
+by Ken Perlin to provide a more naturalistic look to computer generated
+images.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="pjimg.imggen.Perlin">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pjimg.imggen.</span></span><span class="sig-name descname"><span class="pre">Perlin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">unit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Sequence" title="(in Python v3.12)"><span class="pre">Sequence</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">255</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">repeats</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.12)"><span class="pre">bytes</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pjimg/imggen/perlin.html#Perlin"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pjimg.imggen.Perlin" title="Link to this definition">#</a></dt>
+<dd><p>A class to generate Perlin noise.</p>
+<figure class="align-default" id="id21">
+<img alt="A picture of an image created from the output of :class:`Perlin`." src="_images/perlin.jpg" />
+<figcaption>
+<p><span class="caption-text">Output of <a class="reference internal" href="#pjimg.imggen.Perlin" title="pjimg.imggen.Perlin"><code class="xref py py-class docutils literal notranslate"><span class="pre">Perlin</span></code></a>.</span><a class="headerlink" href="#id21" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>unit</strong> – The number of pixels between vertices along an
+axis on the unit grid. The vertices are the locations where
+colors for the gradient are set. This is involved in setting
+the maximum size of noise that can be generated from
+the object.</p></li>
+<li><p><strong>min</strong> – (Optional.) The minimum value of a vertex of the unit
+grid. This is involved in setting the maximum size of noise
+that can be generated from the object. Unless you have a very
+good reason, this is probably best left at the default.</p></li>
+<li><p><strong>max</strong> – (Optional.) The maximum value of a vertex of the unit
+grid. This is involved in setting the maximum size of noise
+that can be generated from the object. Unless you have a very
+good reason, this is probably best left at the default.</p></li>
+<li><p><strong>repeats</strong> – (Optional.) The number of times each value can
+appear on the unit grid. This is involved in setting the
+maximum size of noise that can be generated from the object.
+Unless you have a very good reason, this is probably best left
+at the default.</p></li>
+<li><p><strong>seed</strong> – (Optional.) An int, bytes, or string used to seed
+therandom number generator used to generate the image data.
+If no value is passed, the RNG will not be seeded, so
+serialized versions of this source will not produce the
+same values. Note: strings that are passed to seed will
+be converted to UTF-8 bytes before being converted to
+integers for seeding.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>:class:Perlin object.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#pjimg.imggen.Perlin" title="pjimg.imggen.perlin.Perlin">imggen.perlin.Perlin</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pjimg.imggen.OctavePerlin">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pjimg.imggen.</span></span><span class="sig-name descname"><span class="pre">OctavePerlin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">octaves</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">6</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">persistence</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">-4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">amplitude</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">24</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frequency</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Sequence" title="(in Python v3.12)"><span class="pre">Sequence</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><span class="pre">float</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">(1024,</span> <span class="pre">1024,</span> <span class="pre">1024)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">255</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">repeats</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.12)"><span class="pre">bytes</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pjimg.imggen.OctavePerlin" title="Link to this definition">#</a></dt>
+<dd><p>A source for octave noise. Parameters are similar to the
+<a class="reference internal" href="#pjimg.imggen.UnitNoise" title="pjimg.imggen.UnitNoise"><code class="xref py py-class docutils literal notranslate"><span class="pre">UnitNoise</span></code></a> being octaved, with the following additions.</p>
+<figure class="align-default" id="id22">
+<img alt="A picture of an image created from the output of :class:`OctavePerlin`." src="_images/octaveperlin.jpg" />
+<figcaption>
+<p><span class="caption-text">Output of <a class="reference internal" href="#pjimg.imggen.OctavePerlin" title="pjimg.imggen.OctavePerlin"><code class="xref py py-class docutils literal notranslate"><span class="pre">OctavePerlin</span></code></a>.</span><a class="headerlink" href="#id22" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>octaves</strong> – The number of octaves of noise in the image. An
+octave is a layer of the noise with a different number of
+points added on top of other layers of noise.</p></li>
+<li><p><strong>persistence</strong> – How the weight of each octave changes.</p></li>
+<li><p><strong>amplitude</strong> – The weight of the first octave.</p></li>
+<li><p><strong>frequency</strong> – How the number of points in each octave changes.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>An octave version of the base class.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>imggen.imggen.Source</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
 </section>
 </section>
 
@@ -692,7 +1071,7 @@ generated noise.</p></li>
           <div class="toc-tree">
             <ul>
 <li><a class="reference internal" href="#">imggen</a><ul>
-<li><a class="reference internal" href="#sources">Sources</a><ul>
+<li><a class="reference internal" href="#sources">sources</a><ul>
 <li><a class="reference internal" href="#pjimg.imggen.Source"><code class="docutils literal notranslate"><span class="pre">Source()</span></code></a></li>
 <li><a class="reference internal" href="#patterns">patterns</a><ul>
 <li><a class="reference internal" href="#pjimg.imggen.Box"><code class="docutils literal notranslate"><span class="pre">Box</span></code></a></li>
@@ -711,6 +1090,27 @@ generated noise.</p></li>
 <li><a class="reference internal" href="#noise">noise</a><ul>
 <li><a class="reference internal" href="#pjimg.imggen.Noise"><code class="docutils literal notranslate"><span class="pre">Noise</span></code></a></li>
 <li><a class="reference internal" href="#pjimg.imggen.Embers"><code class="docutils literal notranslate"><span class="pre">Embers</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#unitnoise">unitnoise</a><ul>
+<li><a class="reference internal" href="#pjimg.imggen.UnitNoise"><code class="docutils literal notranslate"><span class="pre">UnitNoise</span></code></a></li>
+<li><a class="reference internal" href="#curtains">Curtains</a><ul>
+<li><a class="reference internal" href="#pjimg.imggen.CosineCurtains"><code class="docutils literal notranslate"><span class="pre">CosineCurtains</span></code></a></li>
+<li><a class="reference internal" href="#pjimg.imggen.Curtains"><code class="docutils literal notranslate"><span class="pre">Curtains</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#octave-noise">Octave Noise</a><ul>
+<li><a class="reference internal" href="#pjimg.imggen.OctaveUnitNoise"><code class="docutils literal notranslate"><span class="pre">OctaveUnitNoise</span></code></a></li>
+<li><a class="reference internal" href="#pjimg.imggen.OctaveCosineCurtains"><code class="docutils literal notranslate"><span class="pre">OctaveCosineCurtains</span></code></a></li>
+<li><a class="reference internal" href="#pjimg.imggen.OctaveCurtains"><code class="docutils literal notranslate"><span class="pre">OctaveCurtains</span></code></a></li>
+<li><a class="reference internal" href="#pjimg.imggen.BorktaveCosineCurtains"><code class="docutils literal notranslate"><span class="pre">BorktaveCosineCurtains</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#perlin">perlin</a><ul>
+<li><a class="reference internal" href="#pjimg.imggen.Perlin"><code class="docutils literal notranslate"><span class="pre">Perlin</span></code></a></li>
+<li><a class="reference internal" href="#pjimg.imggen.OctavePerlin"><code class="docutils literal notranslate"><span class="pre">OctavePerlin</span></code></a></li>
 </ul>
 </li>
 </ul>
