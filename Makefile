@@ -19,11 +19,12 @@ clean:
 	rm -rf tests/__pycache__
 	rm -rf thurible/__pycache__
 	rm -f *.log
-	python -m pipenv uninstall imgblender
+	python -m pipenv uninstall pjimg
 	python -m pipenv install --dev -e .
 
 .PHONY: docs
 docs:
+	python examples/imggen/build_doc_images.py
 	sphinx-build -b html docs/source/ docs/build/html
 
 .PHONY: pre
