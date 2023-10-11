@@ -12,6 +12,8 @@ generates image data.
 .. autofunction:: pjimg.imggen.Source
 
 .. automodule:: pjimg.imggen.patterns
+.. automodule:: pjimg.imggen.noise
 """
-from pjimg.imggen.model import Source
+from pjimg.imggen.model import Seed, Source
 from pjimg.imggen.patterns import *
+from pjimg.imggen.noise import Embers, Noise

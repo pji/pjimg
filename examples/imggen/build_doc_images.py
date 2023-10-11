@@ -70,97 +70,98 @@ def make_random(size: Size, path: Path) -> None:
     unit = (1, size[Y] // 5, size[Y] // 5)
     srcs = [
         ig.Noise(seed='spam'),
-        ig.UnitNoise(
-            unit=unit,
-            seed='spam'
-        ),
         ig.Embers(depth=6, seed='spam'),
-        ig.BorktaveCosineCurtains(
-            unit=unit,
-            octaves=3,
-            persistence=-4,
-            amplitude=24,
-            frequency=4,
-            seed='spam'
-        ),
-        ig.Curtains(
-            unit=unit,
-            seed='spam'
-        ),
-        ig.CosineCurtains(
-            unit=unit,
-            seed='spam'
-        ),
-        ig.OctaveUnitNoise(
-            unit=(1, size[Y] * 9 // 2, size[Y] * 9 // 2),
-            octaves=6,
-            persistence=-4,
-            amplitude=48,
-            frequency=4,
-            seed='spam'
-        ),
-        ig.OctaveCurtains(
-            unit=unit,
-            octaves=3,
-            persistence=-4,
-            amplitude=24,
-            frequency=4,
-            seed='spam'
-        ),
-        ig.OctaveCosineCurtains(
-            unit=unit,
-            octaves=3,
-            persistence=-4,
-            amplitude=24,
-            frequency=4,
-            seed='spam'
-        ),
-        ig.Perlin(
-            unit=unit,
-            seed='spam'
-        ),
-        ig.OctavePerlin(
-            unit=(1, size[Y] * 9 // 2, size[Y] * 9 // 2),
-            octaves=6,
-            persistence=-4,
-            amplitude=24,
-            frequency=4,
-            seed='spam'
-        ),
-        ig.Maze(
-            unit=(1, size[Y] // 18, size[Y] // 18),
-            seed='spam'
-        ),
-        ig.SolvedMaze(
-            unit=(1, size[Y] // 18, size[Y] // 18),
-            seed='spam'
-        ),
-        ig.Worley(
-            points=20,
-            seed='spam'
-        ),
-        ig.OctaveWorley(
-            octaves=3,
-            persistence=6,
-            amplitude=5,
-            frequency=3,
-            points=8,
-            seed='spam'
-        ),
+        
+#         ig.UnitNoise(
+#             unit=unit,
+#             seed='spam'
+#         ),
+#         ig.BorktaveCosineCurtains(
+#             unit=unit,
+#             octaves=3,
+#             persistence=-4,
+#             amplitude=24,
+#             frequency=4,
+#             seed='spam'
+#         ),        
+#         ig.Curtains(
+#             unit=unit,
+#             seed='spam'
+#         ),
+#         ig.CosineCurtains(
+#             unit=unit,
+#             seed='spam'
+#         ),
+#         ig.OctaveUnitNoise(
+#             unit=(1, size[Y] * 9 // 2, size[Y] * 9 // 2),
+#             octaves=6,
+#             persistence=-4,
+#             amplitude=48,
+#             frequency=4,
+#             seed='spam'
+#         ),
+#         ig.OctaveCurtains(
+#             unit=unit,
+#             octaves=3,
+#             persistence=-4,
+#             amplitude=24,
+#             frequency=4,
+#             seed='spam'
+#         ),
+#         ig.OctaveCosineCurtains(
+#             unit=unit,
+#             octaves=3,
+#             persistence=-4,
+#             amplitude=24,
+#             frequency=4,
+#             seed='spam'
+#         ),
+#         ig.Perlin(
+#             unit=unit,
+#             seed='spam'
+#         ),
+#         ig.OctavePerlin(
+#             unit=(1, size[Y] * 9 // 2, size[Y] * 9 // 2),
+#             octaves=6,
+#             persistence=-4,
+#             amplitude=24,
+#             frequency=4,
+#             seed='spam'
+#         ),
+#         ig.Maze(
+#             unit=(1, size[Y] // 18, size[Y] // 18),
+#             seed='spam'
+#         ),
+#         ig.SolvedMaze(
+#             unit=(1, size[Y] // 18, size[Y] // 18),
+#             seed='spam'
+#         ),
+#         ig.Worley(
+#             points=20,
+#             seed='spam'
+#         ),
+#         ig.OctaveWorley(
+#             octaves=3,
+#             persistence=6,
+#             amplitude=5,
+#             frequency=3,
+#             points=8,
+#             seed='spam'
+#         ),
     ]
     for src in srcs:
         save(src, size, path)
     
-    vsrcs = [
-        ig.AnimatedMaze(
-            unit=(1, size[Y] // 18, size[Y] // 18),
-            width=0.34,
-            seed='spam'
-        ),
-    ]
-    for vsrc in vsrcs:
-        vsize = (250, size[Y], size[X])
-        save(vsrc, vsize, path, 'mp4')
+#     vsrcs = [
+#         ig.AnimatedMaze(
+#             unit=(1, size[Y] // 18, size[Y] // 18),
+#             width=0.34,
+#             seed='spam'
+#         ),
+#     ]
+#     for vsrc in vsrcs:
+#         vsize = (250, size[Y], size[X])
+#         save(vsrc, vsize, path, 'mp4')
 
 
 def save(src: ig.Source, size: Size, path: Path, ext: str = 'jpg') -> None:
@@ -198,4 +199,4 @@ if __name__ == '__main__':
     size = (1, args.size[1], args.size[0])
     path = args.outdir
     make_patterns(size, path)
-    # make_random(size, path)
+    make_random(size, path)

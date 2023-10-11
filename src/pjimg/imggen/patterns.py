@@ -5,17 +5,17 @@ patterns
 Sources that generate shapes, text, and other fully deterministic
 image and video data.
 
-.. autofunction:: pjimg.imggen.Box
-.. autofunction:: pjimg.imggen.Gradient
-.. autofunction:: pjimg.imggen.Hexes
-.. autofunction:: pjimg.imggen.Lines
-.. autofunction:: pjimg.imggen.Rays
-.. autofunction:: pjimg.imggen.Rings
-.. autofunction:: pjimg.imggen.Solid
-.. autofunction:: pjimg.imggen.Spheres
-.. autofunction:: pjimg.imggen.Spot
-.. autofunction:: pjimg.imggen.Text
-.. autofunction:: pjimg.imggen.Waves
+.. autoclass:: pjimg.imggen.Box
+.. autoclass:: pjimg.imggen.Gradient
+.. autoclass:: pjimg.imggen.Hexes
+.. autoclass:: pjimg.imggen.Lines
+.. autoclass:: pjimg.imggen.Rays
+.. autoclass:: pjimg.imggen.Rings
+.. autoclass:: pjimg.imggen.Solid
+.. autoclass:: pjimg.imggen.Spheres
+.. autoclass:: pjimg.imggen.Spot
+.. autoclass:: pjimg.imggen.Text
+.. autoclass:: pjimg.imggen.Waves
 
 """
 from math import sqrt

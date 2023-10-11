@@ -6,11 +6,15 @@ Types used for :mod:`pjimg.imggen`.
 """
 from abc import ABC, abstractmethod
 from inspect import signature
-from typing import Any
+from typing import Any, Union
 
 import numpy as np
 
 from pjimg.util import ImgAry, Loc, Size
+
+
+# Typing.
+Seed = Union[None, int, str, bytes]
 
 
 # Base classes.
