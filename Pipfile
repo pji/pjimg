@@ -6,6 +6,7 @@ name = "pypi"
 [packages]
 numpy = "*"
 opencv-python = "*"
+pillow = "*"
 
 [dev-packages]
 sphinx = "*"
@@ -20,6 +21,7 @@ wheel = "*"
 build = "*"
 twine = "*"
 pjimg = {file = ".", editable = true}
+types-pillow = "*"
 
 [requires]
 python_version = "3.12"
