@@ -13,6 +13,7 @@ Procedural image generation.
    :caption: Contents:
    
    self
+   /imgblend.rst
    /imggen.rst
    /imgio.rst
    /util.rst

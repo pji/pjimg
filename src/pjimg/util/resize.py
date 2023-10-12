@@ -6,6 +6,7 @@ Functions for resizing numpy arrays through interpolation.
 
 .. autofunction:: pjimg.util.build_resizing_matrices
 .. autofunction:: pjimg.util.magnify_size
+.. autofunction:: pjimg.util.pad_array
 .. autofunction:: pjimg.util.resize_array
 """
 from math import prod
@@ -14,7 +15,14 @@ from typing import Optional, Union
 import numpy as np
 
 from pjimg.util import lerps as lp
-from pjimg.util.model import IntAry, Interpolator, NumAry, RatioAry, Size
+from pjimg.util.constants import X, Y, Z
+from pjimg.util.model import *
+
+
+# Names available for import.
+__all__ = [
+    'build_resizing_matrices', 'magnify_size', 'pad_array', 'resize_array',
+]
 
 
 # Public functions.
@@ -82,6 +90,32 @@ def magnify_size(shape: Size, factor: int) -> Size:
     :return: A :class:`tuple` containing the shape of the magnified array.
     """
     return tuple(int(n * factor) for n in shape)
+
+
+def pad_array(
+        a: NumAry,
+        size: Size,
+        fill: float = 0.0
+    ) -> NumAry:
+    """Pad an array to a larger size.
+    
+    :param a: The array to pad.
+    :param size: The shape of the size.
+    ;param fill: The color of the padded area.
+    :return: The padded :class:`numpy.ndarray`.
+    :rtype: numpy.ndarray
+    """
+    # Create array at the new size.
+    resized = np.full(size, fill, dtype=a.dtype)
+
+    # Determine the amount the image has to be inset by in each dimension.
+    size_diff = [n - o for n, o in zip(size, a.shape)]
+    pad = [dim // 2 for dim in size_diff]
+    end = [n + o for n, o in zip(pad, a.shape)]
+
+    # Place the image and return.
+    resized[pad[Z]:end[Z], pad[Y]:end[Y], pad[X]:end[X]] = a
+    return resized
 
 
 def resize_array(

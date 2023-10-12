@@ -24,6 +24,7 @@ clean:
 
 .PHONY: docs
 docs:
+	python examples/imgblend/build_doc_images.py
 	python examples/imggen/build_doc_images.py
 	sphinx-build -b html docs/source/ docs/build/html
 

@@ -156,6 +156,8 @@
   <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../index.html">pjimg documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../imgblend.html">imgblend</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../imggen.html">imggen</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../imgio.html">imgio</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../util.html">__init__</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../requirements.html">pjimg Requirements</a></li>
@@ -201,6 +203,7 @@
 
 <span class="sd">.. autofunction:: pjimg.util.build_resizing_matrices</span>
 <span class="sd">.. autofunction:: pjimg.util.magnify_size</span>
+<span class="sd">.. autofunction:: pjimg.util.pad_array</span>
 <span class="sd">.. autofunction:: pjimg.util.resize_array</span>
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">prod</span>
@@ -209,7 +212,14 @@
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
 <span class="kn">from</span> <span class="nn">pjimg.util</span> <span class="kn">import</span> <span class="n">lerps</span> <span class="k">as</span> <span class="n">lp</span>
-<span class="kn">from</span> <span class="nn">pjimg.util.model</span> <span class="kn">import</span> <span class="n">IntAry</span><span class="p">,</span> <span class="n">Interpolator</span><span class="p">,</span> <span class="n">NumAry</span><span class="p">,</span> <span class="n">RatioAry</span><span class="p">,</span> <span class="n">Size</span>
+<span class="kn">from</span> <span class="nn">pjimg.util.constants</span> <span class="kn">import</span> <span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">Z</span>
+<span class="kn">from</span> <span class="nn">pjimg.util.model</span> <span class="kn">import</span> <span class="o">*</span>
+
+
+<span class="c1"># Names available for import.</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">&#39;build_resizing_matrices&#39;</span><span class="p">,</span> <span class="s1">&#39;magnify_size&#39;</span><span class="p">,</span> <span class="s1">&#39;pad_array&#39;</span><span class="p">,</span> <span class="s1">&#39;resize_array&#39;</span><span class="p">,</span>
+<span class="p">]</span>
 
 
 <span class="c1"># Public functions.</span>
@@ -282,6 +292,35 @@
 <span class="sd">    :return: A :class:`tuple` containing the shape of the magnified array.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">n</span> <span class="o">*</span> <span class="n">factor</span><span class="p">)</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">shape</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="pad_array">
+<a class="viewcode-back" href="../../../util.html#pjimg.util.pad_array">[docs]</a>
+<span class="k">def</span> <span class="nf">pad_array</span><span class="p">(</span>
+        <span class="n">a</span><span class="p">:</span> <span class="n">NumAry</span><span class="p">,</span>
+        <span class="n">size</span><span class="p">:</span> <span class="n">Size</span><span class="p">,</span>
+        <span class="n">fill</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NumAry</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Pad an array to a larger size.</span>
+<span class="sd">    </span>
+<span class="sd">    :param a: The array to pad.</span>
+<span class="sd">    :param size: The shape of the size.</span>
+<span class="sd">    ;param fill: The color of the padded area.</span>
+<span class="sd">    :return: The padded :class:`numpy.ndarray`.</span>
+<span class="sd">    :rtype: numpy.ndarray</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Create array at the new size.</span>
+    <span class="n">resized</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">fill</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">a</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+
+    <span class="c1"># Determine the amount the image has to be inset by in each dimension.</span>
+    <span class="n">size_diff</span> <span class="o">=</span> <span class="p">[</span><span class="n">n</span> <span class="o">-</span> <span class="n">o</span> <span class="k">for</span> <span class="n">n</span><span class="p">,</span> <span class="n">o</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">a</span><span class="o">.</span><span class="n">shape</span><span class="p">)]</span>
+    <span class="n">pad</span> <span class="o">=</span> <span class="p">[</span><span class="n">dim</span> <span class="o">//</span> <span class="mi">2</span> <span class="k">for</span> <span class="n">dim</span> <span class="ow">in</span> <span class="n">size_diff</span><span class="p">]</span>
+    <span class="n">end</span> <span class="o">=</span> <span class="p">[</span><span class="n">n</span> <span class="o">+</span> <span class="n">o</span> <span class="k">for</span> <span class="n">n</span><span class="p">,</span> <span class="n">o</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">pad</span><span class="p">,</span> <span class="n">a</span><span class="o">.</span><span class="n">shape</span><span class="p">)]</span>
+
+    <span class="c1"># Place the image and return.</span>
+    <span class="n">resized</span><span class="p">[</span><span class="n">pad</span><span class="p">[</span><span class="n">Z</span><span class="p">]:</span><span class="n">end</span><span class="p">[</span><span class="n">Z</span><span class="p">],</span> <span class="n">pad</span><span class="p">[</span><span class="n">Y</span><span class="p">]:</span><span class="n">end</span><span class="p">[</span><span class="n">Y</span><span class="p">],</span> <span class="n">pad</span><span class="p">[</span><span class="n">X</span><span class="p">]:</span><span class="n">end</span><span class="p">[</span><span class="n">X</span><span class="p">]]</span> <span class="o">=</span> <span class="n">a</span>
+    <span class="k">return</span> <span class="n">resized</span></div>
 
 
 

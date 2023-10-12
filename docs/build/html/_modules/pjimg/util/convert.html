@@ -156,6 +156,8 @@
   <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../index.html">pjimg documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../imgblend.html">imgblend</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../imggen.html">imggen</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../imgio.html">imgio</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../util.html">__init__</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../requirements.html">pjimg Requirements</a></li>
@@ -200,14 +202,16 @@
 <span class="sd">Data conversion utilities.</span>
 
 <span class="sd">.. autofunction:: pjimg.util.float_to_uint8</span>
+<span class="sd">.. autofunction:: pjimg.util.grayscale_to_rgb</span>
+
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
-<span class="kn">from</span> <span class="nn">pjimg.util.model</span> <span class="kn">import</span> <span class="n">ArrayLike</span><span class="p">,</span> <span class="n">IntAry</span>
+<span class="kn">from</span> <span class="nn">pjimg.util.model</span> <span class="kn">import</span> <span class="n">ArrayLike</span><span class="p">,</span> <span class="n">ImgAry</span><span class="p">,</span> <span class="n">IntAry</span>
 
 
 <span class="c1"># Exported names.</span>
-<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;float_to_uint8&#39;</span><span class="p">,]</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;float_to_uint8&#39;</span><span class="p">,</span> <span class="s1">&#39;grayscale_to_rgb&#39;</span><span class="p">,]</span>
 
 
 <span class="c1"># Functions.</span>
@@ -228,6 +232,23 @@
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
     <span class="n">a</span> <span class="o">*=</span> <span class="mh">0xff</span>
     <span class="k">return</span> <span class="n">a</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="grayscale_to_rgb">
+<a class="viewcode-back" href="../../../util.html#pjimg.util.grayscale_to_rgb">[docs]</a>
+<span class="k">def</span> <span class="nf">grayscale_to_rgb</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ImgAry</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert single channel image data to three channel.</span>
+<span class="sd">    </span>
+<span class="sd">    :param a: The array of grayscale image data to convert.</span>
+<span class="sd">    :return: A :class:`numpy.ndarray` object.</span>
+<span class="sd">    :rtype: numpy.ndarray</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">new_shape</span> <span class="o">=</span> <span class="p">(</span><span class="o">*</span><span class="n">a</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+    <span class="n">new_a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">new_shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">a</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">channel</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+        <span class="n">new_a</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">channel</span><span class="p">]</span> <span class="o">=</span> <span class="n">a</span>
+    <span class="k">return</span> <span class="n">new_a</span></div>
 
 </pre></div>
         </article>
