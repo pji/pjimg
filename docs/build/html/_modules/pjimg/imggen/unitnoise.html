@@ -232,7 +232,8 @@
 
 <span class="kn">from</span> <span class="nn">pjimg.imggen.model</span> <span class="kn">import</span> <span class="n">Source</span>
 <span class="kn">from</span> <span class="nn">pjimg.imggen.noise</span> <span class="kn">import</span> <span class="n">Noise</span><span class="p">,</span> <span class="n">Seed</span>
-<span class="kn">from</span> <span class="nn">pjimg.util</span> <span class="kn">import</span> <span class="n">ImgAry</span><span class="p">,</span> <span class="n">IntAry</span><span class="p">,</span> <span class="n">Loc</span><span class="p">,</span> <span class="n">RatioAry</span><span class="p">,</span> <span class="n">Size</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">Z</span><span class="p">,</span> <span class="n">lerp</span>
+<span class="kn">from</span> <span class="nn">pjimg.util</span> <span class="kn">import</span> <span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">Z</span><span class="p">,</span> <span class="n">lerp</span>
+<span class="kn">from</span> <span class="nn">pjimg.util.model</span> <span class="kn">import</span> <span class="o">*</span>
 
 
 <span class="c1"># Names available for import.</span>
@@ -325,10 +326,10 @@
 
     <span class="c1"># Private methods.</span>
     <span class="k">def</span> <span class="nf">_build_grids</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">whole</span><span class="p">:</span> <span class="n">IntAry</span><span class="p">,</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">whole</span><span class="p">:</span> <span class="n">IntAry64</span><span class="p">,</span>
         <span class="n">size</span><span class="p">:</span> <span class="n">Size</span><span class="p">,</span>
         <span class="n">shape</span><span class="p">:</span> <span class="n">Size</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">IntAry</span><span class="p">]:</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">IntAry64</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the color for the eight vertices that surround each of</span>
 <span class="sd">        the pixels.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -373,7 +374,7 @@
     <span class="k">def</span> <span class="nf">_map_unit_grid</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span>
         <span class="n">location</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">RatioAry</span><span class="p">,</span> <span class="n">RatioAry</span><span class="p">]:</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">IntAry64</span><span class="p">,</span> <span class="n">RatioAry</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Map the image data to the unit grid.&quot;&quot;&quot;</span>
         <span class="c1"># Map out the space.</span>
         <span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">indices</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span>
@@ -394,7 +395,7 @@
 
     <span class="k">def</span> <span class="nf">_interp</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">grids</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span>
-            <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">IntAry</span><span class="p">],</span>
+            <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">IntAry64</span><span class="p">],</span>
             <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">RatioAry</span><span class="p">]</span>
         <span class="p">],</span>
         <span class="n">parts</span><span class="p">:</span> <span class="n">RatioAry</span>
@@ -506,7 +507,7 @@
     <span class="k">def</span> <span class="nf">_map_unit_grid</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="p">:</span> <span class="n">Size</span><span class="p">,</span>
         <span class="n">location</span><span class="p">:</span> <span class="n">Loc</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">IntAry</span><span class="p">,</span> <span class="n">RatioAry</span><span class="p">]:</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">IntAry64</span><span class="p">,</span> <span class="n">RatioAry</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Map the image data to the unit grid.&quot;&quot;&quot;</span>
         <span class="n">whole</span><span class="p">,</span> <span class="n">parts</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">_map_unit_grid</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">location</span><span class="p">)</span>
         <span class="n">parts</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">parts</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">))</span> <span class="o">/</span> <span class="mi">2</span>

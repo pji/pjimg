@@ -133,40 +133,43 @@ def make_random(size: Size, path: Path) -> None:
             seed='spam'
         ),
 
-#         ig.Maze(
-#             unit=(1, size[Y] // 18, size[Y] // 18),
-#             seed='spam'
-#         ),
-#         ig.SolvedMaze(
-#             unit=(1, size[Y] // 18, size[Y] // 18),
-#             seed='spam'
-#         ),
-#         ig.Worley(
-#             points=20,
-#             seed='spam'
-#         ),
-#         ig.OctaveWorley(
-#             octaves=3,
-#             persistence=6,
-#             amplitude=5,
-#             frequency=3,
-#             points=8,
-#             seed='spam'
-#         ),
+        # imggen.maze
+        ig.Maze(
+            unit=(1, size[Y] // 18, size[Y] // 18),
+            seed='spam'
+        ),
+        ig.SolvedMaze(
+            unit=(1, size[Y] // 18, size[Y] // 18),
+            seed='spam'
+        ),
+
+        # imggen.worley
+        ig.Worley(
+            points=20,
+            seed='spam'
+        ),
+        ig.OctaveWorley(
+            octaves=3,
+            persistence=6,
+            amplitude=5,
+            frequency=3,
+            points=8,
+            seed='spam'
+        ),
     ]
     for src in srcs:
         save(src, size, path)
     
-#     vsrcs = [
-#         ig.AnimatedMaze(
-#             unit=(1, size[Y] // 18, size[Y] // 18),
-#             width=0.34,
-#             seed='spam'
-#         ),
-#     ]
-#     for vsrc in vsrcs:
-#         vsize = (250, size[Y], size[X])
-#         save(vsrc, vsize, path, 'mp4')
+    vsrcs = [
+        ig.AnimatedMaze(
+            unit=(1, size[Y] // 18, size[Y] // 18),
+            width=0.34,
+            seed='spam'
+        ),
+    ]
+    for vsrc in vsrcs:
+        vsize = (250, size[Y], size[X])
+        save(vsrc, vsize, path, 'mp4')
 
 
 def save(src: ig.Source, size: Size, path: Path, ext: str = 'jpg') -> None:

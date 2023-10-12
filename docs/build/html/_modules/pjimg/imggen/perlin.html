@@ -212,7 +212,7 @@
 
 <span class="kn">from</span> <span class="nn">pjimg.imggen</span> <span class="kn">import</span> <span class="n">unitnoise</span> <span class="k">as</span> <span class="n">un</span>
 <span class="kn">from</span> <span class="nn">pjimg.imggen.model</span> <span class="kn">import</span> <span class="n">Seed</span>
-<span class="kn">from</span> <span class="nn">pjimg.util</span> <span class="kn">import</span> <span class="n">ImgAry</span><span class="p">,</span> <span class="n">IntAry</span><span class="p">,</span> <span class="n">Loc</span><span class="p">,</span> <span class="n">Size</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">Z</span>
+<span class="kn">from</span> <span class="nn">pjimg.util</span> <span class="kn">import</span> <span class="n">ImgAry</span><span class="p">,</span> <span class="n">IntAry64</span><span class="p">,</span> <span class="n">Loc</span><span class="p">,</span> <span class="n">RatioAry</span><span class="p">,</span> <span class="n">Size</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">Z</span>
 
 
 <span class="c1"># Public class.</span>
@@ -289,10 +289,10 @@
 
     <span class="c1"># Private methods.</span>
     <span class="k">def</span> <span class="nf">_build_grids</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">whole</span><span class="p">:</span> <span class="n">IntAry</span><span class="p">,</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">whole</span><span class="p">:</span> <span class="n">IntAry64</span><span class="p">,</span>
         <span class="n">size</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span>
         <span class="n">shape</span><span class="p">:</span> <span class="n">Size</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">IntAry</span><span class="p">]:</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">IntAry64</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the color for the eight vertices that surround each of</span>
 <span class="sd">        the pixels.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
