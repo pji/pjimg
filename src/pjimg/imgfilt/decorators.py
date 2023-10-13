@@ -86,13 +86,13 @@ def will_square(fn: Filter) -> Filter:
         old_size = None
         if a.shape[X_] != a.shape[Y_]:
             old_size = a.shape
-            largest = max(a.shape[Y:])
-            new_size = (*a.shape[:Y], largest, largest)
+            largest = max(a.shape[Y_:])
+            new_size = (*a.shape[:Y_], largest, largest)
             new_a = np.zeros(new_size, dtype=a.dtype)
-            x_start = (largest - old_size[X]) // 2
-            x_end = x_start + old_size[X]
-            y_start = (largest - old_size[Y]) // 2
-            y_end = y_start + old_size[Y]
+            x_start = (largest - old_size[X_]) // 2
+            x_end = x_start + old_size[X_]
+            y_start = (largest - old_size[Y_]) // 2
+            y_end = y_start + old_size[Y_]
             new_a[..., y_start:y_end, x_start:x_end] = a
             a = new_a
             del new_a
@@ -103,10 +103,10 @@ def will_square(fn: Filter) -> Filter:
         # Resize result back to the size of the original image if
         # needed before returning.
         if old_size:
-            y_start = (a.shape[Y] - old_size[Y]) // 2
+            y_start = (a.shape[Y_] - old_size[Y_]) // 2
             y_end = y_start + old_size[Y]
-            x_start = (a.shape[X] - old_size[X]) // 2
-            x_end = x_start + old_size[X]
+            x_start = (a.shape[X_] - old_size[X_]) // 2
+            x_end = x_start + old_size[X_]
             a = a[..., y_start:y_end, x_start:x_end]
         return a
     return wrapper

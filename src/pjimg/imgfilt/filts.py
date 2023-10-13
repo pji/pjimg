@@ -2,7 +2,32 @@
 Filters
 =======
 
-Filter functions for image data.
+The following is true of all filter functions:
+
+*   They take a :class:`numpy.ndarray` of image data as the first parameter.
+*   They may require other parameters.
+*   They return a :class:`numpy.ndarray` of image data.
+
+All filter functions are registered in the :class:`dict` `imgeaser.filters`
+for convenience, but they can also be called directly.
+
+.. autofunction:: imgfilt.filter_box_blur
+.. autofunction:: imgfilt.filter_colorize
+.. autofunction:: imgfilt.filter_contrast
+.. autofunction:: imgfilt.filter_flip
+.. autofunction:: imgfilt.filter_gaussian_blur
+.. autofunction:: imgfilt.filter_glow
+.. autofunction:: imgfilt.filter_grow
+.. autofunction:: imgfilt.filter_inverse
+.. autofunction:: imgfilt.filter_linear_to_polar
+.. autofunction:: imgfilt.filter_motion_blur
+.. autofunction:: imgfilt.filter_pinch
+.. autofunction:: imgfilt.filter_polar_to_linear
+.. autofunction:: imgfilt.filter_ripple
+.. autofunction:: imgfilt.filter_rotate_90
+.. autofunction:: imgfilt.filter_skew
+.. autofunction:: imgfilt.filter_twirl
+
 """
 from typing import Sequence
 
@@ -15,6 +40,17 @@ import pjimg.util.resize as rsz
 from pjimg.imgfilt.decorators import *
 from pjimg.imgfilt.util import get_color_for_key
 from pjimg.util import ImgAry, Loc, Size, X, Y, Z, X_, Y_, Z_
+
+
+# Names available for import.
+__all__ = [
+    'filter_box_blur', 'filter_colorize', 'filter_contrast',
+    'filter_flip', 'filter_gaussian_blur', 'filter_glow',
+    'filter_grow', 'filter_inverse', 'filter_linear_to_polar',
+    'filter_motion_blur', 'filter_pinch', 'filter_polar_to_linear',
+    'filter_ripple', 'filter_rotate_90', 'filter_skew',
+    'filter_twirl',
+]
 
 
 # Image filter functions.
@@ -264,11 +300,11 @@ def filter_motion_blur(
     :rtype: numpy.ndarray
     """
     kernel = np.zeros((amount, amount), float)
-    if axis == X:
+    if axis == X_:
         y = int(amount // 2)
         for x in range(amount):
             kernel[y][x] = 1 / amount
-    elif axis == Y:
+    elif axis == Y_:
         x = int(amount // 2)
         for y in range(amount):
             kernel[y][x] = 1 / amount
@@ -462,13 +498,13 @@ def filter_skew(a: ImgAry, slope: float) -> ImgAry:
     # This is due to the implementation of OpenCV.
     original = np.array([
         [0, 0],
-        [a.shape[X] - 1, 0],
-        [0, a.shape[Y] - 1],
+        [a.shape[X_] - 1, 0],
+        [0, a.shape[Y_] - 1],
     ], dtype=np.float32)
     new = np.array([
         [0, 0],
-        [a.shape[X] - 1, 0],
-        [(a.shape[Y] - 1) * slope, a.shape[Y] - 1],
+        [a.shape[X_] - 1, 0],
+        [(a.shape[Y_] - 1) * slope, a.shape[Y_] - 1],
     ], dtype=np.float32)
 
     # Perform the transform on the image by first creating a warp
@@ -476,8 +512,9 @@ def filter_skew(a: ImgAry, slope: float) -> ImgAry:
     # the image, telling OpenCV to wrap pixels that are pushed off
     # the edge of the image.
     matrix = cv2.getAffineTransform(original, new)
-    return cv2.warpAffine(a, matrix, (a.shape[X], a.shape[Y]),
-                          borderMode=cv2.BORDER_WRAP)
+    return cv2.warpAffine(
+        a, matrix, (a.shape[X_], a.shape[Y_]), borderMode=cv2.BORDER_WRAP
+    )
 
 
 @processes_by_grayscale_frame

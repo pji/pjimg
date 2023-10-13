@@ -159,7 +159,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../imgblend.html">imgblend</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../imggen.html">imggen</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../imgio.html">imgio</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../util.html">__init__</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../util.html">util</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../requirements.html">pjimg Requirements</a></li>
 </ul>
 
@@ -212,17 +212,122 @@
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
 <span class="kn">from</span> <span class="nn">pjimg.util</span> <span class="kn">import</span> <span class="n">lerps</span> <span class="k">as</span> <span class="n">lp</span>
-<span class="kn">from</span> <span class="nn">pjimg.util.constants</span> <span class="kn">import</span> <span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">Z</span>
+<span class="kn">from</span> <span class="nn">pjimg.util.constants</span> <span class="kn">import</span> <span class="n">X</span><span class="p">,</span> <span class="n">X_</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">Y_</span><span class="p">,</span> <span class="n">Z</span><span class="p">,</span> <span class="n">Z_</span>
 <span class="kn">from</span> <span class="nn">pjimg.util.model</span> <span class="kn">import</span> <span class="o">*</span>
 
 
 <span class="c1"># Names available for import.</span>
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="s1">&#39;build_resizing_matrices&#39;</span><span class="p">,</span> <span class="s1">&#39;magnify_size&#39;</span><span class="p">,</span> <span class="s1">&#39;pad_array&#39;</span><span class="p">,</span> <span class="s1">&#39;resize_array&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;bilinear_interpolation&#39;</span><span class="p">,</span> <span class="s1">&#39;build_resizing_matrices&#39;</span><span class="p">,</span> <span class="s1">&#39;magnify_size&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;pad_array&#39;</span><span class="p">,</span> <span class="s1">&#39;resize_array&#39;</span><span class="p">,</span> <span class="s1">&#39;trilinear_interpolation&#39;</span><span class="p">,</span>
 <span class="p">]</span>
 
 
 <span class="c1"># Public functions.</span>
+<span class="k">def</span> <span class="nf">bilinear_interpolation</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">,</span> <span class="n">factor</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ImgAry</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Resize an two dimensional array using trilinear</span>
+<span class="sd">    interpolation.</span>
+
+<span class="sd">    :param a: The array to resize. The array is expected to have at</span>
+<span class="sd">        least two dimensions.</span>
+<span class="sd">    :param factor: The amount to resize the array. Given how the</span>
+<span class="sd">        interpolation works, you probably don&#39;t get great results</span>
+<span class="sd">        with factor less than or equal to .5. Consider multiple</span>
+<span class="sd">        passes of interpolation with larger factors in those cases.</span>
+<span class="sd">    :return: A :class:ndarray object.</span>
+<span class="sd">    :rtype: numpy.ndarray</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Return the array unchanged if the array won&#39;t be magnified.</span>
+    <span class="k">if</span> <span class="n">factor</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">a</span>
+
+    <span class="c1"># Perform a defensive copy of the original array to avoid</span>
+    <span class="c1"># unexpected side effects.</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+    <span class="c1"># Since we are magnifying the given array, the new array&#39;s shape</span>
+    <span class="c1"># will increase by the magnification factor.</span>
+    <span class="n">mag_size</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">s</span> <span class="o">*</span> <span class="n">factor</span><span class="p">)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">a</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+
+    <span class="c1"># Map out the relationship between the old space and the</span>
+    <span class="c1"># new space.</span>
+    <span class="n">indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">indices</span><span class="p">(</span><span class="n">mag_size</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">factor</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">whole</span> <span class="o">=</span> <span class="p">(</span><span class="n">indices</span> <span class="o">//</span> <span class="n">factor</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+        <span class="n">parts</span> <span class="o">=</span> <span class="p">(</span><span class="n">indices</span> <span class="o">/</span> <span class="n">factor</span> <span class="o">-</span> <span class="n">whole</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">new_ends</span> <span class="o">=</span> <span class="p">[</span><span class="n">s</span> <span class="o">-</span> <span class="mi">1</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">mag_size</span><span class="p">]</span>
+        <span class="n">old_ends</span> <span class="o">=</span> <span class="p">[</span><span class="n">s</span> <span class="o">-</span> <span class="mi">1</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">a</span><span class="o">.</span><span class="n">shape</span><span class="p">]</span>
+        <span class="n">true_factors</span> <span class="o">=</span> <span class="p">[</span><span class="n">n</span> <span class="o">/</span> <span class="n">o</span> <span class="k">for</span> <span class="n">n</span><span class="p">,</span> <span class="n">o</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">new_ends</span><span class="p">,</span> <span class="n">old_ends</span><span class="p">)]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">true_factors</span><span class="p">)):</span>
+            <span class="k">if</span> <span class="n">true_factors</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">true_factors</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mf">.5</span>
+        <span class="n">whole</span> <span class="o">=</span> <span class="n">indices</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">parts</span> <span class="o">=</span> <span class="n">indices</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">Y_</span><span class="p">,</span> <span class="n">X_</span><span class="p">:</span>
+            <span class="n">whole</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">indices</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">//</span> <span class="n">true_factors</span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+            <span class="n">parts</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">indices</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">/</span> <span class="n">true_factors</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">whole</span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
+    <span class="k">del</span> <span class="n">indices</span>
+
+    <span class="c1"># Trilinear interpolation determines the value of a new pixel by</span>
+    <span class="c1"># comparing the values of the eight old pixels that surround it.</span>
+    <span class="c1"># The hashes are the keys to the dictionary that contains those</span>
+    <span class="c1"># old pixel values. The key indicates the position of the pixel</span>
+    <span class="c1"># on each axis, with one meaning the position is ahead of the</span>
+    <span class="c1"># new pixel, and zero meaning the position is behind it.</span>
+    <span class="n">hashes</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">n</span><span class="si">:</span><span class="s1">&gt;02b</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)]</span>
+    <span class="n">hash_table</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="c1"># The original array needs to be made one dimensional for the</span>
+    <span class="c1"># numpy.take operation that will occur as we build the tables.</span>
+    <span class="n">raveled</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ravel</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+
+    <span class="c1"># Build the table that contains the old pixel values to</span>
+    <span class="c1"># interpolate.</span>
+    <span class="k">for</span> <span class="nb">hash</span> <span class="ow">in</span> <span class="n">hashes</span><span class="p">:</span>
+        <span class="n">hash_whole</span> <span class="o">=</span> <span class="n">whole</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+        <span class="c1"># Use the hash key to adjust the which old pixel we are</span>
+        <span class="c1"># looking at.</span>
+        <span class="k">for</span> <span class="n">axis</span> <span class="ow">in</span> <span class="n">Y_</span><span class="p">,</span> <span class="n">X_</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">hash</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;1&#39;</span><span class="p">:</span>
+                <span class="n">hash_whole</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+
+                <span class="c1"># Handle the pixels that were pushed off the far</span>
+                <span class="c1"># edge of the original array by giving them the</span>
+                <span class="c1"># value of the last pixel along that axis in the</span>
+                <span class="c1"># original array.</span>
+                <span class="n">m</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">hash_whole</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">bool</span><span class="p">)</span>
+                <span class="n">m</span><span class="p">[</span><span class="n">hash_whole</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">a</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="n">axis</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="n">hash_whole</span><span class="p">[</span><span class="n">axis</span><span class="p">][</span><span class="n">m</span><span class="p">]</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span>
+
+        <span class="c1"># Since numpy.take() only works in one dimension, we need to</span>
+        <span class="c1"># map the three dimensional indices of the original array to</span>
+        <span class="c1"># the one dimensional indices used by the raveled version of</span>
+        <span class="c1"># that array.</span>
+        <span class="n">raveled_indices</span> <span class="o">=</span> <span class="n">hash_whole</span><span class="p">[</span><span class="n">Y_</span><span class="p">]</span> <span class="o">*</span> <span class="n">a</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="n">X_</span><span class="p">]</span>
+        <span class="n">raveled_indices</span> <span class="o">+=</span> <span class="n">hash_whole</span><span class="p">[</span><span class="n">X_</span><span class="p">]</span>
+
+        <span class="c1"># Get the value of the pixel in the original array.</span>
+        <span class="n">hash_table</span><span class="p">[</span><span class="nb">hash</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">take</span><span class="p">(</span><span class="n">raveled</span><span class="p">,</span> <span class="n">raveled_indices</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">))</span>
+
+    <span class="c1"># Once the hash table has been built, clean up the working arrays</span>
+    <span class="c1"># in case we are running short on memory.</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">del</span> <span class="n">hash_whole</span><span class="p">,</span> <span class="n">raveled_indices</span><span class="p">,</span> <span class="n">whole</span>
+
+    <span class="c1"># Everything before this was to set up the interpolation. Now that</span>
+    <span class="c1"># it&#39;s set up, we perform the interpolation. Since we are doing</span>
+    <span class="c1"># this across three dimensions, it&#39;s a three stage process. Stage</span>
+    <span class="c1"># one is along the X_ axis.</span>
+    <span class="n">x1</span> <span class="o">=</span> <span class="n">lp</span><span class="o">.</span><span class="n">lerp</span><span class="p">(</span><span class="n">hash_table</span><span class="p">[</span><span class="s1">&#39;00&#39;</span><span class="p">],</span> <span class="n">hash_table</span><span class="p">[</span><span class="s1">&#39;01&#39;</span><span class="p">],</span> <span class="n">parts</span><span class="p">[</span><span class="n">X_</span><span class="p">])</span>
+    <span class="n">x2</span> <span class="o">=</span> <span class="n">lp</span><span class="o">.</span><span class="n">lerp</span><span class="p">(</span><span class="n">hash_table</span><span class="p">[</span><span class="s1">&#39;10&#39;</span><span class="p">],</span> <span class="n">hash_table</span><span class="p">[</span><span class="s1">&#39;11&#39;</span><span class="p">],</span> <span class="n">parts</span><span class="p">[</span><span class="n">X_</span><span class="p">])</span>
+
+    <span class="c1"># And stage three is along the Z axis. Since this is the last step</span>
+    <span class="c1"># we can just return the result.</span>
+    <span class="k">return</span> <span class="n">lp</span><span class="o">.</span><span class="n">lerp</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span> <span class="n">x2</span><span class="p">,</span> <span class="n">parts</span><span class="p">[</span><span class="n">Y_</span><span class="p">])</span>
+
+
 <div class="viewcode-block" id="build_resizing_matrices">
 <a class="viewcode-back" href="../../../util.html#pjimg.util.build_resizing_matrices">[docs]</a>
 <span class="k">def</span> <span class="nf">build_resizing_matrices</span><span class="p">(</span>
@@ -306,7 +411,7 @@
 <span class="sd">    </span>
 <span class="sd">    :param a: The array to pad.</span>
 <span class="sd">    :param size: The shape of the size.</span>
-<span class="sd">    ;param fill: The color of the padded area.</span>
+<span class="sd">    :param fill: The color of the padded area.</span>
 <span class="sd">    :return: The padded :class:`numpy.ndarray`.</span>
 <span class="sd">    :rtype: numpy.ndarray</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -356,6 +461,153 @@
     <span class="c1"># Perform the interpolation using the mapped space and return.</span>
     <span class="k">return</span> <span class="n">interpolator</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span></div>
 
+
+
+<span class="k">def</span> <span class="nf">trilinear_interpolation</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">,</span> <span class="n">factor</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ImgAry</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Resize an three dimensional array using trilinear</span>
+<span class="sd">    interpolation.</span>
+
+<span class="sd">    :param a: The array to resize. The array is expected to have at</span>
+<span class="sd">        least three dimensions.</span>
+<span class="sd">    :param factor: The amount to resize the array. Given how the</span>
+<span class="sd">        interpolation works, you probably don&#39;t get great results</span>
+<span class="sd">        with factor less than or equal to .5. Consider multiple</span>
+<span class="sd">        passes of interpolation with larger factors in those cases.</span>
+<span class="sd">    :return: A :class:ndarray object.</span>
+<span class="sd">    :rtype: numpy.ndarray</span>
+
+<span class="sd">    Usage::</span>
+
+<span class="sd">        &gt;&gt;&gt; import numpy as np</span>
+<span class="sd">        &gt;&gt;&gt;</span>
+<span class="sd">        &gt;&gt;&gt; a = np.array([</span>
+<span class="sd">        ...     [</span>
+<span class="sd">        ...             [0, 1],</span>
+<span class="sd">        ...             [1, 0],</span>
+<span class="sd">        ...     ],</span>
+<span class="sd">        ...     [</span>
+<span class="sd">        ...             [1, 0],</span>
+<span class="sd">        ...             [0, 1],</span>
+<span class="sd">        ...     ],</span>
+<span class="sd">        ... ])</span>
+<span class="sd">        &gt;&gt;&gt; trilinear_interpolation(a, 2)</span>
+<span class="sd">        array([[[0. , 0.5, 1. , 1. ],</span>
+<span class="sd">                [0.5, 0.5, 0.5, 0.5],</span>
+<span class="sd">                [1. , 0.5, 0. , 0. ],</span>
+<span class="sd">                [1. , 0.5, 0. , 0. ]],</span>
+<span class="sd">        &lt;BLANKLINE&gt;</span>
+<span class="sd">               [[0.5, 0.5, 0.5, 0.5],</span>
+<span class="sd">                [0.5, 0.5, 0.5, 0.5],</span>
+<span class="sd">                [0.5, 0.5, 0.5, 0.5],</span>
+<span class="sd">                [0.5, 0.5, 0.5, 0.5]],</span>
+<span class="sd">        &lt;BLANKLINE&gt;</span>
+<span class="sd">               [[1. , 0.5, 0. , 0. ],</span>
+<span class="sd">                [0.5, 0.5, 0.5, 0.5],</span>
+<span class="sd">                [0. , 0.5, 1. , 1. ],</span>
+<span class="sd">                [0. , 0.5, 1. , 1. ]],</span>
+<span class="sd">        &lt;BLANKLINE&gt;</span>
+<span class="sd">               [[1. , 0.5, 0. , 0. ],</span>
+<span class="sd">                [0.5, 0.5, 0.5, 0.5],</span>
+<span class="sd">                [0. , 0.5, 1. , 1. ],</span>
+<span class="sd">                [0. , 0.5, 1. , 1. ]]])</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Return the array unchanged if the array won&#39;t be magnified.</span>
+    <span class="k">if</span> <span class="n">factor</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">a</span>
+
+    <span class="c1"># Perform a defensive copy of the original array to avoid</span>
+    <span class="c1"># unexpected side effects.</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+    <span class="c1"># Since we are magnifying the given array, the new array&#39;s shape</span>
+    <span class="c1"># will increase by the magnification factor.</span>
+    <span class="n">mag_size</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">s</span> <span class="o">*</span> <span class="n">factor</span><span class="p">)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">a</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+
+    <span class="c1"># Map out the relationship between the old space and the</span>
+    <span class="c1"># new space.</span>
+    <span class="n">indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">indices</span><span class="p">(</span><span class="n">mag_size</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">factor</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">whole</span> <span class="o">=</span> <span class="p">(</span><span class="n">indices</span> <span class="o">//</span> <span class="n">factor</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+        <span class="n">parts</span> <span class="o">=</span> <span class="p">(</span><span class="n">indices</span> <span class="o">/</span> <span class="n">factor</span> <span class="o">-</span> <span class="n">whole</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">new_ends</span> <span class="o">=</span> <span class="p">[</span><span class="n">s</span> <span class="o">-</span> <span class="mi">1</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">mag_size</span><span class="p">]</span>
+        <span class="n">old_ends</span> <span class="o">=</span> <span class="p">[</span><span class="n">s</span> <span class="o">-</span> <span class="mi">1</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">a</span><span class="o">.</span><span class="n">shape</span><span class="p">]</span>
+        <span class="n">true_factors</span> <span class="o">=</span> <span class="p">[</span><span class="n">n</span> <span class="o">/</span> <span class="n">o</span> <span class="k">for</span> <span class="n">n</span><span class="p">,</span> <span class="n">o</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">new_ends</span><span class="p">,</span> <span class="n">old_ends</span><span class="p">)]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">true_factors</span><span class="p">)):</span>
+            <span class="k">if</span> <span class="n">true_factors</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">true_factors</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mf">.5</span>
+        <span class="n">whole</span> <span class="o">=</span> <span class="n">indices</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">parts</span> <span class="o">=</span> <span class="n">indices</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">Z_</span><span class="p">,</span> <span class="n">Y_</span><span class="p">,</span> <span class="n">X_</span><span class="p">:</span>
+            <span class="n">whole</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">indices</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">//</span> <span class="n">true_factors</span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+            <span class="n">parts</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">indices</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">/</span> <span class="n">true_factors</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">whole</span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
+    <span class="k">del</span> <span class="n">indices</span>
+
+    <span class="c1"># Trilinear interpolation determines the value of a new pixel by</span>
+    <span class="c1"># comparing the values of the eight old pixels that surround it.</span>
+    <span class="c1"># The hashes are the keys to the dictionary that contains those</span>
+    <span class="c1"># old pixel values. The key indicates the position of the pixel</span>
+    <span class="c1"># on each axis, with one meaning the position is ahead of the</span>
+    <span class="c1"># new pixel, and zero meaning the position is behind it.</span>
+    <span class="n">hashes</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">n</span><span class="si">:</span><span class="s1">&gt;03b</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span> <span class="o">**</span> <span class="mi">3</span><span class="p">)]</span>
+    <span class="n">hash_table</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="c1"># The original array needs to be made one dimensional for the</span>
+    <span class="c1"># numpy.take operation that will occur as we build the tables.</span>
+    <span class="n">raveled</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ravel</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+
+    <span class="c1"># Build the table that contains the old pixel values to</span>
+    <span class="c1"># interpolate.</span>
+    <span class="k">for</span> <span class="nb">hash</span> <span class="ow">in</span> <span class="n">hashes</span><span class="p">:</span>
+        <span class="n">hash_whole</span> <span class="o">=</span> <span class="n">whole</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+        <span class="c1"># Use the hash key to adjust the which old pixel we are</span>
+        <span class="c1"># looking at.</span>
+        <span class="k">for</span> <span class="n">axis</span> <span class="ow">in</span> <span class="n">Z_</span><span class="p">,</span> <span class="n">Y_</span><span class="p">,</span> <span class="n">X_</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">hash</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;1&#39;</span><span class="p">:</span>
+                <span class="n">hash_whole</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+
+                <span class="c1"># Handle the pixels that were pushed off the far</span>
+                <span class="c1"># edge of the original array by giving them the</span>
+                <span class="c1"># value of the last pixel along that axis in the</span>
+                <span class="c1"># original array.</span>
+                <span class="n">m</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">hash_whole</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">bool</span><span class="p">)</span>
+                <span class="n">m</span><span class="p">[</span><span class="n">hash_whole</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">a</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="n">axis</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="n">hash_whole</span><span class="p">[</span><span class="n">axis</span><span class="p">][</span><span class="n">m</span><span class="p">]</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span>
+
+        <span class="c1"># Since numpy.take() only works in one dimension, we need to</span>
+        <span class="c1"># map the three dimensional indices of the original array to</span>
+        <span class="c1"># the one dimensional indices used by the raveled version of</span>
+        <span class="c1"># that array.</span>
+        <span class="n">raveled_indices</span> <span class="o">=</span> <span class="n">hash_whole</span><span class="p">[</span><span class="n">Z_</span><span class="p">]</span> <span class="o">*</span> <span class="n">a</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="n">Y_</span><span class="p">]</span> <span class="o">*</span> <span class="n">a</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="n">X_</span><span class="p">]</span>
+        <span class="n">raveled_indices</span> <span class="o">+=</span> <span class="n">hash_whole</span><span class="p">[</span><span class="n">Y_</span><span class="p">]</span> <span class="o">*</span> <span class="n">a</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="n">X_</span><span class="p">]</span>
+        <span class="n">raveled_indices</span> <span class="o">+=</span> <span class="n">hash_whole</span><span class="p">[</span><span class="n">X_</span><span class="p">]</span>
+
+        <span class="c1"># Get the value of the pixel in the original array.</span>
+        <span class="n">hash_table</span><span class="p">[</span><span class="nb">hash</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">take</span><span class="p">(</span><span class="n">raveled</span><span class="p">,</span> <span class="n">raveled_indices</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">))</span>
+
+    <span class="c1"># Once the hash table has been built, clean up the working arrays</span>
+    <span class="c1"># in case we are running short on memory.</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">del</span> <span class="n">hash_whole</span><span class="p">,</span> <span class="n">raveled_indices</span><span class="p">,</span> <span class="n">whole</span>
+
+    <span class="c1"># Everything before this was to set up the interpolation. Now that</span>
+    <span class="c1"># it&#39;s set up, we perform the interpolation. Since we are doing</span>
+    <span class="c1"># this across three dimensions, it&#39;s a three stage process. Stage</span>
+    <span class="c1"># one is along the X_ axis.</span>
+    <span class="n">x1</span> <span class="o">=</span> <span class="n">lp</span><span class="o">.</span><span class="n">lerp</span><span class="p">(</span><span class="n">hash_table</span><span class="p">[</span><span class="s1">&#39;000&#39;</span><span class="p">],</span> <span class="n">hash_table</span><span class="p">[</span><span class="s1">&#39;001&#39;</span><span class="p">],</span> <span class="n">parts</span><span class="p">[</span><span class="n">X_</span><span class="p">])</span>
+    <span class="n">x2</span> <span class="o">=</span> <span class="n">lp</span><span class="o">.</span><span class="n">lerp</span><span class="p">(</span><span class="n">hash_table</span><span class="p">[</span><span class="s1">&#39;010&#39;</span><span class="p">],</span> <span class="n">hash_table</span><span class="p">[</span><span class="s1">&#39;011&#39;</span><span class="p">],</span> <span class="n">parts</span><span class="p">[</span><span class="n">X_</span><span class="p">])</span>
+    <span class="n">x3</span> <span class="o">=</span> <span class="n">lp</span><span class="o">.</span><span class="n">lerp</span><span class="p">(</span><span class="n">hash_table</span><span class="p">[</span><span class="s1">&#39;100&#39;</span><span class="p">],</span> <span class="n">hash_table</span><span class="p">[</span><span class="s1">&#39;101&#39;</span><span class="p">],</span> <span class="n">parts</span><span class="p">[</span><span class="n">X_</span><span class="p">])</span>
+    <span class="n">x4</span> <span class="o">=</span> <span class="n">lp</span><span class="o">.</span><span class="n">lerp</span><span class="p">(</span><span class="n">hash_table</span><span class="p">[</span><span class="s1">&#39;110&#39;</span><span class="p">],</span> <span class="n">hash_table</span><span class="p">[</span><span class="s1">&#39;111&#39;</span><span class="p">],</span> <span class="n">parts</span><span class="p">[</span><span class="n">X_</span><span class="p">])</span>
+
+    <span class="c1"># Stage two is along the Y_ axis.</span>
+    <span class="n">y1</span> <span class="o">=</span> <span class="n">lp</span><span class="o">.</span><span class="n">lerp</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span> <span class="n">x2</span><span class="p">,</span> <span class="n">parts</span><span class="p">[</span><span class="n">Y_</span><span class="p">])</span>
+    <span class="n">y2</span> <span class="o">=</span> <span class="n">lp</span><span class="o">.</span><span class="n">lerp</span><span class="p">(</span><span class="n">x3</span><span class="p">,</span> <span class="n">x4</span><span class="p">,</span> <span class="n">parts</span><span class="p">[</span><span class="n">Y_</span><span class="p">])</span>
+    <span class="k">del</span> <span class="n">x1</span><span class="p">,</span> <span class="n">x2</span><span class="p">,</span> <span class="n">x3</span><span class="p">,</span> <span class="n">x4</span>
+
+    <span class="c1"># And stage three is along the Z_ axis. Since this is the last step</span>
+    <span class="c1"># we can just return the result.</span>
+    <span class="k">return</span> <span class="n">lp</span><span class="o">.</span><span class="n">lerp</span><span class="p">(</span><span class="n">y1</span><span class="p">,</span> <span class="n">y2</span><span class="p">,</span> <span class="n">parts</span><span class="p">[</span><span class="n">Z_</span><span class="p">])</span>
 
 
 <span class="c1"># Private functions.</span>

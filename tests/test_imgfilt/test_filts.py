@@ -510,7 +510,7 @@ class TestFilterMotionBlur:
         :func:`motion_blur` should perform a motion blur
         on the image data.
         """
-        result = f.filter_motion_blur(a, amount=2, axis=f.X)
+        result = f.filter_motion_blur(a, amount=2, axis=f.X_)
         assert (np.around(result, 4) == np.array([
             [0.1250, 0.1250, 0.3750, 0.6250, 0.8750],
             [0.3750, 0.3750, 0.6250, 0.8750, 0.8750],
@@ -525,7 +525,7 @@ class TestFilterMotionBlur:
         on the image data. If the direction is the Y axis,
         the blur should be vertical.
         """
-        result = f.filter_motion_blur(a, amount=2, axis=f.Y)
+        result = f.filter_motion_blur(a, amount=2, axis=f.Y_)
         assert (np.around(result, 4) == np.array([
             [0.1250, 0.3750, 0.6250, 0.8750, 0.8750],
             [0.1250, 0.3750, 0.6250, 0.8750, 0.8750],
@@ -539,7 +539,7 @@ class TestFilterMotionBlur:
         :func:`motion_blur` should perform a motion blur
         on the video data.
         """
-        result = f.filter_motion_blur(video_2_5_5, amount=2, axis=f.X)
+        result = f.filter_motion_blur(video_2_5_5, amount=2, axis=f.X_)
         assert (np.around(result, 4) == np.array([
             [
                 [0.1250, 0.1250, 0.3750, 0.6250, 0.8750],

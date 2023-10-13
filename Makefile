@@ -12,9 +12,9 @@ buildt:
 clean:
 	rm -rf docs/build/html
 	rm -rf dist
-	rm -rf src/{PROJECT_NAME}.egg-info
-	rm -rf src/{PROJECT_NAME}/__pycache__
-	rm -rf src/{PROJECT_NAME}/*.pyc
+	rm -rf src/pjimg.egg-info
+	rm -rf src/pjimg/__pycache__
+	rm -rf src/pjimg/*.pyc
 	rm -rf examples/__pycache__
 	rm -rf tests/__pycache__
 	rm -rf thurible/__pycache__
@@ -25,6 +25,7 @@ clean:
 .PHONY: docs
 docs:
 	python examples/imgblend/build_doc_images.py
+	python examples/imgfilt/build_doc_images.py
 	python examples/imggen/build_doc_images.py
 	sphinx-build -b html docs/source/ docs/build/html
 

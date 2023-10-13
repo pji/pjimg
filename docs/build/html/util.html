@@ -6,7 +6,7 @@
 <link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="pjimg Requirements" href="requirements.html" /><link rel="prev" title="imgio" href="imgio.html" />
 
     <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
-        <title>__init__ - pjimg 0.0.1 documentation</title>
+        <title>util - pjimg 0.0.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=135e06be" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=36a5483c" />
@@ -160,7 +160,7 @@
 <li class="toctree-l1"><a class="reference internal" href="imgblend.html">imgblend</a></li>
 <li class="toctree-l1"><a class="reference internal" href="imggen.html">imggen</a></li>
 <li class="toctree-l1"><a class="reference internal" href="imgio.html">imgio</a></li>
-<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">__init__</a></li>
+<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">util</a></li>
 <li class="toctree-l1"><a class="reference internal" href="requirements.html">pjimg Requirements</a></li>
 </ul>
 
@@ -196,8 +196,8 @@
           </label>
         </div>
         <article role="main">
-          <section id="init">
-<span id="module-pjimg.util"></span><h1>__init__<a class="headerlink" href="#init" title="Link to this heading">#</a></h1>
+          <section id="util">
+<span id="module-pjimg.util"></span><h1>util<a class="headerlink" href="#util" title="Link to this heading">#</a></h1>
 <p>Common utilities for the <code class="xref py py-mod docutils literal notranslate"><span class="pre">pjimg</span></code> packages.</p>
 <section id="convert">
 <span id="module-pjimg.util.convert"></span><h2>convert<a class="headerlink" href="#convert" title="Link to this heading">#</a></h2>
@@ -459,12 +459,16 @@ values when resizing an array.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>a</strong> – The array to pad.</p></li>
 <li><p><strong>size</strong> – The shape of the size.</p></li>
+<li><p><strong>fill</strong> – The color of the padded area.</p></li>
 </ul>
 </dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The padded <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a>.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)">numpy.ndarray</a></p>
+</dd>
 </dl>
-<p>;param fill: The color of the padded area.
-:return: The padded <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a>.
-:rtype: numpy.ndarray</p>
 </dd></dl>
 
 <dl class="py function">
@@ -571,7 +575,7 @@ least two dimensions.</p></li>
         <div class="toc-tree-container">
           <div class="toc-tree">
             <ul>
-<li><a class="reference internal" href="#">__init__</a><ul>
+<li><a class="reference internal" href="#">util</a><ul>
 <li><a class="reference internal" href="#convert">convert</a><ul>
 <li><a class="reference internal" href="#pjimg.util.float_to_uint8"><code class="docutils literal notranslate"><span class="pre">float_to_uint8()</span></code></a></li>
 <li><a class="reference internal" href="#pjimg.util.grayscale_to_rgb"><code class="docutils literal notranslate"><span class="pre">grayscale_to_rgb()</span></code></a></li>
