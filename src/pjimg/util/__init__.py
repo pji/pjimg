@@ -1,6 +1,6 @@
 """
-__init__
-~~~~~~~~
+util
+~~~~
 
 Common utilities for the :mod:`pjimg` packages.
 

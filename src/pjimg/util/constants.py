@@ -5,10 +5,11 @@ constants
 Common constants used in :mod:`pjimg`.
 """
 # Exportable names.
-__all__ = ['RESOLUTIONS', 'X', 'Y', 'Z',]
+__all__ = ['RESOLUTIONS', 'X', 'Y', 'Z', 'X_', 'Y_', 'Z_']
 
 # Dimensional axes.
 X, Y, Z = 2, 1, 0
+X_, Y_, Z_ = -1, -2, -3
 
 # Common video pixel dimensions.
 RESOLUTIONS: dict[str, tuple[int, int]] = {
