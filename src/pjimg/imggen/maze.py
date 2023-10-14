@@ -1,6 +1,6 @@
 """
-maze
-====
+Mazes
+-----
 
 A pseudorandomly generated maze.
 

@@ -1,5 +1,5 @@
 """
-decorators
+Decorators
 ==========
 
 Common decorators used by :mod:`pjimg.imgblend`.

@@ -1,32 +1,52 @@
 """
-Filters
-=======
+Basic Usage: Filters
+====================
+The filter operation functions (filters) are used to make changes to
+values in image data where the resulting value of each pixel can be
+influenced by the values of other pixels in the data.
 
-The following is true of all filter functions:
+Usage::
+
+    >>> import numpy as np
+    >>> a = np.array([[[0., .25, .5, .75, 1.], [0., .25, .5, .75, 1.]]])
+    >>> filter_box_blur(a, size=2)
+    array([[[0.125, 0.125, 0.375, 0.625, 0.875],
+            [0.125, 0.125, 0.375, 0.625, 0.875]]])
+
+The parameters of a filter depends on what the filter is doing. However,
+the following is true for all of them:
 
 *   They take a :class:`numpy.ndarray` of image data as the first parameter.
-*   They may require other parameters.
 *   They return a :class:`numpy.ndarray` of image data.
 
-All filter functions are registered in the :class:`dict` `imgeaser.filters`
-for convenience, but they can also be called directly.
 
-.. autofunction:: imgfilt.filter_box_blur
-.. autofunction:: imgfilt.filter_colorize
-.. autofunction:: imgfilt.filter_contrast
-.. autofunction:: imgfilt.filter_flip
-.. autofunction:: imgfilt.filter_gaussian_blur
-.. autofunction:: imgfilt.filter_glow
-.. autofunction:: imgfilt.filter_grow
-.. autofunction:: imgfilt.filter_inverse
-.. autofunction:: imgfilt.filter_linear_to_polar
-.. autofunction:: imgfilt.filter_motion_blur
-.. autofunction:: imgfilt.filter_pinch
-.. autofunction:: imgfilt.filter_polar_to_linear
-.. autofunction:: imgfilt.filter_ripple
-.. autofunction:: imgfilt.filter_rotate_90
-.. autofunction:: imgfilt.filter_skew
-.. autofunction:: imgfilt.filter_twirl
+Registration
+============
+All filter functions are registered in the :class:`dict`
+`pjimg.imgfilt.filters` for convenience, but they can also
+be called directly.
+
+
+Filter Functions
+================
+The following are the filter functions available in :mod:`pjimg`.
+
+.. autofunction:: pjimg.imgfilt.filter_box_blur
+.. autofunction:: pjimg.imgfilt.filter_colorize
+.. autofunction:: pjimg.imgfilt.filter_contrast
+.. autofunction:: pjimg.imgfilt.filter_flip
+.. autofunction:: pjimg.imgfilt.filter_gaussian_blur
+.. autofunction:: pjimg.imgfilt.filter_glow
+.. autofunction:: pjimg.imgfilt.filter_grow
+.. autofunction:: pjimg.imgfilt.filter_inverse
+.. autofunction:: pjimg.imgfilt.filter_linear_to_polar
+.. autofunction:: pjimg.imgfilt.filter_motion_blur
+.. autofunction:: pjimg.imgfilt.filter_pinch
+.. autofunction:: pjimg.imgfilt.filter_polar_to_linear
+.. autofunction:: pjimg.imgfilt.filter_ripple
+.. autofunction:: pjimg.imgfilt.filter_rotate_90
+.. autofunction:: pjimg.imgfilt.filter_skew
+.. autofunction:: pjimg.imgfilt.filter_twirl
 
 """
 from typing import Sequence

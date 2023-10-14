@@ -1,6 +1,6 @@
 """
-patterns
-========
+Patterns
+--------
 
 Sources that generate shapes, text, and other fully deterministic
 image and video data.

@@ -3,7 +3,7 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="imgio" href="imgio.html" /><link rel="prev" title="imgblend" href="imgblend.html" />
+<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="imgio" href="imgio.html" /><link rel="prev" title="imgfilt" href="imgfilt.html" />
 
     <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
         <title>imggen - pjimg 0.0.1 documentation</title>
@@ -156,8 +156,10 @@
 <div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
   <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="index.html">pjimg documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="index.html">pjimg</a></li>
 <li class="toctree-l1"><a class="reference internal" href="imgblend.html">imgblend</a></li>
+<li class="toctree-l1"><a class="reference internal" href="imgease.html">imgease</a></li>
+<li class="toctree-l1"><a class="reference internal" href="imgfilt.html">imgfilt</a></li>
 <li class="toctree-l1 current current-page"><a class="current reference internal" href="#">imggen</a></li>
 <li class="toctree-l1"><a class="reference internal" href="imgio.html">imgio</a></li>
 <li class="toctree-l1"><a class="reference internal" href="util.html">util</a></li>
@@ -199,8 +201,23 @@
           <section id="imggen">
 <span id="module-pjimg.imggen"></span><h1>imggen<a class="headerlink" href="#imggen" title="Link to this heading">#</a></h1>
 <p>Image and video data generation.</p>
-<section id="sources">
-<h2>sources<a class="headerlink" href="#sources" title="Link to this heading">#</a></h2>
+<section id="basic-usage-sources">
+<h2>Basic Usage: Sources<a class="headerlink" href="#basic-usage-sources" title="Link to this heading">#</a></h2>
+<p>The image generation source classes (sources) are used to create image
+data. Using a source is a two-step process: initialize the source then
+generate the data with <code class="xref py py-meth docutils literal notranslate"><span class="pre">pjimg.imggen.Source.fill()</span></code>.</p>
+<p>Usage:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">box</span> <span class="o">=</span> <span class="n">Box</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="mf">1.0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">box</span><span class="o">.</span><span class="n">fill</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="go">array([[[0., 0., 0., 0.],</span>
+<span class="go">        [0., 1., 1., 0.],</span>
+<span class="go">        [0., 1., 1., 0.],</span>
+<span class="go">        [0., 0., 0., 0.]]])</span>
+</pre></div>
+</div>
+</section>
+<section id="source-classes">
+<h2>Source Classes<a class="headerlink" href="#source-classes" title="Link to this heading">#</a></h2>
 <p>An image data source is a class with a <code class="xref py py-meth docutils literal notranslate"><span class="pre">Source.fill()</span></code> method that
 generates image data.</p>
 <dl class="py function">
@@ -210,7 +227,7 @@ generates image data.</p>
 </dd></dl>
 
 <section id="patterns">
-<span id="module-pjimg.imggen.patterns"></span><h3>patterns<a class="headerlink" href="#patterns" title="Link to this heading">#</a></h3>
+<span id="module-pjimg.imggen.patterns"></span><h3>Patterns<a class="headerlink" href="#patterns" title="Link to this heading">#</a></h3>
 <p>Sources that generate shapes, text, and other fully deterministic
 image and video data.</p>
 <dl class="py class">
@@ -559,8 +576,8 @@ each circle remains constant (linear) or increases
 </dd></dl>
 
 </section>
-<section id="noise">
-<span id="module-pjimg.imggen.noise"></span><h3>noise<a class="headerlink" href="#noise" title="Link to this heading">#</a></h3>
+<section id="noises">
+<span id="module-pjimg.imggen.noise"></span><h3>Noises<a class="headerlink" href="#noises" title="Link to this heading">#</a></h3>
 <p>Sources that generate psuedorandom noise.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="pjimg.imggen.Noise">
@@ -634,8 +651,8 @@ generated noise.</p></li>
 </dd></dl>
 
 </section>
-<section id="unitnoise">
-<span id="module-pjimg.imggen.unitnoise"></span><h3>unitnoise<a class="headerlink" href="#unitnoise" title="Link to this heading">#</a></h3>
+<section id="unit-noise">
+<span id="module-pjimg.imggen.unitnoise"></span><h3>Unit Noise<a class="headerlink" href="#unit-noise" title="Link to this heading">#</a></h3>
 <p>Unit noise splits the image space into a grid of units, then randomly
 distributes values at the positions on the grid. Image data is then
 generated using an easing function that provides values for the pixels
@@ -927,8 +944,8 @@ with the real octave algorithm.</p>
 
 </section>
 </section>
-<section id="perlin">
-<span id="module-pjimg.imggen.perlin"></span><h3>perlin<a class="headerlink" href="#perlin" title="Link to this heading">#</a></h3>
+<section id="perlin-noise">
+<span id="module-pjimg.imggen.perlin"></span><h3>Perlin Noise<a class="headerlink" href="#perlin-noise" title="Link to this heading">#</a></h3>
 <p>Perlin noise is a specific type of unit noise that uses procedures developed
 by Ken Perlin to provide a more naturalistic look to computer generated
 images.</p>
@@ -1013,8 +1030,8 @@ points added on top of other layers of noise.</p></li>
 </dd></dl>
 
 </section>
-<section id="maze">
-<span id="module-pjimg.imggen.maze"></span><h3>maze<a class="headerlink" href="#maze" title="Link to this heading">#</a></h3>
+<section id="mazes">
+<span id="module-pjimg.imggen.maze"></span><h3>Mazes<a class="headerlink" href="#mazes" title="Link to this heading">#</a></h3>
 <p>A pseudorandomly generated maze.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="pjimg.imggen.Maze">
@@ -1211,8 +1228,8 @@ the following options:</p>
 </dd></dl>
 
 </section>
-<section id="worley">
-<span id="module-pjimg.imggen.worley"></span><h3>worley<a class="headerlink" href="#worley" title="Link to this heading">#</a></h3>
+<section id="worley-noise">
+<span id="module-pjimg.imggen.worley"></span><h3>Worley Noise<a class="headerlink" href="#worley-noise" title="Link to this heading">#</a></h3>
 <p>Worley noise scatters a series of points across the image space. Image
 data is generated based on the distance from a pixel to the nearest point.</p>
 <dl class="py class">
@@ -1335,14 +1352,14 @@ integers for seeding.</p></li>
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
-          <a class="prev-page" href="imgblend.html">
+          <a class="prev-page" href="imgfilt.html">
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
                 </div>
                 
-                <div class="title">imgblend</div>
+                <div class="title">imgfilt</div>
                 
               </div>
             </a>
@@ -1377,9 +1394,10 @@ integers for seeding.</p></li>
           <div class="toc-tree">
             <ul>
 <li><a class="reference internal" href="#">imggen</a><ul>
-<li><a class="reference internal" href="#sources">sources</a><ul>
+<li><a class="reference internal" href="#basic-usage-sources">Basic Usage: Sources</a></li>
+<li><a class="reference internal" href="#source-classes">Source Classes</a><ul>
 <li><a class="reference internal" href="#pjimg.imggen.Source"><code class="docutils literal notranslate"><span class="pre">Source()</span></code></a></li>
-<li><a class="reference internal" href="#patterns">patterns</a><ul>
+<li><a class="reference internal" href="#patterns">Patterns</a><ul>
 <li><a class="reference internal" href="#pjimg.imggen.Box"><code class="docutils literal notranslate"><span class="pre">Box</span></code></a></li>
 <li><a class="reference internal" href="#pjimg.imggen.Gradient"><code class="docutils literal notranslate"><span class="pre">Gradient</span></code></a></li>
 <li><a class="reference internal" href="#pjimg.imggen.Hexes"><code class="docutils literal notranslate"><span class="pre">Hexes</span></code></a></li>
@@ -1393,12 +1411,12 @@ integers for seeding.</p></li>
 <li><a class="reference internal" href="#pjimg.imggen.Waves"><code class="docutils literal notranslate"><span class="pre">Waves</span></code></a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#noise">noise</a><ul>
+<li><a class="reference internal" href="#noises">Noises</a><ul>
 <li><a class="reference internal" href="#pjimg.imggen.Noise"><code class="docutils literal notranslate"><span class="pre">Noise</span></code></a></li>
 <li><a class="reference internal" href="#pjimg.imggen.Embers"><code class="docutils literal notranslate"><span class="pre">Embers</span></code></a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#unitnoise">unitnoise</a><ul>
+<li><a class="reference internal" href="#unit-noise">Unit Noise</a><ul>
 <li><a class="reference internal" href="#pjimg.imggen.UnitNoise"><code class="docutils literal notranslate"><span class="pre">UnitNoise</span></code></a></li>
 <li><a class="reference internal" href="#curtains">Curtains</a><ul>
 <li><a class="reference internal" href="#pjimg.imggen.CosineCurtains"><code class="docutils literal notranslate"><span class="pre">CosineCurtains</span></code></a></li>
@@ -1414,18 +1432,18 @@ integers for seeding.</p></li>
 </li>
 </ul>
 </li>
-<li><a class="reference internal" href="#perlin">perlin</a><ul>
+<li><a class="reference internal" href="#perlin-noise">Perlin Noise</a><ul>
 <li><a class="reference internal" href="#pjimg.imggen.Perlin"><code class="docutils literal notranslate"><span class="pre">Perlin</span></code></a></li>
 <li><a class="reference internal" href="#pjimg.imggen.OctavePerlin"><code class="docutils literal notranslate"><span class="pre">OctavePerlin</span></code></a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#maze">maze</a><ul>
+<li><a class="reference internal" href="#mazes">Mazes</a><ul>
 <li><a class="reference internal" href="#pjimg.imggen.Maze"><code class="docutils literal notranslate"><span class="pre">Maze</span></code></a></li>
 <li><a class="reference internal" href="#pjimg.imggen.AnimatedMaze"><code class="docutils literal notranslate"><span class="pre">AnimatedMaze</span></code></a></li>
 <li><a class="reference internal" href="#pjimg.imggen.SolvedMaze"><code class="docutils literal notranslate"><span class="pre">SolvedMaze</span></code></a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#worley">worley</a><ul>
+<li><a class="reference internal" href="#worley-noise">Worley Noise</a><ul>
 <li><a class="reference internal" href="#pjimg.imggen.Worley"><code class="docutils literal notranslate"><span class="pre">Worley</span></code></a></li>
 <li><a class="reference internal" href="#pjimg.imggen.OctaveWorley"><code class="docutils literal notranslate"><span class="pre">OctaveWorley</span></code></a></li>
 </ul>

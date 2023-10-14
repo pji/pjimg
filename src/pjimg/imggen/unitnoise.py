@@ -1,6 +1,6 @@
 """
-unitnoise
-=========
+Unit Noise
+----------
 
 Unit noise splits the image space into a grid of units, then randomly
 distributes values at the positions on the grid. Image data is then

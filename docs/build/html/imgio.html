@@ -3,7 +3,7 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="pjimg Requirements" href="requirements.html" /><link rel="prev" title="Welcome to pjimg’s documentation!" href="index.html" />
+<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="util" href="util.html" /><link rel="prev" title="Basic Usage: Sources" href="imggen.html" />
 
     <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
         <title>imgio - pjimg 0.0.1 documentation</title>
@@ -156,8 +156,14 @@
 <div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
   <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="index.html">Welcome to pjimg’s documentation!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="index.html">pjimg documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="imgblend.html">imgblend</a></li>
+<li class="toctree-l1"><a class="reference internal" href="imgease.html">imgease</a></li>
+<li class="toctree-l1"><a class="reference internal" href="imgfilt.html">imgfilt</a></li>
+<li class="toctree-l1"><a class="reference internal" href="imggen.html">Basic Usage: Sources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="imggen.html#sources">Sources</a></li>
 <li class="toctree-l1 current current-page"><a class="current reference internal" href="#">imgio</a></li>
+<li class="toctree-l1"><a class="reference internal" href="util.html">util</a></li>
 <li class="toctree-l1"><a class="reference internal" href="requirements.html">pjimg Requirements</a></li>
 </ul>
 
@@ -196,8 +202,8 @@
           <section id="imgio">
 <span id="module-pjimg.imgio"></span><h1>imgio<a class="headerlink" href="#imgio" title="Link to this heading">#</a></h1>
 <p>File I/O for saving images and video.</p>
-<section id="reader">
-<span id="module-pjimg.imgio.reader"></span><h2>reader<a class="headerlink" href="#reader" title="Link to this heading">#</a></h2>
+<section id="reading-data-from-files">
+<span id="module-pjimg.imgio.reader"></span><h2>Reading Data from Files<a class="headerlink" href="#reading-data-from-files" title="Link to this heading">#</a></h2>
 <p>Read images and video data from files for manipulation.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="pjimg.imgio.read">
@@ -276,8 +282,8 @@ it will add a Z axis to image data from still images.</p>
 </dd></dl>
 
 </section>
-<section id="writer">
-<span id="module-pjimg.imgio.writer"></span><h2>writer<a class="headerlink" href="#writer" title="Link to this heading">#</a></h2>
+<section id="writing-data-to-files">
+<span id="module-pjimg.imgio.writer"></span><h2>Writing Data to Files<a class="headerlink" href="#writing-data-to-files" title="Link to this heading">#</a></h2>
 <p>Write image and video data to files.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="pjimg.imgio.write">
@@ -372,23 +378,23 @@ macOS will use the list suported by QTKit.</p></li>
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="requirements.html">
+          <a class="next-page" href="util.html">
               <div class="page-info">
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title">pjimg Requirements</div>
+                <div class="title">util</div>
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
-          <a class="prev-page" href="index.html">
+          <a class="prev-page" href="imggen.html">
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
                 </div>
                 
-                <div class="title">Home</div>
+                <div class="title">Basic Usage: Sources</div>
                 
               </div>
             </a>
@@ -423,13 +429,13 @@ macOS will use the list suported by QTKit.</p></li>
           <div class="toc-tree">
             <ul>
 <li><a class="reference internal" href="#">imgio</a><ul>
-<li><a class="reference internal" href="#reader">reader</a><ul>
+<li><a class="reference internal" href="#reading-data-from-files">Reading Data from Files</a><ul>
 <li><a class="reference internal" href="#pjimg.imgio.read"><code class="docutils literal notranslate"><span class="pre">read()</span></code></a></li>
 <li><a class="reference internal" href="#pjimg.imgio.read_image"><code class="docutils literal notranslate"><span class="pre">read_image()</span></code></a></li>
 <li><a class="reference internal" href="#pjimg.imgio.read_video"><code class="docutils literal notranslate"><span class="pre">read_video()</span></code></a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#writer">writer</a><ul>
+<li><a class="reference internal" href="#writing-data-to-files">Writing Data to Files</a><ul>
 <li><a class="reference internal" href="#pjimg.imgio.write"><code class="docutils literal notranslate"><span class="pre">write()</span></code></a></li>
 <li><a class="reference internal" href="#pjimg.imgio.write_image"><code class="docutils literal notranslate"><span class="pre">write_image()</span></code></a></li>
 <li><a class="reference internal" href="#pjimg.imgio.write_video"><code class="docutils literal notranslate"><span class="pre">write_video()</span></code></a></li>

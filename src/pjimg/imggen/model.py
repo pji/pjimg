@@ -1,6 +1,6 @@
 """
 model
-=====
+-----
 
 Types used for :mod:`pjimg.imggen`.
 """

@@ -1,8 +1,13 @@
 """
-decorators
+Decorators
 ==========
 
 Decorators for :mod:`pjimg.imgfilt`.
+
+.. autofunction:: pjimg.imgfilt.processes_by_grayscale_frame
+.. autofunction:: pjimg.imgfilt.uses_uint8
+.. autofunction:: pjimg.imgfilt.will_square
+
 """
 from functools import wraps
 

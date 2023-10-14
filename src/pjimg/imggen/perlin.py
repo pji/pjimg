@@ -1,6 +1,6 @@
 """
-perlin
-======
+Perlin Noise
+------------
 
 Perlin noise is a specific type of unit noise that uses procedures developed
 by Ken Perlin to provide a more naturalistic look to computer generated

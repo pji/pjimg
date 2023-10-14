@@ -1,6 +1,6 @@
 """
-worley
-======
+Worley Noise
+------------
 
 Worley noise scatters a series of points across the image space. Image
 data is generated based on the distance from a pixel to the nearest point.

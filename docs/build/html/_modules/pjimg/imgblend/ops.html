@@ -157,9 +157,12 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../index.html">pjimg documentation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../imgblend.html">imgblend</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../imggen.html">imggen</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../imgease.html">imgease</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../imgfilt.html">imgfilt</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../imggen.html">Basic Usage: Sources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../imggen.html#sources">Sources</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../imgio.html">imgio</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../util.html">__init__</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../util.html">util</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../requirements.html">pjimg Requirements</a></li>
 </ul>
 
@@ -196,8 +199,120 @@
         <article role="main">
           <h1>Source code for pjimg.imgblend.ops</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">ops</span>
-<span class="sd">===</span>
+<span class="sd">Basic Usage: Blends</span>
+<span class="sd">===================</span>
+<span class="sd">The blending operation functions (blends) are used to blend two sets</span>
+<span class="sd">of image data together. Using a blending operation (a &quot;blend&quot;)</span>
+<span class="sd">works like any other function.</span>
+
+<span class="sd">Usage::</span>
+
+<span class="sd">    &gt;&gt;&gt; import numpy as np</span>
+<span class="sd">    &gt;&gt;&gt; a = np.array([[[0., .25, .5, .75, 1.], [0., .25, .5, .75, 1.]]])</span>
+<span class="sd">    &gt;&gt;&gt; b = np.array([[[1., 75, .5, .25, 0.], [1., 75, .5, .25, 0.]]])</span>
+<span class="sd">    &gt;&gt;&gt; darker(a, b)</span>
+<span class="sd">    array([[[0.  , 0.25, 0.5 , 0.25, 0.  ],</span>
+<span class="sd">            [0.  , 0.25, 0.5 , 0.25, 0.  ]]])</span>
+
+<span class="sd">While the functions themselves are fairly simple, they are given some</span>
+<span class="sd">extra functionality by decorators. Ultimately the true Blending</span>
+<span class="sd">Operation protocol is:</span>
+
+<span class="sd">    :param a: The image data from the existing image.</span>
+<span class="sd">    :param b: The image data from the blending image.</span>
+<span class="sd">    :param colorize: (Optional). Whether to ensure the two images have</span>
+<span class="sd">        the same number of color channels.</span>
+<span class="sd">    :param fade: (Optional.) (From @can_fade.) How much the blend</span>
+<span class="sd">        should impact the final output. This is a percentage, so the</span>
+<span class="sd">        range of valid values are 0 &lt;= x &lt;= 1.</span>
+<span class="sd">    :param mask: (Optional.) (From @mcan_mask.) An array of data used</span>
+<span class="sd">        to mask the blending operation. This is also a percentage, so a</span>
+<span class="sd">        value of one in the mask means that pixel is fully affected by</span>
+<span class="sd">        the operation. A value of zero means the pixel is not affected</span>
+<span class="sd">        by the operation.</span>
+<span class="sd">    :return: A :class:`numpy.ndarray` object.</span>
+<span class="sd">    :rtype: numpy.ndarray</span>
+
+
+<span class="sd">Colorize, Array Shape, and Color Channels</span>
+<span class="sd">=========================================</span>
+<span class="sd">The blends themselves don&#39;t care about the dimensionality of the given</span>
+<span class="sd">arrays. It just needs the two arrays to have the same shape by the</span>
+<span class="sd">time it does the blend. While this was originally written for image</span>
+<span class="sd">data, to the algorithms themselves, it&#39;s all just floating-point math.</span>
+
+<span class="sd">However, there is one case where a bias towards image data shows up:</span>
+
+<span class="sd">    * You pass two arrays with differing shapes,</span>
+<span class="sd">    * The size of their last dimension is different,</span>
+<span class="sd">    * One of the two arrays has a last dimension with size three.</span>
+
+<span class="sd">To perform the blending algorithm, the two arrays must be the same</span>
+<span class="sd">shape. In most cases, differences between the two shapes will be</span>
+<span class="sd">handled through the :func:`pjimg.imgblend.will_match_size`</span>
+<span class="sd">decorator, which adds zeros to the smaller array to make their sizes</span>
+<span class="sd">match. However, in the case described above, something different</span>
+<span class="sd">happens.</span>
+
+<span class="sd">Since color image data often has a last dimension size of three,</span>
+<span class="sd">representing color channels, the case above is intercepted by the</span>
+<span class="sd">:func:`img.blender.common.will_colorize` decorator. That decorator</span>
+<span class="sd">assumes the array that doesn&#39;t have a last dimension size of three</span>
+<span class="sd">is single channel image data (&quot;grayscale&quot;) and will add a new last</span>
+<span class="sd">dimension of size three. The values will be the original single</span>
+<span class="sd">value repeated three times. To demonstrate::</span>
+
+<span class="sd">    &gt;&gt;&gt; from imgblender.common import will_colorize</span>
+<span class="sd">    &gt;&gt;&gt; a = np.array([</span>
+<span class="sd">    ...     [1.0, 0.5, 0.0, ],</span>
+<span class="sd">    ...     [0.5, 0.0, 0.5, ],</span>
+<span class="sd">    ...     [0.0, 0.5, 1.0, ],</span>
+<span class="sd">    ... ])</span>
+<span class="sd">    &gt;&gt;&gt; b = np.array([</span>
+<span class="sd">    ...     [[0, 0, 0], [0, 0, 0], [0, 0, 0], ],</span>
+<span class="sd">    ...     [[0, 0, 0], [0, 0, 0], [0, 0, 0], ],</span>
+<span class="sd">    ...     [[0, 0, 0], [0, 0, 0], [0, 0, 0], ],</span>
+<span class="sd">    ... ])</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; @will_colorize</span>
+<span class="sd">    ... def spam(a, b):</span>
+<span class="sd">    ...     return a</span>
+<span class="sd">    ...</span>
+<span class="sd">    &gt;&gt;&gt; a_ = spam(a, b)</span>
+<span class="sd">    &gt;&gt;&gt; a_</span>
+<span class="sd">    array([[[1. , 1. , 1. ],</span>
+<span class="sd">            [0.5, 0.5, 0.5],</span>
+<span class="sd">            [0. , 0. , 0. ]],</span>
+<span class="sd">    &lt;BLANKLINE&gt;</span>
+<span class="sd">           [[0.5, 0.5, 0.5],</span>
+<span class="sd">            [0. , 0. , 0. ],</span>
+<span class="sd">            [0.5, 0.5, 0.5]],</span>
+<span class="sd">    &lt;BLANKLINE&gt;</span>
+<span class="sd">           [[0. , 0. , 0. ],</span>
+<span class="sd">            [0.5, 0.5, 0.5],</span>
+<span class="sd">            [1. , 1. , 1. ]]])</span>
+<span class="sd">    &gt;&gt;&gt; a.shape</span>
+<span class="sd">    (3, 3)</span>
+<span class="sd">    &gt;&gt;&gt; a_.shape</span>
+<span class="sd">    (3, 3, 3)</span>
+
+<span class="sd">The value returned by ```spam()``` in the demonstration has an</span>
+<span class="sd">extra dimension of size three added, and the values are three copies</span>
+<span class="sd">of the values in the original ```a````.</span>
+
+<span class="sd">This can be turned off by passing ```False``` to the ```colorize```</span>
+<span class="sd">parameter of the blend.</span>
+
+
+<span class="sd">Registration</span>
+<span class="sd">============</span>
+<span class="sd">All blending operations are registered in :class:`dict`</span>
+<span class="sd">`pjimg.imgease.blends` for convenience, but they can also</span>
+<span class="sd">be called directly.</span>
+
+
+<span class="sd">Blend Operations</span>
+<span class="sd">================</span>
 
 <span class="sd">The examples in the following blends will show the result when a simple</span>
 <span class="sd">horizontal gradient is blended with a simple vertical gradient.</span>

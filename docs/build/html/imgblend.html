@@ -3,7 +3,7 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="imggen" href="imggen.html" /><link rel="prev" title="pjimg documentation" href="index.html" />
+<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="imgease" href="imgease.html" /><link rel="prev" title="pjimg documentation" href="index.html" />
 
     <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
         <title>imgblend - pjimg 0.0.1 documentation</title>
@@ -158,7 +158,10 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="index.html">pjimg documentation</a></li>
 <li class="toctree-l1 current current-page"><a class="current reference internal" href="#">imgblend</a></li>
-<li class="toctree-l1"><a class="reference internal" href="imggen.html">imggen</a></li>
+<li class="toctree-l1"><a class="reference internal" href="imgease.html">imgease</a></li>
+<li class="toctree-l1"><a class="reference internal" href="imgfilt.html">imgfilt</a></li>
+<li class="toctree-l1"><a class="reference internal" href="imggen.html">Basic Usage: Sources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="imggen.html#sources">Sources</a></li>
 <li class="toctree-l1"><a class="reference internal" href="imgio.html">imgio</a></li>
 <li class="toctree-l1"><a class="reference internal" href="util.html">util</a></li>
 <li class="toctree-l1"><a class="reference internal" href="requirements.html">pjimg Requirements</a></li>
@@ -208,11 +211,10 @@ formulas-for-Photoshop-blending-modes.html</p></li>
 </ul>
 </div></blockquote>
 <section id="basic-usage-blends">
-<h2>Basic Usage: Blends<a class="headerlink" href="#basic-usage-blends" title="Link to this heading">#</a></h2>
+<span id="module-pjimg.imgblend.ops"></span><h2>Basic Usage: Blends<a class="headerlink" href="#basic-usage-blends" title="Link to this heading">#</a></h2>
 <p>The blending operation functions (blends) are used to blend two sets
-of image data together. Using a blending operation (an “operation”)
-works like any other function all. The parameters follow the Blending
-Operation protocol.</p>
+of image data together. Using a blending operation (a “blend”)
+works like any other function.</p>
 <p>Usage:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[[</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">.25</span><span class="p">,</span> <span class="mf">.5</span><span class="p">,</span> <span class="mf">.75</span><span class="p">,</span> <span class="mf">1.</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">.25</span><span class="p">,</span> <span class="mf">.5</span><span class="p">,</span> <span class="mf">.75</span><span class="p">,</span> <span class="mf">1.</span><span class="p">]]])</span>
@@ -223,8 +225,8 @@ Operation protocol.</p>
 </pre></div>
 </div>
 <p>While the functions themselves are fairly simple, they are given some
-extra functionality by decorators. Ultimately the true protocol for the
-operations is:</p>
+extra functionality by decorators. Ultimately the true Blending
+Operation protocol is:</p>
 <blockquote>
 <div><dl class="field-list simple">
 <dt class="field-odd">param a<span class="colon">:</span></dt>
@@ -274,7 +276,7 @@ data, to the algorithms themselves, it’s all just floating-point math.</p>
 </div></blockquote>
 <p>To perform the blending algorithm, the two arrays must be the same
 shape. In most cases, differences between the two shapes will be
-handled through the <code class="xref py py-func docutils literal notranslate"><span class="pre">imgblender.common.will_match_size()</span></code>
+handled through the <a class="reference internal" href="#pjimg.imgblend.will_match_size" title="pjimg.imgblend.will_match_size"><code class="xref py py-func docutils literal notranslate"><span class="pre">pjimg.imgblend.will_match_size()</span></code></a>
 decorator, which adds zeros to the smaller array to make their sizes
 match. However, in the case described above, something different
 happens.</p>
@@ -325,8 +327,15 @@ extra dimension of size three added, and the values are three copies
 of the values in the original <code class="docutils literal notranslate"><span class="pre">`a``</span></code>.</p>
 <p>This can be turned off by passing <code class="docutils literal notranslate"><span class="pre">`False`</span></code> to the <code class="docutils literal notranslate"><span class="pre">`colorize`</span></code>
 parameter of the blend.</p>
-<section id="ops">
-<span id="module-pjimg.imgblend.ops"></span><h3>ops<a class="headerlink" href="#ops" title="Link to this heading">#</a></h3>
+</section>
+<section id="registration">
+<h2>Registration<a class="headerlink" href="#registration" title="Link to this heading">#</a></h2>
+<p>All blending operations are registered in <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a>
+<cite>pjimg.imgease.blends</cite> for convenience, but they can also
+be called directly.</p>
+</section>
+<section id="blend-operations">
+<h2>Blend Operations<a class="headerlink" href="#blend-operations" title="Link to this heading">#</a></h2>
 <p>The examples in the following blends will show the result when a simple
 horizontal gradient is blended with a simple vertical gradient.</p>
 <blockquote>
@@ -344,7 +353,7 @@ horizontal gradient is blended with a simple vertical gradient.</p>
 </figure>
 </div></blockquote>
 <section id="replacement-blends">
-<h4>Replacement Blends<a class="headerlink" href="#replacement-blends" title="Link to this heading">#</a></h4>
+<h3>Replacement Blends<a class="headerlink" href="#replacement-blends" title="Link to this heading">#</a></h3>
 <dl class="py function">
 <dt class="sig sig-object py" id="pjimg.imgblend.replace">
 <span class="sig-prename descclassname"><span class="pre">pjimg.imgblend.</span></span><span class="sig-name descname"><span class="pre">replace</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><span class="pre">ndarray</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><span class="pre">Any</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v1.26)"><span class="pre">dtype</span></a><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><span class="pre">ndarray</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><span class="pre">Any</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v1.26)"><span class="pre">dtype</span></a><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><span class="pre">ndarray</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><span class="pre">Any</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v1.26)"><span class="pre">dtype</span></a><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/pjimg/imgblend/ops.html#replace"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pjimg.imgblend.replace" title="Link to this definition">#</a></dt>
@@ -389,7 +398,7 @@ blended arrays.</p>
 
 </section>
 <section id="darker-burn-blends">
-<h4>Darker/Burn Blends<a class="headerlink" href="#darker-burn-blends" title="Link to this heading">#</a></h4>
+<h3>Darker/Burn Blends<a class="headerlink" href="#darker-burn-blends" title="Link to this heading">#</a></h3>
 <dl class="py function">
 <dt class="sig sig-object py" id="pjimg.imgblend.darker">
 <span class="sig-prename descclassname"><span class="pre">pjimg.imgblend.</span></span><span class="sig-name descname"><span class="pre">darker</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><span class="pre">ndarray</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><span class="pre">Any</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v1.26)"><span class="pre">dtype</span></a><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><span class="pre">ndarray</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><span class="pre">Any</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v1.26)"><span class="pre">dtype</span></a><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><span class="pre">ndarray</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><span class="pre">Any</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v1.26)"><span class="pre">dtype</span></a><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/pjimg/imgblend/ops.html#darker"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pjimg.imgblend.darker" title="Link to this definition">#</a></dt>
@@ -556,7 +565,7 @@ blended arrays.</p>
 
 </section>
 <section id="lighter-dodge-blends">
-<h4>Lighter/Dodge Blends<a class="headerlink" href="#lighter-dodge-blends" title="Link to this heading">#</a></h4>
+<h3>Lighter/Dodge Blends<a class="headerlink" href="#lighter-dodge-blends" title="Link to this heading">#</a></h3>
 <dl class="py function">
 <dt class="sig sig-object py" id="pjimg.imgblend.lighter">
 <span class="sig-prename descclassname"><span class="pre">pjimg.imgblend.</span></span><span class="sig-name descname"><span class="pre">lighter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><span class="pre">ndarray</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><span class="pre">Any</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v1.26)"><span class="pre">dtype</span></a><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><span class="pre">ndarray</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><span class="pre">Any</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v1.26)"><span class="pre">dtype</span></a><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><span class="pre">ndarray</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><span class="pre">Any</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v1.26)"><span class="pre">dtype</span></a><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/pjimg/imgblend/ops.html#lighter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pjimg.imgblend.lighter" title="Link to this definition">#</a></dt>
@@ -722,7 +731,7 @@ blended arrays.</p>
 
 </section>
 <section id="inversion-blends">
-<h4>Inversion Blends<a class="headerlink" href="#inversion-blends" title="Link to this heading">#</a></h4>
+<h3>Inversion Blends<a class="headerlink" href="#inversion-blends" title="Link to this heading">#</a></h3>
 <dl class="py function">
 <dt class="sig sig-object py" id="pjimg.imgblend.difference">
 <span class="sig-prename descclassname"><span class="pre">pjimg.imgblend.</span></span><span class="sig-name descname"><span class="pre">difference</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><span class="pre">ndarray</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><span class="pre">Any</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v1.26)"><span class="pre">dtype</span></a><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><span class="pre">ndarray</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><span class="pre">Any</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v1.26)"><span class="pre">dtype</span></a><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><span class="pre">ndarray</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><span class="pre">Any</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v1.26)"><span class="pre">dtype</span></a><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/pjimg/imgblend/ops.html#difference"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pjimg.imgblend.difference" title="Link to this definition">#</a></dt>
@@ -808,7 +817,7 @@ blended arrays.</p>
 
 </section>
 <section id="contrast-blends">
-<h4>Contrast Blends<a class="headerlink" href="#contrast-blends" title="Link to this heading">#</a></h4>
+<h3>Contrast Blends<a class="headerlink" href="#contrast-blends" title="Link to this heading">#</a></h3>
 <dl class="py function">
 <dt class="sig sig-object py" id="pjimg.imgblend.hard_light">
 <span class="sig-prename descclassname"><span class="pre">pjimg.imgblend.</span></span><span class="sig-name descname"><span class="pre">hard_light</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><span class="pre">ndarray</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><span class="pre">Any</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v1.26)"><span class="pre">dtype</span></a><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><span class="pre">ndarray</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><span class="pre">Any</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v1.26)"><span class="pre">dtype</span></a><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><span class="pre">ndarray</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><span class="pre">Any</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v1.26)"><span class="pre">dtype</span></a><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/pjimg/imgblend/ops.html#hard_light"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pjimg.imgblend.hard_light" title="Link to this definition">#</a></dt>
@@ -1095,7 +1104,7 @@ blended arrays.</p>
 </section>
 </section>
 <section id="decorators">
-<span id="module-pjimg.imgblend.decorators"></span><h3>decorators<a class="headerlink" href="#decorators" title="Link to this heading">#</a></h3>
+<span id="module-pjimg.imgblend.decorators"></span><h2>Decorators<a class="headerlink" href="#decorators" title="Link to this heading">#</a></h2>
 <p>Common decorators used by <a class="reference internal" href="#module-pjimg.imgblend" title="pjimg.imgblend"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pjimg.imgblend</span></code></a>.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="pjimg.imgblend.can_fade">
@@ -1136,19 +1145,18 @@ that use the original images to affect the resulting image.</p>
 
 </section>
 </section>
-</section>
 
         </article>
       </div>
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="imggen.html">
+          <a class="next-page" href="imgease.html">
               <div class="page-info">
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title">imggen</div>
+                <div class="title">imgease</div>
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
@@ -1195,8 +1203,9 @@ that use the original images to affect the resulting image.</p>
             <ul>
 <li><a class="reference internal" href="#">imgblend</a><ul>
 <li><a class="reference internal" href="#basic-usage-blends">Basic Usage: Blends</a></li>
-<li><a class="reference internal" href="#colorize-array-shape-and-color-channels">Colorize, Array Shape, and Color Channels</a><ul>
-<li><a class="reference internal" href="#ops">ops</a><ul>
+<li><a class="reference internal" href="#colorize-array-shape-and-color-channels">Colorize, Array Shape, and Color Channels</a></li>
+<li><a class="reference internal" href="#registration">Registration</a></li>
+<li><a class="reference internal" href="#blend-operations">Blend Operations</a><ul>
 <li><a class="reference internal" href="#replacement-blends">Replacement Blends</a><ul>
 <li><a class="reference internal" href="#pjimg.imgblend.replace"><code class="docutils literal notranslate"><span class="pre">replace()</span></code></a></li>
 </ul>
@@ -1232,14 +1241,12 @@ that use the original images to affect the resulting image.</p>
 </li>
 </ul>
 </li>
-<li><a class="reference internal" href="#decorators">decorators</a><ul>
+<li><a class="reference internal" href="#decorators">Decorators</a><ul>
 <li><a class="reference internal" href="#pjimg.imgblend.can_fade"><code class="docutils literal notranslate"><span class="pre">can_fade()</span></code></a></li>
 <li><a class="reference internal" href="#pjimg.imgblend.can_mask"><code class="docutils literal notranslate"><span class="pre">can_mask()</span></code></a></li>
 <li><a class="reference internal" href="#pjimg.imgblend.will_clip"><code class="docutils literal notranslate"><span class="pre">will_clip()</span></code></a></li>
 <li><a class="reference internal" href="#pjimg.imgblend.will_colorize"><code class="docutils literal notranslate"><span class="pre">will_colorize()</span></code></a></li>
 <li><a class="reference internal" href="#pjimg.imgblend.will_match_size"><code class="docutils literal notranslate"><span class="pre">will_match_size()</span></code></a></li>
-</ul>
-</li>
 </ul>
 </li>
 </ul>

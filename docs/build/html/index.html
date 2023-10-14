@@ -134,7 +134,7 @@
           <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
         </button>
       </div>
-      <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
         <div class="visually-hidden">Toggle table of contents sidebar</div>
         <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
       </label>
@@ -156,8 +156,10 @@
 <div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
   <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
-<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">pjimg documentation</a></li>
+<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">pjimg</a></li>
 <li class="toctree-l1"><a class="reference internal" href="imgblend.html">imgblend</a></li>
+<li class="toctree-l1"><a class="reference internal" href="imgease.html">imgease</a></li>
+<li class="toctree-l1"><a class="reference internal" href="imgfilt.html">imgfilt</a></li>
 <li class="toctree-l1"><a class="reference internal" href="imggen.html">imggen</a></li>
 <li class="toctree-l1"><a class="reference internal" href="imgio.html">imgio</a></li>
 <li class="toctree-l1"><a class="reference internal" href="util.html">util</a></li>
@@ -190,31 +192,50 @@
               <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
             </button>
           </div>
-          <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
             <div class="visually-hidden">Toggle table of contents sidebar</div>
             <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
           </label>
         </div>
         <article role="main">
-          <section id="pjimg-documentation">
-<h1>pjimg documentation<a class="headerlink" href="#pjimg-documentation" title="Link to this heading">#</a></h1>
+          <section id="pjimg">
+<h1>pjimg<a class="headerlink" href="#pjimg" title="Link to this heading">#</a></h1>
 <p>Procedural image generation.</p>
 <div class="toctree-wrapper compound">
 <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">pjimg documentation</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">pjimg</a></li>
 <li class="toctree-l1"><a class="reference internal" href="imgblend.html">imgblend</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="imgblend.html#basic-usage-blends">Basic Usage: Blends</a></li>
 <li class="toctree-l2"><a class="reference internal" href="imgblend.html#colorize-array-shape-and-color-channels">Colorize, Array Shape, and Color Channels</a></li>
+<li class="toctree-l2"><a class="reference internal" href="imgblend.html#registration">Registration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="imgblend.html#blend-operations">Blend Operations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="imgblend.html#decorators">Decorators</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="imgease.html">imgease</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="imgease.html#basic-usage-eases">Basic Usage: Eases</a></li>
+<li class="toctree-l2"><a class="reference internal" href="imgease.html#value-scaling">Value Scaling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="imgease.html#registration">Registration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="imgease.html#easing-operations">Easing Operations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="imgease.html#decorators">Decorators</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="imgfilt.html">imgfilt</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="imgfilt.html#basic-usage-filters">Basic Usage: Filters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="imgfilt.html#registration">Registration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="imgfilt.html#filter-functions">Filter Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="imgfilt.html#decorators">Decorators</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="imggen.html">imggen</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="imggen.html#sources">sources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="imggen.html#basic-usage-sources">Basic Usage: Sources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="imggen.html#source-classes">Source Classes</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="imgio.html">imgio</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="imgio.html#reader">reader</a></li>
-<li class="toctree-l2"><a class="reference internal" href="imgio.html#writer">writer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="imgio.html#reading-data-from-files">Reading Data from Files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="imgio.html#writing-data-to-files">Writing Data to Files</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="util.html">util</a><ul>
@@ -233,14 +254,59 @@
 </li>
 </ul>
 </div>
+<section id="what-can-i-do-with-this">
+<h2>What can I do with this?<a class="headerlink" href="#what-can-i-do-with-this" title="Link to this heading">#</a></h2>
+<p>Great question! You can use <code class="xref py py-mod docutils literal notranslate"><span class="pre">pjimg</span></code> to generate images and video. For
+examples, see the scripts in the <cite>examples</cite> folder in the directory.</p>
+</section>
+<section id="why-did-you-write-this">
+<h2>Why did you write this?<a class="headerlink" href="#why-did-you-write-this" title="Link to this heading">#</a></h2>
+<p>The commercial software I used to generate “clouds” (Perlin noise)
+moved to a subscription model. I then switched to a different commercial
+software package, but it’s Perlin noise generation was pretty weak. So,
+I decided to write something to make it myself. And, the scope, as it
+tends to do, grew.</p>
+</section>
+<section id="how-do-i-run-this">
+<h2>How do I run this?<a class="headerlink" href="#how-do-i-run-this" title="Link to this heading">#</a></h2>
+<p>You can clone the repository to your local system, then install it with
+<cite>pip</cite>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip3</span> <span class="n">install</span> <span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">repo</span><span class="o">/</span><span class="n">pjimg</span>
+</pre></div>
+</div>
+<p>Replace ‘/path/to/repo` with the path to the repository on your local
+system. You should then be able to import it into the python scripts
+you write.</p>
+<p>For examples for what to do from there, look at the <cite>examples</cite> folder
+in the repository.</p>
+</section>
+<section id="how-do-i-run-the-tests">
+<h2>How do I run the tests?<a class="headerlink" href="#how-do-i-run-the-tests" title="Link to this heading">#</a></h2>
+<p>The <cite>precommit.py</cite> script in the root of the repository will run the
+unit tests and a few other tests beside. Otherwise, the unit tests
+are written with the <cite>pytest</cite> module, so you can run the tests with:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">pytest</span>
+</pre></div>
+</div>
+</section>
+<section id="how-do-i-contribute">
+<h2>How do I contribute?<a class="headerlink" href="#how-do-i-contribute" title="Link to this heading">#</a></h2>
+<p>At this time, this is code is really just me exploring and learning.
+I’ve made it available in case it helps anyone else, but I’m not really
+intending to turn this into anything other than a personal project.</p>
+<p>That said, if other people do find it useful and start using it, I’ll
+reconsider. If you do use it and see something you want changed or
+added, go ahead and open an issue. If anyone ever does that, I’ll
+figure out how to handle it.</p>
 </section>
 <section id="indices-and-tables">
-<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Link to this heading">#</a></h1>
+<h2>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Link to this heading">#</a></h2>
 <ul class="simple">
 <li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
 <li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>
 <li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
 </ul>
+</section>
 </section>
 
         </article>
@@ -276,8 +342,32 @@
         
       </footer>
     </div>
-    <aside class="toc-drawer no-toc">
+    <aside class="toc-drawer">
       
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">pjimg</a><ul>
+<li><a class="reference internal" href="#what-can-i-do-with-this">What can I do with this?</a></li>
+<li><a class="reference internal" href="#why-did-you-write-this">Why did you write this?</a></li>
+<li><a class="reference internal" href="#how-do-i-run-this">How do I run this?</a></li>
+<li><a class="reference internal" href="#how-do-i-run-the-tests">How do I run the tests?</a></li>
+<li><a class="reference internal" href="#how-do-i-contribute">How do I contribute?</a></li>
+<li><a class="reference internal" href="#indices-and-tables">Indices and tables</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
       
       
     </aside>

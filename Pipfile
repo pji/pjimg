@@ -23,6 +23,7 @@ build = "*"
 twine = "*"
 pjimg = {file = ".", editable = true}
 types-pillow = "*"
+matplotlib = "*"
 
 [requires]
 python_version = "3.12"

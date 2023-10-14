@@ -4,8 +4,25 @@ imggen
 
 Image and video data generation.
 
-sources
-=======
+
+Basic Usage: Sources
+====================
+The image generation source classes (sources) are used to create image
+data. Using a source is a two-step process: initialize the source then
+generate the data with :meth:`pjimg.imggen.Source.fill`.
+
+Usage::
+
+    >>> box = Box((0, 1, 1), (1, 2, 2), 1.0)
+    >>> box.fill((1, 4, 4))
+    array([[[0., 0., 0., 0.],
+            [0., 1., 1., 0.],
+            [0., 1., 1., 0.],
+            [0., 0., 0., 0.]]])
+
+
+Source Classes
+==============
 An image data source is a class with a :meth:`Source.fill` method that
 generates image data.
 

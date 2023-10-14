@@ -1,12 +1,13 @@
 """
-reader
-~~~~~~
+Reading Data from Files
+=======================
 
 Read images and video data from files for manipulation.
 
 .. autofunction:: pjimg.imgio.read
 .. autofunction:: pjimg.imgio.read_image
 .. autofunction:: pjimg.imgio.read_video
+
 """
 from pathlib import Path
 from typing import Union
