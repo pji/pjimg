@@ -155,12 +155,11 @@
 <div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
   <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../index.html">pjimg documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../index.html">pjimg</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../imgblend.html">imgblend</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../imgease.html">imgease</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../imgfilt.html">imgfilt</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../imggen.html">Basic Usage: Sources</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../imggen.html#sources">Sources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../imggen.html">imggen</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../imgio.html">imgio</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../util.html">util</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../requirements.html">pjimg Requirements</a></li>
@@ -241,17 +240,28 @@
 <span class="k">class</span> <span class="nc">Box</span><span class="p">(</span><span class="n">Source</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Draw a box.</span>
 <span class="sd">    </span>
-<span class="sd">    .. figure:: images/box.jpg</span>
-<span class="sd">       :alt: A picture of an image created from the output of :class:`Box`.</span>
-<span class="sd">       </span>
-<span class="sd">       Output of :class:`Box`.</span>
-
 <span class="sd">    :param origin: The location of the upper left corner of the box.</span>
 <span class="sd">    :param dimensions: The size of the box in three dimensions.</span>
 <span class="sd">    :param color: The color of the box. This is a float within the</span>
 <span class="sd">        range 0 &lt;= x &lt;= 1.</span>
 <span class="sd">    :return: A :class:`Box` object.</span>
 <span class="sd">    :rtype: imggen.patterns.Box</span>
+
+<span class="sd">    Usage::</span>
+<span class="sd">    </span>
+<span class="sd">        &gt;&gt;&gt; # Create an image of a gray rectangle in the middle of a</span>
+<span class="sd">        &gt;&gt;&gt; # 1280x720 image.</span>
+<span class="sd">        &gt;&gt;&gt; size = (1, 720, 1280)</span>
+<span class="sd">        &gt;&gt;&gt; origin = (n // 4 for n in size)</span>
+<span class="sd">        &gt;&gt;&gt; dimensions = (1, *(n // 2 for n in size[Y:]))</span>
+<span class="sd">        &gt;&gt;&gt; source = Box(origin=origin, dimensions=dimensions, color=0.5)</span>
+<span class="sd">        &gt;&gt;&gt; img = source.fill(size)</span>
+<span class="sd">    </span>
+<span class="sd">    .. figure:: images/box.jpg</span>
+<span class="sd">       :alt: An image of a gray rectangle in the middle of a 1280x720 image.</span>
+<span class="sd">       </span>
+<span class="sd">       The image data created by the usage example.</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">origin</span><span class="p">:</span> <span class="n">Loc</span><span class="p">,</span>
@@ -289,12 +299,6 @@
 <span class="k">class</span> <span class="nc">Gradient</span><span class="p">(</span><span class="n">Source</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Generate a simple gradient.</span>
 
-<span class="sd">    .. figure:: images/gradient.jpg</span>
-<span class="sd">       :alt: A picture of an image created from the output of</span>
-<span class="sd">            :class:`Gradient`.</span>
-<span class="sd">       </span>
-<span class="sd">       Output of :class:`Gradient`.</span>
-
 <span class="sd">    :param direction: (Optional.) This should be &#39;h&#39; for a horizontal</span>
 <span class="sd">        gradient or &#39;v&#39; for a vertical gradient.</span>
 <span class="sd">    :param stops: (Optional.) A gradient stop sets the color at a</span>
@@ -304,6 +308,27 @@
 <span class="sd">        of the stop.</span>
 <span class="sd">    :return: :class:`Gradient` object.</span>
 <span class="sd">    :rtype: imggen.patterns.Gradient</span>
+
+<span class="sd">    Usage::</span>
+<span class="sd">    </span>
+<span class="sd">        &gt;&gt;&gt; # Create a horizontal gradient with multiple stops in a</span>
+<span class="sd">        &gt;&gt;&gt; # 1280x720 image.</span>
+<span class="sd">        &gt;&gt;&gt; size = (1, 720, 1280)</span>
+<span class="sd">        &gt;&gt;&gt; stops = [</span>
+<span class="sd">                0.1, 0.0,</span>
+<span class="sd">                0.2, 1.0,</span>
+<span class="sd">                0.3, 0.0,</span>
+<span class="sd">                0.8, 1.0,</span>
+<span class="sd">                0.9, 0.0,</span>
+<span class="sd">            ]</span>
+<span class="sd">        &gt;&gt;&gt; source = Gradient(direction=&#39;h&#39;, stops=stops)</span>
+<span class="sd">        &gt;&gt;&gt; img = source.fill(size)</span>
+<span class="sd">    </span>
+<span class="sd">    .. figure:: images/gradient.jpg</span>
+<span class="sd">       :alt: A horizontal gradient with multiple stops in a 1280x720 image.</span>
+<span class="sd">       </span>
+<span class="sd">       The image data created by the usage example.</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">direction</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;h&#39;</span><span class="p">,</span>

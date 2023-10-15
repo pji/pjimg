@@ -62,7 +62,7 @@ is single channel image data ("grayscale") and will add a new last
 dimension of size three. The values will be the original single
 value repeated three times. To demonstrate::
 
-    >>> from imgblender.common import will_colorize
+    >>> from pjimg.imgblend import will_colorize
     >>> a = np.array([
     ...     [1.0, 0.5, 0.0, ],
     ...     [0.5, 0.0, 0.5, ],

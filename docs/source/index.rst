@@ -9,7 +9,7 @@ Procedural image generation.
 
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
    :caption: Contents:
    
    self
@@ -32,7 +32,7 @@ Why did you write this?
 =======================
 The commercial software I used to generate "clouds" (Perlin noise)
 moved to a subscription model. I then switched to a different commercial
-software package, but it's Perlin noise generation was pretty weak. So,
+software package, but its Perlin noise generation was pretty weak. So,
 I decided to write something to make it myself. And, the scope, as it
 tends to do, grew.
 

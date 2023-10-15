@@ -234,12 +234,6 @@ image and video data.</p>
 <dt class="sig sig-object py" id="pjimg.imggen.Box">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pjimg.imggen.</span></span><span class="sig-name descname"><span class="pre">Box</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">origin</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Sequence" title="(in Python v3.12)"><span class="pre">Sequence</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dimensions</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Sequence" title="(in Python v3.12)"><span class="pre">Sequence</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pjimg/imggen/patterns.html#Box"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pjimg.imggen.Box" title="Link to this definition">#</a></dt>
 <dd><p>Draw a box.</p>
-<figure class="align-default" id="id2">
-<img alt="A picture of an image created from the output of :class:`Box`." src="_images/box.jpg" />
-<figcaption>
-<p><span class="caption-text">Output of <a class="reference internal" href="#pjimg.imggen.Box" title="pjimg.imggen.Box"><code class="xref py py-class docutils literal notranslate"><span class="pre">Box</span></code></a>.</span><a class="headerlink" href="#id2" title="Link to this image">#</a></p>
-</figcaption>
-</figure>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -256,18 +250,28 @@ range 0 &lt;= x &lt;= 1.</p></li>
 <dd class="field-odd"><p><a class="reference internal" href="#pjimg.imggen.Box" title="pjimg.imggen.patterns.Box">imggen.patterns.Box</a></p>
 </dd>
 </dl>
+<p>Usage:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Create an image of a gray rectangle in the middle of a</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># 1280x720 image.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">size</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">720</span><span class="p">,</span> <span class="mi">1280</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">origin</span> <span class="o">=</span> <span class="p">(</span><span class="n">n</span> <span class="o">//</span> <span class="mi">4</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">size</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dimensions</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">*</span><span class="p">(</span><span class="n">n</span> <span class="o">//</span> <span class="mi">2</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">size</span><span class="p">[</span><span class="n">Y</span><span class="p">:]))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">source</span> <span class="o">=</span> <span class="n">Box</span><span class="p">(</span><span class="n">origin</span><span class="o">=</span><span class="n">origin</span><span class="p">,</span> <span class="n">dimensions</span><span class="o">=</span><span class="n">dimensions</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">img</span> <span class="o">=</span> <span class="n">source</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="n">size</span><span class="p">)</span>
+</pre></div>
+</div>
+<figure class="align-default" id="id2">
+<img alt="An image of a gray rectangle in the middle of a 1280x720 image." src="_images/box.jpg" />
+<figcaption>
+<p><span class="caption-text">The image data created by the usage example.</span><a class="headerlink" href="#id2" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="pjimg.imggen.Gradient">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pjimg.imggen.</span></span><span class="sig-name descname"><span class="pre">Gradient</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">direction</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'h'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stops</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Sequence" title="(in Python v3.12)"><span class="pre">Sequence</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><span class="pre">float</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">(0,</span> <span class="pre">0,</span> <span class="pre">1,</span> <span class="pre">1)</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pjimg/imggen/patterns.html#Gradient"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pjimg.imggen.Gradient" title="Link to this definition">#</a></dt>
 <dd><p>Generate a simple gradient.</p>
-<figure class="align-default" id="id3">
-<img alt="A picture of an image created from the output of :class:`Gradient`." src="_images/gradient.jpg" />
-<figcaption>
-<p><span class="caption-text">Output of <a class="reference internal" href="#pjimg.imggen.Gradient" title="pjimg.imggen.Gradient"><code class="xref py py-class docutils literal notranslate"><span class="pre">Gradient</span></code></a>.</span><a class="headerlink" href="#id3" title="Link to this image">#</a></p>
-</figcaption>
-</figure>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -287,6 +291,27 @@ of the stop.</p></li>
 <dd class="field-odd"><p><a class="reference internal" href="#pjimg.imggen.Gradient" title="pjimg.imggen.patterns.Gradient">imggen.patterns.Gradient</a></p>
 </dd>
 </dl>
+<p>Usage:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Create a horizontal gradient with multiple stops in a</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># 1280x720 image.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">size</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">720</span><span class="p">,</span> <span class="mi">1280</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">stops</span> <span class="o">=</span> <span class="p">[</span>
+<span class="go">        0.1, 0.0,</span>
+<span class="go">        0.2, 1.0,</span>
+<span class="go">        0.3, 0.0,</span>
+<span class="go">        0.8, 1.0,</span>
+<span class="go">        0.9, 0.0,</span>
+<span class="go">    ]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">source</span> <span class="o">=</span> <span class="n">Gradient</span><span class="p">(</span><span class="n">direction</span><span class="o">=</span><span class="s1">&#39;h&#39;</span><span class="p">,</span> <span class="n">stops</span><span class="o">=</span><span class="n">stops</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">img</span> <span class="o">=</span> <span class="n">source</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="n">size</span><span class="p">)</span>
+</pre></div>
+</div>
+<figure class="align-default" id="id3">
+<img alt="A horizontal gradient with multiple stops in a 1280x720 image." src="_images/gradient.jpg" />
+<figcaption>
+<p><span class="caption-text">The image data created by the usage example.</span><a class="headerlink" href="#id3" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
 </dd></dl>
 
 <dl class="py class">

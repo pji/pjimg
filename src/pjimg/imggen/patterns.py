@@ -39,17 +39,28 @@ __all__ = [
 class Box(Source):
     """Draw a box.
     
-    .. figure:: images/box.jpg
-       :alt: A picture of an image created from the output of :class:`Box`.
-       
-       Output of :class:`Box`.
-
     :param origin: The location of the upper left corner of the box.
     :param dimensions: The size of the box in three dimensions.
     :param color: The color of the box. This is a float within the
         range 0 <= x <= 1.
     :return: A :class:`Box` object.
     :rtype: imggen.patterns.Box
+
+    Usage::
+    
+        >>> # Create an image of a gray rectangle in the middle of a
+        >>> # 1280x720 image.
+        >>> size = (1, 720, 1280)
+        >>> origin = (n // 4 for n in size)
+        >>> dimensions = (1, *(n // 2 for n in size[Y:]))
+        >>> source = Box(origin=origin, dimensions=dimensions, color=0.5)
+        >>> img = source.fill(size)
+    
+    .. figure:: images/box.jpg
+       :alt: An image of a gray rectangle in the middle of a 1280x720 image.
+       
+       The image data created by the usage example.
+
     """
     def __init__(
         self, origin: Loc,
@@ -84,12 +95,6 @@ class Box(Source):
 class Gradient(Source):
     """Generate a simple gradient.
 
-    .. figure:: images/gradient.jpg
-       :alt: A picture of an image created from the output of
-            :class:`Gradient`.
-       
-       Output of :class:`Gradient`.
-
     :param direction: (Optional.) This should be 'h' for a horizontal
         gradient or 'v' for a vertical gradient.
     :param stops: (Optional.) A gradient stop sets the color at a
@@ -99,6 +104,27 @@ class Gradient(Source):
         of the stop.
     :return: :class:`Gradient` object.
     :rtype: imggen.patterns.Gradient
+
+    Usage::
+    
+        >>> # Create a horizontal gradient with multiple stops in a
+        >>> # 1280x720 image.
+        >>> size = (1, 720, 1280)
+        >>> stops = [
+        ...     0.1, 0.0,
+        ...     0.2, 1.0,
+        ...     0.3, 0.0,
+        ...     0.8, 1.0,
+        ...     0.9, 0.0,
+        ... ]
+        >>> source = Gradient(direction='h', stops=stops)
+        >>> img = source.fill(size)
+    
+    .. figure:: images/gradient.jpg
+       :alt: A horizontal gradient with multiple stops in a 1280x720 image.
+       
+       The image data created by the usage example.
+
     """
     def __init__(
         self, direction: str = 'h',
