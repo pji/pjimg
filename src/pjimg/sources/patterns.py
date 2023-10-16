@@ -225,12 +225,6 @@ class Gradient(Source):
 class Hexes(Source):
     """Fill a space with hexagonal cells.
     
-    .. figure:: images/hexes.jpg
-       :alt: A picture of an image created from the output of
-            :class:`Gradient`.
-       
-       Output of :class:`Hexes`.
-
     :param radius: The distance from the center of a cell to the center
         of each of the sides of the cell.
     :param cells: (Optional.) Whether the color of a pixel is based
@@ -243,6 +237,20 @@ class Hexes(Source):
         of a sphere.
     :return: A :class:`sources.Hexes` object.
     :rtype: sources.patterns.Hexes
+
+    Usage::
+    
+        >>> # Create a hexagonal grid of cells in a 1280x720 image.
+        >>> size = (1, 720, 1280)
+        >>> radius = size[Y] // 8
+        >>> source = Hexes(radius=radius)
+        >>> img = source.fill(size)
+    
+    .. figure:: images/hexes.jpg
+       :alt: A hexagonal grid of cells in a 1280x720 image.
+       
+       The image data created by the usage example.
+
     """
     def __init__(
         self, radius: int,
@@ -305,17 +313,26 @@ class Hexes(Source):
 class Lines(Source):
     """Generate simple lines.
 
-    .. figure:: images/lines.jpg
-       :alt: A picture of an image created from the output of
-            :class:`Lines`.
-       
-       Output of :class:`Lines`.
-
     :param direction: (Optional.) This should be 'h' for a horizontal
         gradient or 'v' for a vertical gradient.
     :param length: (Optional.) The distance between each line.
     :return: :class:`Lines` object.
     :rtype: sources.patterns.Lines
+
+    Usage::
+    
+        >>> # Create a series of vertical lines in a 1280x720 image.
+        >>> size = (1, 720, 1280)
+        >>> length = (size[X] / 8) - (size[Y] / 64)
+        >>> source = Lines(direction='v', length=length)
+        >>> img = source.fill(size)
+
+    .. figure:: images/lines.jpg
+       :alt: A picture of an image created from the output of
+            :class:`Lines`.
+       
+       The image data created by the usage example.
+
     """
     def __init__(
         self, direction: str = 'h',
@@ -356,17 +373,25 @@ class Lines(Source):
 class Rays(Source):
     """Create rays that generate from a central point.
 
-    .. figure:: images/rays.jpg
-       :alt: A picture of an image created from the output of
-            :class:`Rays`.
-       
-       Output of :class:`Rays`.
-
     :param count: The number of rays to generate.
     :param offset: (Optional.) Rotate the rays around the generation
         point. This is measured in radians.
     :return: :class:`Rays` object.
     :rtype: sources.patterns.Rays
+
+    Usage::
+    
+        >>> # Create seven rays emanating from the center of a 1280x720
+        >>> # image.
+        >>> size = (1, 720, 1280) 
+        >>> source = Rays(count=7, offset=0.178)
+        >>> img = source.fill(size)
+    
+    .. figure:: images/rays.jpg
+       :alt: Seven rays emanating from the center of a 1280x720 image.
+       
+       The image data created by the usage example.
+
     """
     def __init__(
         self, count: int,
@@ -425,12 +450,6 @@ class Rays(Source):
 class Rings(Source):
     """Create a series of concentric circles.
 
-    .. figure:: images/rings.jpg
-       :alt: A picture of an image created from the output of
-            :class:`Rings`.
-       
-       Output of :class:`Rings`.
-
     :param radius: The radius of the first ring, which is the ring
         closest to the center. It is measured from the origin point
         of the rings to the middle of the band of the first ring.
@@ -445,6 +464,23 @@ class Rings(Source):
         default is one.
     :return: :class:`Rings` object.
     :rtype: sources.patterns.Rings
+
+    Usage::
+    
+        >>> # Create a series of concentric rings in a 1280x720 image.
+        >>> size = (1, 720, 1280)
+        >>> radius = size[X] / 6
+        >>> width = size[X] / 12
+        >>> gap = size[X] / 18
+        >>> count = 6
+        >>> source = Rings(radius=radius, width=width, gap=gap, count=count)
+        >>> img = source.fill(size)
+    
+    .. figure:: images/rings.jpg
+       :alt: A series of concentric rings in a 1280.720 image.
+       
+       The image data created by the usage example.
+
     """
     def __init__(
         self, radius: float,
@@ -500,16 +536,23 @@ class Rings(Source):
 class Solid(Source):
     """Fill a space with a solid color.
 
-    .. figure:: images/solid.jpg
-       :alt: A picture of an image created from the output of
-            :class:`Solid`.
-       
-       Output of :class:`Solid`.
-
     :param color: The color to use for the fill. Zero is black. One
         is white. The values between are values of gray.
     :return: :class:`Solid` object.
     :rtype: pjinoise.sources.Solid
+
+    Usage::
+    
+        >>> # Create a solid gray 1280x720 image.
+        >>> size = (1, 1280, 720)
+        >>> source = Solid(color=0.25)
+        >>> img = source.fill(size)
+    
+    .. figure:: images/solid.jpg
+       :alt: A solid gray 1280x720 image.
+       
+       The image data created by the usage example.
+
     """
     def __init__(self, color: float) -> None:
         self.color = float(color)
@@ -535,12 +578,6 @@ class Solid(Source):
 class Spheres(Source):
     """Fill a space with a series of spots.
 
-    .. figure:: images/spheres.jpg
-       :alt: A picture of an image created from the output of
-            :class:`Spheres`.
-       
-       Output of :class:`Spheres`.
-
     :param radius: The radius of an individual spot.
     :param offset: (Optional.) Whether alternating rows or columns
         should be offset. Set to 'x' for rows to be offset. Set to
@@ -556,6 +593,20 @@ class Spheres(Source):
         of a sphere.
     :return: :class:`Spheres` object.
     :rtype: sources.patterns.Spheres
+
+    Usage::
+    
+        >>> # Create a square grid of cells in a 1280x720 image.
+        >>> size = (1, 720, 1280)
+        >>> radius = size[Y] / 16
+        >>> source = Spheres(radius=radius, offset='')
+        >>> img = source.fill(size)
+
+    .. figure:: images/spheres.jpg
+       :alt: A square grid of cells in a 1280x720 image.
+       
+       The image data created by the usage example.
+
     """
     def __init__(
         self, radius: float,
@@ -642,15 +693,23 @@ class Spheres(Source):
 class Spot(Source):
     """Fill a space with a spot.
 
-    .. figure:: images/spot.jpg
-       :alt: A picture of an image created from the output of
-            :class:`Spot`.
-       
-       Output of :class:`Spot`.
-
     :param radius: The radius of the spot.
     :return: :class:`Spot` object.
     :rtype: sources.patterns.Spot
+    
+    Usage::
+    
+        >>> # Create a radial gradient centered in a 1280x720 image.
+        >>> size = (1, 720, 1280)
+        >>> radius = size[Y] * 2 / 3
+        >>> source = Spot(radius=radius)
+        >>> img = source.fill(size)
+
+    .. figure:: images/spot.jpg
+       :alt: A radial gradient centered in a 1280x720 image.
+       
+       The image data created by the usage example.
+
     """
     def __init__(self, radius: float, *args, **kwargs) -> None:
         self.radius = float(radius)
@@ -689,12 +748,6 @@ class Spot(Source):
 class Text(Source):
     """Place text within the image.
     
-    .. figure:: images/text.jpg
-       :alt: A picture of an image created from the output of
-            :class:`Text`.
-       
-       Output of :class:`Text`.
-
     :param text: The text to add.
     :param font: (Optional.) The font for the text. It uses the fonts
         available to your system.
@@ -722,6 +775,32 @@ class Text(Source):
     :param stroke_color: (Optional.) The color to use for the stroke.
     :return: A :class:`Text` object.
     :rtype: sources.patterns.Text
+    
+    Usage::
+    
+        >>> # Create the word "SPAM" in a 1280x720 image.
+        >>> size = (1, 720, 1280)
+        >>> origin = (size[X] / 2 - 107, size[Y] / 2 - 52)
+        >>> source = Text(
+        ...     text='SPAM',
+        ...     font='Helvetica',
+        ...     size=72,
+        ...     face=1,
+        ...     layout_engine='basic',
+        ...     origin=origin,
+        ...     fill_color=0.75,
+        ...     bg_color=0.25,
+        ...     align='center',
+        ...     stroke_width=5,
+        ...     stroke_fill=0x00
+        ... )
+        >>> img = source.fill(size)
+
+    .. figure:: images/text.jpg
+       :alt: The word "SPAM" in a 1280x720 image.
+       
+       The image data created by the usage example.
+
     """
     def __init__(
         self, text: str,
@@ -824,13 +903,7 @@ class Text(Source):
 
 
 class Waves(Source):
-    """Generates concentric circles.
-
-    .. figure:: images/waves.jpg
-       :alt: A picture of an image created from the output of
-            :class:`Waves`.
-       
-       Output of :class:`Waves`.
+    """Generates concentric radial gradients.
 
     :param length: The radius of the innermost circle.
     :param growth: (Optional.) Either the string 'linear' or the
@@ -839,6 +912,21 @@ class Waves(Source):
         (geometric). Defaults to linear.
     :returns: :class:`Waves` object.
     :rtype: sources.patterns.Waves
+
+    Usage::
+    
+        >>> # Create a series of concentric radial gradients in a
+        >>> # 1280x720 images.
+        >>> size = (1, 720, 1280)
+        >>> length = size[Y] / 16
+        >>> source = Waves(length=length, growth='g')
+        >>> img = source.fill(size)
+    
+    .. figure:: images/waves.jpg
+       :alt: A series of concentric radial gradients in a 1280x720 image.
+       
+       The image data created by the usage example.
+
     """
     def __init__(
         self, length: float,

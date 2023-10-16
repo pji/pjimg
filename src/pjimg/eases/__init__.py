@@ -4,7 +4,7 @@ eases
 
 Easing functions for image and video data.
 
-.. automodule:: pjimg.eases.easess
+.. automodule:: pjimg.eases.eases_
 .. automodule:: pjimg.eases.decorators
 
 """

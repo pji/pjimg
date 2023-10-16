@@ -3,7 +3,7 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="imgio" href="imgio.html" /><link rel="prev" title="filters" href="filters.html" />
+<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" />
 
     <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
         <title>sources - pjimg 0.0.1 documentation</title>
@@ -155,12 +155,8 @@
 </form>
 <div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
   <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
-<ul class="current">
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="index.html">pjimg</a></li>
-<li class="toctree-l1"><a class="reference internal" href="blends.html">blends</a></li>
-<li class="toctree-l1"><a class="reference internal" href="eases.html">eases</a></li>
-<li class="toctree-l1"><a class="reference internal" href="filters.html">filters</a></li>
-<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">sources</a></li>
 <li class="toctree-l1"><a class="reference internal" href="imgio.html">imgio</a></li>
 <li class="toctree-l1"><a class="reference internal" href="util.html">util</a></li>
 <li class="toctree-l1"><a class="reference internal" href="requirements.html">pjimg Requirements</a></li>
@@ -296,12 +292,12 @@ of the stop.</p></li>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># 1280x720 image.</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">size</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">720</span><span class="p">,</span> <span class="mi">1280</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">stops</span> <span class="o">=</span> <span class="p">[</span>
-<span class="go">        0.1, 0.0,</span>
-<span class="go">        0.2, 1.0,</span>
-<span class="go">        0.3, 0.0,</span>
-<span class="go">        0.8, 1.0,</span>
-<span class="go">        0.9, 0.0,</span>
-<span class="go">    ]</span>
+<span class="gp">... </span>    <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="mf">0.2</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="mf">0.8</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="mf">0.9</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span>
+<span class="gp">... </span><span class="p">]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">source</span> <span class="o">=</span> <span class="n">Gradient</span><span class="p">(</span><span class="n">direction</span><span class="o">=</span><span class="s1">&#39;h&#39;</span><span class="p">,</span> <span class="n">stops</span><span class="o">=</span><span class="n">stops</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">img</span> <span class="o">=</span> <span class="n">source</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="n">size</span><span class="p">)</span>
 </pre></div>
@@ -318,12 +314,6 @@ of the stop.</p></li>
 <dt class="sig sig-object py" id="pjimg.sources.Hexes">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pjimg.sources.</span></span><span class="sig-name descname"><span class="pre">Hexes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">radius</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">cells</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">round</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pjimg/sources/patterns.html#Hexes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pjimg.sources.Hexes" title="Link to this definition">#</a></dt>
 <dd><p>Fill a space with hexagonal cells.</p>
-<figure class="align-default" id="id4">
-<img alt="A picture of an image created from the output of :class:`Gradient`." src="_images/hexes.jpg" />
-<figcaption>
-<p><span class="caption-text">Output of <a class="reference internal" href="#pjimg.sources.Hexes" title="pjimg.sources.Hexes"><code class="xref py py-class docutils literal notranslate"><span class="pre">Hexes</span></code></a>.</span><a class="headerlink" href="#id4" title="Link to this image">#</a></p>
-</figcaption>
-</figure>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -346,6 +336,20 @@ of a sphere.</p></li>
 <dd class="field-odd"><p><a class="reference internal" href="#pjimg.sources.Hexes" title="pjimg.sources.patterns.Hexes">sources.patterns.Hexes</a></p>
 </dd>
 </dl>
+<p>Usage:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Create a hexagonal grid of cells in a 1280x720 image.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">size</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">720</span><span class="p">,</span> <span class="mi">1280</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">radius</span> <span class="o">=</span> <span class="n">size</span><span class="p">[</span><span class="n">Y</span><span class="p">]</span> <span class="o">//</span> <span class="mi">8</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">source</span> <span class="o">=</span> <span class="n">Hexes</span><span class="p">(</span><span class="n">radius</span><span class="o">=</span><span class="n">radius</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">img</span> <span class="o">=</span> <span class="n">source</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="n">size</span><span class="p">)</span>
+</pre></div>
+</div>
+<figure class="align-default" id="id4">
+<img alt="A picture of an image created from the output of :class:`Gradient`." src="_images/hexes.jpg" />
+<figcaption>
+<p><span class="caption-text">The image data created by the usage example.</span><a class="headerlink" href="#id4" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
 </dd></dl>
 
 <dl class="py class">
@@ -1368,26 +1372,8 @@ integers for seeding.</p></li>
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="imgio.html">
-              <div class="page-info">
-                <div class="context">
-                  <span>Next</span>
-                </div>
-                <div class="title">imgio</div>
-              </div>
-              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
-            </a>
-          <a class="prev-page" href="filters.html">
-              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
-              <div class="page-info">
-                <div class="context">
-                  <span>Previous</span>
-                </div>
-                
-                <div class="title">filters</div>
-                
-              </div>
-            </a>
+          
+          
         </div>
         <div class="bottom-of-page">
           <div class="left-details">

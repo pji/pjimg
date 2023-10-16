@@ -24,12 +24,6 @@ class Noise(Source):
     seed value to allow the noise to be regenerated in a predictable
     way.
 
-    .. figure:: images/noise.jpg
-       :alt: A picture of an image created from the output of
-            :class:`Noise`.
-       
-       Output of :class:`Noise`.
-    
     :param seed: (Optional.) An int, bytes, or string used to seed
         therandom number generator used to generate the image data.
         If no value is passed, the RNG will not be seeded, so
@@ -39,6 +33,19 @@ class Noise(Source):
         integers for seeding.
     :return: :class:Noise object.
     :rtype: sources.noise.Noise
+
+    Usage::
+    
+        >>> # Create static to fill a 1280x720 image.
+        >>> size = (1, 720, 1280)
+        >>> source = Noise(seed='spam')
+        >>> img = source.fill(size)
+
+    .. figure:: images/noise.jpg
+       :alt: Static filling a 1280x720 image.
+       
+       The image data created by the usage example.
+    
     """
     def __init__(self, seed: Seed = None) -> None:
         """Initialize an instance of Noise."""
@@ -102,12 +109,6 @@ class Embers(Noise):
     """Fill a space with bright points or dots that resemble embers
     or stars.
 
-    .. figure:: images/Embers.jpg
-       :alt: A picture of an image created from the output of
-            :class:`Embers`.
-       
-       Output of :class:`Embers`.
-    
     :param depth: (Optional.) The number of different sizes of dots
         to create.
     :param threshold: (Optional.) Embers starts by generating random
@@ -125,6 +126,19 @@ class Embers(Noise):
         generated noise.
     :return: :class:`Embers` object.
     :rtype: sources.noise.Embers
+    
+    Usage::
+    
+        >>> # Create embers in a 1280x720 image.
+        >>> size = (1, 720, 1280)
+        >>> source = Embers(depth=6, seed='spam')
+        >>> img = source.fill(size)
+
+    .. figure:: images/Embers.jpg
+       :alt: Embers in a 1280x720 image.
+       
+       The image data created by the usage example.
+    
     """
     def __init__(
         self, depth: int = 1,

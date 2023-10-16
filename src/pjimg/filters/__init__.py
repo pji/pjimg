@@ -4,7 +4,7 @@ filters
 
 A Python package for distorting or otherwise affecting image data.
 
-.. automodule:: pjimg.filters.filts
+.. automodule:: pjimg.filters.filters_
 .. automodule:: pjimg.filters.decorators
 
 """

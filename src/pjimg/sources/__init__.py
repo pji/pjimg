@@ -1,6 +1,6 @@
 """
 sources
-~~~~~~
+~~~~~~~
 
 Image and video data generation.
 
