@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
     <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
-        <title>pjimg.imgease.decorators - pjimg 0.0.1 documentation</title>
+        <title>pjimg.eases.decorators - pjimg 0.0.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=135e06be" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?v=36a5483c" />
@@ -156,11 +156,11 @@
   <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../index.html">pjimg documentation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../imgblend.html">imgblend</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../imgease.html">imgease</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../imgfilt.html">imgfilt</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../imggen.html">Basic Usage: Sources</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../imggen.html#sources">Sources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../blends.html">blends</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../eases.html">eases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../filters.html">filters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../sources.html">Basic Usage: Sources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../sources.html#sources">Sources</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../imgio.html">imgio</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../util.html">util</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../requirements.html">pjimg Requirements</a></li>
@@ -197,26 +197,26 @@
           </label>
         </div>
         <article role="main">
-          <h1>Source code for pjimg.imgease.decorators</h1><div class="highlight"><pre>
+          <h1>Source code for pjimg.eases.decorators</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">Decorators</span>
 <span class="sd">==========</span>
 
-<span class="sd">Decorators for :mod:`pjimg.imgease`.</span>
+<span class="sd">Decorators for :mod:`pjimg.eases`.</span>
 
-<span class="sd">.. autofunction:: pjimg.imgease.will_scale</span>
+<span class="sd">.. autofunction:: pjimg.eases.will_scale</span>
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">wraps</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
-<span class="kn">from</span> <span class="nn">pjimg.imgease.model</span> <span class="kn">import</span> <span class="n">Ease</span>
+<span class="kn">from</span> <span class="nn">pjimg.eases.model</span> <span class="kn">import</span> <span class="n">Ease</span>
 <span class="kn">from</span> <span class="nn">pjimg.util</span> <span class="kn">import</span> <span class="n">NumAry</span>
 
 
 <span class="c1"># Decorators.</span>
 <div class="viewcode-block" id="will_scale">
-<a class="viewcode-back" href="../../../imgease.html#pjimg.imgease.will_scale">[docs]</a>
+<a class="viewcode-back" href="../../../eases.html#pjimg.eases.will_scale">[docs]</a>
 <span class="k">def</span> <span class="nf">will_scale</span><span class="p">(</span><span class="n">fn</span><span class="p">:</span> <span class="n">Ease</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Ease</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;These eases only work for values between zero and one. If</span>
 <span class="sd">    given values outside of that range, it will scale the values</span>

@@ -13,10 +13,10 @@ Procedural image generation.
    :caption: Contents:
    
    self
-   /imgblend.rst
-   /imgease.rst
-   /imgfilt.rst
-   /imggen.rst
+   /blends.rst
+   /eases.rst
+   /filters.rst
+   /sources.rst
    /imgio.rst
    /util.rst
    /requirements.rst

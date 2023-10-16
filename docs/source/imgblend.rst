@@ -1,1 +1,1 @@
-.. automodule:: pjimg.imgblend
+.. automodule:: pjimg.blends

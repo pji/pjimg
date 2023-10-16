@@ -1,1 +1,1 @@
-.. automodule:: pjimg.imgfilt
+.. automodule:: pjimg.filters

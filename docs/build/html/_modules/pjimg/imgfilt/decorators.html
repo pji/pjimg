@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
     <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
-        <title>pjimg.imgfilt.decorators - pjimg 0.0.1 documentation</title>
+        <title>pjimg.filters.decorators - pjimg 0.0.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=135e06be" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?v=36a5483c" />
@@ -156,10 +156,10 @@
   <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../index.html">pjimg documentation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../imgblend.html">imgblend</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../imgease.html">imgease</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../imgfilt.html">imgfilt</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../imggen.html">imggen</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../blends.html">blends</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../eases.html">eases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../filters.html">filters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../sources.html">sources</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../imgio.html">imgio</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../util.html">util</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../requirements.html">pjimg Requirements</a></li>
@@ -196,23 +196,23 @@
           </label>
         </div>
         <article role="main">
-          <h1>Source code for pjimg.imgfilt.decorators</h1><div class="highlight"><pre>
+          <h1>Source code for pjimg.filters.decorators</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">Decorators</span>
 <span class="sd">==========</span>
 
-<span class="sd">Decorators for :mod:`pjimg.imgfilt`.</span>
+<span class="sd">Decorators for :mod:`pjimg.filters`.</span>
 
-<span class="sd">.. autofunction:: pjimg.imgfilt.processes_by_grayscale_frame</span>
-<span class="sd">.. autofunction:: pjimg.imgfilt.uses_uint8</span>
-<span class="sd">.. autofunction:: pjimg.imgfilt.will_square</span>
+<span class="sd">.. autofunction:: pjimg.filters.processes_by_grayscale_frame</span>
+<span class="sd">.. autofunction:: pjimg.filters.uses_uint8</span>
+<span class="sd">.. autofunction:: pjimg.filters.will_square</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">wraps</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
-<span class="kn">from</span> <span class="nn">pjimg.imgfilt.model</span> <span class="kn">import</span> <span class="n">Filter</span>
+<span class="kn">from</span> <span class="nn">pjimg.filters.model</span> <span class="kn">import</span> <span class="n">Filter</span>
 <span class="kn">from</span> <span class="nn">pjimg.util</span> <span class="kn">import</span> <span class="n">ImgAry</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">X_</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">Y_</span><span class="p">,</span> <span class="n">Z</span><span class="p">,</span> <span class="n">Z_</span>
 
 
@@ -222,7 +222,7 @@
 
 <span class="c1"># Decorators.</span>
 <div class="viewcode-block" id="processes_by_grayscale_frame">
-<a class="viewcode-back" href="../../../imgfilt.html#pjimg.imgfilt.processes_by_grayscale_frame">[docs]</a>
+<a class="viewcode-back" href="../../../filters.html#pjimg.filters.processes_by_grayscale_frame">[docs]</a>
 <span class="k">def</span> <span class="nf">processes_by_grayscale_frame</span><span class="p">(</span><span class="n">fn</span><span class="p">:</span> <span class="n">Filter</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Filter</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;If the given array is more than two dimensions, iterate</span>
 <span class="sd">    through each two dimensional slice. This is used when the</span>
@@ -251,7 +251,7 @@
 
 
 <div class="viewcode-block" id="uses_uint8">
-<a class="viewcode-back" href="../../../imgfilt.html#pjimg.imgfilt.uses_uint8">[docs]</a>
+<a class="viewcode-back" href="../../../filters.html#pjimg.filters.uses_uint8">[docs]</a>
 <span class="k">def</span> <span class="nf">uses_uint8</span><span class="p">(</span><span class="n">fn</span><span class="p">:</span> <span class="n">Filter</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Filter</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Converts the image data from floats to ints.&quot;&quot;&quot;</span>
     <span class="nd">@wraps</span><span class="p">(</span><span class="n">fn</span><span class="p">)</span>
@@ -275,7 +275,7 @@
 
 
 <div class="viewcode-block" id="will_square">
-<a class="viewcode-back" href="../../../imgfilt.html#pjimg.imgfilt.will_square">[docs]</a>
+<a class="viewcode-back" href="../../../filters.html#pjimg.filters.will_square">[docs]</a>
 <span class="k">def</span> <span class="nf">will_square</span><span class="p">(</span><span class="n">fn</span><span class="p">:</span> <span class="n">Filter</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Filter</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;The array needs to have equal sized X and Y axes. The result</span>
 <span class="sd">    will be sliced to the size of the original array.</span>

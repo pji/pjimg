@@ -1,1 +1,1 @@
-.. automodule:: pjimg.imggen
+.. automodule:: pjimg.sources

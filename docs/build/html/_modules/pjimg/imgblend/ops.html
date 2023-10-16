@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
     <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
-        <title>pjimg.imgblend.ops - pjimg 0.0.1 documentation</title>
+        <title>pjimg.blends.ops - pjimg 0.0.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=135e06be" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?v=36a5483c" />
@@ -156,11 +156,11 @@
   <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../index.html">pjimg documentation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../imgblend.html">imgblend</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../imgease.html">imgease</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../imgfilt.html">imgfilt</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../imggen.html">Basic Usage: Sources</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../imggen.html#sources">Sources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../blends.html">blends</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../eases.html">eases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../filters.html">filters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../sources.html">Basic Usage: Sources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../sources.html#sources">Sources</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../imgio.html">imgio</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../util.html">util</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../requirements.html">pjimg Requirements</a></li>
@@ -197,7 +197,7 @@
           </label>
         </div>
         <article role="main">
-          <h1>Source code for pjimg.imgblend.ops</h1><div class="highlight"><pre>
+          <h1>Source code for pjimg.blends.ops</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">Basic Usage: Blends</span>
 <span class="sd">===================</span>
@@ -249,7 +249,7 @@
 
 <span class="sd">To perform the blending algorithm, the two arrays must be the same</span>
 <span class="sd">shape. In most cases, differences between the two shapes will be</span>
-<span class="sd">handled through the :func:`pjimg.imgblend.will_match_size`</span>
+<span class="sd">handled through the :func:`pjimg.blends.will_match_size`</span>
 <span class="sd">decorator, which adds zeros to the smaller array to make their sizes</span>
 <span class="sd">match. However, in the case described above, something different</span>
 <span class="sd">happens.</span>
@@ -262,7 +262,7 @@
 <span class="sd">dimension of size three. The values will be the original single</span>
 <span class="sd">value repeated three times. To demonstrate::</span>
 
-<span class="sd">    &gt;&gt;&gt; from imgblender.common import will_colorize</span>
+<span class="sd">    &gt;&gt;&gt; from blendser.common import will_colorize</span>
 <span class="sd">    &gt;&gt;&gt; a = np.array([</span>
 <span class="sd">    ...     [1.0, 0.5, 0.0, ],</span>
 <span class="sd">    ...     [0.5, 0.0, 0.5, ],</span>
@@ -307,7 +307,7 @@
 <span class="sd">Registration</span>
 <span class="sd">============</span>
 <span class="sd">All blending operations are registered in :class:`dict`</span>
-<span class="sd">`pjimg.imgease.blends` for convenience, but they can also</span>
+<span class="sd">`pjimg.eases.blends` for convenience, but they can also</span>
 <span class="sd">be called directly.</span>
 
 
@@ -330,45 +330,45 @@
 
 <span class="sd">Replacement Blends</span>
 <span class="sd">------------------</span>
-<span class="sd">.. autofunction:: pjimg.imgblend.replace</span>
+<span class="sd">.. autofunction:: pjimg.blends.replace</span>
 
 
 <span class="sd">Darker/Burn Blends</span>
 <span class="sd">------------------</span>
-<span class="sd">.. autofunction:: pjimg.imgblend.darker</span>
-<span class="sd">.. autofunction:: pjimg.imgblend.multiply</span>
-<span class="sd">.. autofunction:: pjimg.imgblend.color_burn</span>
-<span class="sd">.. autofunction:: pjimg.imgblend.linear_burn</span>
+<span class="sd">.. autofunction:: pjimg.blends.darker</span>
+<span class="sd">.. autofunction:: pjimg.blends.multiply</span>
+<span class="sd">.. autofunction:: pjimg.blends.color_burn</span>
+<span class="sd">.. autofunction:: pjimg.blends.linear_burn</span>
 
 
 <span class="sd">Lighter/Dodge Blends</span>
 <span class="sd">--------------------</span>
-<span class="sd">.. autofunction:: pjimg.imgblend.lighter</span>
-<span class="sd">.. autofunction:: pjimg.imgblend.screen</span>
-<span class="sd">.. autofunction:: pjimg.imgblend.color_dodge</span>
-<span class="sd">.. autofunction:: pjimg.imgblend.linear_dodge</span>
+<span class="sd">.. autofunction:: pjimg.blends.lighter</span>
+<span class="sd">.. autofunction:: pjimg.blends.screen</span>
+<span class="sd">.. autofunction:: pjimg.blends.color_dodge</span>
+<span class="sd">.. autofunction:: pjimg.blends.linear_dodge</span>
 
 
 <span class="sd">Inversion Blends</span>
 <span class="sd">----------------</span>
-<span class="sd">.. autofunction:: pjimg.imgblend.difference</span>
-<span class="sd">.. autofunction:: pjimg.imgblend.exclusion</span>
+<span class="sd">.. autofunction:: pjimg.blends.difference</span>
+<span class="sd">.. autofunction:: pjimg.blends.exclusion</span>
 
 
 <span class="sd">Contrast Blends</span>
 <span class="sd">---------------</span>
-<span class="sd">.. autofunction:: pjimg.imgblend.hard_light</span>
-<span class="sd">.. autofunction:: pjimg.imgblend.hard_mix</span>
-<span class="sd">.. autofunction:: pjimg.imgblend.linear_light</span>
-<span class="sd">.. autofunction:: pjimg.imgblend.overlay</span>
-<span class="sd">.. autofunction:: pjimg.imgblend.pin_light</span>
-<span class="sd">.. autofunction:: pjimg.imgblend.soft_light</span>
-<span class="sd">.. autofunction:: pjimg.imgblend.vivid_light</span>
+<span class="sd">.. autofunction:: pjimg.blends.hard_light</span>
+<span class="sd">.. autofunction:: pjimg.blends.hard_mix</span>
+<span class="sd">.. autofunction:: pjimg.blends.linear_light</span>
+<span class="sd">.. autofunction:: pjimg.blends.overlay</span>
+<span class="sd">.. autofunction:: pjimg.blends.pin_light</span>
+<span class="sd">.. autofunction:: pjimg.blends.soft_light</span>
+<span class="sd">.. autofunction:: pjimg.blends.vivid_light</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
-<span class="kn">from</span> <span class="nn">pjimg.imgblend.decorators</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">pjimg.blends.decorators</span> <span class="kn">import</span> <span class="o">*</span>
 <span class="kn">from</span> <span class="nn">pjimg.util</span> <span class="kn">import</span> <span class="n">ImgAry</span>
 
 
@@ -383,7 +383,7 @@
 
 <span class="c1"># Simple replacement blends.</span>
 <div class="viewcode-block" id="replace">
-<a class="viewcode-back" href="../../../imgblend.html#pjimg.imgblend.replace">[docs]</a>
+<a class="viewcode-back" href="../../../blends.html#pjimg.blends.replace">[docs]</a>
 <span class="nd">@can_mask</span>
 <span class="nd">@can_fade</span>
 <span class="nd">@will_match_size</span>
@@ -407,12 +407,12 @@
 <span class="sd">    :param fade: (Optional.) The amount the blended values should</span>
 <span class="sd">        affect the existing values. This is a float between zero</span>
 <span class="sd">        and one, where zero is no effect and one is full effect.</span>
-<span class="sd">        See :func:`imgblender.common.can_fade` for more details.</span>
+<span class="sd">        See :func:`blendser.common.can_fade` for more details.</span>
 <span class="sd">    :param mask: (Optional.) An image mask that is used to determine</span>
 <span class="sd">        the effect the blend should have on the existing values.</span>
 <span class="sd">        This is a :class:`numpy.ndarray` of floats between zero and</span>
 <span class="sd">        one, where zero is no effect and one is full effect. See</span>
-<span class="sd">        :func:`imgblender.common.can_mask` for details.</span>
+<span class="sd">        :func:`blendser.common.can_mask` for details.</span>
 <span class="sd">    :return: An :class:`numpy.ndarray` that contains the values of the</span>
 <span class="sd">        blended arrays.</span>
 <span class="sd">    :rtype: numpy.ndarray</span>
@@ -423,7 +423,7 @@
 
 <span class="c1"># Darker/burn blends.</span>
 <div class="viewcode-block" id="darker">
-<a class="viewcode-back" href="../../../imgblend.html#pjimg.imgblend.darker">[docs]</a>
+<a class="viewcode-back" href="../../../blends.html#pjimg.blends.darker">[docs]</a>
 <span class="nd">@will_clip</span>
 <span class="nd">@can_mask</span>
 <span class="nd">@can_fade</span>
@@ -447,12 +447,12 @@
 <span class="sd">    :param fade: (Optional.) The amount the blended values should</span>
 <span class="sd">        affect the existing values. This is a float between zero</span>
 <span class="sd">        and one, where zero is no effect and one is full effect.</span>
-<span class="sd">        See :func:`imgblender.common.can_fade` for more details.</span>
+<span class="sd">        See :func:`blendser.common.can_fade` for more details.</span>
 <span class="sd">    :param mask: (Optional.) An image mask that is used to determine</span>
 <span class="sd">        the effect the blend should have on the existing values.</span>
 <span class="sd">        This is a :class:`numpy.ndarray` of floats between zero and</span>
 <span class="sd">        one, where zero is no effect and one is full effect. See</span>
-<span class="sd">        :func:`imgblender.common.can_mask` for details.</span>
+<span class="sd">        :func:`blendser.common.can_mask` for details.</span>
 <span class="sd">    :return: An :class:`numpy.ndarray` that contains the values of the</span>
 <span class="sd">        blended arrays.</span>
 <span class="sd">    :rtype: numpy.ndarray</span>
@@ -464,7 +464,7 @@
 
 
 <div class="viewcode-block" id="multiply">
-<a class="viewcode-back" href="../../../imgblend.html#pjimg.imgblend.multiply">[docs]</a>
+<a class="viewcode-back" href="../../../blends.html#pjimg.blends.multiply">[docs]</a>
 <span class="nd">@will_clip</span>
 <span class="nd">@can_mask</span>
 <span class="nd">@can_fade</span>
@@ -488,12 +488,12 @@
 <span class="sd">    :param fade: (Optional.) The amount the blended values should</span>
 <span class="sd">        affect the existing values. This is a float between zero</span>
 <span class="sd">        and one, where zero is no effect and one is full effect.</span>
-<span class="sd">        See :func:`imgblender.common.can_fade` for more details.</span>
+<span class="sd">        See :func:`blendser.common.can_fade` for more details.</span>
 <span class="sd">    :param mask: (Optional.) An image mask that is used to determine</span>
 <span class="sd">        the effect the blend should have on the existing values.</span>
 <span class="sd">        This is a :class:`numpy.ndarray` of floats between zero and</span>
 <span class="sd">        one, where zero is no effect and one is full effect. See</span>
-<span class="sd">        :func:`imgblender.common.can_mask` for details.</span>
+<span class="sd">        :func:`blendser.common.can_mask` for details.</span>
 <span class="sd">    :return: An :class:`numpy.ndarray` that contains the values of the</span>
 <span class="sd">        blended arrays.</span>
 <span class="sd">    :rtype: numpy.ndarray</span>
@@ -503,7 +503,7 @@
 
 
 <div class="viewcode-block" id="color_burn">
-<a class="viewcode-back" href="../../../imgblend.html#pjimg.imgblend.color_burn">[docs]</a>
+<a class="viewcode-back" href="../../../blends.html#pjimg.blends.color_burn">[docs]</a>
 <span class="nd">@will_clip</span>
 <span class="nd">@can_mask</span>
 <span class="nd">@can_fade</span>
@@ -527,12 +527,12 @@
 <span class="sd">    :param fade: (Optional.) The amount the blended values should</span>
 <span class="sd">        affect the existing values. This is a float between zero</span>
 <span class="sd">        and one, where zero is no effect and one is full effect.</span>
-<span class="sd">        See :func:`imgblender.common.can_fade` for more details.</span>
+<span class="sd">        See :func:`blendser.common.can_fade` for more details.</span>
 <span class="sd">    :param mask: (Optional.) An image mask that is used to determine</span>
 <span class="sd">        the effect the blend should have on the existing values.</span>
 <span class="sd">        This is a :class:`numpy.ndarray` of floats between zero and</span>
 <span class="sd">        one, where zero is no effect and one is full effect. See</span>
-<span class="sd">        :func:`imgblender.common.can_mask` for details.</span>
+<span class="sd">        :func:`blendser.common.can_mask` for details.</span>
 <span class="sd">    :return: An :class:`numpy.ndarray` that contains the values of the</span>
 <span class="sd">        blended arrays.</span>
 <span class="sd">    :rtype: numpy.ndarray</span>
@@ -546,7 +546,7 @@
 
 
 <div class="viewcode-block" id="linear_burn">
-<a class="viewcode-back" href="../../../imgblend.html#pjimg.imgblend.linear_burn">[docs]</a>
+<a class="viewcode-back" href="../../../blends.html#pjimg.blends.linear_burn">[docs]</a>
 <span class="nd">@will_clip</span>
 <span class="nd">@can_mask</span>
 <span class="nd">@can_fade</span>
@@ -570,12 +570,12 @@
 <span class="sd">    :param fade: (Optional.) The amount the blended values should</span>
 <span class="sd">        affect the existing values. This is a float between zero</span>
 <span class="sd">        and one, where zero is no effect and one is full effect.</span>
-<span class="sd">        See :func:`imgblender.common.can_fade` for more details.</span>
+<span class="sd">        See :func:`blendser.common.can_fade` for more details.</span>
 <span class="sd">    :param mask: (Optional.) An image mask that is used to determine</span>
 <span class="sd">        the effect the blend should have on the existing values.</span>
 <span class="sd">        This is a :class:`numpy.ndarray` of floats between zero and</span>
 <span class="sd">        one, where zero is no effect and one is full effect. See</span>
-<span class="sd">        :func:`imgblender.common.can_mask` for details.</span>
+<span class="sd">        :func:`blendser.common.can_mask` for details.</span>
 <span class="sd">    :return: An :class:`numpy.ndarray` that contains the values of the</span>
 <span class="sd">        blended arrays.</span>
 <span class="sd">    :rtype: numpy.ndarray</span>
@@ -586,7 +586,7 @@
 
 <span class="c1"># Lighter/dodge blends.</span>
 <div class="viewcode-block" id="lighter">
-<a class="viewcode-back" href="../../../imgblend.html#pjimg.imgblend.lighter">[docs]</a>
+<a class="viewcode-back" href="../../../blends.html#pjimg.blends.lighter">[docs]</a>
 <span class="nd">@will_clip</span>
 <span class="nd">@can_mask</span>
 <span class="nd">@can_fade</span>
@@ -610,12 +610,12 @@
 <span class="sd">    :param fade: (Optional.) The amount the blended values should</span>
 <span class="sd">        affect the existing values. This is a float between zero</span>
 <span class="sd">        and one, where zero is no effect and one is full effect.</span>
-<span class="sd">        See :func:`imgblender.common.can_fade` for more details.</span>
+<span class="sd">        See :func:`blendser.common.can_fade` for more details.</span>
 <span class="sd">    :param mask: (Optional.) An image mask that is used to determine</span>
 <span class="sd">        the effect the blend should have on the existing values.</span>
 <span class="sd">        This is a :class:`numpy.ndarray` of floats between zero and</span>
 <span class="sd">        one, where zero is no effect and one is full effect. See</span>
-<span class="sd">        :func:`imgblender.common.can_mask` for details.</span>
+<span class="sd">        :func:`blendser.common.can_mask` for details.</span>
 <span class="sd">    :return: An :class:`numpy.ndarray` that contains the values of the</span>
 <span class="sd">        blended arrays.</span>
 <span class="sd">    :rtype: numpy.ndarray</span>
@@ -627,7 +627,7 @@
 
 
 <div class="viewcode-block" id="screen">
-<a class="viewcode-back" href="../../../imgblend.html#pjimg.imgblend.screen">[docs]</a>
+<a class="viewcode-back" href="../../../blends.html#pjimg.blends.screen">[docs]</a>
 <span class="nd">@will_clip</span>
 <span class="nd">@can_mask</span>
 <span class="nd">@can_fade</span>
@@ -652,12 +652,12 @@
 <span class="sd">    :param fade: (Optional.) The amount the blended values should</span>
 <span class="sd">        affect the existing values. This is a float between zero</span>
 <span class="sd">        and one, where zero is no effect and one is full effect.</span>
-<span class="sd">        See :func:`imgblender.common.can_fade` for more details.</span>
+<span class="sd">        See :func:`blendser.common.can_fade` for more details.</span>
 <span class="sd">    :param mask: (Optional.) An image mask that is used to determine</span>
 <span class="sd">        the effect the blend should have on the existing values.</span>
 <span class="sd">        This is a :class:`numpy.ndarray` of floats between zero and</span>
 <span class="sd">        one, where zero is no effect and one is full effect. See</span>
-<span class="sd">        :func:`imgblender.common.can_mask` for details.</span>
+<span class="sd">        :func:`blendser.common.can_mask` for details.</span>
 <span class="sd">    :return: An :class:`numpy.ndarray` that contains the values of the</span>
 <span class="sd">        blended arrays.</span>
 <span class="sd">    :rtype: numpy.ndarray</span>
@@ -670,7 +670,7 @@
 
 
 <div class="viewcode-block" id="color_dodge">
-<a class="viewcode-back" href="../../../imgblend.html#pjimg.imgblend.color_dodge">[docs]</a>
+<a class="viewcode-back" href="../../../blends.html#pjimg.blends.color_dodge">[docs]</a>
 <span class="nd">@will_clip</span>
 <span class="nd">@can_mask</span>
 <span class="nd">@can_fade</span>
@@ -693,12 +693,12 @@
 <span class="sd">    :param fade: (Optional.) The amount the blended values should</span>
 <span class="sd">        affect the existing values. This is a float between zero</span>
 <span class="sd">        and one, where zero is no effect and one is full effect.</span>
-<span class="sd">        See :func:`imgblender.common.can_fade` for more details.</span>
+<span class="sd">        See :func:`blendser.common.can_fade` for more details.</span>
 <span class="sd">    :param mask: (Optional.) An image mask that is used to determine</span>
 <span class="sd">        the effect the blend should have on the existing values.</span>
 <span class="sd">        This is a :class:`numpy.ndarray` of floats between zero and</span>
 <span class="sd">        one, where zero is no effect and one is full effect. See</span>
-<span class="sd">        :func:`imgblender.common.can_mask` for details.</span>
+<span class="sd">        :func:`blendser.common.can_mask` for details.</span>
 <span class="sd">    :return: An :class:`numpy.ndarray` that contains the values of the</span>
 <span class="sd">        blended arrays.</span>
 <span class="sd">    :rtype: numpy.ndarray</span>
@@ -710,7 +710,7 @@
 
 
 <div class="viewcode-block" id="linear_dodge">
-<a class="viewcode-back" href="../../../imgblend.html#pjimg.imgblend.linear_dodge">[docs]</a>
+<a class="viewcode-back" href="../../../blends.html#pjimg.blends.linear_dodge">[docs]</a>
 <span class="nd">@will_clip</span>
 <span class="nd">@can_mask</span>
 <span class="nd">@can_fade</span>
@@ -733,12 +733,12 @@
 <span class="sd">    :param fade: (Optional.) The amount the blended values should</span>
 <span class="sd">        affect the existing values. This is a float between zero</span>
 <span class="sd">        and one, where zero is no effect and one is full effect.</span>
-<span class="sd">        See :func:`imgblender.common.can_fade` for more details.</span>
+<span class="sd">        See :func:`blendser.common.can_fade` for more details.</span>
 <span class="sd">    :param mask: (Optional.) An image mask that is used to determine</span>
 <span class="sd">        the effect the blend should have on the existing values.</span>
 <span class="sd">        This is a :class:`numpy.ndarray` of floats between zero and</span>
 <span class="sd">        one, where zero is no effect and one is full effect. See</span>
-<span class="sd">        :func:`imgblender.common.can_mask` for details.</span>
+<span class="sd">        :func:`blendser.common.can_mask` for details.</span>
 <span class="sd">    :return: An :class:`numpy.ndarray` that contains the values of the</span>
 <span class="sd">        blended arrays.</span>
 <span class="sd">    :rtype: numpy.ndarray</span>
@@ -749,7 +749,7 @@
 
 <span class="c1"># Inversion blends.</span>
 <div class="viewcode-block" id="difference">
-<a class="viewcode-back" href="../../../imgblend.html#pjimg.imgblend.difference">[docs]</a>
+<a class="viewcode-back" href="../../../blends.html#pjimg.blends.difference">[docs]</a>
 <span class="nd">@will_clip</span>
 <span class="nd">@can_mask</span>
 <span class="nd">@can_fade</span>
@@ -774,12 +774,12 @@
 <span class="sd">    :param fade: (Optional.) The amount the blended values should</span>
 <span class="sd">        affect the existing values. This is a float between zero</span>
 <span class="sd">        and one, where zero is no effect and one is full effect.</span>
-<span class="sd">        See :func:`imgblender.common.can_fade` for more details.</span>
+<span class="sd">        See :func:`blendser.common.can_fade` for more details.</span>
 <span class="sd">    :param mask: (Optional.) An image mask that is used to determine</span>
 <span class="sd">        the effect the blend should have on the existing values.</span>
 <span class="sd">        This is a :class:`numpy.ndarray` of floats between zero and</span>
 <span class="sd">        one, where zero is no effect and one is full effect. See</span>
-<span class="sd">        :func:`imgblender.common.can_mask` for details.</span>
+<span class="sd">        :func:`blendser.common.can_mask` for details.</span>
 <span class="sd">    :return: An :class:`numpy.ndarray` that contains the values of the</span>
 <span class="sd">        blended arrays.</span>
 <span class="sd">    :rtype: numpy.ndarray</span>
@@ -789,7 +789,7 @@
 
 
 <div class="viewcode-block" id="exclusion">
-<a class="viewcode-back" href="../../../imgblend.html#pjimg.imgblend.exclusion">[docs]</a>
+<a class="viewcode-back" href="../../../blends.html#pjimg.blends.exclusion">[docs]</a>
 <span class="nd">@will_clip</span>
 <span class="nd">@can_mask</span>
 <span class="nd">@can_fade</span>
@@ -813,12 +813,12 @@
 <span class="sd">    :param fade: (Optional.) The amount the blended values should</span>
 <span class="sd">        affect the existing values. This is a float between zero</span>
 <span class="sd">        and one, where zero is no effect and one is full effect.</span>
-<span class="sd">        See :func:`imgblender.common.can_fade` for more details.</span>
+<span class="sd">        See :func:`blendser.common.can_fade` for more details.</span>
 <span class="sd">    :param mask: (Optional.) An image mask that is used to determine</span>
 <span class="sd">        the effect the blend should have on the existing values.</span>
 <span class="sd">        This is a :class:`numpy.ndarray` of floats between zero and</span>
 <span class="sd">        one, where zero is no effect and one is full effect. See</span>
-<span class="sd">        :func:`imgblender.common.can_mask` for details.</span>
+<span class="sd">        :func:`blendser.common.can_mask` for details.</span>
 <span class="sd">    :return: An :class:`numpy.ndarray` that contains the values of the</span>
 <span class="sd">        blended arrays.</span>
 <span class="sd">    :rtype: numpy.ndarray</span>
@@ -830,7 +830,7 @@
 
 <span class="c1"># Contrast blends.</span>
 <div class="viewcode-block" id="hard_light">
-<a class="viewcode-back" href="../../../imgblend.html#pjimg.imgblend.hard_light">[docs]</a>
+<a class="viewcode-back" href="../../../blends.html#pjimg.blends.hard_light">[docs]</a>
 <span class="nd">@will_clip</span>
 <span class="nd">@can_mask</span>
 <span class="nd">@can_fade</span>
@@ -854,12 +854,12 @@
 <span class="sd">    :param fade: (Optional.) The amount the blended values should</span>
 <span class="sd">        affect the existing values. This is a float between zero</span>
 <span class="sd">        and one, where zero is no effect and one is full effect.</span>
-<span class="sd">        See :func:`imgblender.common.can_fade` for more details.</span>
+<span class="sd">        See :func:`blendser.common.can_fade` for more details.</span>
 <span class="sd">    :param mask: (Optional.) An image mask that is used to determine</span>
 <span class="sd">        the effect the blend should have on the existing values.</span>
 <span class="sd">        This is a :class:`numpy.ndarray` of floats between zero and</span>
 <span class="sd">        one, where zero is no effect and one is full effect. See</span>
-<span class="sd">        :func:`imgblender.common.can_mask` for details.</span>
+<span class="sd">        :func:`blendser.common.can_mask` for details.</span>
 <span class="sd">    :return: An :class:`numpy.ndarray` that contains the values of the</span>
 <span class="sd">        blended arrays.</span>
 <span class="sd">    :rtype: numpy.ndarray</span>
@@ -872,7 +872,7 @@
 
 
 <div class="viewcode-block" id="hard_mix">
-<a class="viewcode-back" href="../../../imgblend.html#pjimg.imgblend.hard_mix">[docs]</a>
+<a class="viewcode-back" href="../../../blends.html#pjimg.blends.hard_mix">[docs]</a>
 <span class="nd">@will_clip</span>
 <span class="nd">@can_mask</span>
 <span class="nd">@can_fade</span>
@@ -896,12 +896,12 @@
 <span class="sd">    :param fade: (Optional.) The amount the blended values should</span>
 <span class="sd">        affect the existing values. This is a float between zero</span>
 <span class="sd">        and one, where zero is no effect and one is full effect.</span>
-<span class="sd">        See :func:`imgblender.common.can_fade` for more details.</span>
+<span class="sd">        See :func:`blendser.common.can_fade` for more details.</span>
 <span class="sd">    :param mask: (Optional.) An image mask that is used to determine</span>
 <span class="sd">        the effect the blend should have on the existing values.</span>
 <span class="sd">        This is a :class:`numpy.ndarray` of floats between zero and</span>
 <span class="sd">        one, where zero is no effect and one is full effect. See</span>
-<span class="sd">        :func:`imgblender.common.can_mask` for details.</span>
+<span class="sd">        :func:`blendser.common.can_mask` for details.</span>
 <span class="sd">    :return: An :class:`numpy.ndarray` that contains the values of the</span>
 <span class="sd">        blended arrays.</span>
 <span class="sd">    :rtype: numpy.ndarray</span>
@@ -914,7 +914,7 @@
 
 
 <div class="viewcode-block" id="linear_light">
-<a class="viewcode-back" href="../../../imgblend.html#pjimg.imgblend.linear_light">[docs]</a>
+<a class="viewcode-back" href="../../../blends.html#pjimg.blends.linear_light">[docs]</a>
 <span class="nd">@will_clip</span>
 <span class="nd">@can_mask</span>
 <span class="nd">@can_fade</span>
@@ -937,12 +937,12 @@
 <span class="sd">    :param fade: (Optional.) The amount the blended values should</span>
 <span class="sd">        affect the existing values. This is a float between zero</span>
 <span class="sd">        and one, where zero is no effect and one is full effect.</span>
-<span class="sd">        See :func:`imgblender.common.can_fade` for more details.</span>
+<span class="sd">        See :func:`blendser.common.can_fade` for more details.</span>
 <span class="sd">    :param mask: (Optional.) An image mask that is used to determine</span>
 <span class="sd">        the effect the blend should have on the existing values.</span>
 <span class="sd">        This is a :class:`numpy.ndarray` of floats between zero and</span>
 <span class="sd">        one, where zero is no effect and one is full effect. See</span>
-<span class="sd">        :func:`imgblender.common.can_mask` for details.</span>
+<span class="sd">        :func:`blendser.common.can_mask` for details.</span>
 <span class="sd">    :return: An :class:`numpy.ndarray` that contains the values of the</span>
 <span class="sd">        blended arrays.</span>
 <span class="sd">    :rtype: numpy.ndarray</span>
@@ -953,7 +953,7 @@
 
 
 <div class="viewcode-block" id="overlay">
-<a class="viewcode-back" href="../../../imgblend.html#pjimg.imgblend.overlay">[docs]</a>
+<a class="viewcode-back" href="../../../blends.html#pjimg.blends.overlay">[docs]</a>
 <span class="nd">@will_clip</span>
 <span class="nd">@can_mask</span>
 <span class="nd">@can_fade</span>
@@ -976,12 +976,12 @@
 <span class="sd">    :param fade: (Optional.) The amount the blended values should</span>
 <span class="sd">        affect the existing values. This is a float between zero</span>
 <span class="sd">        and one, where zero is no effect and one is full effect.</span>
-<span class="sd">        See :func:`imgblender.common.can_fade` for more details.</span>
+<span class="sd">        See :func:`blendser.common.can_fade` for more details.</span>
 <span class="sd">    :param mask: (Optional.) An image mask that is used to determine</span>
 <span class="sd">        the effect the blend should have on the existing values.</span>
 <span class="sd">        This is a :class:`numpy.ndarray` of floats between zero and</span>
 <span class="sd">        one, where zero is no effect and one is full effect. See</span>
-<span class="sd">        :func:`imgblender.common.can_mask` for details.</span>
+<span class="sd">        :func:`blendser.common.can_mask` for details.</span>
 <span class="sd">    :return: An :class:`numpy.ndarray` that contains the values of the</span>
 <span class="sd">        blended arrays.</span>
 <span class="sd">    :rtype: numpy.ndarray</span>
@@ -995,7 +995,7 @@
 
 
 <div class="viewcode-block" id="pin_light">
-<a class="viewcode-back" href="../../../imgblend.html#pjimg.imgblend.pin_light">[docs]</a>
+<a class="viewcode-back" href="../../../blends.html#pjimg.blends.pin_light">[docs]</a>
 <span class="nd">@will_clip</span>
 <span class="nd">@can_mask</span>
 <span class="nd">@can_fade</span>
@@ -1018,12 +1018,12 @@
 <span class="sd">    :param fade: (Optional.) The amount the blended values should</span>
 <span class="sd">        affect the existing values. This is a float between zero</span>
 <span class="sd">        and one, where zero is no effect and one is full effect.</span>
-<span class="sd">        See :func:`imgblender.common.can_fade` for more details.</span>
+<span class="sd">        See :func:`blendser.common.can_fade` for more details.</span>
 <span class="sd">    :param mask: (Optional.) An image mask that is used to determine</span>
 <span class="sd">        the effect the blend should have on the existing values.</span>
 <span class="sd">        This is a :class:`numpy.ndarray` of floats between zero and</span>
 <span class="sd">        one, where zero is no effect and one is full effect. See</span>
-<span class="sd">        :func:`imgblender.common.can_mask` for details.</span>
+<span class="sd">        :func:`blendser.common.can_mask` for details.</span>
 <span class="sd">    :return: An :class:`numpy.ndarray` that contains the values of the</span>
 <span class="sd">        blended arrays.</span>
 <span class="sd">    :rtype: numpy.ndarray</span>
@@ -1047,7 +1047,7 @@
 
 
 <div class="viewcode-block" id="soft_light">
-<a class="viewcode-back" href="../../../imgblend.html#pjimg.imgblend.soft_light">[docs]</a>
+<a class="viewcode-back" href="../../../blends.html#pjimg.blends.soft_light">[docs]</a>
 <span class="nd">@will_clip</span>
 <span class="nd">@can_mask</span>
 <span class="nd">@can_fade</span>
@@ -1071,12 +1071,12 @@
 <span class="sd">    :param fade: (Optional.) The amount the blended values should</span>
 <span class="sd">        affect the existing values. This is a float between zero</span>
 <span class="sd">        and one, where zero is no effect and one is full effect.</span>
-<span class="sd">        See :func:`imgblender.common.can_fade` for more details.</span>
+<span class="sd">        See :func:`blendser.common.can_fade` for more details.</span>
 <span class="sd">    :param mask: (Optional.) An image mask that is used to determine</span>
 <span class="sd">        the effect the blend should have on the existing values.</span>
 <span class="sd">        This is a :class:`numpy.ndarray` of floats between zero and</span>
 <span class="sd">        one, where zero is no effect and one is full effect. See</span>
-<span class="sd">        :func:`imgblender.common.can_mask` for details.</span>
+<span class="sd">        :func:`blendser.common.can_mask` for details.</span>
 <span class="sd">    :return: An :class:`numpy.ndarray` that contains the values of the</span>
 <span class="sd">        blended arrays.</span>
 <span class="sd">    :rtype: numpy.ndarray</span>
@@ -1091,7 +1091,7 @@
 
 
 <div class="viewcode-block" id="vivid_light">
-<a class="viewcode-back" href="../../../imgblend.html#pjimg.imgblend.vivid_light">[docs]</a>
+<a class="viewcode-back" href="../../../blends.html#pjimg.blends.vivid_light">[docs]</a>
 <span class="nd">@will_clip</span>
 <span class="nd">@can_mask</span>
 <span class="nd">@can_fade</span>
@@ -1114,12 +1114,12 @@
 <span class="sd">    :param fade: (Optional.) The amount the blended values should</span>
 <span class="sd">        affect the existing values. This is a float between zero</span>
 <span class="sd">        and one, where zero is no effect and one is full effect.</span>
-<span class="sd">        See :func:`imgblender.common.can_fade` for more details.</span>
+<span class="sd">        See :func:`blendser.common.can_fade` for more details.</span>
 <span class="sd">    :param mask: (Optional.) An image mask that is used to determine</span>
 <span class="sd">        the effect the blend should have on the existing values.</span>
 <span class="sd">        This is a :class:`numpy.ndarray` of floats between zero and</span>
 <span class="sd">        one, where zero is no effect and one is full effect. See</span>
-<span class="sd">        :func:`imgblender.common.can_mask` for details.</span>
+<span class="sd">        :func:`blendser.common.can_mask` for details.</span>
 <span class="sd">    :return: An :class:`numpy.ndarray` that contains the values of the</span>
 <span class="sd">        blended arrays.</span>
 <span class="sd">    :rtype: numpy.ndarray</span>

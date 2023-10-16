@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
     <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
-        <title>pjimg.imggen.perlin - pjimg 0.0.1 documentation</title>
+        <title>pjimg.sources.perlin - pjimg 0.0.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=135e06be" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?v=36a5483c" />
@@ -156,11 +156,11 @@
   <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../index.html">pjimg documentation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../imgblend.html">imgblend</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../imgease.html">imgease</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../imgfilt.html">imgfilt</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../imggen.html">Basic Usage: Sources</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../imggen.html#sources">Sources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../blends.html">blends</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../eases.html">eases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../filters.html">filters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../sources.html">Basic Usage: Sources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../sources.html#sources">Sources</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../imgio.html">imgio</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../util.html">util</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../requirements.html">pjimg Requirements</a></li>
@@ -197,7 +197,7 @@
           </label>
         </div>
         <article role="main">
-          <h1>Source code for pjimg.imggen.perlin</h1><div class="highlight"><pre>
+          <h1>Source code for pjimg.sources.perlin</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">Perlin Noise</span>
 <span class="sd">------------</span>
@@ -206,22 +206,22 @@
 <span class="sd">by Ken Perlin to provide a more naturalistic look to computer generated</span>
 <span class="sd">images.</span>
 
-<span class="sd">.. autoclass:: pjimg.imggen.Perlin</span>
-<span class="sd">.. autoclass:: pjimg.imggen.OctavePerlin</span>
+<span class="sd">.. autoclass:: pjimg.sources.Perlin</span>
+<span class="sd">.. autoclass:: pjimg.sources.OctavePerlin</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Sequence</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
-<span class="kn">from</span> <span class="nn">pjimg.imggen</span> <span class="kn">import</span> <span class="n">unitnoise</span> <span class="k">as</span> <span class="n">un</span>
-<span class="kn">from</span> <span class="nn">pjimg.imggen.model</span> <span class="kn">import</span> <span class="n">Seed</span>
+<span class="kn">from</span> <span class="nn">pjimg.sources</span> <span class="kn">import</span> <span class="n">unitnoise</span> <span class="k">as</span> <span class="n">un</span>
+<span class="kn">from</span> <span class="nn">pjimg.sources.model</span> <span class="kn">import</span> <span class="n">Seed</span>
 <span class="kn">from</span> <span class="nn">pjimg.util</span> <span class="kn">import</span> <span class="n">ImgAry</span><span class="p">,</span> <span class="n">IntAry64</span><span class="p">,</span> <span class="n">Loc</span><span class="p">,</span> <span class="n">RatioAry</span><span class="p">,</span> <span class="n">Size</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">Z</span>
 
 
 <span class="c1"># Public class.</span>
 <div class="viewcode-block" id="Perlin">
-<a class="viewcode-back" href="../../../imggen.html#pjimg.imggen.Perlin">[docs]</a>
+<a class="viewcode-back" href="../../../sources.html#pjimg.sources.Perlin">[docs]</a>
 <span class="k">class</span> <span class="nc">Perlin</span><span class="p">(</span><span class="n">un</span><span class="o">.</span><span class="n">UnitNoise</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;A class to generate Perlin noise.</span>
 
@@ -257,7 +257,7 @@
 <span class="sd">        be converted to UTF-8 bytes before being converted to</span>
 <span class="sd">        integers for seeding.</span>
 <span class="sd">    :return: :class:Perlin object.</span>
-<span class="sd">    :rtype: imggen.perlin.Perlin</span>
+<span class="sd">    :rtype: sources.perlin.Perlin</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">unit</span><span class="p">:</span> <span class="n">Size</span><span class="p">,</span>

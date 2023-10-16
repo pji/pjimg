@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
     <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
-        <title>pjimg.imggen.maze - pjimg 0.0.1 documentation</title>
+        <title>pjimg.sources.maze - pjimg 0.0.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=135e06be" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?v=36a5483c" />
@@ -156,11 +156,11 @@
   <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../index.html">pjimg documentation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../imgblend.html">imgblend</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../imgease.html">imgease</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../imgfilt.html">imgfilt</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../imggen.html">Basic Usage: Sources</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../imggen.html#sources">Sources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../blends.html">blends</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../eases.html">eases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../filters.html">filters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../sources.html">Basic Usage: Sources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../sources.html#sources">Sources</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../imgio.html">imgio</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../util.html">util</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../requirements.html">pjimg Requirements</a></li>
@@ -197,16 +197,16 @@
           </label>
         </div>
         <article role="main">
-          <h1>Source code for pjimg.imggen.maze</h1><div class="highlight"><pre>
+          <h1>Source code for pjimg.sources.maze</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">Mazes</span>
 <span class="sd">-----</span>
 
 <span class="sd">A pseudorandomly generated maze.</span>
 
-<span class="sd">.. autoclass:: pjimg.imggen.Maze</span>
-<span class="sd">.. autoclass:: pjimg.imggen.AnimatedMaze</span>
-<span class="sd">.. autoclass:: pjimg.imggen.SolvedMaze</span>
+<span class="sd">.. autoclass:: pjimg.sources.Maze</span>
+<span class="sd">.. autoclass:: pjimg.sources.AnimatedMaze</span>
+<span class="sd">.. autoclass:: pjimg.sources.SolvedMaze</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">from</span> <span class="nn">operator</span> <span class="kn">import</span> <span class="n">itemgetter</span>
@@ -215,7 +215,7 @@
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">numpy.typing</span> <span class="kn">import</span> <span class="n">NDArray</span>
 
-<span class="kn">from</span> <span class="nn">pjimg.imggen</span> <span class="kn">import</span> <span class="n">unitnoise</span> <span class="k">as</span> <span class="n">un</span>
+<span class="kn">from</span> <span class="nn">pjimg.sources</span> <span class="kn">import</span> <span class="n">unitnoise</span> <span class="k">as</span> <span class="n">un</span>
 <span class="kn">from</span> <span class="nn">pjimg.util</span> <span class="kn">import</span> <span class="n">ImgAry</span><span class="p">,</span> <span class="n">IntAry</span><span class="p">,</span> <span class="n">IntAry64</span><span class="p">,</span> <span class="n">Loc</span><span class="p">,</span> <span class="n">Size</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">Z</span>
 
 
@@ -227,7 +227,7 @@
 
 <span class="c1"># Public classes.</span>
 <div class="viewcode-block" id="Maze">
-<a class="viewcode-back" href="../../../imggen.html#pjimg.imggen.Maze">[docs]</a>
+<a class="viewcode-back" href="../../../sources.html#pjimg.sources.Maze">[docs]</a>
 <span class="k">class</span> <span class="nc">Maze</span><span class="p">(</span><span class="n">un</span><span class="o">.</span><span class="n">UnitNoise</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;A class to generate maze-like paths.</span>
 
@@ -266,7 +266,7 @@
 <span class="sd">        be converted to UTF-8 bytes before being converted to</span>
 <span class="sd">        integers for seeding.</span>
 <span class="sd">    :return: :class:Maze object.</span>
-<span class="sd">    :rtype: imggen.maze.Maze</span>
+<span class="sd">    :rtype: sources.maze.Maze</span>
 
 <span class="sd">    Descriptive Origins</span>
 <span class="sd">    -------------------</span>
@@ -505,7 +505,7 @@
 
 
 <div class="viewcode-block" id="AnimatedMaze">
-<a class="viewcode-back" href="../../../imggen.html#pjimg.imggen.AnimatedMaze">[docs]</a>
+<a class="viewcode-back" href="../../../sources.html#pjimg.sources.AnimatedMaze">[docs]</a>
 <span class="k">class</span> <span class="nc">AnimatedMaze</span><span class="p">(</span><span class="n">Maze</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Animate the creation of a maze.</span>
 
@@ -542,7 +542,7 @@
 <span class="sd">        be converted to UTF-8 bytes before being converted to</span>
 <span class="sd">        integers for seeding.</span>
 <span class="sd">    :return: :class:AnimatedMaze object.</span>
-<span class="sd">    :rtype: imggen.maze.AnimatedMaze</span>
+<span class="sd">    :rtype: sources.maze.AnimatedMaze</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">unit</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span>
@@ -657,7 +657,7 @@
 
 
 <div class="viewcode-block" id="SolvedMaze">
-<a class="viewcode-back" href="../../../imggen.html#pjimg.imggen.SolvedMaze">[docs]</a>
+<a class="viewcode-back" href="../../../sources.html#pjimg.sources.SolvedMaze">[docs]</a>
 <span class="k">class</span> <span class="nc">SolvedMaze</span><span class="p">(</span><span class="n">Maze</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Draw a line that shows how to get from one location to another</span>
 <span class="sd">    in a maze.</span>
@@ -698,7 +698,7 @@
 <span class="sd">        be converted to UTF-8 bytes before being converted to</span>
 <span class="sd">        integers for seeding.</span>
 <span class="sd">    :return: :class:SolvedMaze object.</span>
-<span class="sd">    :rtype: imggen.maze.SolvedPath</span>
+<span class="sd">    :rtype: sources.maze.SolvedPath</span>
 
 <span class="sd">    Descriptive Origins</span>
 <span class="sd">    -------------------</span>

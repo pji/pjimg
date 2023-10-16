@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
     <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
-        <title>pjimg.imgease.imgeases - pjimg 0.0.1 documentation</title>
+        <title>pjimg.eases.easess - pjimg 0.0.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=135e06be" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?v=36a5483c" />
@@ -156,11 +156,11 @@
   <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../index.html">pjimg documentation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../imgblend.html">imgblend</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../imgease.html">imgease</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../imgfilt.html">imgfilt</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../imggen.html">Basic Usage: Sources</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../imggen.html#sources">Sources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../blends.html">blends</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../eases.html">eases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../filters.html">filters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../sources.html">Basic Usage: Sources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../sources.html#sources">Sources</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../imgio.html">imgio</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../util.html">util</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../requirements.html">pjimg Requirements</a></li>
@@ -197,7 +197,7 @@
           </label>
         </div>
         <article role="main">
-          <h1>Source code for pjimg.imgease.imgeases</h1><div class="highlight"><pre>
+          <h1>Source code for pjimg.eases.easess</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">Basic Usage: Eases</span>
 <span class="sd">==================</span>
@@ -231,7 +231,7 @@
 <span class="sd">What happens if you pass an array with numbers outside of that range?</span>
 
 <span class="sd">If you pass an array with values less than zero or greater than one, the</span>
-<span class="sd">:func:&#39;pjimg.imgease.will_scale&#39; decorator will scale the data before</span>
+<span class="sd">:func:&#39;pjimg.eases.will_scale&#39; decorator will scale the data before</span>
 <span class="sd">passing it to the ease and then unscale result before returning it.</span>
 
 <span class="sd">What happens when the data is scaled?</span>
@@ -258,7 +258,7 @@
 <span class="sd">Registration</span>
 <span class="sd">============</span>
 <span class="sd">All easing functions are registered in :class:`dict`</span>
-<span class="sd">`pjimg.imgease.eases` for convenience, but they can also</span>
+<span class="sd">`pjimg.eases.eases` for convenience, but they can also</span>
 <span class="sd">be called directly.</span>
 
 
@@ -271,40 +271,40 @@
 <span class="sd">-------</span>
 <span class="sd">These functions start slow or extend the darkness in an image:</span>
 
-<span class="sd">.. autofunction:: pjimg.imgease.ease_in_back</span>
-<span class="sd">.. autofunction:: pjimg.imgease.ease_in_circ</span>
-<span class="sd">.. autofunction:: pjimg.imgease.ease_in_cubic</span>
-<span class="sd">.. autofunction:: pjimg.imgease.ease_in_elastic</span>
-<span class="sd">.. autofunction:: pjimg.imgease.ease_in_quad</span>
-<span class="sd">.. autofunction:: pjimg.imgease.ease_in_quint</span>
-<span class="sd">.. autofunction:: pjimg.imgease.ease_in_sin</span>
+<span class="sd">.. autofunction:: pjimg.eases.ease_in_back</span>
+<span class="sd">.. autofunction:: pjimg.eases.ease_in_circ</span>
+<span class="sd">.. autofunction:: pjimg.eases.ease_in_cubic</span>
+<span class="sd">.. autofunction:: pjimg.eases.ease_in_elastic</span>
+<span class="sd">.. autofunction:: pjimg.eases.ease_in_quad</span>
+<span class="sd">.. autofunction:: pjimg.eases.ease_in_quint</span>
+<span class="sd">.. autofunction:: pjimg.eases.ease_in_sin</span>
 
 
 <span class="sd">Ease Out</span>
 <span class="sd">--------</span>
 <span class="sd">These functions start fast or extend the lightness in an image:</span>
 
-<span class="sd">.. autofunction:: pjimg.imgease.ease_out_bounce</span>
-<span class="sd">.. autofunction:: pjimg.imgease.ease_out_circ</span>
-<span class="sd">.. autofunction:: pjimg.imgease.ease_out_cubic</span>
-<span class="sd">.. autofunction:: pjimg.imgease.ease_out_elastic</span>
-<span class="sd">.. autofunction:: pjimg.imgease.ease_out_quad</span>
-<span class="sd">.. autofunction:: pjimg.imgease.ease_out_quint</span>
-<span class="sd">.. autofunction:: pjimg.imgease.ease_out_sin</span>
+<span class="sd">.. autofunction:: pjimg.eases.ease_out_bounce</span>
+<span class="sd">.. autofunction:: pjimg.eases.ease_out_circ</span>
+<span class="sd">.. autofunction:: pjimg.eases.ease_out_cubic</span>
+<span class="sd">.. autofunction:: pjimg.eases.ease_out_elastic</span>
+<span class="sd">.. autofunction:: pjimg.eases.ease_out_quad</span>
+<span class="sd">.. autofunction:: pjimg.eases.ease_out_quint</span>
+<span class="sd">.. autofunction:: pjimg.eases.ease_out_sin</span>
 
 
 <span class="sd">Ease In Out</span>
 <span class="sd">-----------</span>
 <span class="sd">These functions go fast in the middle or compress the midtones of the image.</span>
 
-<span class="sd">.. autofunction:: pjimg.imgease.ease_in_out_back</span>
-<span class="sd">.. autofunction:: pjimg.imgease.ease_in_out_circ</span>
-<span class="sd">.. autofunction:: pjimg.imgease.ease_in_out_cos</span>
-<span class="sd">.. autofunction:: pjimg.imgease.ease_in_out_cubic</span>
-<span class="sd">.. autofunction:: pjimg.imgease.ease_in_out_elastic</span>
-<span class="sd">.. autofunction:: pjimg.imgease.ease_in_out_quad</span>
-<span class="sd">.. autofunction:: pjimg.imgease.ease_in_out_quint</span>
-<span class="sd">.. autofunction:: pjimg.imgease.ease_in_out_sin</span>
+<span class="sd">.. autofunction:: pjimg.eases.ease_in_out_back</span>
+<span class="sd">.. autofunction:: pjimg.eases.ease_in_out_circ</span>
+<span class="sd">.. autofunction:: pjimg.eases.ease_in_out_cos</span>
+<span class="sd">.. autofunction:: pjimg.eases.ease_in_out_cubic</span>
+<span class="sd">.. autofunction:: pjimg.eases.ease_in_out_elastic</span>
+<span class="sd">.. autofunction:: pjimg.eases.ease_in_out_quad</span>
+<span class="sd">.. autofunction:: pjimg.eases.ease_in_out_quint</span>
+<span class="sd">.. autofunction:: pjimg.eases.ease_in_out_sin</span>
 
 
 <span class="sd">Ease Mid</span>
@@ -312,13 +312,13 @@
 <span class="sd">These functions change the values in the data, making the midtones dark</span>
 <span class="sd">and the edges light.</span>
 
-<span class="sd">.. autofunction:: pjimg.imgease.ease_mid_bump_linear</span>
-<span class="sd">.. autofunction:: pjimg.imgease.ease_mid_bump_sin</span>
+<span class="sd">.. autofunction:: pjimg.eases.ease_mid_bump_linear</span>
+<span class="sd">.. autofunction:: pjimg.eases.ease_mid_bump_sin</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
-<span class="kn">from</span> <span class="nn">pjimg.imgease.decorators</span> <span class="kn">import</span> <span class="n">will_scale</span>
+<span class="kn">from</span> <span class="nn">pjimg.eases.decorators</span> <span class="kn">import</span> <span class="n">will_scale</span>
 <span class="kn">from</span> <span class="nn">pjimg.util</span> <span class="kn">import</span> <span class="n">ImgAry</span>
 
 
@@ -337,7 +337,7 @@
 
 <span class="c1"># Ease in functions.</span>
 <div class="viewcode-block" id="ease_in_back">
-<a class="viewcode-back" href="../../../imgease.html#pjimg.imgease.ease_in_back">[docs]</a>
+<a class="viewcode-back" href="../../../eases.html#pjimg.eases.ease_in_back">[docs]</a>
 <span class="nd">@will_scale</span>
 <span class="k">def</span> <span class="nf">ease_in_back</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ImgAry</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;An easing function that backs up a little before starting.</span>
@@ -369,7 +369,7 @@
 
 
 <div class="viewcode-block" id="ease_in_circ">
-<a class="viewcode-back" href="../../../imgease.html#pjimg.imgease.ease_in_circ">[docs]</a>
+<a class="viewcode-back" href="../../../eases.html#pjimg.eases.ease_in_circ">[docs]</a>
 <span class="nd">@will_scale</span>
 <span class="k">def</span> <span class="nf">ease_in_circ</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ImgAry</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;An easing function that has a circular curve.</span>
@@ -397,7 +397,7 @@
 
 
 <div class="viewcode-block" id="ease_in_cubic">
-<a class="viewcode-back" href="../../../imgease.html#pjimg.imgease.ease_in_cubic">[docs]</a>
+<a class="viewcode-back" href="../../../eases.html#pjimg.eases.ease_in_cubic">[docs]</a>
 <span class="nd">@will_scale</span>
 <span class="k">def</span> <span class="nf">ease_in_cubic</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ImgAry</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;An easing function that has a cubic curve.</span>
@@ -425,7 +425,7 @@
 
 
 <div class="viewcode-block" id="ease_in_elastic">
-<a class="viewcode-back" href="../../../imgease.html#pjimg.imgease.ease_in_elastic">[docs]</a>
+<a class="viewcode-back" href="../../../eases.html#pjimg.eases.ease_in_elastic">[docs]</a>
 <span class="nd">@will_scale</span>
 <span class="k">def</span> <span class="nf">ease_in_elastic</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ImgAry</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;An easing function that bounces.</span>
@@ -460,7 +460,7 @@
 
 
 <div class="viewcode-block" id="ease_in_quad">
-<a class="viewcode-back" href="../../../imgease.html#pjimg.imgease.ease_in_quad">[docs]</a>
+<a class="viewcode-back" href="../../../eases.html#pjimg.eases.ease_in_quad">[docs]</a>
 <span class="nd">@will_scale</span>
 <span class="k">def</span> <span class="nf">ease_in_quad</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ImgAry</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;An easing function that has a quadratic curve.</span>
@@ -488,7 +488,7 @@
 
 
 <div class="viewcode-block" id="ease_in_quint">
-<a class="viewcode-back" href="../../../imgease.html#pjimg.imgease.ease_in_quint">[docs]</a>
+<a class="viewcode-back" href="../../../eases.html#pjimg.eases.ease_in_quint">[docs]</a>
 <span class="nd">@will_scale</span>
 <span class="k">def</span> <span class="nf">ease_in_quint</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ImgAry</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;An easing function that has a quintic curve.</span>
@@ -516,7 +516,7 @@
 
 
 <div class="viewcode-block" id="ease_in_sin">
-<a class="viewcode-back" href="../../../imgease.html#pjimg.imgease.ease_in_sin">[docs]</a>
+<a class="viewcode-back" href="../../../eases.html#pjimg.eases.ease_in_sin">[docs]</a>
 <span class="nd">@will_scale</span>
 <span class="k">def</span> <span class="nf">ease_in_sin</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ImgAry</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;An easing function that has a sine curve.</span>
@@ -545,7 +545,7 @@
 
 <span class="c1"># Ease out functions.</span>
 <div class="viewcode-block" id="ease_out_bounce">
-<a class="viewcode-back" href="../../../imgease.html#pjimg.imgease.ease_out_bounce">[docs]</a>
+<a class="viewcode-back" href="../../../eases.html#pjimg.eases.ease_out_bounce">[docs]</a>
 <span class="nd">@will_scale</span>
 <span class="k">def</span> <span class="nf">ease_out_bounce</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ImgAry</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;An easing function that has a bounce.</span>
@@ -582,7 +582,7 @@
 
 
 <div class="viewcode-block" id="ease_out_circ">
-<a class="viewcode-back" href="../../../imgease.html#pjimg.imgease.ease_out_circ">[docs]</a>
+<a class="viewcode-back" href="../../../eases.html#pjimg.eases.ease_out_circ">[docs]</a>
 <span class="nd">@will_scale</span>
 <span class="k">def</span> <span class="nf">ease_out_circ</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ImgAry</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;An easing function that has a circular curve.</span>
@@ -609,7 +609,7 @@
 
 
 <div class="viewcode-block" id="ease_out_cubic">
-<a class="viewcode-back" href="../../../imgease.html#pjimg.imgease.ease_out_cubic">[docs]</a>
+<a class="viewcode-back" href="../../../eases.html#pjimg.eases.ease_out_cubic">[docs]</a>
 <span class="nd">@will_scale</span>
 <span class="k">def</span> <span class="nf">ease_out_cubic</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ImgAry</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;An easing function that has a cubic curve.</span>
@@ -636,7 +636,7 @@
 
 
 <div class="viewcode-block" id="ease_out_elastic">
-<a class="viewcode-back" href="../../../imgease.html#pjimg.imgease.ease_out_elastic">[docs]</a>
+<a class="viewcode-back" href="../../../eases.html#pjimg.eases.ease_out_elastic">[docs]</a>
 <span class="nd">@will_scale</span>
 <span class="k">def</span> <span class="nf">ease_out_elastic</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ImgAry</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;An easing function that bounces.</span>
@@ -671,7 +671,7 @@
 
 
 <div class="viewcode-block" id="ease_out_quad">
-<a class="viewcode-back" href="../../../imgease.html#pjimg.imgease.ease_out_quad">[docs]</a>
+<a class="viewcode-back" href="../../../eases.html#pjimg.eases.ease_out_quad">[docs]</a>
 <span class="nd">@will_scale</span>
 <span class="k">def</span> <span class="nf">ease_out_quad</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ImgAry</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;An easing function that has a quadratic curve.</span>
@@ -698,7 +698,7 @@
 
 
 <div class="viewcode-block" id="ease_out_quint">
-<a class="viewcode-back" href="../../../imgease.html#pjimg.imgease.ease_out_quint">[docs]</a>
+<a class="viewcode-back" href="../../../eases.html#pjimg.eases.ease_out_quint">[docs]</a>
 <span class="nd">@will_scale</span>
 <span class="k">def</span> <span class="nf">ease_out_quint</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ImgAry</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;An easing function that has a quintic curve.</span>
@@ -725,7 +725,7 @@
 
 
 <div class="viewcode-block" id="ease_out_sin">
-<a class="viewcode-back" href="../../../imgease.html#pjimg.imgease.ease_out_sin">[docs]</a>
+<a class="viewcode-back" href="../../../eases.html#pjimg.eases.ease_out_sin">[docs]</a>
 <span class="nd">@will_scale</span>
 <span class="k">def</span> <span class="nf">ease_out_sin</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ImgAry</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;An easing function that has a sine curve.</span>
@@ -753,7 +753,7 @@
 
 <span class="c1"># Ease in and out functions.</span>
 <div class="viewcode-block" id="ease_in_out_back">
-<a class="viewcode-back" href="../../../imgease.html#pjimg.imgease.ease_in_out_back">[docs]</a>
+<a class="viewcode-back" href="../../../eases.html#pjimg.eases.ease_in_out_back">[docs]</a>
 <span class="nd">@will_scale</span>
 <span class="k">def</span> <span class="nf">ease_in_out_back</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ImgAry</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;An easing function that backs up then overshoots.</span>
@@ -788,7 +788,7 @@
 
 
 <div class="viewcode-block" id="ease_in_out_circ">
-<a class="viewcode-back" href="../../../imgease.html#pjimg.imgease.ease_in_out_circ">[docs]</a>
+<a class="viewcode-back" href="../../../eases.html#pjimg.eases.ease_in_out_circ">[docs]</a>
 <span class="nd">@will_scale</span>
 <span class="k">def</span> <span class="nf">ease_in_out_circ</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ImgAry</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;An easing function that uses a circular curve to compress the</span>
@@ -820,7 +820,7 @@
 
 
 <div class="viewcode-block" id="ease_in_out_cos">
-<a class="viewcode-back" href="../../../imgease.html#pjimg.imgease.ease_in_out_cos">[docs]</a>
+<a class="viewcode-back" href="../../../eases.html#pjimg.eases.ease_in_out_cos">[docs]</a>
 <span class="nd">@will_scale</span>
 <span class="k">def</span> <span class="nf">ease_in_out_cos</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ImgAry</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;An easing function that uses a cosine curve to turn the make the</span>
@@ -849,7 +849,7 @@
 
 
 <div class="viewcode-block" id="ease_in_out_cubic">
-<a class="viewcode-back" href="../../../imgease.html#pjimg.imgease.ease_in_out_cubic">[docs]</a>
+<a class="viewcode-back" href="../../../eases.html#pjimg.eases.ease_in_out_cubic">[docs]</a>
 <span class="nd">@will_scale</span>
 <span class="k">def</span> <span class="nf">ease_in_out_cubic</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ImgAry</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;An easing function that uses a cubic curve to compress the</span>
@@ -879,7 +879,7 @@
 
 
 <div class="viewcode-block" id="ease_in_out_elastic">
-<a class="viewcode-back" href="../../../imgease.html#pjimg.imgease.ease_in_out_elastic">[docs]</a>
+<a class="viewcode-back" href="../../../eases.html#pjimg.eases.ease_in_out_elastic">[docs]</a>
 <span class="nd">@will_scale</span>
 <span class="k">def</span> <span class="nf">ease_in_out_elastic</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ImgAry</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;An easing function that uses a bouncy curve to compress the</span>
@@ -926,7 +926,7 @@
 
 
 <div class="viewcode-block" id="ease_in_out_quad">
-<a class="viewcode-back" href="../../../imgease.html#pjimg.imgease.ease_in_out_quad">[docs]</a>
+<a class="viewcode-back" href="../../../eases.html#pjimg.eases.ease_in_out_quad">[docs]</a>
 <span class="nd">@will_scale</span>
 <span class="k">def</span> <span class="nf">ease_in_out_quad</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ImgAry</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;An easing function that uses a quadratic curve to compress the</span>
@@ -959,7 +959,7 @@
 
 
 <div class="viewcode-block" id="ease_in_out_quint">
-<a class="viewcode-back" href="../../../imgease.html#pjimg.imgease.ease_in_out_quint">[docs]</a>
+<a class="viewcode-back" href="../../../eases.html#pjimg.eases.ease_in_out_quint">[docs]</a>
 <span class="nd">@will_scale</span>
 <span class="k">def</span> <span class="nf">ease_in_out_quint</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ImgAry</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;An easing function that uses a quintic curve to compress the</span>
@@ -990,7 +990,7 @@
 
 
 <div class="viewcode-block" id="ease_in_out_sin">
-<a class="viewcode-back" href="../../../imgease.html#pjimg.imgease.ease_in_out_sin">[docs]</a>
+<a class="viewcode-back" href="../../../eases.html#pjimg.eases.ease_in_out_sin">[docs]</a>
 <span class="nd">@will_scale</span>
 <span class="k">def</span> <span class="nf">ease_in_out_sin</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ImgAry</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;An easing function that uses a sine curve to compress the</span>
@@ -1019,7 +1019,7 @@
 
 <span class="c1"># Ease mid functions.</span>
 <div class="viewcode-block" id="ease_mid_bump_linear">
-<a class="viewcode-back" href="../../../imgease.html#pjimg.imgease.ease_mid_bump_linear">[docs]</a>
+<a class="viewcode-back" href="../../../eases.html#pjimg.eases.ease_mid_bump_linear">[docs]</a>
 <span class="nd">@will_scale</span>
 <span class="k">def</span> <span class="nf">ease_mid_bump_linear</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ImgAry</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;An easing function that makes the middle of the range the peak</span>
@@ -1052,7 +1052,7 @@
 
 
 <div class="viewcode-block" id="ease_mid_bump_sin">
-<a class="viewcode-back" href="../../../imgease.html#pjimg.imgease.ease_mid_bump_sin">[docs]</a>
+<a class="viewcode-back" href="../../../eases.html#pjimg.eases.ease_mid_bump_sin">[docs]</a>
 <span class="nd">@will_scale</span>
 <span class="k">def</span> <span class="nf">ease_mid_bump_sin</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ImgAry</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;An easing function that makes the middle of the range the peak</span>

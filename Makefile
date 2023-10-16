@@ -24,10 +24,10 @@ clean:
 
 .PHONY: docs
 docs:
-# 	python examples/imgblend/build_doc_images.py
-# 	python examples/imgease/build_doc_images.py
-# 	python examples/imgfilt/build_doc_images.py
-# 	python examples/imggen/build_doc_images.py
+# 	python examples/blends/build_doc_images.py
+# 	python examples/eases/build_doc_images.py
+# 	python examples/filters/build_doc_images.py
+# 	python examples/sources/build_doc_images.py
 	sphinx-build -b html docs/source/ docs/build/html
 
 .PHONY: pre
@@ -39,10 +39,10 @@ pre:
 test:
 	python -m pytest tests/test_util --capture=fd
 	python -m pytest tests/test_imgio --capture=fd
-	python -m pytest tests/test_imggen --capture=fd
-	python -m pytest tests/test_imgfilt --capture=fd
-	python -m pytest tests/test_imgease --capture=fd
-	python -m pytest tests/test_imgblend --capture=fd
+	python -m pytest tests/test_sources --capture=fd
+	python -m pytest tests/test_filters --capture=fd
+	python -m pytest tests/test_eases --capture=fd
+	python -m pytest tests/test_blends --capture=fd
 
 .PHONY: testv
 testv:

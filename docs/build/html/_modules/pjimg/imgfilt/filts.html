@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
     <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
-        <title>pjimg.imgfilt.filts - pjimg 0.0.1 documentation</title>
+        <title>pjimg.filters.filts - pjimg 0.0.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=135e06be" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?v=36a5483c" />
@@ -156,11 +156,11 @@
   <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../index.html">pjimg documentation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../imgblend.html">imgblend</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../imgease.html">imgease</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../imgfilt.html">imgfilt</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../imggen.html">Basic Usage: Sources</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../imggen.html#sources">Sources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../blends.html">blends</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../eases.html">eases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../filters.html">filters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../sources.html">Basic Usage: Sources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../sources.html#sources">Sources</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../imgio.html">imgio</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../util.html">util</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../requirements.html">pjimg Requirements</a></li>
@@ -197,7 +197,7 @@
           </label>
         </div>
         <article role="main">
-          <h1>Source code for pjimg.imgfilt.filts</h1><div class="highlight"><pre>
+          <h1>Source code for pjimg.filters.filts</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">Basic Usage: Filters</span>
 <span class="sd">====================</span>
@@ -223,7 +223,7 @@
 <span class="sd">Registration</span>
 <span class="sd">============</span>
 <span class="sd">All filter functions are registered in the :class:`dict`</span>
-<span class="sd">`pjimg.imgfilt.filters` for convenience, but they can also</span>
+<span class="sd">`pjimg.filters.filters` for convenience, but they can also</span>
 <span class="sd">be called directly.</span>
 
 
@@ -231,22 +231,22 @@
 <span class="sd">================</span>
 <span class="sd">The following are the filter functions available in :mod:`pjimg`.</span>
 
-<span class="sd">.. autofunction:: pjimg.imgfilt.filter_box_blur</span>
-<span class="sd">.. autofunction:: pjimg.imgfilt.filter_colorize</span>
-<span class="sd">.. autofunction:: pjimg.imgfilt.filter_contrast</span>
-<span class="sd">.. autofunction:: pjimg.imgfilt.filter_flip</span>
-<span class="sd">.. autofunction:: pjimg.imgfilt.filter_gaussian_blur</span>
-<span class="sd">.. autofunction:: pjimg.imgfilt.filter_glow</span>
-<span class="sd">.. autofunction:: pjimg.imgfilt.filter_grow</span>
-<span class="sd">.. autofunction:: pjimg.imgfilt.filter_inverse</span>
-<span class="sd">.. autofunction:: pjimg.imgfilt.filter_linear_to_polar</span>
-<span class="sd">.. autofunction:: pjimg.imgfilt.filter_motion_blur</span>
-<span class="sd">.. autofunction:: pjimg.imgfilt.filter_pinch</span>
-<span class="sd">.. autofunction:: pjimg.imgfilt.filter_polar_to_linear</span>
-<span class="sd">.. autofunction:: pjimg.imgfilt.filter_ripple</span>
-<span class="sd">.. autofunction:: pjimg.imgfilt.filter_rotate_90</span>
-<span class="sd">.. autofunction:: pjimg.imgfilt.filter_skew</span>
-<span class="sd">.. autofunction:: pjimg.imgfilt.filter_twirl</span>
+<span class="sd">.. autofunction:: pjimg.filters.filter_box_blur</span>
+<span class="sd">.. autofunction:: pjimg.filters.filter_colorize</span>
+<span class="sd">.. autofunction:: pjimg.filters.filter_contrast</span>
+<span class="sd">.. autofunction:: pjimg.filters.filter_flip</span>
+<span class="sd">.. autofunction:: pjimg.filters.filter_gaussian_blur</span>
+<span class="sd">.. autofunction:: pjimg.filters.filter_glow</span>
+<span class="sd">.. autofunction:: pjimg.filters.filter_grow</span>
+<span class="sd">.. autofunction:: pjimg.filters.filter_inverse</span>
+<span class="sd">.. autofunction:: pjimg.filters.filter_linear_to_polar</span>
+<span class="sd">.. autofunction:: pjimg.filters.filter_motion_blur</span>
+<span class="sd">.. autofunction:: pjimg.filters.filter_pinch</span>
+<span class="sd">.. autofunction:: pjimg.filters.filter_polar_to_linear</span>
+<span class="sd">.. autofunction:: pjimg.filters.filter_ripple</span>
+<span class="sd">.. autofunction:: pjimg.filters.filter_rotate_90</span>
+<span class="sd">.. autofunction:: pjimg.filters.filter_skew</span>
+<span class="sd">.. autofunction:: pjimg.filters.filter_twirl</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Sequence</span>
@@ -257,8 +257,8 @@
 <span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span><span class="p">,</span> <span class="n">ImageOps</span>
 
 <span class="kn">import</span> <span class="nn">pjimg.util.resize</span> <span class="k">as</span> <span class="nn">rsz</span>
-<span class="kn">from</span> <span class="nn">pjimg.imgfilt.decorators</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="kn">from</span> <span class="nn">pjimg.imgfilt.util</span> <span class="kn">import</span> <span class="n">get_color_for_key</span>
+<span class="kn">from</span> <span class="nn">pjimg.filters.decorators</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">pjimg.filters.util</span> <span class="kn">import</span> <span class="n">get_color_for_key</span>
 <span class="kn">from</span> <span class="nn">pjimg.util</span> <span class="kn">import</span> <span class="n">ImgAry</span><span class="p">,</span> <span class="n">Loc</span><span class="p">,</span> <span class="n">Size</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">Z</span><span class="p">,</span> <span class="n">X_</span><span class="p">,</span> <span class="n">Y_</span><span class="p">,</span> <span class="n">Z_</span>
 
 
@@ -275,7 +275,7 @@
 
 <span class="c1"># Image filter functions.</span>
 <div class="viewcode-block" id="filter_box_blur">
-<a class="viewcode-back" href="../../../imgfilt.html#pjimg.imgfilt.filter_box_blur">[docs]</a>
+<a class="viewcode-back" href="../../../filters.html#pjimg.filters.filter_box_blur">[docs]</a>
 <span class="nd">@processes_by_grayscale_frame</span>
 <span class="k">def</span> <span class="nf">filter_box_blur</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">,</span> <span class="n">size</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ImgAry</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Perform a box blur.</span>
@@ -296,7 +296,7 @@
 
 
 <div class="viewcode-block" id="filter_colorize">
-<a class="viewcode-back" href="../../../imgfilt.html#pjimg.imgfilt.filter_colorize">[docs]</a>
+<a class="viewcode-back" href="../../../filters.html#pjimg.filters.filter_colorize">[docs]</a>
 <span class="nd">@processes_by_grayscale_frame</span>
 <span class="nd">@uses_uint8</span>
 <span class="k">def</span> <span class="nf">filter_colorize</span><span class="p">(</span>
@@ -345,7 +345,7 @@
 
 
 <div class="viewcode-block" id="filter_contrast">
-<a class="viewcode-back" href="../../../imgfilt.html#pjimg.imgfilt.filter_contrast">[docs]</a>
+<a class="viewcode-back" href="../../../filters.html#pjimg.filters.filter_contrast">[docs]</a>
 <span class="k">def</span> <span class="nf">filter_contrast</span><span class="p">(</span>
     <span class="n">a</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">,</span> <span class="n">black</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">white</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ImgAry</span><span class="p">:</span>
@@ -382,7 +382,7 @@
 
 
 <div class="viewcode-block" id="filter_flip">
-<a class="viewcode-back" href="../../../imgfilt.html#pjimg.imgfilt.filter_flip">[docs]</a>
+<a class="viewcode-back" href="../../../filters.html#pjimg.filters.filter_flip">[docs]</a>
 <span class="k">def</span> <span class="nf">filter_flip</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">,</span> <span class="n">axis</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ImgAry</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Flip the image around an axis.</span>
 
@@ -401,7 +401,7 @@
 
 
 <div class="viewcode-block" id="filter_gaussian_blur">
-<a class="viewcode-back" href="../../../imgfilt.html#pjimg.imgfilt.filter_gaussian_blur">[docs]</a>
+<a class="viewcode-back" href="../../../filters.html#pjimg.filters.filter_gaussian_blur">[docs]</a>
 <span class="nd">@processes_by_grayscale_frame</span>
 <span class="k">def</span> <span class="nf">filter_gaussian_blur</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">,</span> <span class="n">sigma</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ImgAry</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Perform a gaussian blur.</span>
@@ -425,7 +425,7 @@
 
 
 <div class="viewcode-block" id="filter_glow">
-<a class="viewcode-back" href="../../../imgfilt.html#pjimg.imgfilt.filter_glow">[docs]</a>
+<a class="viewcode-back" href="../../../filters.html#pjimg.filters.filter_glow">[docs]</a>
 <span class="k">def</span> <span class="nf">filter_glow</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">,</span> <span class="n">sigma</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ImgAry</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Use gaussian blurs to create a halo around brighter objects</span>
 <span class="sd">    in the image.</span>
@@ -462,7 +462,7 @@
 
 
 <div class="viewcode-block" id="filter_grow">
-<a class="viewcode-back" href="../../../imgfilt.html#pjimg.imgfilt.filter_grow">[docs]</a>
+<a class="viewcode-back" href="../../../filters.html#pjimg.filters.filter_grow">[docs]</a>
 <span class="k">def</span> <span class="nf">filter_grow</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">,</span> <span class="n">factor</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ImgAry</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Increase the size of an image.</span>
 
@@ -484,7 +484,7 @@
 
 
 <div class="viewcode-block" id="filter_inverse">
-<a class="viewcode-back" href="../../../imgfilt.html#pjimg.imgfilt.filter_inverse">[docs]</a>
+<a class="viewcode-back" href="../../../filters.html#pjimg.filters.filter_inverse">[docs]</a>
 <span class="k">def</span> <span class="nf">filter_inverse</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ImgAry</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Inverse the colors of an image.</span>
 
@@ -502,7 +502,7 @@
 
 
 <div class="viewcode-block" id="filter_linear_to_polar">
-<a class="viewcode-back" href="../../../imgfilt.html#pjimg.imgfilt.filter_linear_to_polar">[docs]</a>
+<a class="viewcode-back" href="../../../filters.html#pjimg.filters.filter_linear_to_polar">[docs]</a>
 <span class="nd">@processes_by_grayscale_frame</span>
 <span class="nd">@will_square</span>
 <span class="k">def</span> <span class="nf">filter_linear_to_polar</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ImgAry</span><span class="p">:</span>
@@ -526,7 +526,7 @@
 
 
 <div class="viewcode-block" id="filter_motion_blur">
-<a class="viewcode-back" href="../../../imgfilt.html#pjimg.imgfilt.filter_motion_blur">[docs]</a>
+<a class="viewcode-back" href="../../../filters.html#pjimg.filters.filter_motion_blur">[docs]</a>
 <span class="nd">@processes_by_grayscale_frame</span>
 <span class="k">def</span> <span class="nf">filter_motion_blur</span><span class="p">(</span>
     <span class="n">a</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">,</span>
@@ -543,7 +543,7 @@
 <span class="sd">    :param a: The image data to alter.</span>
 <span class="sd">    :param size: The size of the blur to apply.</span>
 <span class="sd">    :param direction: The axis that the blur should be performed along.</span>
-<span class="sd">        The index should be indicated using the imgfilt.X or imgfilt.Y</span>
+<span class="sd">        The index should be indicated using the filters.X or filters.Y</span>
 <span class="sd">        objects.</span>
 <span class="sd">    :returns: A :class:`np.ndarray` object.</span>
 <span class="sd">    :rtype: numpy.ndarray</span>
@@ -564,7 +564,7 @@
 
 
 <div class="viewcode-block" id="filter_pinch">
-<a class="viewcode-back" href="../../../imgfilt.html#pjimg.imgfilt.filter_pinch">[docs]</a>
+<a class="viewcode-back" href="../../../filters.html#pjimg.filters.filter_pinch">[docs]</a>
 <span class="nd">@processes_by_grayscale_frame</span>
 <span class="k">def</span> <span class="nf">filter_pinch</span><span class="p">(</span>
     <span class="n">a</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">,</span>
@@ -634,7 +634,7 @@
 
 
 <div class="viewcode-block" id="filter_polar_to_linear">
-<a class="viewcode-back" href="../../../imgfilt.html#pjimg.imgfilt.filter_polar_to_linear">[docs]</a>
+<a class="viewcode-back" href="../../../filters.html#pjimg.filters.filter_polar_to_linear">[docs]</a>
 <span class="nd">@processes_by_grayscale_frame</span>
 <span class="nd">@will_square</span>
 <span class="k">def</span> <span class="nf">filter_polar_to_linear</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ImgAry</span><span class="p">:</span>
@@ -657,7 +657,7 @@
 
 
 <div class="viewcode-block" id="filter_ripple">
-<a class="viewcode-back" href="../../../imgfilt.html#pjimg.imgfilt.filter_ripple">[docs]</a>
+<a class="viewcode-back" href="../../../filters.html#pjimg.filters.filter_ripple">[docs]</a>
 <span class="nd">@processes_by_grayscale_frame</span>
 <span class="k">def</span> <span class="nf">filter_ripple</span><span class="p">(</span>
     <span class="n">a</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">,</span>
@@ -717,7 +717,7 @@
 
 
 <div class="viewcode-block" id="filter_rotate_90">
-<a class="viewcode-back" href="../../../imgfilt.html#pjimg.imgfilt.filter_rotate_90">[docs]</a>
+<a class="viewcode-back" href="../../../filters.html#pjimg.filters.filter_rotate_90">[docs]</a>
 <span class="k">def</span> <span class="nf">filter_rotate_90</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">,</span> <span class="n">direction</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;cw&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ImgAry</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Rotate the data 90° around the Z axis.</span>
 
@@ -740,7 +740,7 @@
 
 
 <div class="viewcode-block" id="filter_skew">
-<a class="viewcode-back" href="../../../imgfilt.html#pjimg.imgfilt.filter_skew">[docs]</a>
+<a class="viewcode-back" href="../../../filters.html#pjimg.filters.filter_skew">[docs]</a>
 <span class="nd">@processes_by_grayscale_frame</span>
 <span class="k">def</span> <span class="nf">filter_skew</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">,</span> <span class="n">slope</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ImgAry</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Perform a skew distort on the data.</span>
@@ -783,7 +783,7 @@
 
 
 <div class="viewcode-block" id="filter_twirl">
-<a class="viewcode-back" href="../../../imgfilt.html#pjimg.imgfilt.filter_twirl">[docs]</a>
+<a class="viewcode-back" href="../../../filters.html#pjimg.filters.filter_twirl">[docs]</a>
 <span class="nd">@processes_by_grayscale_frame</span>
 <span class="k">def</span> <span class="nf">filter_twirl</span><span class="p">(</span>
     <span class="n">a</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">,</span>

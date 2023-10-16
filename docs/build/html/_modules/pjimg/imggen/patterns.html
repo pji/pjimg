@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
     <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
-        <title>pjimg.imggen.patterns - pjimg 0.0.1 documentation</title>
+        <title>pjimg.sources.patterns - pjimg 0.0.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=135e06be" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?v=36a5483c" />
@@ -156,10 +156,10 @@
   <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../index.html">pjimg</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../imgblend.html">imgblend</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../imgease.html">imgease</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../imgfilt.html">imgfilt</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../imggen.html">imggen</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../blends.html">blends</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../eases.html">eases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../filters.html">filters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../sources.html">sources</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../imgio.html">imgio</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../util.html">util</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../requirements.html">pjimg Requirements</a></li>
@@ -196,7 +196,7 @@
           </label>
         </div>
         <article role="main">
-          <h1>Source code for pjimg.imggen.patterns</h1><div class="highlight"><pre>
+          <h1>Source code for pjimg.sources.patterns</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">Patterns</span>
 <span class="sd">--------</span>
@@ -204,17 +204,17 @@
 <span class="sd">Sources that generate shapes, text, and other fully deterministic</span>
 <span class="sd">image and video data.</span>
 
-<span class="sd">.. autoclass:: pjimg.imggen.Box</span>
-<span class="sd">.. autoclass:: pjimg.imggen.Gradient</span>
-<span class="sd">.. autoclass:: pjimg.imggen.Hexes</span>
-<span class="sd">.. autoclass:: pjimg.imggen.Lines</span>
-<span class="sd">.. autoclass:: pjimg.imggen.Rays</span>
-<span class="sd">.. autoclass:: pjimg.imggen.Rings</span>
-<span class="sd">.. autoclass:: pjimg.imggen.Solid</span>
-<span class="sd">.. autoclass:: pjimg.imggen.Spheres</span>
-<span class="sd">.. autoclass:: pjimg.imggen.Spot</span>
-<span class="sd">.. autoclass:: pjimg.imggen.Text</span>
-<span class="sd">.. autoclass:: pjimg.imggen.Waves</span>
+<span class="sd">.. autoclass:: pjimg.sources.Box</span>
+<span class="sd">.. autoclass:: pjimg.sources.Gradient</span>
+<span class="sd">.. autoclass:: pjimg.sources.Hexes</span>
+<span class="sd">.. autoclass:: pjimg.sources.Lines</span>
+<span class="sd">.. autoclass:: pjimg.sources.Rays</span>
+<span class="sd">.. autoclass:: pjimg.sources.Rings</span>
+<span class="sd">.. autoclass:: pjimg.sources.Solid</span>
+<span class="sd">.. autoclass:: pjimg.sources.Spheres</span>
+<span class="sd">.. autoclass:: pjimg.sources.Spot</span>
+<span class="sd">.. autoclass:: pjimg.sources.Text</span>
+<span class="sd">.. autoclass:: pjimg.sources.Waves</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">sqrt</span>
@@ -223,7 +223,7 @@
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span><span class="p">,</span> <span class="n">ImageDraw</span><span class="p">,</span> <span class="n">ImageFont</span>
 
-<span class="kn">from</span> <span class="nn">pjimg.imggen.model</span> <span class="kn">import</span> <span class="n">Source</span>
+<span class="kn">from</span> <span class="nn">pjimg.sources.model</span> <span class="kn">import</span> <span class="n">Source</span>
 <span class="kn">from</span> <span class="nn">pjimg.util</span> <span class="kn">import</span> <span class="n">ImgAry</span><span class="p">,</span> <span class="n">Loc</span><span class="p">,</span> <span class="n">Size</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">Z</span>
 
 
@@ -236,7 +236,7 @@
 
 <span class="c1"># Public classes.</span>
 <div class="viewcode-block" id="Box">
-<a class="viewcode-back" href="../../../imggen.html#pjimg.imggen.Box">[docs]</a>
+<a class="viewcode-back" href="../../../sources.html#pjimg.sources.Box">[docs]</a>
 <span class="k">class</span> <span class="nc">Box</span><span class="p">(</span><span class="n">Source</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Draw a box.</span>
 <span class="sd">    </span>
@@ -245,7 +245,7 @@
 <span class="sd">    :param color: The color of the box. This is a float within the</span>
 <span class="sd">        range 0 &lt;= x &lt;= 1.</span>
 <span class="sd">    :return: A :class:`Box` object.</span>
-<span class="sd">    :rtype: imggen.patterns.Box</span>
+<span class="sd">    :rtype: sources.patterns.Box</span>
 
 <span class="sd">    Usage::</span>
 <span class="sd">    </span>
@@ -295,7 +295,7 @@
 
 
 <div class="viewcode-block" id="Gradient">
-<a class="viewcode-back" href="../../../imggen.html#pjimg.imggen.Gradient">[docs]</a>
+<a class="viewcode-back" href="../../../sources.html#pjimg.sources.Gradient">[docs]</a>
 <span class="k">class</span> <span class="nc">Gradient</span><span class="p">(</span><span class="n">Source</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Generate a simple gradient.</span>
 
@@ -307,7 +307,7 @@
 <span class="sd">        the position of the stop and the second being the color value</span>
 <span class="sd">        of the stop.</span>
 <span class="sd">    :return: :class:`Gradient` object.</span>
-<span class="sd">    :rtype: imggen.patterns.Gradient</span>
+<span class="sd">    :rtype: sources.patterns.Gradient</span>
 
 <span class="sd">    Usage::</span>
 <span class="sd">    </span>
@@ -428,7 +428,7 @@
 
 
 <div class="viewcode-block" id="Hexes">
-<a class="viewcode-back" href="../../../imggen.html#pjimg.imggen.Hexes">[docs]</a>
+<a class="viewcode-back" href="../../../sources.html#pjimg.sources.Hexes">[docs]</a>
 <span class="k">class</span> <span class="nc">Hexes</span><span class="p">(</span><span class="n">Source</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Fill a space with hexagonal cells.</span>
 <span class="sd">    </span>
@@ -448,8 +448,8 @@
 <span class="sd">    :param round: (Optional.) Whether to apply a circular easing</span>
 <span class="sd">        function to output to give the appearance of the exterior</span>
 <span class="sd">        of a sphere.</span>
-<span class="sd">    :return: A :class:`imggen.Hexes` object.</span>
-<span class="sd">    :rtype: imggen.patterns.Hexes</span>
+<span class="sd">    :return: A :class:`sources.Hexes` object.</span>
+<span class="sd">    :rtype: sources.patterns.Hexes</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">radius</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
@@ -511,7 +511,7 @@
 
 
 <div class="viewcode-block" id="Lines">
-<a class="viewcode-back" href="../../../imggen.html#pjimg.imggen.Lines">[docs]</a>
+<a class="viewcode-back" href="../../../sources.html#pjimg.sources.Lines">[docs]</a>
 <span class="k">class</span> <span class="nc">Lines</span><span class="p">(</span><span class="n">Source</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Generate simple lines.</span>
 
@@ -525,7 +525,7 @@
 <span class="sd">        gradient or &#39;v&#39; for a vertical gradient.</span>
 <span class="sd">    :param length: (Optional.) The distance between each line.</span>
 <span class="sd">    :return: :class:`Lines` object.</span>
-<span class="sd">    :rtype: imggen.patterns.Lines</span>
+<span class="sd">    :rtype: sources.patterns.Lines</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">direction</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;h&#39;</span><span class="p">,</span>
@@ -565,7 +565,7 @@
 
 
 <div class="viewcode-block" id="Rays">
-<a class="viewcode-back" href="../../../imggen.html#pjimg.imggen.Rays">[docs]</a>
+<a class="viewcode-back" href="../../../sources.html#pjimg.sources.Rays">[docs]</a>
 <span class="k">class</span> <span class="nc">Rays</span><span class="p">(</span><span class="n">Source</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Create rays that generate from a central point.</span>
 
@@ -579,7 +579,7 @@
 <span class="sd">    :param offset: (Optional.) Rotate the rays around the generation</span>
 <span class="sd">        point. This is measured in radians.</span>
 <span class="sd">    :return: :class:`Rays` object.</span>
-<span class="sd">    :rtype: imggen.patterns.Rays</span>
+<span class="sd">    :rtype: sources.patterns.Rays</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">count</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
@@ -637,7 +637,7 @@
 
 
 <div class="viewcode-block" id="Rings">
-<a class="viewcode-back" href="../../../imggen.html#pjimg.imggen.Rings">[docs]</a>
+<a class="viewcode-back" href="../../../sources.html#pjimg.sources.Rings">[docs]</a>
 <span class="k">class</span> <span class="nc">Rings</span><span class="p">(</span><span class="n">Source</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Create a series of concentric circles.</span>
 
@@ -660,7 +660,7 @@
 <span class="sd">    :param count: (Optional.) The number of rings to draw. The</span>
 <span class="sd">        default is one.</span>
 <span class="sd">    :return: :class:`Rings` object.</span>
-<span class="sd">    :rtype: imggen.patterns.Rings</span>
+<span class="sd">    :rtype: sources.patterns.Rings</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">radius</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
@@ -715,7 +715,7 @@
 
 
 <div class="viewcode-block" id="Solid">
-<a class="viewcode-back" href="../../../imggen.html#pjimg.imggen.Solid">[docs]</a>
+<a class="viewcode-back" href="../../../sources.html#pjimg.sources.Solid">[docs]</a>
 <span class="k">class</span> <span class="nc">Solid</span><span class="p">(</span><span class="n">Source</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Fill a space with a solid color.</span>
 
@@ -753,7 +753,7 @@
 
 
 <div class="viewcode-block" id="Spheres">
-<a class="viewcode-back" href="../../../imggen.html#pjimg.imggen.Spheres">[docs]</a>
+<a class="viewcode-back" href="../../../sources.html#pjimg.sources.Spheres">[docs]</a>
 <span class="k">class</span> <span class="nc">Spheres</span><span class="p">(</span><span class="n">Source</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Fill a space with a series of spots.</span>
 
@@ -777,7 +777,7 @@
 <span class="sd">        function to output to give the appearance of the exterior</span>
 <span class="sd">        of a sphere.</span>
 <span class="sd">    :return: :class:`Spheres` object.</span>
-<span class="sd">    :rtype: imggen.patterns.Spheres</span>
+<span class="sd">    :rtype: sources.patterns.Spheres</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">radius</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
@@ -863,7 +863,7 @@
 
 
 <div class="viewcode-block" id="Spot">
-<a class="viewcode-back" href="../../../imggen.html#pjimg.imggen.Spot">[docs]</a>
+<a class="viewcode-back" href="../../../sources.html#pjimg.sources.Spot">[docs]</a>
 <span class="k">class</span> <span class="nc">Spot</span><span class="p">(</span><span class="n">Source</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Fill a space with a spot.</span>
 
@@ -875,7 +875,7 @@
 
 <span class="sd">    :param radius: The radius of the spot.</span>
 <span class="sd">    :return: :class:`Spot` object.</span>
-<span class="sd">    :rtype: imggen.patterns.Spot</span>
+<span class="sd">    :rtype: sources.patterns.Spot</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">radius</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">radius</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">radius</span><span class="p">)</span>
@@ -913,7 +913,7 @@
 
 
 <div class="viewcode-block" id="Text">
-<a class="viewcode-back" href="../../../imggen.html#pjimg.imggen.Text">[docs]</a>
+<a class="viewcode-back" href="../../../sources.html#pjimg.sources.Text">[docs]</a>
 <span class="k">class</span> <span class="nc">Text</span><span class="p">(</span><span class="n">Source</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Place text within the image.</span>
 <span class="sd">    </span>
@@ -949,7 +949,7 @@
 <span class="sd">        characters.</span>
 <span class="sd">    :param stroke_color: (Optional.) The color to use for the stroke.</span>
 <span class="sd">    :return: A :class:`Text` object.</span>
-<span class="sd">    :rtype: imggen.patterns.Text</span>
+<span class="sd">    :rtype: sources.patterns.Text</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
@@ -1053,7 +1053,7 @@
 
 
 <div class="viewcode-block" id="Waves">
-<a class="viewcode-back" href="../../../imggen.html#pjimg.imggen.Waves">[docs]</a>
+<a class="viewcode-back" href="../../../sources.html#pjimg.sources.Waves">[docs]</a>
 <span class="k">class</span> <span class="nc">Waves</span><span class="p">(</span><span class="n">Source</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Generates concentric circles.</span>
 
@@ -1069,7 +1069,7 @@
 <span class="sd">        each circle remains constant (linear) or increases</span>
 <span class="sd">        (geometric). Defaults to linear.</span>
 <span class="sd">    :returns: :class:`Waves` object.</span>
-<span class="sd">    :rtype: imggen.patterns.Waves</span>
+<span class="sd">    :rtype: sources.patterns.Waves</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">length</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>

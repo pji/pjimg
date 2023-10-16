@@ -1,1 +1,1 @@
-.. automodule:: pjimg.imgease
+.. automodule:: pjimg.eases

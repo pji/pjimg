@@ -9,8 +9,8 @@ from datetime import date
 from pathlib import Path
 from typing import Union
 
-from pjimg.imgblend import difference, lighter
-from pjimg.imggen import Box, Maze, Seed, SolvedMaze, Text
+from pjimg.blends import difference, lighter
+from pjimg.sources import Box, Maze, Seed, SolvedMaze, Text
 from pjimg.imgio import write
 from pjimg.util import ImgAry, Loc, Size, X_, Y_
 

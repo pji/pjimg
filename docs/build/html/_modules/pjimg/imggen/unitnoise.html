@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
     <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
-        <title>pjimg.imggen.unitnoise - pjimg 0.0.1 documentation</title>
+        <title>pjimg.sources.unitnoise - pjimg 0.0.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=135e06be" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?v=36a5483c" />
@@ -156,11 +156,11 @@
   <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../index.html">pjimg documentation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../imgblend.html">imgblend</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../imgease.html">imgease</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../imgfilt.html">imgfilt</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../imggen.html">Basic Usage: Sources</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../imggen.html#sources">Sources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../blends.html">blends</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../eases.html">eases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../filters.html">filters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../sources.html">Basic Usage: Sources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../sources.html#sources">Sources</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../imgio.html">imgio</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../util.html">util</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../requirements.html">pjimg Requirements</a></li>
@@ -197,7 +197,7 @@
           </label>
         </div>
         <article role="main">
-          <h1>Source code for pjimg.imggen.unitnoise</h1><div class="highlight"><pre>
+          <h1>Source code for pjimg.sources.unitnoise</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">Unit Noise</span>
 <span class="sd">----------</span>
@@ -207,15 +207,15 @@
 <span class="sd">generated using an easing function that provides values for the pixels</span>
 <span class="sd">between the positions on the grid.</span>
 
-<span class="sd">.. autoclass:: pjimg.imggen.UnitNoise</span>
+<span class="sd">.. autoclass:: pjimg.sources.UnitNoise</span>
 
 
 <span class="sd">Curtains</span>
 <span class="sd">********</span>
 <span class="sd">Curtains are unit noise that is generated in only one dimension of an image.</span>
 
-<span class="sd">.. autoclass:: pjimg.imggen.CosineCurtains</span>
-<span class="sd">.. autoclass:: pjimg.imggen.Curtains</span>
+<span class="sd">.. autoclass:: pjimg.sources.CosineCurtains</span>
+<span class="sd">.. autoclass:: pjimg.sources.Curtains</span>
 
 
 <span class="sd">Octave Noise</span>
@@ -223,10 +223,10 @@
 <span class="sd">Octave noise creates more intricate patterns by adding together multiple</span>
 <span class="sd">layers of unit noise.</span>
 
-<span class="sd">.. autoclass:: pjimg.imggen.OctaveUnitNoise</span>
-<span class="sd">.. autoclass:: pjimg.imggen.OctaveCosineCurtains</span>
-<span class="sd">.. autoclass:: pjimg.imggen.OctaveCurtains</span>
-<span class="sd">.. autoclass:: pjimg.imggen.BorktaveCosineCurtains</span>
+<span class="sd">.. autoclass:: pjimg.sources.OctaveUnitNoise</span>
+<span class="sd">.. autoclass:: pjimg.sources.OctaveCosineCurtains</span>
+<span class="sd">.. autoclass:: pjimg.sources.OctaveCurtains</span>
+<span class="sd">.. autoclass:: pjimg.sources.BorktaveCosineCurtains</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">from</span> <span class="nn">operator</span> <span class="kn">import</span> <span class="n">mul</span><span class="p">,</span> <span class="n">truediv</span>
@@ -234,8 +234,8 @@
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
-<span class="kn">from</span> <span class="nn">pjimg.imggen.model</span> <span class="kn">import</span> <span class="n">Source</span>
-<span class="kn">from</span> <span class="nn">pjimg.imggen.noise</span> <span class="kn">import</span> <span class="n">Noise</span><span class="p">,</span> <span class="n">Seed</span>
+<span class="kn">from</span> <span class="nn">pjimg.sources.model</span> <span class="kn">import</span> <span class="n">Source</span>
+<span class="kn">from</span> <span class="nn">pjimg.sources.noise</span> <span class="kn">import</span> <span class="n">Noise</span><span class="p">,</span> <span class="n">Seed</span>
 <span class="kn">from</span> <span class="nn">pjimg.util</span> <span class="kn">import</span> <span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">Z</span><span class="p">,</span> <span class="n">lerp</span>
 <span class="kn">from</span> <span class="nn">pjimg.util.model</span> <span class="kn">import</span> <span class="o">*</span>
 
@@ -250,7 +250,7 @@
 
 <span class="c1"># Public classes.</span>
 <div class="viewcode-block" id="UnitNoise">
-<a class="viewcode-back" href="../../../imggen.html#pjimg.imggen.UnitNoise">[docs]</a>
+<a class="viewcode-back" href="../../../sources.html#pjimg.sources.UnitNoise">[docs]</a>
 <span class="k">class</span> <span class="nc">UnitNoise</span><span class="p">(</span><span class="n">Noise</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Create image noise that is based on a unit grid.</span>
 <span class="sd">    </span>
@@ -282,7 +282,7 @@
 <span class="sd">        be converted to UTF-8 bytes before being converted to</span>
 <span class="sd">        integers for seeding.</span>
 <span class="sd">    :return: An instance of :class:`UnitNoise`.</span>
-<span class="sd">    :rtype: imggen.unitnoise.UnitNoise</span>
+<span class="sd">    :rtype: sources.unitnoise.UnitNoise</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># The number of dimensions the noise occurs in.</span>
     <span class="n">_axes</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">3</span>
@@ -420,7 +420,7 @@
 
 
 <div class="viewcode-block" id="Curtains">
-<a class="viewcode-back" href="../../../imggen.html#pjimg.imggen.Curtains">[docs]</a>
+<a class="viewcode-back" href="../../../sources.html#pjimg.sources.Curtains">[docs]</a>
 <span class="k">class</span> <span class="nc">Curtains</span><span class="p">(</span><span class="n">UnitNoise</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Unit noise that creates vertical lines, like curtains.</span>
 <span class="sd">    </span>
@@ -452,7 +452,7 @@
 <span class="sd">        be converted to UTF-8 bytes before being converted to</span>
 <span class="sd">        integers for seeding.</span>
 <span class="sd">    :return: An instance of :class:`UnitNoise`.</span>
-<span class="sd">    :rtype: imggen.unitnoise.UnitNoise</span>
+<span class="sd">    :rtype: sources.unitnoise.UnitNoise</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># The number of dimensions the noise occurs in.</span>
     <span class="n">_axes</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span>
@@ -471,7 +471,7 @@
 
 
 <div class="viewcode-block" id="CosineCurtains">
-<a class="viewcode-back" href="../../../imggen.html#pjimg.imggen.CosineCurtains">[docs]</a>
+<a class="viewcode-back" href="../../../sources.html#pjimg.sources.CosineCurtains">[docs]</a>
 <span class="k">class</span> <span class="nc">CosineCurtains</span><span class="p">(</span><span class="n">Curtains</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Unit noise that creates vertical lines with a cosine-based ease</span>
 <span class="sd">    on the color change between grid points, making them appear to</span>
@@ -505,7 +505,7 @@
 <span class="sd">        be converted to UTF-8 bytes before being converted to</span>
 <span class="sd">        integers for seeding.</span>
 <span class="sd">    :return: An instance of :class:`UnitNoise`.</span>
-<span class="sd">    :rtype: imggen.unitnoise.UnitNoise</span>
+<span class="sd">    :rtype: sources.unitnoise.UnitNoise</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Private methods.</span>
     <span class="k">def</span> <span class="nf">_map_unit_grid</span><span class="p">(</span>
@@ -522,7 +522,7 @@
 <span class="c1"># Factories.</span>
 <span class="k">class</span> <span class="nc">OctaveNoiseDefaults</span><span class="p">(</span><span class="n">NamedTuple</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;The default values for a new octave noise class created by</span>
-<span class="sd">    :func:`imggen.unitnoise.octave_noise_factory`.</span>
+<span class="sd">    :func:`sources.unitnoise.octave_noise_factory`.</span>
 <span class="sd">    </span>
 <span class="sd">    :param octaves: (Optional.) The default value of octaves.</span>
 <span class="sd">    :param persistence: (Optional.) The default value of persistence.</span>
@@ -534,7 +534,7 @@
 <span class="sd">    :param repeats: (Optional.) The default value of repeats.</span>
 <span class="sd">    :param seed: (Optional.) The default value of seed.</span>
 <span class="sd">    :return: An instance of :class:`OctaveNoiseDefaults`.</span>
-<span class="sd">    :rtyoe: imggen.unitnoise.OctaveNoiseDefaults</span>
+<span class="sd">    :rtyoe: sources.unitnoise.OctaveNoiseDefaults</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">octaves</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">4</span>
     <span class="n">persistence</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">8</span>
@@ -598,7 +598,7 @@
 <span class="sd">        :param amplitude: The weight of the first octave.</span>
 <span class="sd">        :param frequency: How the number of points in each octave changes.</span>
 <span class="sd">        :return: An octave version of the base class.</span>
-<span class="sd">        :rtype: imggen.imggen.Source</span>
+<span class="sd">        :rtype: sources.sources.Source</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">source</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">UnitNoise</span><span class="p">]</span>
         <span class="n">unit_op</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span> <span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">truediv</span>
