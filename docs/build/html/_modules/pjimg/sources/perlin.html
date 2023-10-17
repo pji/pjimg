@@ -156,6 +156,10 @@
   <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../index.html">pjimg</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../blends.html">blends</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../eases.html">eases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../filters.html">filters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../sources.html">sources</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../imgio.html">imgio</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../util.html">util</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../requirements.html">pjimg Requirements</a></li>
@@ -216,15 +220,9 @@
 
 <span class="c1"># Public class.</span>
 <div class="viewcode-block" id="Perlin">
-<a class="viewcode-back" href="../../../imggen.html#pjimg.sources.Perlin">[docs]</a>
+<a class="viewcode-back" href="../../../sources.html#pjimg.sources.Perlin">[docs]</a>
 <span class="k">class</span> <span class="nc">Perlin</span><span class="p">(</span><span class="n">un</span><span class="o">.</span><span class="n">UnitNoise</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;A class to generate Perlin noise.</span>
-
-<span class="sd">    .. figure:: images/perlin.jpg</span>
-<span class="sd">       :alt: A picture of an image created from the output of</span>
-<span class="sd">            :class:`Perlin`.</span>
-<span class="sd">       </span>
-<span class="sd">       Output of :class:`Perlin`.</span>
 
 <span class="sd">    :param unit: The number of pixels between vertices along an</span>
 <span class="sd">        axis on the unit grid. The vertices are the locations where</span>
@@ -253,6 +251,20 @@
 <span class="sd">        integers for seeding.</span>
 <span class="sd">    :return: :class:Perlin object.</span>
 <span class="sd">    :rtype: sources.perlin.Perlin</span>
+<span class="sd">    </span>
+<span class="sd">    Usage::</span>
+<span class="sd">    </span>
+<span class="sd">        &gt;&gt;&gt; # Create Perlin noise in a 1280x720 image.</span>
+<span class="sd">        &gt;&gt;&gt; size = (1, 720, 1280)</span>
+<span class="sd">        &gt;&gt;&gt; unit = (1, size[Y] // 5, size[Y] // 5)</span>
+<span class="sd">        &gt;&gt;&gt; source = Perlin(unit=unit, seed=&#39;spam&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; img = source.fill(size)</span>
+
+<span class="sd">    .. figure:: images/perlin.jpg</span>
+<span class="sd">       :alt: Perlin noise in a 1280x720 image.</span>
+<span class="sd">       </span>
+<span class="sd">       The image data created by the usage example.</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">unit</span><span class="p">:</span> <span class="n">Size</span><span class="p">,</span>

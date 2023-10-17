@@ -156,6 +156,10 @@
   <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../index.html">pjimg</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../blends.html">blends</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../eases.html">eases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../filters.html">filters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../sources.html">sources</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../imgio.html">imgio</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../util.html">util</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../requirements.html">pjimg Requirements</a></li>
@@ -245,15 +249,9 @@
 
 <span class="c1"># Public classes.</span>
 <div class="viewcode-block" id="UnitNoise">
-<a class="viewcode-back" href="../../../imggen.html#pjimg.sources.UnitNoise">[docs]</a>
+<a class="viewcode-back" href="../../../sources.html#pjimg.sources.UnitNoise">[docs]</a>
 <span class="k">class</span> <span class="nc">UnitNoise</span><span class="p">(</span><span class="n">Noise</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Create image noise that is based on a unit grid.</span>
-<span class="sd">    </span>
-<span class="sd">    .. figure:: images/unitnoise.jpg</span>
-<span class="sd">       :alt: A picture of an image created from the output of</span>
-<span class="sd">            :class:`UnitNoise`.</span>
-<span class="sd">       </span>
-<span class="sd">       Output of :class:`UnitNoise`.</span>
 <span class="sd">    </span>
 <span class="sd">    :param unit: The number of pixels between vertices along an</span>
 <span class="sd">        axis on the unit grid. The vertices are the locations where</span>
@@ -278,6 +276,20 @@
 <span class="sd">        integers for seeding.</span>
 <span class="sd">    :return: An instance of :class:`UnitNoise`.</span>
 <span class="sd">    :rtype: sources.unitnoise.UnitNoise</span>
+<span class="sd">    </span>
+<span class="sd">    Usage::</span>
+<span class="sd">    </span>
+<span class="sd">        &gt;&gt;&gt; # Create unit noise in a 1280x720 image.</span>
+<span class="sd">        &gt;&gt;&gt; size = (1, 720, 1280)</span>
+<span class="sd">        &gt;&gt;&gt; unit = (1, size[Y] // 5, size[Y] // 5)</span>
+<span class="sd">        &gt;&gt;&gt; source = UnitNoise(unit=unit, seed=&#39;spam&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; img = source.fill(size)</span>
+
+<span class="sd">    .. figure:: images/unitnoise.jpg</span>
+<span class="sd">       :alt: Unit noise in a 1280x720 image.</span>
+<span class="sd">       </span>
+<span class="sd">       The image data created by the usage example.</span>
+<span class="sd">    </span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># The number of dimensions the noise occurs in.</span>
     <span class="n">_axes</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">3</span>
@@ -415,16 +427,10 @@
 
 
 <div class="viewcode-block" id="Curtains">
-<a class="viewcode-back" href="../../../imggen.html#pjimg.sources.Curtains">[docs]</a>
+<a class="viewcode-back" href="../../../sources.html#pjimg.sources.Curtains">[docs]</a>
 <span class="k">class</span> <span class="nc">Curtains</span><span class="p">(</span><span class="n">UnitNoise</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Unit noise that creates vertical lines, like curtains.</span>
 <span class="sd">    </span>
-<span class="sd">    .. figure:: images/curtains.jpg</span>
-<span class="sd">       :alt: A picture of an image created from the output of</span>
-<span class="sd">            :class:`Curtains`.</span>
-<span class="sd">       </span>
-<span class="sd">       Output of :class:`Curtains`.</span>
-
 <span class="sd">    :param unit: The number of pixels between vertices along an</span>
 <span class="sd">        axis on the unit grid. The vertices are the locations where</span>
 <span class="sd">        colors for the gradient are set. This is involved in setting</span>
@@ -448,6 +454,20 @@
 <span class="sd">        integers for seeding.</span>
 <span class="sd">    :return: An instance of :class:`UnitNoise`.</span>
 <span class="sd">    :rtype: sources.unitnoise.UnitNoise</span>
+
+<span class="sd">    Usage::</span>
+<span class="sd">    </span>
+<span class="sd">        &gt;&gt;&gt; # Create sharp curtains in a 1280x720 image.</span>
+<span class="sd">        &gt;&gt;&gt; size = (1, 720, 1280)</span>
+<span class="sd">        &gt;&gt;&gt; unit = (1, size[Y] // 5, size[Y] // 5)</span>
+<span class="sd">        &gt;&gt;&gt; source = Curtains(unit=unit, seed=&#39;spam&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; img = source.fill(size)</span>
+
+<span class="sd">    .. figure:: images/curtains.jpg</span>
+<span class="sd">       :alt: Sharp curtains in a 1280x720 image.</span>
+<span class="sd">       </span>
+<span class="sd">       The image data created by the usage example.</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># The number of dimensions the noise occurs in.</span>
     <span class="n">_axes</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span>
@@ -466,18 +486,12 @@
 
 
 <div class="viewcode-block" id="CosineCurtains">
-<a class="viewcode-back" href="../../../imggen.html#pjimg.sources.CosineCurtains">[docs]</a>
+<a class="viewcode-back" href="../../../sources.html#pjimg.sources.CosineCurtains">[docs]</a>
 <span class="k">class</span> <span class="nc">CosineCurtains</span><span class="p">(</span><span class="n">Curtains</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Unit noise that creates vertical lines with a cosine-based ease</span>
 <span class="sd">    on the color change between grid points, making them appear to</span>
 <span class="sd">    flow more like curtains.</span>
 <span class="sd">    </span>
-<span class="sd">    .. figure:: images/cosinecurtains.jpg</span>
-<span class="sd">       :alt: A picture of an image created from the output of</span>
-<span class="sd">            :class:`CosineCurtains`.</span>
-<span class="sd">       </span>
-<span class="sd">       Output of :class:`CosineCurtains`.</span>
-
 <span class="sd">    :param unit: The number of pixels between vertices along an</span>
 <span class="sd">        axis on the unit grid. The vertices are the locations where</span>
 <span class="sd">        colors for the gradient are set. This is involved in setting</span>
@@ -501,6 +515,20 @@
 <span class="sd">        integers for seeding.</span>
 <span class="sd">    :return: An instance of :class:`UnitNoise`.</span>
 <span class="sd">    :rtype: sources.unitnoise.UnitNoise</span>
+<span class="sd">    </span>
+<span class="sd">    Usage::</span>
+<span class="sd">    </span>
+<span class="sd">        &gt;&gt;&gt; # Create rounded curtains in a 1280x720 image.</span>
+<span class="sd">        &gt;&gt;&gt; size = (1, 720, 1280)</span>
+<span class="sd">        &gt;&gt;&gt; unit = (1, size[Y] // 5, size[Y] // 5)</span>
+<span class="sd">        &gt;&gt;&gt; source = CosineCurtains(unit=unit, seed=&#39;spam&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; img = source.fill(size)</span>
+
+<span class="sd">    .. figure:: images/cosinecurtains.jpg</span>
+<span class="sd">       :alt: Rounded curtains in a 1280x720 image.</span>
+<span class="sd">       </span>
+<span class="sd">       The image data created by the usage example.</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Private methods.</span>
     <span class="k">def</span> <span class="nf">_map_unit_grid</span><span class="p">(</span>
@@ -579,13 +607,6 @@
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;A source for octave noise. Parameters are similar to the</span>
 <span class="sd">        :class:`UnitNoise` being octaved, with the following additions.</span>
 <span class="sd">        </span>
-<span class="sd">        .. figure:: images/{lname}.jpg</span>
-<span class="sd">           :alt: A picture of an image created from the output of</span>
-<span class="sd">                :class:`{name}`.</span>
-<span class="sd">       </span>
-<span class="sd">           Output of :class:`{name}`.</span>
-<span class="sd">    </span>
-<span class="sd">        </span>
 <span class="sd">        :param octaves: The number of octaves of noise in the image. An</span>
 <span class="sd">            octave is a layer of the noise with a different number of</span>
 <span class="sd">            points added on top of other layers of noise.</span>
@@ -594,6 +615,13 @@
 <span class="sd">        :param frequency: How the number of points in each octave changes.</span>
 <span class="sd">        :return: An octave version of the base class.</span>
 <span class="sd">        :rtype: sources.sources.Source</span>
+
+<span class="sd">        .. figure:: images/{lname}.jpg</span>
+<span class="sd">           :alt: A picture of an image created from the output of</span>
+<span class="sd">                :class:`{name}`.</span>
+<span class="sd">       </span>
+<span class="sd">           Output of :class:`{name}`.</span>
+<span class="sd">    </span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">source</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">UnitNoise</span><span class="p">]</span>
         <span class="n">unit_op</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span> <span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">truediv</span>

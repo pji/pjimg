@@ -156,6 +156,10 @@
   <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../index.html">pjimg</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../blends.html">blends</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../eases.html">eases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../filters.html">filters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../sources.html">sources</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../imgio.html">imgio</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../util.html">util</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../requirements.html">pjimg Requirements</a></li>
@@ -222,16 +226,10 @@
 
 <span class="c1"># Public classes.</span>
 <div class="viewcode-block" id="Maze">
-<a class="viewcode-back" href="../../../imggen.html#pjimg.sources.Maze">[docs]</a>
+<a class="viewcode-back" href="../../../sources.html#pjimg.sources.Maze">[docs]</a>
 <span class="k">class</span> <span class="nc">Maze</span><span class="p">(</span><span class="n">un</span><span class="o">.</span><span class="n">UnitNoise</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;A class to generate maze-like paths.</span>
 
-<span class="sd">    .. figure:: images/maze.jpg</span>
-<span class="sd">       :alt: A picture of an image created from the output of</span>
-<span class="sd">            :class:`Maze`.</span>
-<span class="sd">       </span>
-<span class="sd">       Output of :class:`Maze`.</span>
-<span class="sd">    </span>
 <span class="sd">    :param unit: The number of pixels between vertices along an</span>
 <span class="sd">        axis. The vertices are the locations where the direction</span>
 <span class="sd">        of the path can change.</span>
@@ -260,9 +258,22 @@
 <span class="sd">        same values. Note: strings that are passed to seed will</span>
 <span class="sd">        be converted to UTF-8 bytes before being converted to</span>
 <span class="sd">        integers for seeding.</span>
-<span class="sd">    :return: :class:Maze object.</span>
+<span class="sd">    :return: :class:`Maze` object.</span>
 <span class="sd">    :rtype: sources.maze.Maze</span>
+<span class="sd">    </span>
+<span class="sd">    Usage::</span>
+<span class="sd">    </span>
+<span class="sd">        &gt;&gt;&gt; # Create a maze in a 1280x720 image.</span>
+<span class="sd">        &gt;&gt;&gt; size = (1, 720, 1280)</span>
+<span class="sd">        &gt;&gt;&gt; unit = (1, size[Y] // 18, size[Y] // 18)</span>
+<span class="sd">        &gt;&gt;&gt; source = Maze(unit=unit, seed=&#39;spam&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; img = source.fill(size)</span>
 
+<span class="sd">    .. figure:: images/maze.jpg</span>
+<span class="sd">       :alt: A maze in a 1280x720 image.</span>
+<span class="sd">       </span>
+<span class="sd">       The image data created by the usage example.</span>
+<span class="sd">    </span>
 <span class="sd">    Descriptive Origins</span>
 <span class="sd">    -------------------</span>
 <span class="sd">    The origin parameter can accept a description of the location</span>
@@ -500,7 +511,7 @@
 
 
 <div class="viewcode-block" id="AnimatedMaze">
-<a class="viewcode-back" href="../../../imggen.html#pjimg.sources.AnimatedMaze">[docs]</a>
+<a class="viewcode-back" href="../../../sources.html#pjimg.sources.AnimatedMaze">[docs]</a>
 <span class="k">class</span> <span class="nc">AnimatedMaze</span><span class="p">(</span><span class="n">Maze</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Animate the creation of a maze.</span>
 
@@ -536,7 +547,7 @@
 <span class="sd">        same values. Note: strings that are passed to seed will</span>
 <span class="sd">        be converted to UTF-8 bytes before being converted to</span>
 <span class="sd">        integers for seeding.</span>
-<span class="sd">    :return: :class:AnimatedMaze object.</span>
+<span class="sd">    :return: :class:`AnimatedMaze` object.</span>
 <span class="sd">    :rtype: sources.maze.AnimatedMaze</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
@@ -652,17 +663,11 @@
 
 
 <div class="viewcode-block" id="SolvedMaze">
-<a class="viewcode-back" href="../../../imggen.html#pjimg.sources.SolvedMaze">[docs]</a>
+<a class="viewcode-back" href="../../../sources.html#pjimg.sources.SolvedMaze">[docs]</a>
 <span class="k">class</span> <span class="nc">SolvedMaze</span><span class="p">(</span><span class="n">Maze</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Draw a line that shows how to get from one location to another</span>
 <span class="sd">    in a maze.</span>
 
-<span class="sd">    .. figure:: images/solvedmaze.jpg</span>
-<span class="sd">       :alt: A picture of an image created from the output of</span>
-<span class="sd">            :class:`SolvedMaze`.</span>
-<span class="sd">       </span>
-<span class="sd">       Output of :class:`SolvedMaze`.</span>
-<span class="sd">    </span>
 <span class="sd">    :param unit: The number of pixels between vertices along an</span>
 <span class="sd">        axis. The vertices are the locations where the direction</span>
 <span class="sd">        of the path can change.</span>
@@ -692,9 +697,23 @@
 <span class="sd">        same values. Note: strings that are passed to seed will</span>
 <span class="sd">        be converted to UTF-8 bytes before being converted to</span>
 <span class="sd">        integers for seeding.</span>
-<span class="sd">    :return: :class:SolvedMaze object.</span>
+<span class="sd">    :return: :class:`SolvedMaze` object.</span>
 <span class="sd">    :rtype: sources.maze.SolvedPath</span>
+<span class="sd">    </span>
+<span class="sd">    Usage::</span>
+<span class="sd">    </span>
+<span class="sd">        &gt;&gt;&gt; # Create the line showing a solution for a maze in a</span>
+<span class="sd">        &gt;&gt;&gt; # 1280x720 image.</span>
+<span class="sd">        &gt;&gt;&gt; size = (1, 720, 1280)</span>
+<span class="sd">        &gt;&gt;&gt; unit = (1, size[Y] // 18, size[Y] // 18)</span>
+<span class="sd">        &gt;&gt;&gt; source = SolvedMaze(unit=unit, seed=&#39;spam&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; img = source.fill(size)</span>
 
+<span class="sd">    .. figure:: images/solvedmaze.jpg</span>
+<span class="sd">       :alt: A line showing a solution for a maze in a 1280x720 image.</span>
+<span class="sd">       </span>
+<span class="sd">       The image data created by the usage example.</span>
+<span class="sd">    </span>
 <span class="sd">    Descriptive Origins</span>
 <span class="sd">    -------------------</span>
 <span class="sd">    The origin parameter can accept a description of the location</span>

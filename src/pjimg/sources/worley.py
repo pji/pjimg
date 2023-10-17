@@ -33,12 +33,6 @@ class Worley(Noise):
     image. This creates structures within the noise that look like
     cells or pits.
 
-    .. figure:: images/worley.jpg
-       :alt: A picture of an image created from the output of
-            :class:`Worley`.
-       
-       Output of :class:`Worley`.
-    
     This implementation is heavily optimized from code found here:
     https://code.activestate.com/recipes/578459-worley-noise-generator/
 
@@ -61,6 +55,19 @@ class Worley(Noise):
         integers for seeding.
     :return: :class:`Worley` object.
     :rtype: sources.worley.Worley
+    
+    Usage::
+    
+        >>> # Create Worley noise in a 1280x720 image.
+        >>> size = (1, 720, 1280)
+        >>> source = Worley(points=20, seed='spam')
+        >>> img = source.fill(size)
+
+    .. figure:: images/worley.jpg
+       :alt: Worley noise in a 1280x720 image.
+       
+       The image data created by the usage example.
+    
     """
     def __init__(
         self, points: int,
@@ -128,12 +135,6 @@ class OctaveWorley(Source):
     This implementation is heavily optimized from code found here:
     https://code.activestate.com/recipes/578459-worley-noise-generator/
 
-    .. figure:: images/octaveworley.jpg
-       :alt: A picture of an image created from the output of
-            :class:`OctaveWorley`.
-       
-       Output of :class:`OctaveWorley`.
-    
     :param octaves: The number of octaves of noise in the image. An
         octave is a layer of the noise with a different number of
         points added on top of other layers of noise.
@@ -159,6 +160,26 @@ class OctaveWorley(Source):
         integers for seeding.
     :return: :class:`OctaveWorley` object.
     :rtype: sources.worley.OctaveWorley
+    
+    Usage::
+    
+        >>> # Create octave Worley noise in a 1280x720 image.
+        >>> size = (1, 720, 1280)
+        >>> source = OctaveWorley(
+        ...     octaves=3,
+        ...     persistence=6,
+        ...     amplitude=5,
+        ...     frequency=3,
+        ...     points=8,
+        ...     seed='spam'
+        ... )
+        >>> img = source.fill(size)
+
+    .. figure:: images/octaveworley.jpg
+       :alt: Octave Worley noise in a 1280x720 image.
+       
+       The image data created by the usage example.
+    
     """
     def __init__(
         self, octaves: int = 4,

@@ -24,6 +24,7 @@ twine = "*"
 pjimg = {file = ".", editable = true}
 types-pillow = "*"
 matplotlib = "*"
+thurible = "*"
 
 [requires]
 python_version = "3.12"

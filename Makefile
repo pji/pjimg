@@ -24,10 +24,10 @@ clean:
 
 .PHONY: docs
 docs:
-# 	python examples/blends/build_doc_images.py
-# 	python examples/eases/build_doc_images.py
-# 	python examples/filters/build_doc_images.py
-# 	python examples/sources/build_doc_images.py
+	python examples/blends/build_doc_images.py
+	python examples/eases/build_doc_images.py
+	python examples/filters/build_doc_images.py
+	python examples/sources/build_doc_images.py
 	sphinx-build -b html docs/source/ docs/build/html
 
 .PHONY: pre

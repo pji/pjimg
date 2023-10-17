@@ -156,6 +156,10 @@
   <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../index.html">pjimg</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../blends.html">blends</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../eases.html">eases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../filters.html">filters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../sources.html">sources</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../imgio.html">imgio</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../util.html">util</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../requirements.html">pjimg Requirements</a></li>
@@ -220,7 +224,7 @@
 
 <span class="c1"># Public classes.</span>
 <div class="viewcode-block" id="Worley">
-<a class="viewcode-back" href="../../../imggen.html#pjimg.sources.Worley">[docs]</a>
+<a class="viewcode-back" href="../../../sources.html#pjimg.sources.Worley">[docs]</a>
 <span class="k">class</span> <span class="nc">Worley</span><span class="p">(</span><span class="n">Noise</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Fill a space with Worley noise.</span>
 
@@ -230,12 +234,6 @@
 <span class="sd">    image. This creates structures within the noise that look like</span>
 <span class="sd">    cells or pits.</span>
 
-<span class="sd">    .. figure:: images/worley.jpg</span>
-<span class="sd">       :alt: A picture of an image created from the output of</span>
-<span class="sd">            :class:`Worley`.</span>
-<span class="sd">       </span>
-<span class="sd">       Output of :class:`Worley`.</span>
-<span class="sd">    </span>
 <span class="sd">    This implementation is heavily optimized from code found here:</span>
 <span class="sd">    https://code.activestate.com/recipes/578459-worley-noise-generator/</span>
 
@@ -258,6 +256,19 @@
 <span class="sd">        integers for seeding.</span>
 <span class="sd">    :return: :class:`Worley` object.</span>
 <span class="sd">    :rtype: sources.worley.Worley</span>
+<span class="sd">    </span>
+<span class="sd">    Usage::</span>
+<span class="sd">    </span>
+<span class="sd">        &gt;&gt;&gt; # Create Worley noise in a 1280x720 image.</span>
+<span class="sd">        &gt;&gt;&gt; size = (1, 720, 1280)</span>
+<span class="sd">        &gt;&gt;&gt; source = Worley(points=20, seed=&#39;spam&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; img = source.fill(size)</span>
+
+<span class="sd">    .. figure:: images/worley.jpg</span>
+<span class="sd">       :alt: Worley noise in a 1280x720 image.</span>
+<span class="sd">       </span>
+<span class="sd">       The image data created by the usage example.</span>
+<span class="sd">    </span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">points</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
@@ -315,7 +326,7 @@
 
 
 <div class="viewcode-block" id="OctaveWorley">
-<a class="viewcode-back" href="../../../imggen.html#pjimg.sources.OctaveWorley">[docs]</a>
+<a class="viewcode-back" href="../../../sources.html#pjimg.sources.OctaveWorley">[docs]</a>
 <span class="k">class</span> <span class="nc">OctaveWorley</span><span class="p">(</span><span class="n">Source</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Fill a space with octaves of Worley noise.</span>
 
@@ -328,12 +339,6 @@
 <span class="sd">    This implementation is heavily optimized from code found here:</span>
 <span class="sd">    https://code.activestate.com/recipes/578459-worley-noise-generator/</span>
 
-<span class="sd">    .. figure:: images/octaveworley.jpg</span>
-<span class="sd">       :alt: A picture of an image created from the output of</span>
-<span class="sd">            :class:`OctaveWorley`.</span>
-<span class="sd">       </span>
-<span class="sd">       Output of :class:`OctaveWorley`.</span>
-<span class="sd">    </span>
 <span class="sd">    :param octaves: The number of octaves of noise in the image. An</span>
 <span class="sd">        octave is a layer of the noise with a different number of</span>
 <span class="sd">        points added on top of other layers of noise.</span>
@@ -359,6 +364,26 @@
 <span class="sd">        integers for seeding.</span>
 <span class="sd">    :return: :class:`OctaveWorley` object.</span>
 <span class="sd">    :rtype: sources.worley.OctaveWorley</span>
+<span class="sd">    </span>
+<span class="sd">    Usage::</span>
+<span class="sd">    </span>
+<span class="sd">        &gt;&gt;&gt; # Create octave Worley noise in a 1280x720 image.</span>
+<span class="sd">        &gt;&gt;&gt; size = (1, 720, 1280)</span>
+<span class="sd">        &gt;&gt;&gt; source = OctaveWorley(</span>
+<span class="sd">        ...     octaves=3,</span>
+<span class="sd">        ...     persistence=6,</span>
+<span class="sd">        ...     amplitude=5,</span>
+<span class="sd">        ...     frequency=3,</span>
+<span class="sd">        ...     points=8,</span>
+<span class="sd">        ...     seed=&#39;spam&#39;</span>
+<span class="sd">        ... )</span>
+<span class="sd">        &gt;&gt;&gt; img = source.fill(size)</span>
+
+<span class="sd">    .. figure:: images/octaveworley.jpg</span>
+<span class="sd">       :alt: Octave Worley noise in a 1280x720 image.</span>
+<span class="sd">       </span>
+<span class="sd">       The image data created by the usage example.</span>
+<span class="sd">    </span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">octaves</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">4</span><span class="p">,</span>

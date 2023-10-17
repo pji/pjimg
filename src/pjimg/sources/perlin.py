@@ -23,12 +23,6 @@ from pjimg.util import ImgAry, IntAry64, Loc, RatioAry, Size, X, Y, Z
 class Perlin(un.UnitNoise):
     """A class to generate Perlin noise.
 
-    .. figure:: images/perlin.jpg
-       :alt: A picture of an image created from the output of
-            :class:`Perlin`.
-       
-       Output of :class:`Perlin`.
-
     :param unit: The number of pixels between vertices along an
         axis on the unit grid. The vertices are the locations where
         colors for the gradient are set. This is involved in setting
@@ -56,6 +50,20 @@ class Perlin(un.UnitNoise):
         integers for seeding.
     :return: :class:Perlin object.
     :rtype: sources.perlin.Perlin
+    
+    Usage::
+    
+        >>> # Create Perlin noise in a 1280x720 image.
+        >>> size = (1, 720, 1280)
+        >>> unit = (1, size[Y] // 5, size[Y] // 5)
+        >>> source = Perlin(unit=unit, seed='spam')
+        >>> img = source.fill(size)
+
+    .. figure:: images/perlin.jpg
+       :alt: Perlin noise in a 1280x720 image.
+       
+       The image data created by the usage example.
+
     """
     def __init__(
         self, unit: Size,

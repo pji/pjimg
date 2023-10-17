@@ -29,12 +29,6 @@ MazePath = list[Step]
 class Maze(un.UnitNoise):
     """A class to generate maze-like paths.
 
-    .. figure:: images/maze.jpg
-       :alt: A picture of an image created from the output of
-            :class:`Maze`.
-       
-       Output of :class:`Maze`.
-    
     :param unit: The number of pixels between vertices along an
         axis. The vertices are the locations where the direction
         of the path can change.
@@ -63,9 +57,22 @@ class Maze(un.UnitNoise):
         same values. Note: strings that are passed to seed will
         be converted to UTF-8 bytes before being converted to
         integers for seeding.
-    :return: :class:Maze object.
+    :return: :class:`Maze` object.
     :rtype: sources.maze.Maze
+    
+    Usage::
+    
+        >>> # Create a maze in a 1280x720 image.
+        >>> size = (1, 720, 1280)
+        >>> unit = (1, size[Y] // 18, size[Y] // 18)
+        >>> source = Maze(unit=unit, seed='spam')
+        >>> img = source.fill(size)
 
+    .. figure:: images/maze.jpg
+       :alt: A maze in a 1280x720 image.
+       
+       The image data created by the usage example.
+    
     Descriptive Origins
     -------------------
     The origin parameter can accept a description of the location
@@ -336,7 +343,7 @@ class AnimatedMaze(Maze):
         same values. Note: strings that are passed to seed will
         be converted to UTF-8 bytes before being converted to
         integers for seeding.
-    :return: :class:AnimatedMaze object.
+    :return: :class:`AnimatedMaze` object.
     :rtype: sources.maze.AnimatedMaze
     """
     def __init__(
@@ -454,12 +461,6 @@ class SolvedMaze(Maze):
     """Draw a line that shows how to get from one location to another
     in a maze.
 
-    .. figure:: images/solvedmaze.jpg
-       :alt: A picture of an image created from the output of
-            :class:`SolvedMaze`.
-       
-       Output of :class:`SolvedMaze`.
-    
     :param unit: The number of pixels between vertices along an
         axis. The vertices are the locations where the direction
         of the path can change.
@@ -489,9 +490,23 @@ class SolvedMaze(Maze):
         same values. Note: strings that are passed to seed will
         be converted to UTF-8 bytes before being converted to
         integers for seeding.
-    :return: :class:SolvedMaze object.
+    :return: :class:`SolvedMaze` object.
     :rtype: sources.maze.SolvedPath
+    
+    Usage::
+    
+        >>> # Create the line showing a solution for a maze in a
+        >>> # 1280x720 image.
+        >>> size = (1, 720, 1280)
+        >>> unit = (1, size[Y] // 18, size[Y] // 18)
+        >>> source = SolvedMaze(unit=unit, seed='spam')
+        >>> img = source.fill(size)
 
+    .. figure:: images/solvedmaze.jpg
+       :alt: A line showing a solution for a maze in a 1280x720 image.
+       
+       The image data created by the usage example.
+    
     Descriptive Origins
     -------------------
     The origin parameter can accept a description of the location
