@@ -28,7 +28,12 @@ __all__ = [
 
 # Decorators.
 def can_fade(fn: Blend) -> Blend:
-    """Adjust how much the blend affects the base array."""
+    """Adjust how much the blend affects the base array.
+    
+    :param fn: The blend :class:`function` to wrap.
+    :return: The wrapped blend :class:`function`.
+    :rtype: function
+    """
     @wraps(fn)
     def wrapper(
         a: ImgAry,
@@ -51,7 +56,12 @@ def can_fade(fn: Blend) -> Blend:
 
 
 def can_mask(fn: Blend) -> Blend:
-    """Apply a blending mask to the image."""
+    """Apply a blending mask to the image.
+    
+    :param fn: The blend :class:`function` to wrap.
+    :return: The wrapped blend :class:`function`.
+    :rtype: function
+    """
     @wraps(fn)
     def wrapper(
         a: ImgAry,
@@ -78,6 +88,10 @@ def will_clip(fn: Blend) -> Blend:
     subtraction can overflow the scale of the image. This will
     keep the image in scale by clipping the values below zero
     to zero and the values above one to one.
+
+    :param fn: The blend :class:`function` to wrap.
+    :return: The wrapped blend :class:`function`.
+    :rtype: function
     """
     @wraps(fn)
     def wrapper(a: ImgAry, b: ImgAry, *args, **kwargs) -> ImgAry:
@@ -91,6 +105,10 @@ def will_clip(fn: Blend) -> Blend:
 def will_colorize(fn: Blend) -> Blend:
     """Ensure the images have the same number of color
     channels.
+
+    :param fn: The blend :class:`function` to wrap.
+    :return: The wrapped blend :class:`function`.
+    :rtype: function
     """
     @wraps(fn)
     def wrapper(
@@ -120,6 +138,10 @@ def will_match_size(fn: Blend) -> Blend:
     the smaller image to match the larger image. Since this affects
     the size of the images, this will need to go before any decorators
     that use the original images to affect the resulting image.
+
+    :param fn: The blend :class:`function` to wrap.
+    :return: The wrapped blend :class:`function`.
+    :rtype: function
     """
     @wraps(fn)
     def wrapper(a: ImgAry, b: ImgAry, *args, **kwargs) -> ImgAry:

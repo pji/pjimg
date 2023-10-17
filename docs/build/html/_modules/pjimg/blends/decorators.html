@@ -156,6 +156,10 @@
   <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../index.html">pjimg</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../blends.html">blends</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../eases.html">eases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../filters.html">filters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../sources.html">sources</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../imgio.html">imgio</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../util.html">util</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../requirements.html">pjimg Requirements</a></li>
@@ -223,9 +227,14 @@
 
 <span class="c1"># Decorators.</span>
 <div class="viewcode-block" id="can_fade">
-<a class="viewcode-back" href="../../../imgblend.html#pjimg.blends.can_fade">[docs]</a>
+<a class="viewcode-back" href="../../../blends.html#pjimg.blends.can_fade">[docs]</a>
 <span class="k">def</span> <span class="nf">can_fade</span><span class="p">(</span><span class="n">fn</span><span class="p">:</span> <span class="n">Blend</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Blend</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Adjust how much the blend affects the base array.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Adjust how much the blend affects the base array.</span>
+<span class="sd">    </span>
+<span class="sd">    :param fn: The blend :class:`function` to wrap.</span>
+<span class="sd">    :return: The wrapped blend :class:`function`.</span>
+<span class="sd">    :rtype: function</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="nd">@wraps</span><span class="p">(</span><span class="n">fn</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span>
         <span class="n">a</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">,</span>
@@ -249,9 +258,14 @@
 
 
 <div class="viewcode-block" id="can_mask">
-<a class="viewcode-back" href="../../../imgblend.html#pjimg.blends.can_mask">[docs]</a>
+<a class="viewcode-back" href="../../../blends.html#pjimg.blends.can_mask">[docs]</a>
 <span class="k">def</span> <span class="nf">can_mask</span><span class="p">(</span><span class="n">fn</span><span class="p">:</span> <span class="n">Blend</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Blend</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Apply a blending mask to the image.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Apply a blending mask to the image.</span>
+<span class="sd">    </span>
+<span class="sd">    :param fn: The blend :class:`function` to wrap.</span>
+<span class="sd">    :return: The wrapped blend :class:`function`.</span>
+<span class="sd">    :rtype: function</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="nd">@wraps</span><span class="p">(</span><span class="n">fn</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span>
         <span class="n">a</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">,</span>
@@ -275,12 +289,16 @@
 
 
 <div class="viewcode-block" id="will_clip">
-<a class="viewcode-back" href="../../../imgblend.html#pjimg.blends.will_clip">[docs]</a>
+<a class="viewcode-back" href="../../../blends.html#pjimg.blends.will_clip">[docs]</a>
 <span class="k">def</span> <span class="nf">will_clip</span><span class="p">(</span><span class="n">fn</span><span class="p">:</span> <span class="n">Blend</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Blend</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Blends that use division or unbounded addition or</span>
 <span class="sd">    subtraction can overflow the scale of the image. This will</span>
 <span class="sd">    keep the image in scale by clipping the values below zero</span>
 <span class="sd">    to zero and the values above one to one.</span>
+
+<span class="sd">    :param fn: The blend :class:`function` to wrap.</span>
+<span class="sd">    :return: The wrapped blend :class:`function`.</span>
+<span class="sd">    :rtype: function</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="nd">@wraps</span><span class="p">(</span><span class="n">fn</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ImgAry</span><span class="p">:</span>
@@ -293,10 +311,14 @@
 
 
 <div class="viewcode-block" id="will_colorize">
-<a class="viewcode-back" href="../../../imgblend.html#pjimg.blends.will_colorize">[docs]</a>
+<a class="viewcode-back" href="../../../blends.html#pjimg.blends.will_colorize">[docs]</a>
 <span class="k">def</span> <span class="nf">will_colorize</span><span class="p">(</span><span class="n">fn</span><span class="p">:</span> <span class="n">Blend</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Blend</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Ensure the images have the same number of color</span>
 <span class="sd">    channels.</span>
+
+<span class="sd">    :param fn: The blend :class:`function` to wrap.</span>
+<span class="sd">    :return: The wrapped blend :class:`function`.</span>
+<span class="sd">    :rtype: function</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="nd">@wraps</span><span class="p">(</span><span class="n">fn</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span>
@@ -323,12 +345,16 @@
 
 
 <div class="viewcode-block" id="will_match_size">
-<a class="viewcode-back" href="../../../imgblend.html#pjimg.blends.will_match_size">[docs]</a>
+<a class="viewcode-back" href="../../../blends.html#pjimg.blends.will_match_size">[docs]</a>
 <span class="k">def</span> <span class="nf">will_match_size</span><span class="p">(</span><span class="n">fn</span><span class="p">:</span> <span class="n">Blend</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Blend</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;If the given images are different sizes, increase the size of</span>
 <span class="sd">    the smaller image to match the larger image. Since this affects</span>
 <span class="sd">    the size of the images, this will need to go before any decorators</span>
 <span class="sd">    that use the original images to affect the resulting image.</span>
+
+<span class="sd">    :param fn: The blend :class:`function` to wrap.</span>
+<span class="sd">    :return: The wrapped blend :class:`function`.</span>
+<span class="sd">    :rtype: function</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="nd">@wraps</span><span class="p">(</span><span class="n">fn</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ImgAry</span><span class="p">:</span>

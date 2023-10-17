@@ -156,6 +156,10 @@
   <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../index.html">pjimg</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../blends.html">blends</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../eases.html">eases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../filters.html">filters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../sources.html">sources</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../imgio.html">imgio</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../util.html">util</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../requirements.html">pjimg Requirements</a></li>
@@ -310,17 +314,29 @@
 <span class="sd">================</span>
 
 <span class="sd">The examples in the following blends will show the result when a simple</span>
-<span class="sd">horizontal gradient is blended with a simple vertical gradient.</span>
+<span class="sd">horizontal gradient::</span>
 
-<span class="sd">    .. figure:: images/a.jpg</span>
-<span class="sd">       :alt: The simple horizontal gradient `a`.</span>
-<span class="sd">       </span>
-<span class="sd">       The simple horizontal gradient `a`.</span>
+<span class="sd">    &gt;&gt;&gt; a = np.indices((size[X],), dtype=float)</span>
+<span class="sd">    &gt;&gt;&gt; a /= size[X] - 1</span>
+<span class="sd">    &gt;&gt;&gt; a = a.reshape(1, 1, size[X])</span>
+<span class="sd">    &gt;&gt;&gt; a = np.tile(a, (1, size[Y], 1))</span>
+
+<span class="sd">.. figure:: images/a.jpg</span>
+<span class="sd">   :alt: The simple horizontal gradient `a`.</span>
+<span class="sd">   </span>
+<span class="sd">   The simple horizontal gradient `a`.</span>
+
+<span class="sd">is blended with a simple vertical gradient::</span>
+
+<span class="sd">    &gt;&gt;&gt; b = np.indices((size[Y],), dtype=float)</span>
+<span class="sd">    &gt;&gt;&gt; b /= size[Y] - 1</span>
+<span class="sd">    &gt;&gt;&gt; b = b.reshape(1, size[Y], 1)</span>
+<span class="sd">    &gt;&gt;&gt; b = np.tile(b, (1, 1, size[X]))</span>
 <span class="sd">    </span>
-<span class="sd">    .. figure:: images/b.jpg</span>
-<span class="sd">       :alt: The simple horizontal gradient `b`.</span>
-<span class="sd">       </span>
-<span class="sd">       The simple horizontal gradient `b`.</span>
+<span class="sd">.. figure:: images/b.jpg</span>
+<span class="sd">   :alt: The simple horizontal gradient `b`.</span>
+<span class="sd">   </span>
+<span class="sd">   The simple horizontal gradient `b`.</span>
 
 
 <span class="sd">Replacement Blends</span>
@@ -378,7 +394,7 @@
 
 <span class="c1"># Simple replacement blends.</span>
 <div class="viewcode-block" id="replace">
-<a class="viewcode-back" href="../../../imgblend.html#pjimg.blends.replace">[docs]</a>
+<a class="viewcode-back" href="../../../blends.html#pjimg.blends.replace">[docs]</a>
 <span class="nd">@can_mask</span>
 <span class="nd">@can_fade</span>
 <span class="nd">@will_match_size</span>
@@ -388,11 +404,6 @@
 <span class="sd">    if passed can_fade amount, but otherwise this will just replace the</span>
 <span class="sd">    values in a with the values in b.</span>
 
-<span class="sd">    .. figure:: images/replace.jpg</span>
-<span class="sd">       :alt: The result of :func:`replace`.</span>
-<span class="sd">       </span>
-<span class="sd">       The result of :func:`replace`.</span>
-
 <span class="sd">    :param a: The existing values. This is like the bottom layer in</span>
 <span class="sd">        a photo editing tool.</span>
 <span class="sd">    :param b: The values to blend. This is like the top layer in a</span>
@@ -411,6 +422,19 @@
 <span class="sd">    :return: An :class:`numpy.ndarray` that contains the values of the</span>
 <span class="sd">        blended arrays.</span>
 <span class="sd">    :rtype: numpy.ndarray</span>
+<span class="sd">    </span>
+<span class="sd">    Usage::</span>
+<span class="sd">    </span>
+<span class="sd">        &gt;&gt;&gt; from pjimg.sources import Gradient</span>
+<span class="sd">        &gt;&gt;&gt; a = Gradient(&#39;h&#39;).fill((1, 720, 1280))</span>
+<span class="sd">        &gt;&gt;&gt; b = Gradient(&#39;v&#39;).fill((1, 720, 1280))</span>
+<span class="sd">        &gt;&gt;&gt; img = replace(a, b)</span>
+
+<span class="sd">    .. figure:: images/replace.jpg</span>
+<span class="sd">       :alt: The result of :func:`replace`.</span>
+<span class="sd">       </span>
+<span class="sd">       The result of :func:`replace`.</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">b</span></div>
 
@@ -418,7 +442,7 @@
 
 <span class="c1"># Darker/burn blends.</span>
 <div class="viewcode-block" id="darker">
-<a class="viewcode-back" href="../../../imgblend.html#pjimg.blends.darker">[docs]</a>
+<a class="viewcode-back" href="../../../blends.html#pjimg.blends.darker">[docs]</a>
 <span class="nd">@will_clip</span>
 <span class="nd">@can_mask</span>
 <span class="nd">@can_fade</span>
@@ -428,11 +452,6 @@
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Replaces values in the existing image with values from the</span>
 <span class="sd">    blending image when the value in the blending image is darker.</span>
 
-<span class="sd">    .. figure:: images/darker.jpg</span>
-<span class="sd">       :alt: The result of :func:`darker`.</span>
-<span class="sd">       </span>
-<span class="sd">       The result of :func:`darker`.</span>
-
 <span class="sd">    :param a: The existing values. This is like the bottom layer in</span>
 <span class="sd">        a photo editing tool.</span>
 <span class="sd">    :param b: The values to blend. This is like the top layer in a</span>
@@ -451,6 +470,19 @@
 <span class="sd">    :return: An :class:`numpy.ndarray` that contains the values of the</span>
 <span class="sd">        blended arrays.</span>
 <span class="sd">    :rtype: numpy.ndarray</span>
+<span class="sd">    </span>
+<span class="sd">    Usage::</span>
+<span class="sd">    </span>
+<span class="sd">        &gt;&gt;&gt; from pjimg.sources import Gradient</span>
+<span class="sd">        &gt;&gt;&gt; a = Gradient(&#39;h&#39;).fill((1, 720, 1280))</span>
+<span class="sd">        &gt;&gt;&gt; b = Gradient(&#39;v&#39;).fill((1, 720, 1280))</span>
+<span class="sd">        &gt;&gt;&gt; img = darker(a, b)</span>
+
+<span class="sd">    .. figure:: images/darker.jpg</span>
+<span class="sd">       :alt: The result of :func:`darker`.</span>
+<span class="sd">       </span>
+<span class="sd">       The result of :func:`darker`.</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">ab</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
     <span class="n">ab</span><span class="p">[</span><span class="n">b</span> <span class="o">&lt;</span> <span class="n">a</span><span class="p">]</span> <span class="o">=</span> <span class="n">b</span><span class="p">[</span><span class="n">b</span> <span class="o">&lt;</span> <span class="n">a</span><span class="p">]</span>
@@ -459,7 +491,7 @@
 
 
 <div class="viewcode-block" id="multiply">
-<a class="viewcode-back" href="../../../imgblend.html#pjimg.blends.multiply">[docs]</a>
+<a class="viewcode-back" href="../../../blends.html#pjimg.blends.multiply">[docs]</a>
 <span class="nd">@will_clip</span>
 <span class="nd">@can_mask</span>
 <span class="nd">@can_fade</span>
@@ -469,11 +501,6 @@
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Multiplies the values of the two images, leading to darker</span>
 <span class="sd">    values. This is useful for shadows and similar situations.</span>
 
-<span class="sd">    .. figure:: images/multiply.jpg</span>
-<span class="sd">       :alt: The result of :func:`multiply`.</span>
-<span class="sd">       </span>
-<span class="sd">       The result of :func:`multiply`.</span>
-
 <span class="sd">    :param a: The existing values. This is like the bottom layer in</span>
 <span class="sd">        a photo editing tool.</span>
 <span class="sd">    :param b: The values to blend. This is like the top layer in a</span>
@@ -492,13 +519,26 @@
 <span class="sd">    :return: An :class:`numpy.ndarray` that contains the values of the</span>
 <span class="sd">        blended arrays.</span>
 <span class="sd">    :rtype: numpy.ndarray</span>
+<span class="sd">    </span>
+<span class="sd">    Usage::</span>
+<span class="sd">    </span>
+<span class="sd">        &gt;&gt;&gt; from pjimg.sources import Gradient</span>
+<span class="sd">        &gt;&gt;&gt; a = Gradient(&#39;h&#39;).fill((1, 720, 1280))</span>
+<span class="sd">        &gt;&gt;&gt; b = Gradient(&#39;v&#39;).fill((1, 720, 1280))</span>
+<span class="sd">        &gt;&gt;&gt; img = multiply(a, b)</span>
+
+<span class="sd">    .. figure:: images/multiply.jpg</span>
+<span class="sd">       :alt: The result of :func:`multiply`.</span>
+<span class="sd">       </span>
+<span class="sd">       The result of :func:`multiply`.</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">a</span> <span class="o">*</span> <span class="n">b</span></div>
 
 
 
 <div class="viewcode-block" id="color_burn">
-<a class="viewcode-back" href="../../../imgblend.html#pjimg.blends.color_burn">[docs]</a>
+<a class="viewcode-back" href="../../../blends.html#pjimg.blends.color_burn">[docs]</a>
 <span class="nd">@will_clip</span>
 <span class="nd">@can_mask</span>
 <span class="nd">@can_fade</span>
@@ -508,11 +548,6 @@
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Similar to multiply, but is darker and produces higher</span>
 <span class="sd">    contrast.</span>
 
-<span class="sd">    .. figure:: images/color_burn.jpg</span>
-<span class="sd">       :alt: The result of :func:`color_burn`.</span>
-<span class="sd">       </span>
-<span class="sd">       The result of :func:`color_burn`.</span>
-
 <span class="sd">    :param a: The existing values. This is like the bottom layer in</span>
 <span class="sd">        a photo editing tool.</span>
 <span class="sd">    :param b: The values to blend. This is like the top layer in a</span>
@@ -531,6 +566,19 @@
 <span class="sd">    :return: An :class:`numpy.ndarray` that contains the values of the</span>
 <span class="sd">        blended arrays.</span>
 <span class="sd">    :rtype: numpy.ndarray</span>
+<span class="sd">    </span>
+<span class="sd">    Usage::</span>
+<span class="sd">    </span>
+<span class="sd">        &gt;&gt;&gt; from pjimg.sources import Gradient</span>
+<span class="sd">        &gt;&gt;&gt; a = Gradient(&#39;h&#39;).fill((1, 720, 1280))</span>
+<span class="sd">        &gt;&gt;&gt; b = Gradient(&#39;v&#39;).fill((1, 720, 1280))</span>
+<span class="sd">        &gt;&gt;&gt; img = color_burn(a, b)</span>
+
+<span class="sd">    .. figure:: images/color_burn.jpg</span>
+<span class="sd">       :alt: The result of :func:`color_burn`.</span>
+<span class="sd">       </span>
+<span class="sd">       The result of :func:`color_burn`.</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">m</span> <span class="o">=</span> <span class="n">b</span> <span class="o">!=</span> <span class="mi">0</span>
     <span class="n">ab</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
@@ -541,7 +589,7 @@
 
 
 <div class="viewcode-block" id="linear_burn">
-<a class="viewcode-back" href="../../../imgblend.html#pjimg.blends.linear_burn">[docs]</a>
+<a class="viewcode-back" href="../../../blends.html#pjimg.blends.linear_burn">[docs]</a>
 <span class="nd">@will_clip</span>
 <span class="nd">@can_mask</span>
 <span class="nd">@can_fade</span>
@@ -551,11 +599,6 @@
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Similar to multiply, but is darker, produces less saturated</span>
 <span class="sd">    colors than color burn, and produces more contrast in the shadows.</span>
 
-<span class="sd">    .. figure:: images/linear_burn.jpg</span>
-<span class="sd">       :alt: The result of :func:`linear_burn`.</span>
-<span class="sd">       </span>
-<span class="sd">       The result of :func:`linear_burn`.</span>
-
 <span class="sd">    :param a: The existing values. This is like the bottom layer in</span>
 <span class="sd">        a photo editing tool.</span>
 <span class="sd">    :param b: The values to blend. This is like the top layer in a</span>
@@ -574,6 +617,19 @@
 <span class="sd">    :return: An :class:`numpy.ndarray` that contains the values of the</span>
 <span class="sd">        blended arrays.</span>
 <span class="sd">    :rtype: numpy.ndarray</span>
+<span class="sd">    </span>
+<span class="sd">    Usage::</span>
+<span class="sd">    </span>
+<span class="sd">        &gt;&gt;&gt; from pjimg.sources import Gradient</span>
+<span class="sd">        &gt;&gt;&gt; a = Gradient(&#39;h&#39;).fill((1, 720, 1280))</span>
+<span class="sd">        &gt;&gt;&gt; b = Gradient(&#39;v&#39;).fill((1, 720, 1280))</span>
+<span class="sd">        &gt;&gt;&gt; img = linear_burn(a, b)</span>
+
+<span class="sd">    .. figure:: images/linear_burn.jpg</span>
+<span class="sd">       :alt: The result of :func:`linear_burn`.</span>
+<span class="sd">       </span>
+<span class="sd">       The result of :func:`linear_burn`.</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span> <span class="o">-</span> <span class="mi">1</span></div>
 
@@ -581,7 +637,7 @@
 
 <span class="c1"># Lighter/dodge blends.</span>
 <div class="viewcode-block" id="lighter">
-<a class="viewcode-back" href="../../../imgblend.html#pjimg.blends.lighter">[docs]</a>
+<a class="viewcode-back" href="../../../blends.html#pjimg.blends.lighter">[docs]</a>
 <span class="nd">@will_clip</span>
 <span class="nd">@can_mask</span>
 <span class="nd">@can_fade</span>
@@ -591,11 +647,6 @@
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Replaces values in the existing image with values from the</span>
 <span class="sd">    blending image when the value in the blending image is lighter.</span>
 
-<span class="sd">    .. figure:: images/lighter.jpg</span>
-<span class="sd">       :alt: The result of :func:`lighter`.</span>
-<span class="sd">       </span>
-<span class="sd">       The result of :func:`lighter`.</span>
-
 <span class="sd">    :param a: The existing values. This is like the bottom layer in</span>
 <span class="sd">        a photo editing tool.</span>
 <span class="sd">    :param b: The values to blend. This is like the top layer in a</span>
@@ -614,6 +665,19 @@
 <span class="sd">    :return: An :class:`numpy.ndarray` that contains the values of the</span>
 <span class="sd">        blended arrays.</span>
 <span class="sd">    :rtype: numpy.ndarray</span>
+<span class="sd">    </span>
+<span class="sd">    Usage::</span>
+<span class="sd">    </span>
+<span class="sd">        &gt;&gt;&gt; from pjimg.sources import Gradient</span>
+<span class="sd">        &gt;&gt;&gt; a = Gradient(&#39;h&#39;).fill((1, 720, 1280))</span>
+<span class="sd">        &gt;&gt;&gt; b = Gradient(&#39;v&#39;).fill((1, 720, 1280))</span>
+<span class="sd">        &gt;&gt;&gt; lighter(a, b)</span>
+
+<span class="sd">    .. figure:: images/lighter.jpg</span>
+<span class="sd">       :alt: The result of :func:`lighter`.</span>
+<span class="sd">       </span>
+<span class="sd">       The result of :func:`lighter`.</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">ab</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
     <span class="n">ab</span><span class="p">[</span><span class="n">b</span> <span class="o">&gt;</span> <span class="n">a</span><span class="p">]</span> <span class="o">=</span> <span class="n">b</span><span class="p">[</span><span class="n">b</span> <span class="o">&gt;</span> <span class="n">a</span><span class="p">]</span>
@@ -622,7 +686,7 @@
 
 
 <div class="viewcode-block" id="screen">
-<a class="viewcode-back" href="../../../imgblend.html#pjimg.blends.screen">[docs]</a>
+<a class="viewcode-back" href="../../../blends.html#pjimg.blends.screen">[docs]</a>
 <span class="nd">@will_clip</span>
 <span class="nd">@can_mask</span>
 <span class="nd">@can_fade</span>
@@ -633,11 +697,6 @@
 <span class="sd">    images then inverse the colors again. This leads to overall</span>
 <span class="sd">    brighter colors and is the opposite of multiply.</span>
 
-<span class="sd">    .. figure:: images/screen.jpg</span>
-<span class="sd">       :alt: The result of :func:`screen`.</span>
-<span class="sd">       </span>
-<span class="sd">       The result of :func:`screen`.</span>
-
 <span class="sd">    :param a: The existing values. This is like the bottom layer in</span>
 <span class="sd">        a photo editing tool.</span>
 <span class="sd">    :param b: The values to blend. This is like the top layer in a</span>
@@ -656,6 +715,19 @@
 <span class="sd">    :return: An :class:`numpy.ndarray` that contains the values of the</span>
 <span class="sd">        blended arrays.</span>
 <span class="sd">    :rtype: numpy.ndarray</span>
+<span class="sd">    </span>
+<span class="sd">    Usage::</span>
+<span class="sd">    </span>
+<span class="sd">        &gt;&gt;&gt; from pjimg.sources import Gradient</span>
+<span class="sd">        &gt;&gt;&gt; a = Gradient(&#39;h&#39;).fill((1, 720, 1280))</span>
+<span class="sd">        &gt;&gt;&gt; b = Gradient(&#39;v&#39;).fill((1, 720, 1280))</span>
+<span class="sd">        &gt;&gt;&gt; img = screen(a, b)</span>
+
+<span class="sd">    .. figure:: images/screen.jpg</span>
+<span class="sd">       :alt: The result of :func:`screen`.</span>
+<span class="sd">       </span>
+<span class="sd">       The result of :func:`screen`.</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">rev_a</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">-</span> <span class="n">a</span>
     <span class="n">rev_b</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">-</span> <span class="n">b</span>
@@ -665,7 +737,7 @@
 
 
 <div class="viewcode-block" id="color_dodge">
-<a class="viewcode-back" href="../../../imgblend.html#pjimg.blends.color_dodge">[docs]</a>
+<a class="viewcode-back" href="../../../blends.html#pjimg.blends.color_dodge">[docs]</a>
 <span class="nd">@will_clip</span>
 <span class="nd">@can_mask</span>
 <span class="nd">@can_fade</span>
@@ -674,11 +746,6 @@
 <span class="k">def</span> <span class="nf">color_dodge</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ImgAry</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Similar to screen, but brighter and decreases the contrast.</span>
 
-<span class="sd">    .. figure:: images/color_dodge.jpg</span>
-<span class="sd">       :alt: The result of :func:`color_dodge`.</span>
-<span class="sd">       </span>
-<span class="sd">       The result of :func:`color_dodge`.</span>
-
 <span class="sd">    :param a: The existing values. This is like the bottom layer in</span>
 <span class="sd">        a photo editing tool.</span>
 <span class="sd">    :param b: The values to blend. This is like the top layer in a</span>
@@ -697,6 +764,19 @@
 <span class="sd">    :return: An :class:`numpy.ndarray` that contains the values of the</span>
 <span class="sd">        blended arrays.</span>
 <span class="sd">    :rtype: numpy.ndarray</span>
+<span class="sd">    </span>
+<span class="sd">    Usage::</span>
+<span class="sd">    </span>
+<span class="sd">        &gt;&gt;&gt; from pjimg.sources import Gradient</span>
+<span class="sd">        &gt;&gt;&gt; a = Gradient(&#39;h&#39;).fill((1, 720, 1280))</span>
+<span class="sd">        &gt;&gt;&gt; b = Gradient(&#39;v&#39;).fill((1, 720, 1280))</span>
+<span class="sd">        &gt;&gt;&gt; img = color_dodge(a, b)</span>
+
+<span class="sd">    .. figure:: images/color_dodge.jpg</span>
+<span class="sd">       :alt: The result of :func:`color_dodge`.</span>
+<span class="sd">       </span>
+<span class="sd">       The result of :func:`color_dodge`.</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">ab</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
     <span class="n">ab</span><span class="p">[</span><span class="n">b</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">a</span><span class="p">[</span><span class="n">b</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">b</span><span class="p">[</span><span class="n">b</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">])</span>
@@ -705,7 +785,7 @@
 
 
 <div class="viewcode-block" id="linear_dodge">
-<a class="viewcode-back" href="../../../imgblend.html#pjimg.blends.linear_dodge">[docs]</a>
+<a class="viewcode-back" href="../../../blends.html#pjimg.blends.linear_dodge">[docs]</a>
 <span class="nd">@will_clip</span>
 <span class="nd">@can_mask</span>
 <span class="nd">@can_fade</span>
@@ -713,11 +793,6 @@
 <span class="nd">@will_colorize</span>
 <span class="k">def</span> <span class="nf">linear_dodge</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ImgAry</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Similar to screen but produces stronger results.</span>
-
-<span class="sd">    .. figure:: images/linear_dodge.jpg</span>
-<span class="sd">       :alt: The result of :func:`linear_dodge`.</span>
-<span class="sd">       </span>
-<span class="sd">       The result of :func:`linear_dodge`.</span>
 
 <span class="sd">    :param a: The existing values. This is like the bottom layer in</span>
 <span class="sd">        a photo editing tool.</span>
@@ -737,6 +812,19 @@
 <span class="sd">    :return: An :class:`numpy.ndarray` that contains the values of the</span>
 <span class="sd">        blended arrays.</span>
 <span class="sd">    :rtype: numpy.ndarray</span>
+<span class="sd">    </span>
+<span class="sd">    Usage::</span>
+<span class="sd">    </span>
+<span class="sd">        &gt;&gt;&gt; from pjimg.sources import Gradient</span>
+<span class="sd">        &gt;&gt;&gt; a = Gradient(&#39;h&#39;).fill((1, 720, 1280))</span>
+<span class="sd">        &gt;&gt;&gt; b = Gradient(&#39;v&#39;).fill((1, 720, 1280))</span>
+<span class="sd">        &gt;&gt;&gt; img = linear_dodge(a, b)</span>
+
+<span class="sd">    .. figure:: images/linear_dodge.jpg</span>
+<span class="sd">       :alt: The result of :func:`linear_dodge`.</span>
+<span class="sd">       </span>
+<span class="sd">       The result of :func:`linear_dodge`.</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span></div>
 
@@ -744,7 +832,7 @@
 
 <span class="c1"># Inversion blends.</span>
 <div class="viewcode-block" id="difference">
-<a class="viewcode-back" href="../../../imgblend.html#pjimg.blends.difference">[docs]</a>
+<a class="viewcode-back" href="../../../blends.html#pjimg.blends.difference">[docs]</a>
 <span class="nd">@will_clip</span>
 <span class="nd">@can_mask</span>
 <span class="nd">@can_fade</span>
@@ -755,11 +843,6 @@
 <span class="sd">    This is often useful in creating complex patterns or when</span>
 <span class="sd">    aligning two images.</span>
 
-<span class="sd">    .. figure:: images/difference.jpg</span>
-<span class="sd">       :alt: The result of :func:`difference`.</span>
-<span class="sd">       </span>
-<span class="sd">       The result of :func:`difference`.</span>
-
 <span class="sd">    :param a: The existing values. This is like the bottom layer in</span>
 <span class="sd">        a photo editing tool.</span>
 <span class="sd">    :param b: The values to blend. This is like the top layer in a</span>
@@ -778,13 +861,26 @@
 <span class="sd">    :return: An :class:`numpy.ndarray` that contains the values of the</span>
 <span class="sd">        blended arrays.</span>
 <span class="sd">    :rtype: numpy.ndarray</span>
+<span class="sd">    </span>
+<span class="sd">    Usage::</span>
+<span class="sd">    </span>
+<span class="sd">        &gt;&gt;&gt; from pjimg.sources import Gradient</span>
+<span class="sd">        &gt;&gt;&gt; a = Gradient(&#39;h&#39;).fill((1, 720, 1280))</span>
+<span class="sd">        &gt;&gt;&gt; b = Gradient(&#39;v&#39;).fill((1, 720, 1280))</span>
+<span class="sd">        &gt;&gt;&gt; img = difference(a, b)</span>
+
+<span class="sd">    .. figure:: images/difference.jpg</span>
+<span class="sd">       :alt: The result of :func:`difference`.</span>
+<span class="sd">       </span>
+<span class="sd">       The result of :func:`difference`.</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">a</span> <span class="o">-</span> <span class="n">b</span><span class="p">)</span></div>
 
 
 
 <div class="viewcode-block" id="exclusion">
-<a class="viewcode-back" href="../../../imgblend.html#pjimg.blends.exclusion">[docs]</a>
+<a class="viewcode-back" href="../../../blends.html#pjimg.blends.exclusion">[docs]</a>
 <span class="nd">@will_clip</span>
 <span class="nd">@can_mask</span>
 <span class="nd">@can_fade</span>
@@ -794,11 +890,6 @@
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Similar to difference, with the result tending to gray</span>
 <span class="sd">    rather than black.</span>
 
-<span class="sd">    .. figure:: images/exclusion.jpg</span>
-<span class="sd">       :alt: The result of :func:`exclusion`.</span>
-<span class="sd">       </span>
-<span class="sd">       The result of :func:`exclusion`.</span>
-
 <span class="sd">    :param a: The existing values. This is like the bottom layer in</span>
 <span class="sd">        a photo editing tool.</span>
 <span class="sd">    :param b: The values to blend. This is like the top layer in a</span>
@@ -817,6 +908,19 @@
 <span class="sd">    :return: An :class:`numpy.ndarray` that contains the values of the</span>
 <span class="sd">        blended arrays.</span>
 <span class="sd">    :rtype: numpy.ndarray</span>
+<span class="sd">    </span>
+<span class="sd">    Usage::</span>
+<span class="sd">    </span>
+<span class="sd">        &gt;&gt;&gt; from pjimg.sources import Gradient</span>
+<span class="sd">        &gt;&gt;&gt; a = Gradient(&#39;h&#39;).fill((1, 720, 1280))</span>
+<span class="sd">        &gt;&gt;&gt; b = Gradient(&#39;v&#39;).fill((1, 720, 1280))</span>
+<span class="sd">        &gt;&gt;&gt; img = exclusion(a, b)</span>
+
+<span class="sd">    .. figure:: images/exclusion.jpg</span>
+<span class="sd">       :alt: The result of :func:`exclusion`.</span>
+<span class="sd">       </span>
+<span class="sd">       The result of :func:`exclusion`.</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">ab</span> <span class="o">=</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">a</span> <span class="o">*</span> <span class="n">b</span>
     <span class="k">return</span> <span class="n">ab</span></div>
@@ -825,7 +929,7 @@
 
 <span class="c1"># Contrast blends.</span>
 <div class="viewcode-block" id="hard_light">
-<a class="viewcode-back" href="../../../imgblend.html#pjimg.blends.hard_light">[docs]</a>
+<a class="viewcode-back" href="../../../blends.html#pjimg.blends.hard_light">[docs]</a>
 <span class="nd">@will_clip</span>
 <span class="nd">@can_mask</span>
 <span class="nd">@can_fade</span>
@@ -835,11 +939,6 @@
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Similar to the blending image being a harsh light shining</span>
 <span class="sd">    on the existing image.</span>
 
-<span class="sd">    .. figure:: images/hard_light.jpg</span>
-<span class="sd">       :alt: The result of :func:`hard_light`.</span>
-<span class="sd">       </span>
-<span class="sd">       The result of :func:`hard_light`.</span>
-
 <span class="sd">    :param a: The existing values. This is like the bottom layer in</span>
 <span class="sd">        a photo editing tool.</span>
 <span class="sd">    :param b: The values to blend. This is like the top layer in a</span>
@@ -858,6 +957,19 @@
 <span class="sd">    :return: An :class:`numpy.ndarray` that contains the values of the</span>
 <span class="sd">        blended arrays.</span>
 <span class="sd">    :rtype: numpy.ndarray</span>
+<span class="sd">    </span>
+<span class="sd">    Usage::</span>
+<span class="sd">    </span>
+<span class="sd">        &gt;&gt;&gt; from pjimg.sources import Gradient</span>
+<span class="sd">        &gt;&gt;&gt; a = Gradient(&#39;h&#39;).fill((1, 720, 1280))</span>
+<span class="sd">        &gt;&gt;&gt; b = Gradient(&#39;v&#39;).fill((1, 720, 1280))</span>
+<span class="sd">        &gt;&gt;&gt; img = hard_light(a, b)</span>
+
+<span class="sd">    .. figure:: images/hard_light.jpg</span>
+<span class="sd">       :alt: The result of :func:`hard_light`.</span>
+<span class="sd">       </span>
+<span class="sd">       The result of :func:`hard_light`.</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">ab</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
     <span class="n">ab</span><span class="p">[</span><span class="n">a</span> <span class="o">&lt;</span> <span class="mf">.5</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">a</span><span class="p">[</span><span class="n">a</span> <span class="o">&lt;</span> <span class="mf">.5</span><span class="p">]</span> <span class="o">*</span> <span class="n">b</span><span class="p">[</span><span class="n">a</span> <span class="o">&lt;</span> <span class="mf">.5</span><span class="p">]</span>
@@ -867,7 +979,7 @@
 
 
 <div class="viewcode-block" id="hard_mix">
-<a class="viewcode-back" href="../../../imgblend.html#pjimg.blends.hard_mix">[docs]</a>
+<a class="viewcode-back" href="../../../blends.html#pjimg.blends.hard_mix">[docs]</a>
 <span class="nd">@will_clip</span>
 <span class="nd">@can_mask</span>
 <span class="nd">@can_fade</span>
@@ -877,11 +989,6 @@
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Increases the saturation and contrast. It&#39;s best used with</span>
 <span class="sd">    masks and can_fade.</span>
 
-<span class="sd">    .. figure:: images/hard_mix.jpg</span>
-<span class="sd">       :alt: The result of :func:`hard_mix`.</span>
-<span class="sd">       </span>
-<span class="sd">       The result of :func:`hard_mix`.</span>
-
 <span class="sd">    :param a: The existing values. This is like the bottom layer in</span>
 <span class="sd">        a photo editing tool.</span>
 <span class="sd">    :param b: The values to blend. This is like the top layer in a</span>
@@ -900,6 +1007,19 @@
 <span class="sd">    :return: An :class:`numpy.ndarray` that contains the values of the</span>
 <span class="sd">        blended arrays.</span>
 <span class="sd">    :rtype: numpy.ndarray</span>
+<span class="sd">    </span>
+<span class="sd">    Usage::</span>
+<span class="sd">    </span>
+<span class="sd">        &gt;&gt;&gt; from pjimg.sources import Gradient</span>
+<span class="sd">        &gt;&gt;&gt; a = Gradient(&#39;h&#39;).fill((1, 720, 1280))</span>
+<span class="sd">        &gt;&gt;&gt; b = Gradient(&#39;v&#39;).fill((1, 720, 1280))</span>
+<span class="sd">        &gt;&gt;&gt; img = hard_mix(a, b)</span>
+
+<span class="sd">    .. figure:: images/hard_mix.jpg</span>
+<span class="sd">       :alt: The result of :func:`hard_mix`.</span>
+<span class="sd">       </span>
+<span class="sd">       The result of :func:`hard_mix`.</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">ab</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
     <span class="n">ab</span><span class="p">[</span><span class="n">a</span> <span class="o">&lt;</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">b</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
@@ -909,7 +1029,7 @@
 
 
 <div class="viewcode-block" id="linear_light">
-<a class="viewcode-back" href="../../../imgblend.html#pjimg.blends.linear_light">[docs]</a>
+<a class="viewcode-back" href="../../../blends.html#pjimg.blends.linear_light">[docs]</a>
 <span class="nd">@will_clip</span>
 <span class="nd">@can_mask</span>
 <span class="nd">@can_fade</span>
@@ -918,11 +1038,6 @@
 <span class="k">def</span> <span class="nf">linear_light</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ImgAry</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Combines linear dodge and linear burn.</span>
 
-<span class="sd">    .. figure:: images/linear_light.jpg</span>
-<span class="sd">       :alt: The result of :func:`linear_light`.</span>
-<span class="sd">       </span>
-<span class="sd">       The result of :func:`linear_light`.</span>
-
 <span class="sd">    :param a: The existing values. This is like the bottom layer in</span>
 <span class="sd">        a photo editing tool.</span>
 <span class="sd">    :param b: The values to blend. This is like the top layer in a</span>
@@ -941,6 +1056,19 @@
 <span class="sd">    :return: An :class:`numpy.ndarray` that contains the values of the</span>
 <span class="sd">        blended arrays.</span>
 <span class="sd">    :rtype: numpy.ndarray</span>
+<span class="sd">    </span>
+<span class="sd">    Usage::</span>
+<span class="sd">    </span>
+<span class="sd">        &gt;&gt;&gt; from pjimg.sources import Gradient</span>
+<span class="sd">        &gt;&gt;&gt; a = Gradient(&#39;h&#39;).fill((1, 720, 1280))</span>
+<span class="sd">        &gt;&gt;&gt; b = Gradient(&#39;v&#39;).fill((1, 720, 1280))</span>
+<span class="sd">        &gt;&gt;&gt; img = linear_light(a, b)</span>
+
+<span class="sd">    .. figure:: images/linear_light.jpg</span>
+<span class="sd">       :alt: The result of :func:`linear_light`.</span>
+<span class="sd">       </span>
+<span class="sd">       The result of :func:`linear_light`.</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">ab</span> <span class="o">=</span> <span class="n">b</span> <span class="o">+</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">a</span> <span class="o">-</span> <span class="mf">1.0</span>
     <span class="k">return</span> <span class="n">ab</span></div>
@@ -948,7 +1076,7 @@
 
 
 <div class="viewcode-block" id="overlay">
-<a class="viewcode-back" href="../../../imgblend.html#pjimg.blends.overlay">[docs]</a>
+<a class="viewcode-back" href="../../../blends.html#pjimg.blends.overlay">[docs]</a>
 <span class="nd">@will_clip</span>
 <span class="nd">@can_mask</span>
 <span class="nd">@can_fade</span>
@@ -957,11 +1085,6 @@
 <span class="k">def</span> <span class="nf">overlay</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ImgAry</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Combines screen and multiply blends.</span>
 
-<span class="sd">    .. figure:: images/overlay.jpg</span>
-<span class="sd">       :alt: The result of :func:`overlay`.</span>
-<span class="sd">       </span>
-<span class="sd">       The result of :func:`overlay`.</span>
-
 <span class="sd">    :param a: The existing values. This is like the bottom layer in</span>
 <span class="sd">        a photo editing tool.</span>
 <span class="sd">    :param b: The values to blend. This is like the top layer in a</span>
@@ -980,6 +1103,19 @@
 <span class="sd">    :return: An :class:`numpy.ndarray` that contains the values of the</span>
 <span class="sd">        blended arrays.</span>
 <span class="sd">    :rtype: numpy.ndarray</span>
+<span class="sd">    </span>
+<span class="sd">    Usage::</span>
+<span class="sd">    </span>
+<span class="sd">        &gt;&gt;&gt; from pjimg.sources import Gradient</span>
+<span class="sd">        &gt;&gt;&gt; a = Gradient(&#39;h&#39;).fill((1, 720, 1280))</span>
+<span class="sd">        &gt;&gt;&gt; b = Gradient(&#39;v&#39;).fill((1, 720, 1280))</span>
+<span class="sd">        &gt;&gt;&gt; img = overlay(a, b)</span>
+
+<span class="sd">    .. figure:: images/overlay.jpg</span>
+<span class="sd">       :alt: The result of :func:`overlay`.</span>
+<span class="sd">       </span>
+<span class="sd">       The result of :func:`overlay`.</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">mask</span> <span class="o">=</span> <span class="n">a</span> <span class="o">&gt;=</span> <span class="mf">.5</span>
     <span class="n">ab</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
@@ -990,7 +1126,7 @@
 
 
 <div class="viewcode-block" id="pin_light">
-<a class="viewcode-back" href="../../../imgblend.html#pjimg.blends.pin_light">[docs]</a>
+<a class="viewcode-back" href="../../../blends.html#pjimg.blends.pin_light">[docs]</a>
 <span class="nd">@will_clip</span>
 <span class="nd">@can_mask</span>
 <span class="nd">@can_fade</span>
@@ -998,11 +1134,6 @@
 <span class="nd">@will_colorize</span>
 <span class="k">def</span> <span class="nf">pin_light</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ImgAry</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Combines lighten and darken blends.</span>
-
-<span class="sd">    .. figure:: images/pin_light.jpg</span>
-<span class="sd">       :alt: The result of :func:`pin_light`.</span>
-<span class="sd">       </span>
-<span class="sd">       The result of :func:`pin_light`.</span>
 
 <span class="sd">    :param a: The existing values. This is like the bottom layer in</span>
 <span class="sd">        a photo editing tool.</span>
@@ -1022,6 +1153,19 @@
 <span class="sd">    :return: An :class:`numpy.ndarray` that contains the values of the</span>
 <span class="sd">        blended arrays.</span>
 <span class="sd">    :rtype: numpy.ndarray</span>
+<span class="sd">    </span>
+<span class="sd">    Usage::</span>
+<span class="sd">    </span>
+<span class="sd">        &gt;&gt;&gt; from pjimg.sources import Gradient</span>
+<span class="sd">        &gt;&gt;&gt; a = Gradient(&#39;h&#39;).fill((1, 720, 1280))</span>
+<span class="sd">        &gt;&gt;&gt; b = Gradient(&#39;v&#39;).fill((1, 720, 1280))</span>
+<span class="sd">        &gt;&gt;&gt; img = pin_light(a, b)</span>
+
+<span class="sd">    .. figure:: images/pin_light.jpg</span>
+<span class="sd">       :alt: The result of :func:`pin_light`.</span>
+<span class="sd">       </span>
+<span class="sd">       The result of :func:`pin_light`.</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Build array masks to handle how the algorithm changes.</span>
     <span class="n">m1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="nb">bool</span><span class="p">)</span>
@@ -1042,7 +1186,7 @@
 
 
 <div class="viewcode-block" id="soft_light">
-<a class="viewcode-back" href="../../../imgblend.html#pjimg.blends.soft_light">[docs]</a>
+<a class="viewcode-back" href="../../../blends.html#pjimg.blends.soft_light">[docs]</a>
 <span class="nd">@will_clip</span>
 <span class="nd">@can_mask</span>
 <span class="nd">@can_fade</span>
@@ -1051,11 +1195,6 @@
 <span class="k">def</span> <span class="nf">soft_light</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ImgAry</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Similar to overlay, but biases towards the blending value</span>
 <span class="sd">    rather than the existing value.</span>
-
-<span class="sd">    .. figure:: images/soft_light.jpg</span>
-<span class="sd">       :alt: The result of :func:`soft_light`.</span>
-<span class="sd">       </span>
-<span class="sd">       The result of :func:`soft_light`.</span>
 
 <span class="sd">    :param a: The existing values. This is like the bottom layer in</span>
 <span class="sd">        a photo editing tool.</span>
@@ -1075,6 +1214,19 @@
 <span class="sd">    :return: An :class:`numpy.ndarray` that contains the values of the</span>
 <span class="sd">        blended arrays.</span>
 <span class="sd">    :rtype: numpy.ndarray</span>
+<span class="sd">    </span>
+<span class="sd">    Usage::</span>
+<span class="sd">    </span>
+<span class="sd">        &gt;&gt;&gt; from pjimg.sources import Gradient</span>
+<span class="sd">        &gt;&gt;&gt; a = Gradient(&#39;h&#39;).fill((1, 720, 1280))</span>
+<span class="sd">        &gt;&gt;&gt; b = Gradient(&#39;v&#39;).fill((1, 720, 1280))</span>
+<span class="sd">        &gt;&gt;&gt; img = soft_light(a, b)</span>
+
+<span class="sd">    .. figure:: images/soft_light.jpg</span>
+<span class="sd">       :alt: The result of :func:`soft_light`.</span>
+<span class="sd">       </span>
+<span class="sd">       The result of :func:`soft_light`.</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">m</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="nb">bool</span><span class="p">)</span>
     <span class="n">ab</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
@@ -1086,7 +1238,7 @@
 
 
 <div class="viewcode-block" id="vivid_light">
-<a class="viewcode-back" href="../../../imgblend.html#pjimg.blends.vivid_light">[docs]</a>
+<a class="viewcode-back" href="../../../blends.html#pjimg.blends.vivid_light">[docs]</a>
 <span class="nd">@will_clip</span>
 <span class="nd">@can_mask</span>
 <span class="nd">@can_fade</span>
@@ -1094,11 +1246,6 @@
 <span class="nd">@will_colorize</span>
 <span class="k">def</span> <span class="nf">vivid_light</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ImgAry</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Good for color grading when faded.</span>
-
-<span class="sd">    .. figure:: images/vivid_light.jpg</span>
-<span class="sd">       :alt: The result of :func:`vivid_light`.</span>
-<span class="sd">       </span>
-<span class="sd">       The result of :func:`vivid_light`.</span>
 
 <span class="sd">    :param a: The existing values. This is like the bottom layer in</span>
 <span class="sd">        a photo editing tool.</span>
@@ -1118,6 +1265,19 @@
 <span class="sd">    :return: An :class:`numpy.ndarray` that contains the values of the</span>
 <span class="sd">        blended arrays.</span>
 <span class="sd">    :rtype: numpy.ndarray</span>
+<span class="sd">    </span>
+<span class="sd">    Usage::</span>
+<span class="sd">    </span>
+<span class="sd">        &gt;&gt;&gt; from pjimg.sources import Gradient</span>
+<span class="sd">        &gt;&gt;&gt; a = Gradient(&#39;h&#39;).fill((1, 720, 1280))</span>
+<span class="sd">        &gt;&gt;&gt; b = Gradient(&#39;v&#39;).fill((1, 720, 1280))</span>
+<span class="sd">        &gt;&gt;&gt; img = vivid_light(a, b)</span>
+
+<span class="sd">    .. figure:: images/vivid_light.jpg</span>
+<span class="sd">       :alt: The result of :func:`vivid_light`.</span>
+<span class="sd">       </span>
+<span class="sd">       The result of :func:`vivid_light`.</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Create masks to handle the algorithm change and avoid division</span>
     <span class="c1"># by zero.</span>
