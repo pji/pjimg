@@ -14,7 +14,7 @@ from sys import stdout
 from threading import Thread
 from time import sleep
 from traceback import print_exc
-from typing import Sequence, Union
+from typing import Callable, Optional, Sequence, Union
 
 import thurible as thur
 import thurible.messages as tmsg
@@ -28,28 +28,7 @@ from pjimg.blends import difference, overlay
 from pjimg.util import ImgAry, Loc, Size, X, Y, Z
 
 
-# Build the image.
-def add_grain(
-    img: ImgAry,
-    seeds: Sequence[str],
-    size: Size,
-    fade: float = 0.1
-) -> ImgAry:
-    """Add graininess to the image to prevent banding in the gradients.
-    
-    :param img: The image data to add grain to.
-    :param seeds: The list of seeds used to generate the grain.
-    :param size: The shape of the array of image data.
-    :param fade: How much the grain should affect the image data.
-    :return: Image data in a :class:`numpy.ndarray`.
-    :rtype: numpy.ndarray
-    """
-    seed = ''.join(seed for seed in seeds)
-    src = srcs.Noise(seed=seed)
-    grain = src.fill(size)
-    return overlay(img, grain, fade=0.1)
-
-
+# Old functions.
 def build_curtain(
     units: Size,
     size: Size,
@@ -100,6 +79,63 @@ def build_modist(
     return img
 
 
+# Build the image.
+def add_grain(
+    img: ImgAry,
+    seeds: Sequence[str],
+    size: Size,
+    fade: float = 0.1
+) -> ImgAry:
+    """Add graininess to the image to prevent banding in the gradients.
+    
+    :param img: The image data to add grain to.
+    :param seeds: The list of seeds used to generate the grain.
+    :param size: The shape of the array of image data.
+    :param fade: How much the grain should affect the image data.
+    :return: Image data in a :class:`numpy.ndarray`.
+    :rtype: numpy.ndarray
+    """
+    seed = ''.join(seed for seed in seeds)
+    src = srcs.Noise(seed=seed)
+    grain = src.fill(size)
+    return overlay(img, grain, fade=0.1)
+
+
+def build_cosine_curtains(seed: str, units: Size) -> srcs.CosineCurtains:
+    """Build a cosine curtain noise source."""
+    return srcs.BorktaveCosineCurtains(
+        octaves=4,
+        frequency=1.5,
+        unit=units,
+        seed=seed
+    )
+
+
+def build_octave_perlin(seed: str, units: Size) -> srcs.OctavePerlin:
+    """Build an octave Perlin noise source."""
+    return srcs.OctavePerlin(
+        octaves=3,
+        persistence=4.0,
+        amplitude=24.0,
+        frequency=4.0,
+        unit=units,
+        seed=seed
+    )
+
+
+
+def build_octave_worley(seed: str, units: Size) -> srcs.OctaveWorley:
+    """Build an octave Worley noise source."""
+    return srcs.OctaveWorley(
+        octaves=3,
+        persistence=4.0,
+        amplitude=24.0,
+        frequency=4.0,
+        points=units[Y],
+        seed=seed
+    )
+
+
 def build_seeds(
     seeds: Union[None, Sequence[str]],
     num: int,
@@ -124,29 +160,28 @@ def build_slices(
     colorkey: str,
     path: Union[Path, str],
     framerate: int,
-    loc: Loc = (0, 0, 0)
+    loc: Loc = (0, 0, 0),
+    builder: Optional[Callable[[str, Size], srcs.Source]] = None
 ) -> None:
     """Build the modist in slices."""
+    if not builder:
+        builder = build_octave_perlin
+    
     path = Path(path)
     frames = size[Z]
     slice_frames = 120
     
     slice_size = (slice_frames, size[Y], size[X])
     slice_ids = [sid for sid in range(0, frames, slice_frames)]
-    units = [speed, unit, unit]
     
     q_to.put(rprg.NoTick(f'Making sources...'))
     sources = []
-    for seed in seeds:
-        source = srcs.OctavePerlin(
-            octaves=3,
-            persistence=4.0,
-            amplitude=24.0,
-            frequency=4.0,
-            unit=units,
-            seed=seed
-        )
-        sources.append(source)
+    for i, seed in enumerate(seeds):
+        unit_mod = int((unit / 8) * i)
+        speed_mod = (speed // 8) * i
+        units = [speed + speed_mod, unit + unit_mod, unit + unit_mod]
+        source = builder
+        sources.append(source(seed, units))
         q_to.put(rprg.NoTick(f'Made {seed} source...'))
     q_to.put(rprg.NoTick(f'Sources made...'))
     
@@ -226,10 +261,15 @@ def render_layer(
     source: srcs.Source,
     size: Size,
     loc: Loc,
-    old: Union[ImgAry, None] = None
+    old: Union[ImgAry, None] = None,
+    i: int = 0
 ) -> ImgAry:
     """Render one layer of the image."""
+    if isinstance(source, srcs.BorktaveCosineCurtains) and i % 2:
+        size = (size[Z], size[X], size[Y])
     img = source.fill(size, loc)
+    if isinstance(source, srcs.BorktaveCosineCurtains) and i % 2:
+        img = filt.filter_rotate_90(img)    
     if old is not None:
         img = difference(old, img)
     return img
@@ -245,7 +285,7 @@ def render_modist(
     img: Union[ImgAry, None] = None
     for i, source in enumerate(sources):
         q_to.put(rprg.Tick(f'Layer {i} started.'))
-        img = render_layer(source, size, loc, img)
+        img = render_layer(source, size, loc, img, i)
         q_to.put(rprg.Tick(f'Layer {i} is blended.'))
     return img
 
@@ -362,8 +402,10 @@ if __name__ == '__main__':
     framerate = args.framerate
     frames = int(framerate * args.duration)
     size = (frames, args.height, args.width)
-    speed = args.speed * 48
-    unit = args.width * 4
+#     speed = args.speed * 48
+#     unit = args.width * 4
+    speed = args.speed * 4
+    unit = args.width // 12
     steps = (frames // 120) * (len(seeds) * 3 + 1) + 7
     
     try:
@@ -376,7 +418,8 @@ if __name__ == '__main__':
             q_to=q_to,
             colorkey=args.colorkey,
             path=args.path,
-            framerate=framerate
+            framerate=framerate,
+            builder=build_cosine_curtains
         )
         q_to.put(rprg.Tick('Modist saved.'))
         q_to.put(tmsg.End(f'Modist saved as {args.path}.'))

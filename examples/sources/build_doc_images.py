@@ -36,6 +36,7 @@ def make_patterns(size: Size, path: Path) -> None:
             direction='v',
             length=(size[X] / 8) - (size[X] / 64)
         ),
+        ig.Radials(length=size[Y] / 16, growth='g'),
         ig.Rays(count=7, offset=0.178),
         ig.Rings(
             radius=size[X] / 6,
@@ -59,7 +60,7 @@ def make_patterns(size: Size, path: Path) -> None:
             stroke_width=5,
             stroke_fill=0x00
         ),
-        ig.Waves(length=size[Y] / 16, growth='g')
+        ig.Waves(size[X], angle=30, wavelength=0.2),
     ]
     for src in srcs:
         save(src, size, path)

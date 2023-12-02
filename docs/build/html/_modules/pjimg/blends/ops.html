@@ -316,10 +316,8 @@
 <span class="sd">The examples in the following blends will show the result when a simple</span>
 <span class="sd">horizontal gradient::</span>
 
-<span class="sd">    &gt;&gt;&gt; a = np.indices((size[X],), dtype=float)</span>
-<span class="sd">    &gt;&gt;&gt; a /= size[X] - 1</span>
-<span class="sd">    &gt;&gt;&gt; a = a.reshape(1, 1, size[X])</span>
-<span class="sd">    &gt;&gt;&gt; a = np.tile(a, (1, size[Y], 1))</span>
+<span class="sd">    &gt;&gt;&gt; from pjimg.sources import Gradient</span>
+<span class="sd">    &gt;&gt;&gt; a = Gradient(&#39;h&#39;).fill((1, 720, 1280))</span>
 
 <span class="sd">.. figure:: images/a.jpg</span>
 <span class="sd">   :alt: The simple horizontal gradient `a`.</span>
@@ -328,10 +326,7 @@
 
 <span class="sd">is blended with a simple vertical gradient::</span>
 
-<span class="sd">    &gt;&gt;&gt; b = np.indices((size[Y],), dtype=float)</span>
-<span class="sd">    &gt;&gt;&gt; b /= size[Y] - 1</span>
-<span class="sd">    &gt;&gt;&gt; b = b.reshape(1, size[Y], 1)</span>
-<span class="sd">    &gt;&gt;&gt; b = np.tile(b, (1, 1, size[X]))</span>
+<span class="sd">    &gt;&gt;&gt; b = Gradient(&#39;v&#39;).fill((1, 720, 1280))</span>
 <span class="sd">    </span>
 <span class="sd">.. figure:: images/b.jpg</span>
 <span class="sd">   :alt: The simple horizontal gradient `b`.</span>
@@ -671,7 +666,7 @@
 <span class="sd">        &gt;&gt;&gt; from pjimg.sources import Gradient</span>
 <span class="sd">        &gt;&gt;&gt; a = Gradient(&#39;h&#39;).fill((1, 720, 1280))</span>
 <span class="sd">        &gt;&gt;&gt; b = Gradient(&#39;v&#39;).fill((1, 720, 1280))</span>
-<span class="sd">        &gt;&gt;&gt; lighter(a, b)</span>
+<span class="sd">        &gt;&gt;&gt; img = lighter(a, b)</span>
 
 <span class="sd">    .. figure:: images/lighter.jpg</span>
 <span class="sd">       :alt: The result of :func:`lighter`.</span>

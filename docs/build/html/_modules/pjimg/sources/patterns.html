@@ -208,6 +208,7 @@
 <span class="sd">.. autoclass:: pjimg.sources.Gradient</span>
 <span class="sd">.. autoclass:: pjimg.sources.Hexes</span>
 <span class="sd">.. autoclass:: pjimg.sources.Lines</span>
+<span class="sd">.. autoclass:: pjimg.sources.Radials</span>
 <span class="sd">.. autoclass:: pjimg.sources.Rays</span>
 <span class="sd">.. autoclass:: pjimg.sources.Rings</span>
 <span class="sd">.. autoclass:: pjimg.sources.Solid</span>
@@ -218,7 +219,7 @@
 
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">sqrt</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Literal</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Sequence</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Literal</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Sequence</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span><span class="p">,</span> <span class="n">ImageDraw</span><span class="p">,</span> <span class="n">ImageFont</span>
@@ -229,8 +230,8 @@
 
 <span class="c1"># Names available for import.</span>
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="s1">&#39;Box&#39;</span><span class="p">,</span> <span class="s1">&#39;Gradient&#39;</span><span class="p">,</span> <span class="s1">&#39;Hexes&#39;</span><span class="p">,</span> <span class="s1">&#39;Lines&#39;</span><span class="p">,</span> <span class="s1">&#39;Rays&#39;</span><span class="p">,</span> <span class="s1">&#39;Rings&#39;</span><span class="p">,</span> <span class="s1">&#39;Solid&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;Spheres&#39;</span><span class="p">,</span> <span class="s1">&#39;Spot&#39;</span><span class="p">,</span> <span class="s1">&#39;Text&#39;</span><span class="p">,</span> <span class="s1">&#39;Waves&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Box&#39;</span><span class="p">,</span> <span class="s1">&#39;Gradient&#39;</span><span class="p">,</span> <span class="s1">&#39;Hexes&#39;</span><span class="p">,</span> <span class="s1">&#39;Lines&#39;</span><span class="p">,</span> <span class="s1">&#39;Radials&#39;</span><span class="p">,</span> <span class="s1">&#39;Rays&#39;</span><span class="p">,</span> <span class="s1">&#39;Rings&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Solid&#39;</span><span class="p">,</span> <span class="s1">&#39;Spheres&#39;</span><span class="p">,</span> <span class="s1">&#39;Spot&#39;</span><span class="p">,</span> <span class="s1">&#39;Text&#39;</span><span class="p">,</span> <span class="s1">&#39;Waves&#39;</span><span class="p">,</span>
 <span class="p">]</span>
 
 
@@ -578,6 +579,88 @@
         <span class="n">values</span><span class="p">[</span><span class="n">values</span> <span class="o">&gt;</span> <span class="n">period</span> <span class="o">/</span> <span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">period</span> <span class="o">-</span> <span class="n">values</span><span class="p">[</span><span class="n">values</span> <span class="o">&gt;</span> <span class="n">period</span> <span class="o">/</span> <span class="mi">2</span><span class="p">]</span>
         <span class="n">values</span> <span class="o">=</span> <span class="p">(</span><span class="n">values</span> <span class="o">/</span> <span class="p">(</span><span class="n">period</span> <span class="o">/</span> <span class="mi">2</span><span class="p">))</span>
         <span class="k">return</span> <span class="n">values</span></div>
+
+
+
+<div class="viewcode-block" id="Radials">
+<a class="viewcode-back" href="../../../sources.html#pjimg.sources.Radials">[docs]</a>
+<span class="k">class</span> <span class="nc">Radials</span><span class="p">(</span><span class="n">Source</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Generates concentric radial gradients.</span>
+
+<span class="sd">    :param length: The radius of the innermost circle.</span>
+<span class="sd">    :param growth: (Optional.) Either the string &#39;linear&#39; or the</span>
+<span class="sd">        string &#39;geometric&#39;. Determines whether the distance between</span>
+<span class="sd">        each circle remains constant (linear) or increases</span>
+<span class="sd">        (geometric). Defaults to linear.</span>
+<span class="sd">    :returns: :class:`Radials` object.</span>
+<span class="sd">    :rtype: sources.patterns.Radials</span>
+
+<span class="sd">    Usage::</span>
+<span class="sd">    </span>
+<span class="sd">        &gt;&gt;&gt; # Create a series of concentric radial gradients in a</span>
+<span class="sd">        &gt;&gt;&gt; # 1280x720 images.</span>
+<span class="sd">        &gt;&gt;&gt; size = (1, 720, 1280)</span>
+<span class="sd">        &gt;&gt;&gt; length = size[Y] / 16</span>
+<span class="sd">        &gt;&gt;&gt; source = Radials(length=length, growth=&#39;g&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; img = source.fill(size)</span>
+<span class="sd">    </span>
+<span class="sd">    .. figure:: images/radials.jpg</span>
+<span class="sd">       :alt: A series of concentric radial gradients in a 1280x720 image.</span>
+<span class="sd">       </span>
+<span class="sd">       The image data created by the usage example.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">length</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">growth</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;l&#39;</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize an instance of Waves.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">length</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">length</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">growth</span> <span class="o">=</span> <span class="n">growth</span>
+
+    <span class="c1"># Public methods.</span>
+    <span class="k">def</span> <span class="nf">fill</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="p">:</span> <span class="n">Size</span><span class="p">,</span>
+        <span class="n">loc</span><span class="p">:</span> <span class="n">Loc</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ImgAry</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Fill a volume with image data.</span>
+
+<span class="sd">        :param size: The size of the volume of image data to generate.</span>
+<span class="sd">        :param loc: (Optional.) How much to shift the starting point</span>
+<span class="sd">            for the noise generation along each axis.</span>
+<span class="sd">        :return: An :class:`numpy.ndarray` with image data.</span>
+<span class="sd">        :rtype: numpy.ndarray</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Map out the volume of space that will be created.</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+        <span class="n">c</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">indices</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+        <span class="n">center</span> <span class="o">=</span> <span class="p">[(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">o</span> <span class="k">for</span> <span class="n">n</span><span class="p">,</span> <span class="n">o</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">loc</span><span class="p">)]</span>
+        <span class="k">for</span> <span class="n">axis</span> <span class="ow">in</span> <span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">Z</span><span class="p">:</span>
+            <span class="n">c</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">-=</span> <span class="n">center</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span>
+
+        <span class="c1"># Perform a spherical interpolation on the points in the</span>
+        <span class="c1"># volume and run the easing function on the results.</span>
+        <span class="n">c</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">c</span><span class="p">[</span><span class="n">X</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">c</span><span class="p">[</span><span class="n">Y</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">growth</span> <span class="o">==</span> <span class="s1">&#39;l&#39;</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">growth</span> <span class="o">==</span> <span class="s1">&#39;linear&#39;</span><span class="p">:</span>
+            <span class="n">a</span> <span class="o">=</span> <span class="n">c</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">length</span>
+            <span class="n">a</span> <span class="o">/=</span> <span class="bp">self</span><span class="o">.</span><span class="n">length</span>
+            <span class="n">a</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">a</span> <span class="o">-</span> <span class="mf">.5</span><span class="p">)</span> <span class="o">*</span> <span class="mi">2</span>
+
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">growth</span> <span class="o">==</span> <span class="s1">&#39;g&#39;</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">growth</span> <span class="o">==</span> <span class="s1">&#39;geometric&#39;</span><span class="p">:</span>
+            <span class="n">in_length</span> <span class="o">=</span> <span class="mf">0.0</span>
+            <span class="n">out_length</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">length</span>
+            <span class="k">while</span> <span class="n">in_length</span> <span class="o">&lt;</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">c</span><span class="p">):</span>
+                <span class="n">m</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="nb">bool</span><span class="p">)</span>
+                <span class="n">m</span><span class="p">[</span><span class="n">c</span> <span class="o">&lt;</span> <span class="n">in_length</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="n">m</span><span class="p">[</span><span class="n">c</span> <span class="o">&gt;</span> <span class="n">out_length</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="n">a</span><span class="p">[</span><span class="n">m</span><span class="p">]</span> <span class="o">=</span> <span class="n">c</span><span class="p">[</span><span class="n">m</span><span class="p">]</span>
+                <span class="n">a</span><span class="p">[</span><span class="n">m</span><span class="p">]</span> <span class="o">-=</span> <span class="n">in_length</span>
+                <span class="n">a</span><span class="p">[</span><span class="n">m</span><span class="p">]</span> <span class="o">/=</span> <span class="n">out_length</span> <span class="o">-</span> <span class="n">in_length</span>
+                <span class="n">a</span><span class="p">[</span><span class="n">m</span><span class="p">]</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">a</span><span class="p">[</span><span class="n">m</span><span class="p">]</span> <span class="o">-</span> <span class="mf">.5</span><span class="p">)</span> <span class="o">*</span> <span class="mi">2</span>
+                <span class="n">in_length</span> <span class="o">=</span> <span class="n">out_length</span>
+                <span class="n">out_length</span> <span class="o">*=</span> <span class="mi">2</span>
+
+        <span class="k">return</span> <span class="n">a</span></div>
 
 
 
@@ -1134,81 +1217,67 @@
 <div class="viewcode-block" id="Waves">
 <a class="viewcode-back" href="../../../sources.html#pjimg.sources.Waves">[docs]</a>
 <span class="k">class</span> <span class="nc">Waves</span><span class="p">(</span><span class="n">Source</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Generates concentric radial gradients.</span>
-
-<span class="sd">    :param length: The radius of the innermost circle.</span>
-<span class="sd">    :param growth: (Optional.) Either the string &#39;linear&#39; or the</span>
-<span class="sd">        string &#39;geometric&#39;. Determines whether the distance between</span>
-<span class="sd">        each circle remains constant (linear) or increases</span>
-<span class="sd">        (geometric). Defaults to linear.</span>
-<span class="sd">    :returns: :class:`Waves` object.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Generates wave patterns using a cosine function.</span>
+<span class="sd">    </span>
+<span class="sd">    :param unit: (Optional.) The number of pixels in a unit of distance</span>
+<span class="sd">        of the wave. It defaults to 1279 pixels.</span>
+<span class="sd">    :param angle: (Optional.) The angle in degrees of the wave. An</span>
+<span class="sd">        angle of 0 creates vertical bars. An angle of 90 creates</span>
+<span class="sd">        horizontal bars. It defaults to 0.</span>
+<span class="sd">    :param wavelength: (Optional.) The number peaks that occur within</span>
+<span class="sd">        a unit. Defaults to 1.</span>
+<span class="sd">    :param warp: (Optional.) A function that accepts an image</span>
+<span class="sd">        array and returns an image array. This function is used to</span>
+<span class="sd">        alter the space the wave is propagating through, allowing you</span>
+<span class="sd">        to change the wavelength based on the position in the image.</span>
+<span class="sd">        Defaults to `None`.</span>
+<span class="sd">    :return: :class:`Waves` object.</span>
 <span class="sd">    :rtype: sources.patterns.Waves</span>
-
+<span class="sd">    </span>
 <span class="sd">    Usage::</span>
 <span class="sd">    </span>
-<span class="sd">        &gt;&gt;&gt; # Create a series of concentric radial gradients in a</span>
-<span class="sd">        &gt;&gt;&gt; # 1280x720 images.</span>
+<span class="sd">        &gt;&gt;&gt; # Create a wave pattern in a 1280x720 image.</span>
 <span class="sd">        &gt;&gt;&gt; size = (1, 720, 1280)</span>
-<span class="sd">        &gt;&gt;&gt; length = size[Y] / 16</span>
-<span class="sd">        &gt;&gt;&gt; source = Waves(length=length, growth=&#39;g&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; unit = 1279</span>
+<span class="sd">        &gt;&gt;&gt; angle = 30.0</span>
+<span class="sd">        &gt;&gt;&gt; wavelength = 5.0</span>
+<span class="sd">        &gt;&gt;&gt; source = Waves(unit, angle=angle, wavelength=wavelength)</span>
 <span class="sd">        &gt;&gt;&gt; img = source.fill(size)</span>
-<span class="sd">    </span>
+<span class="sd">        </span>
 <span class="sd">    .. figure:: images/waves.jpg</span>
-<span class="sd">       :alt: A series of concentric radial gradients in a 1280x720 image.</span>
+<span class="sd">       :alt: Create a wave pattern in a 1280x720 image.</span>
 <span class="sd">       </span>
 <span class="sd">       The image data created by the usage example.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">length</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-        <span class="n">growth</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;l&#39;</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">unit</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1279</span><span class="p">,</span>
+        <span class="n">angle</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="n">wavelength</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="n">warp</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">[[</span><span class="n">ImgAry</span><span class="p">],</span> <span class="n">ImgAry</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize an instance of Waves.&quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">length</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">length</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">growth</span> <span class="o">=</span> <span class="n">growth</span>
-
-    <span class="c1"># Public methods.</span>
-    <span class="k">def</span> <span class="nf">fill</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="p">:</span> <span class="n">Size</span><span class="p">,</span>
-        <span class="n">loc</span><span class="p">:</span> <span class="n">Loc</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ImgAry</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Fill a volume with image data.</span>
-
-<span class="sd">        :param size: The size of the volume of image data to generate.</span>
-<span class="sd">        :param loc: (Optional.) How much to shift the starting point</span>
-<span class="sd">            for the noise generation along each axis.</span>
-<span class="sd">        :return: An :class:`numpy.ndarray` with image data.</span>
-<span class="sd">        :rtype: numpy.ndarray</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1"># Map out the volume of space that will be created.</span>
-        <span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
-        <span class="n">c</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">indices</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
-        <span class="n">center</span> <span class="o">=</span> <span class="p">[(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">o</span> <span class="k">for</span> <span class="n">n</span><span class="p">,</span> <span class="n">o</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">loc</span><span class="p">)]</span>
-        <span class="k">for</span> <span class="n">axis</span> <span class="ow">in</span> <span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">Z</span><span class="p">:</span>
-            <span class="n">c</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">-=</span> <span class="n">center</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span>
-
-        <span class="c1"># Perform a spherical interpolation on the points in the</span>
-        <span class="c1"># volume and run the easing function on the results.</span>
-        <span class="n">c</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">c</span><span class="p">[</span><span class="n">X</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">c</span><span class="p">[</span><span class="n">Y</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">growth</span> <span class="o">==</span> <span class="s1">&#39;l&#39;</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">growth</span> <span class="o">==</span> <span class="s1">&#39;linear&#39;</span><span class="p">:</span>
-            <span class="n">a</span> <span class="o">=</span> <span class="n">c</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">length</span>
-            <span class="n">a</span> <span class="o">/=</span> <span class="bp">self</span><span class="o">.</span><span class="n">length</span>
-            <span class="n">a</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">a</span> <span class="o">-</span> <span class="mf">.5</span><span class="p">)</span> <span class="o">*</span> <span class="mi">2</span>
-
-        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">growth</span> <span class="o">==</span> <span class="s1">&#39;g&#39;</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">growth</span> <span class="o">==</span> <span class="s1">&#39;geometric&#39;</span><span class="p">:</span>
-            <span class="n">in_length</span> <span class="o">=</span> <span class="mf">0.0</span>
-            <span class="n">out_length</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">length</span>
-            <span class="k">while</span> <span class="n">in_length</span> <span class="o">&lt;</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">c</span><span class="p">):</span>
-                <span class="n">m</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="nb">bool</span><span class="p">)</span>
-                <span class="n">m</span><span class="p">[</span><span class="n">c</span> <span class="o">&lt;</span> <span class="n">in_length</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
-                <span class="n">m</span><span class="p">[</span><span class="n">c</span> <span class="o">&gt;</span> <span class="n">out_length</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
-                <span class="n">a</span><span class="p">[</span><span class="n">m</span><span class="p">]</span> <span class="o">=</span> <span class="n">c</span><span class="p">[</span><span class="n">m</span><span class="p">]</span>
-                <span class="n">a</span><span class="p">[</span><span class="n">m</span><span class="p">]</span> <span class="o">-=</span> <span class="n">in_length</span>
-                <span class="n">a</span><span class="p">[</span><span class="n">m</span><span class="p">]</span> <span class="o">/=</span> <span class="n">out_length</span> <span class="o">-</span> <span class="n">in_length</span>
-                <span class="n">a</span><span class="p">[</span><span class="n">m</span><span class="p">]</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">a</span><span class="p">[</span><span class="n">m</span><span class="p">]</span> <span class="o">-</span> <span class="mf">.5</span><span class="p">)</span> <span class="o">*</span> <span class="mi">2</span>
-                <span class="n">in_length</span> <span class="o">=</span> <span class="n">out_length</span>
-                <span class="n">out_length</span> <span class="o">*=</span> <span class="mi">2</span>
-
+        <span class="bp">self</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="n">unit</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">angle</span> <span class="o">=</span> <span class="n">angle</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">wavelength</span> <span class="o">=</span> <span class="n">wavelength</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">warp</span> <span class="o">=</span> <span class="n">warp</span>
+    
+    <span class="k">def</span> <span class="nf">fill</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="p">:</span> <span class="n">Size</span><span class="p">,</span> <span class="n">loc</span><span class="p">:</span> <span class="n">Loc</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span> <span class="o">-&gt;</span> <span class="n">ImgAry</span><span class="p">:</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">angle</span> <span class="o">/</span> <span class="mi">90</span>
+        <span class="n">indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">indices</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+        <span class="n">f</span> <span class="o">=</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">wavelength</span>
+        
+        <span class="c1"># Set the angle of the wave.</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="n">indices</span><span class="p">[</span><span class="n">X</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">x</span><span class="p">)</span> <span class="o">+</span> <span class="n">indices</span><span class="p">[</span><span class="n">Y</span><span class="p">]</span> <span class="o">*</span> <span class="n">x</span>
+        
+        <span class="c1"># Break the grid into units.</span>
+        <span class="n">a</span> <span class="o">/=</span> <span class="bp">self</span><span class="o">.</span><span class="n">unit</span>
+        
+        <span class="c1"># Modify how the wave evolves using the acceleration function.</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">warp</span><span class="p">:</span>
+            <span class="n">a</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">warp</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+        
+        <span class="c1"># Return the wave.</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">f</span> <span class="o">*</span> <span class="n">a</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
         <span class="k">return</span> <span class="n">a</span></div>
 
 </pre></div>

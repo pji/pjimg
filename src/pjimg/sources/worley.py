@@ -75,7 +75,7 @@ class Worley(Noise):
         origin: Loc = (0, 0, 0),
         seed: Seed = None
     ) -> None:
-        self.points = points
+        self.points = int(points)
         self.volume = volume
         self.origin = origin
         super().__init__(seed)

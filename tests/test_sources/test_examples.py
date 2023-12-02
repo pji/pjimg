@@ -40,6 +40,7 @@ class TestBuildDocImages:
             'octaveunitnoise.jpg',
             'octaveworley.jpg',
             'perlin.jpg',
+            'radials.jpg',
             'rays.jpg',
             'rings.jpg',
             'solid.jpg',
@@ -48,7 +49,6 @@ class TestBuildDocImages:
             'spot.jpg',
             'text.jpg',
             'unitnoise.jpg',
-            'waves.jpg',
             'worley.jpg',
         ]
         run([

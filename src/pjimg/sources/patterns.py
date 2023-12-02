@@ -9,6 +9,7 @@ image and video data.
 .. autoclass:: pjimg.sources.Gradient
 .. autoclass:: pjimg.sources.Hexes
 .. autoclass:: pjimg.sources.Lines
+.. autoclass:: pjimg.sources.Radials
 .. autoclass:: pjimg.sources.Rays
 .. autoclass:: pjimg.sources.Rings
 .. autoclass:: pjimg.sources.Solid
@@ -19,7 +20,7 @@ image and video data.
 
 """
 from math import sqrt
-from typing import Literal, Optional, Sequence
+from typing import Callable, Literal, Optional, Sequence
 
 import numpy as np
 from PIL import Image, ImageDraw, ImageFont
@@ -30,8 +31,8 @@ from pjimg.util import ImgAry, Loc, Size, X, Y, Z
 
 # Names available for import.
 __all__ = [
-    'Box', 'Gradient', 'Hexes', 'Lines', 'Rays', 'Rings', 'Solid',
-    'Spheres', 'Spot', 'Text', 'Waves',
+    'Box', 'Gradient', 'Hexes', 'Lines', 'Radials', 'Rays', 'Rings',
+    'Solid', 'Spheres', 'Spot', 'Text', 'Waves',
 ]
 
 
@@ -368,6 +369,85 @@ class Lines(Source):
         values[values > period / 2] = period - values[values > period / 2]
         values = (values / (period / 2))
         return values
+
+
+class Radials(Source):
+    """Generates concentric radial gradients.
+
+    :param length: The radius of the innermost circle.
+    :param growth: (Optional.) Either the string 'linear' or the
+        string 'geometric'. Determines whether the distance between
+        each circle remains constant (linear) or increases
+        (geometric). Defaults to linear.
+    :returns: :class:`Radials` object.
+    :rtype: sources.patterns.Radials
+
+    Usage::
+    
+        >>> # Create a series of concentric radial gradients in a
+        >>> # 1280x720 images.
+        >>> size = (1, 720, 1280)
+        >>> length = size[Y] / 16
+        >>> source = Radials(length=length, growth='g')
+        >>> img = source.fill(size)
+    
+    .. figure:: images/radials.jpg
+       :alt: A series of concentric radial gradients in a 1280x720 image.
+       
+       The image data created by the usage example.
+
+    """
+    def __init__(
+        self, length: float,
+        growth: str = 'l'
+    ) -> None:
+        """Initialize an instance of Waves."""
+        self.length = float(length)
+        self.growth = growth
+
+    # Public methods.
+    def fill(
+        self, size: Size,
+        loc: Loc = (0, 0, 0)
+    ) -> ImgAry:
+        """Fill a volume with image data.
+
+        :param size: The size of the volume of image data to generate.
+        :param loc: (Optional.) How much to shift the starting point
+            for the noise generation along each axis.
+        :return: An :class:`numpy.ndarray` with image data.
+        :rtype: numpy.ndarray
+        """
+        # Map out the volume of space that will be created.
+        a = np.zeros(size, dtype=float)
+        c = np.indices(size, dtype=float)
+        center = [(n - 1) / 2 + o for n, o in zip(size, loc)]
+        for axis in X, Y, Z:
+            c[axis] -= center[axis]
+
+        # Perform a spherical interpolation on the points in the
+        # volume and run the easing function on the results.
+        c = np.sqrt(c[X] ** 2 + c[Y] ** 2)
+        if self.growth == 'l' or self.growth == 'linear':
+            a = c % self.length
+            a /= self.length
+            a = abs(a - .5) * 2
+
+        elif self.growth == 'g' or self.growth == 'geometric':
+            in_length = 0.0
+            out_length = self.length
+            while in_length < np.max(c):
+                m = np.ones(a.shape, bool)
+                m[c < in_length] = False
+                m[c > out_length] = False
+                a[m] = c[m]
+                a[m] -= in_length
+                a[m] /= out_length - in_length
+                a[m] = abs(a[m] - .5) * 2
+                in_length = out_length
+                out_length *= 2
+
+        return a
 
 
 class Rays(Source):
@@ -903,79 +983,65 @@ class Text(Source):
 
 
 class Waves(Source):
-    """Generates concentric radial gradients.
-
-    :param length: The radius of the innermost circle.
-    :param growth: (Optional.) Either the string 'linear' or the
-        string 'geometric'. Determines whether the distance between
-        each circle remains constant (linear) or increases
-        (geometric). Defaults to linear.
-    :returns: :class:`Waves` object.
+    """Generates wave patterns using a cosine function.
+    
+    :param unit: (Optional.) The number of pixels in a unit of distance
+        of the wave. It defaults to 1279 pixels.
+    :param angle: (Optional.) The angle in degrees of the wave. An
+        angle of 0 creates vertical bars. An angle of 90 creates
+        horizontal bars. It defaults to 0.
+    :param wavelength: (Optional.) The number peaks that occur within
+        a unit. Defaults to 1.
+    :param warp: (Optional.) A function that accepts an image
+        array and returns an image array. This function is used to
+        alter the space the wave is propagating through, allowing you
+        to change the wavelength based on the position in the image.
+        Defaults to `None`.
+    :return: :class:`Waves` object.
     :rtype: sources.patterns.Waves
-
+    
     Usage::
     
-        >>> # Create a series of concentric radial gradients in a
-        >>> # 1280x720 images.
+        >>> # Create a wave pattern in a 1280x720 image.
         >>> size = (1, 720, 1280)
-        >>> length = size[Y] / 16
-        >>> source = Waves(length=length, growth='g')
+        >>> unit = 1279
+        >>> angle = 30.0
+        >>> wavelength = 5.0
+        >>> source = Waves(unit, angle=angle, wavelength=wavelength)
         >>> img = source.fill(size)
-    
+        
     .. figure:: images/waves.jpg
-       :alt: A series of concentric radial gradients in a 1280x720 image.
+       :alt: Create a wave pattern in a 1280x720 image.
        
        The image data created by the usage example.
 
     """
     def __init__(
-        self, length: float,
-        growth: str = 'l'
+        self, unit: int = 1279,
+        angle: float = 0,
+        wavelength: float = 1,
+        warp: Optional[Callable[[ImgAry], ImgAry]] = None
     ) -> None:
-        """Initialize an instance of Waves."""
-        self.length = float(length)
-        self.growth = growth
-
-    # Public methods.
-    def fill(
-        self, size: Size,
-        loc: Loc = (0, 0, 0)
-    ) -> ImgAry:
-        """Fill a volume with image data.
-
-        :param size: The size of the volume of image data to generate.
-        :param loc: (Optional.) How much to shift the starting point
-            for the noise generation along each axis.
-        :return: An :class:`numpy.ndarray` with image data.
-        :rtype: numpy.ndarray
-        """
-        # Map out the volume of space that will be created.
-        a = np.zeros(size, dtype=float)
-        c = np.indices(size, dtype=float)
-        center = [(n - 1) / 2 + o for n, o in zip(size, loc)]
-        for axis in X, Y, Z:
-            c[axis] -= center[axis]
-
-        # Perform a spherical interpolation on the points in the
-        # volume and run the easing function on the results.
-        c = np.sqrt(c[X] ** 2 + c[Y] ** 2)
-        if self.growth == 'l' or self.growth == 'linear':
-            a = c % self.length
-            a /= self.length
-            a = abs(a - .5) * 2
-
-        elif self.growth == 'g' or self.growth == 'geometric':
-            in_length = 0.0
-            out_length = self.length
-            while in_length < np.max(c):
-                m = np.ones(a.shape, bool)
-                m[c < in_length] = False
-                m[c > out_length] = False
-                a[m] = c[m]
-                a[m] -= in_length
-                a[m] /= out_length - in_length
-                a[m] = abs(a[m] - .5) * 2
-                in_length = out_length
-                out_length *= 2
-
+        self.unit = unit
+        self.angle = angle
+        self.wavelength = wavelength
+        self.warp = warp
+    
+    def fill(self, size: Size, loc: Loc = (0, 0, 0)) -> ImgAry:
+        x = self.angle / 90
+        indices = np.indices(size, dtype=float)
+        f = (2 * np.pi) / self.wavelength
+        
+        # Set the angle of the wave.
+        a = indices[X] * (1 - x) + indices[Y] * x
+        
+        # Break the grid into units.
+        a /= self.unit
+        
+        # Modify how the wave evolves using the acceleration function.
+        if self.warp:
+            a = self.warp(a)
+        
+        # Return the wave.
+        a = (np.cos(f * a) + 1) / 2
         return a
