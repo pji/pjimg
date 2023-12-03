@@ -6,25 +6,23 @@ name = "pypi"
 [packages]
 numpy = "*"
 opencv-python = "*"
-pillow = "*"
 scikit-image = "*"
 
 [dev-packages]
 sphinx = "*"
 furo = "*"
+rstcheck = {extras = ["toml", "sphinx"], version = "*"}
 pycodestyle = "*"
 mypy = "*"
-rstcheck = {extras = ["sphinx"], version = "*"}
 pytest = "*"
 isort = "*"
 tox = "*"
 wheel = "*"
 build = "*"
 twine = "*"
+matplotlib = "*"
 pjimg = {file = ".", editable = true}
 types-pillow = "*"
-matplotlib = "*"
-thurible = "*"
 
 [requires]
 python_version = "3.12"
