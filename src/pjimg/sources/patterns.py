@@ -1045,3 +1045,17 @@ class Waves(Source):
         # Return the wave.
         a = (np.cos(f * a) + 1) / 2
         return a
+
+
+if __name__ == '__main__':
+    from pjimg.util.debug import print_array
+    
+    def warp(a):
+        return a + 0.25
+
+    size = (1, 8, 8)
+    source = Waves(unit=7, warp=warp)
+    a = source.fill(size)
+    a *= 0xff
+    a = a.astype(np.uint8)
+    print_array(a)
