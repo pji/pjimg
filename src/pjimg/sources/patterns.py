@@ -356,8 +356,7 @@ class Lines(Source):
         :rtype: numpy.ndarray
         """
         values = np.indices(size, dtype=float)
-        for axis in X, Y, Z:
-            values[axis] += loc[axis]
+        values = shift_index_origin(values, loc)
         if self.direction == 'v':
             values = values[X] + values[Z]
         elif self.direction == 'h':
@@ -421,13 +420,12 @@ class Radials(Source):
         # Map out the volume of space that will be created.
         a = np.zeros(size, dtype=float)
         c = np.indices(size, dtype=float)
-        center = [(n - 1) / 2 + o for n, o in zip(size, loc)]
-        for axis in X, Y, Z:
-            c[axis] -= center[axis]
+        c = center_index_origin(c)
+        c = shift_index_origin(c, loc)
 
         # Perform a spherical interpolation on the points in the
         # volume and run the easing function on the results.
-        c = np.sqrt(c[X] ** 2 + c[Y] ** 2)
+        c = index_to_distance_from_origin(c)
         if self.growth == 'l' or self.growth == 'linear':
             a = c % self.length
             a /= self.length
@@ -493,14 +491,11 @@ class Rays(Source):
         :return: An :class:`numpy.ndarray` with image data.
         :rtype: numpy.ndarray
         """
-        # Determine the center of the effect.
-        center = [(n - 1) / 2 + o for n, o in zip(size, loc)]
-
         # Determine the angle from center for every point
-        # in the array.
+        # in the array.        
         indices = np.indices(size, dtype=float)
-        for axis in X, Y:
-            indices[axis] -= center[axis]
+        indices = center_index_origin(indices)
+        indices = shift_index_origin(indices, loc)
         x, y = indices[X], indices[Y]
         angle = np.zeros_like(x)
         angle[x != 0] = np.arctan(y[x != 0] / x[x != 0])
@@ -520,9 +515,14 @@ class Rays(Source):
         rays = (angle + offset) % ray_angle
         rays /= ray_angle
         rays = abs(rays - .5) * 2
+        
+        # Fill in the center if needed.
+        center = [(n - 1) / 2 + o for n, o in zip(size, loc)]
         if center[X] % 1 == 0 and center[Y] % 1 == 0:
             center = [int(n) for n in center]
             rays[(center[Y], center[X])] = 1
+        
+        # Fill out the Z axis and return.
         rays = np.tile(rays, (size[Z], 1, 1))
         return rays
 
@@ -588,18 +588,14 @@ class Rings(Source):
         :rtype: numpy.ndarray
         """
         # Map out the volume of space that will be created.
-        a = np.zeros(size)
-        c = np.indices(size)
-        for axis in X, Y, Z:
-            c[axis] += loc[axis]
-
-            # Calculate where every point is relative to the center
-            # of the spot.
-            c[axis] = abs(c[axis] - size[axis] // 2)
+        a = np.zeros(size, dtype=float)
+        c = np.indices(size, dtype=float)
+        c = center_index_origin(c)
+        c = shift_index_origin(c, loc)
 
         # Perform a spherical interpolation on the points in the
         # volume and run the easing function on the results.
-        c = np.sqrt(c[X] ** 2 + c[Y] ** 2)
+        c = index_to_distance_from_origin(c)
         for i in range(self.count):
             radius = self.radius + self.gap * i
             if radius != 0:
@@ -714,8 +710,7 @@ class Spheres(Source):
         """
         # Map out the volume of space that will be created.
         a = np.indices(size, dtype=float)
-        for axis in X, Y, Z:
-            a[axis] += loc[axis]
+        a = shift_index_origin(a, loc)
 
         # If configured, offset every other row, column, or plane by
         # by the radius of the circle.
@@ -809,16 +804,12 @@ class Spot(Source):
         """
         # Map out the volume of space that will be created.
         a = np.indices(size, dtype=float)
-        for axis in X, Y, Z:
-            a[axis] += loc[axis]
-
-            # Calculate where every point is relative to the center
-            # of the spot.
-            a[axis] = abs(a[axis] - size[axis] // 2)
-
+        a = center_index_origin(a)
+        a = shift_index_origin(a, loc)
+        
         # Perform a spherical interpolation on the points in the
         # volume and run the easing function on the results.
-        a = np.sqrt(a[X] ** 2 + a[Y] ** 2)
+        a = index_to_distance_from_origin(a)
         a = 1 - (a / np.sqrt(2 * self.radius ** 2))
         a[a > 1] = 1
         a[a < 0] = 0
@@ -997,6 +988,8 @@ class Waves(Source):
         alter the space the wave is propagating through, allowing you
         to change the wavelength based on the position in the image.
         Defaults to `None`.
+    :param radial: (Optional.) When true, the waves should radiate from
+        a central point in a circular pattern. Defaults to `False`.
     :return: :class:`Waves` object.
     :rtype: sources.patterns.Waves
     
@@ -1020,12 +1013,14 @@ class Waves(Source):
         self, unit: int = 1279,
         angle: float = 0,
         wavelength: float = 1,
-        warp: Optional[Callable[[ImgAry], ImgAry]] = None
+        warp: Optional[Callable[[ImgAry], ImgAry]] = None,
+        radial: bool = False
     ) -> None:
         self.unit = unit
         self.angle = angle
         self.wavelength = wavelength
         self.warp = warp
+        self.radial = radial
     
     def fill(self, size: Size, loc: Loc = (0, 0, 0)) -> ImgAry:
         x = self.angle / 90
@@ -1033,7 +1028,11 @@ class Waves(Source):
         f = (2 * np.pi) / self.wavelength
         
         # Set the angle of the wave.
-        a = indices[X] * (1 - x) + indices[Y] * x
+        if not self.radial:
+            a = indices[X] * (1 - x) + indices[Y] * x
+        else:
+            indices = center_index_origin(indices)
+            a = index_to_distance_from_origin(indices)
         
         # Break the grid into units.
         a /= self.unit
@@ -1047,6 +1046,30 @@ class Waves(Source):
         return a
 
 
+# Utility functions.
+def center_index_origin(indices: ImgAry) -> ImgAry:
+    """Move the origin point of an indices array to the center of
+    the array.
+    """
+    size = indices[0].shape
+    shifts = [(n - 1) / 2 for n in size]
+    return shift_index_origin(indices, shifts)
+
+
+def index_to_distance_from_origin(indices: ImgAry) -> ImgAry:
+    """Transform indices into distances from the origin. In general,
+    it transforms rectangular shapes to circular ones.
+    """
+    return np.sqrt(indices[X] ** 2 + indices[Y] ** 2)
+
+
+def shift_index_origin(indices: ImgAry, shifts: Sequence[int]) -> ImgAry:
+    """Adjust the values in an indices array to move the origin point."""
+    for axis, shift in enumerate(shifts):
+        indices[axis] -= shift
+    return indices
+
+
 if __name__ == '__main__':
     from pjimg.util.debug import print_array
     
@@ -1054,7 +1077,7 @@ if __name__ == '__main__':
         return a + 0.25
 
     size = (1, 8, 8)
-    source = Waves(unit=7, warp=warp)
+    source = Waves(unit=7, radial=True)
     a = source.fill(size)
     a *= 0xff
     a = a.astype(np.uint8)
