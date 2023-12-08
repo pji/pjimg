@@ -1025,11 +1025,19 @@ class Waves(Source):
     def fill(self, size: Size, loc: Loc = (0, 0, 0)) -> ImgAry:
         x = self.angle / 90
         indices = np.indices(size, dtype=float)
+        indices = shift_index_origin(indices, loc)
         f = (2 * np.pi) / self.wavelength
         
         # Set the angle of the wave.
         if not self.radial:
             a = indices[X] * (1 - x) + indices[Y] * x
+            
+            # Factors in the Z axis for video. The pace of change
+            # over the Z axis should probably be something that can
+            # be set.
+            if size[Z] > 1:
+                a += indices[Z] * (self.unit / 48)
+        
         else:
             indices = center_index_origin(indices)
             a = index_to_distance_from_origin(indices)
