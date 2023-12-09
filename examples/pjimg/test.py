@@ -23,54 +23,43 @@ wave = srcs.Waves(
 ) 
 img = wave.fill(size)
 layer = wave.fill(size, (0, 0, -210))
-layer = filt.filter_flip(layer, axis=-1)
+layer = filt.flip(layer, axis=-1)
 img = blend.difference(img, layer)
-
-# layer = img.copy()
-# layer = filt.filter_flip(layer, axis=-2)
-# img = blend.difference(img, layer)
 
 layer = wave.fill(size, (0, 0, -80))
-layer = filt.filter_flip(layer, axis=-2)
+layer = filt.flip(layer, axis=-2)
 img = blend.difference(img, layer)
 
-# layer = wave.fill(size, (0, 0, -40))
-# layer = filt.filter_flip(layer, axis=-1)
-# layer = filt.filter_flip(layer, axis=-2)
-# img = blend.difference(img, layer)
-
-img *= 0.8
-img += 0.2
-layer = img.copy()
+# img *= 0.8
+# img += 0.2
+gl = img.copy()
 hl = img.copy()
 sd = img.copy()
-# img = ease.ease_out_circ(img)
 
-# img = ease.ease_out_quad(img)
-img = filt.filter_colorize(img, colorkey='cp')
-# img[img < 0.25] = filt.filter_colorize(img[img < 0.25], colorkey='b')
+# perlin = srcs.OctavePerlin()
+# layer = perlin.fill(size)
+# 
+# img = filt.posterize(img, 40)
+# img[img > 0.075] = 1.0
+# img[img < 0.05] = 0.0
+# layer[img == 1.0] = 1.0
+# layer[img == 0.0] = 0.0
+# layer = filt.posterize(layer, 2)
+# img = blend.screen(img, layer)
+# img = filt.gaussian_blur(img, 10)
+img = filt.colorize(img, colorkey='cp')
 
-# sd = filt.filter_inverse(sd)
-# # sd = ease.ease_in_quint(sd)
-# # sd = ease.ease_in_quint(sd)
-# # sd = ease.ease_in_quad(sd)
-# # sd = ease.ease_in_quint(sd)
-# # sd = filt.filter_gaussian_blur(sd, 0.5)
-# # sd = filt.filter_gaussian_blur(sd, 0.5)
-sd = filt.filter_colorize(sd, colorkey='a')
-# sd = ease.ease_in_sin(sd)
-# sd *= 0.75
-# sd += 0.25
+sd *= 0.8
+sd += 0.2
+sd = filt.colorize(sd, colorkey='a')
 img = blend.multiply(img, sd)
 
-layer = ease.ease_in_quad(layer)
-layer = filt.filter_gaussian_blur(layer, 10)
-layer = filt.filter_colorize(layer, colorkey='a')
-# img = blend.screen(img, layer)
-
-hl = ease.ease_in_quint(hl)
-hl = filt.filter_colorize(hl, colorkey='a')
-img = blend.screen(img, hl)
+# gl = ease.in_quad(gl)
+# gl = filt.gaussian_blur(gl, 10)
+# gl = filt.colorize(gl, colorkey='a')
+# 
+# hl = ease.in_quint(hl)
+# hl = filt.colorize(hl, colorkey='a')
+# img = blend.screen(img, hl)
 
 write('test.jpg', img)
-# write('test.mp4', img)

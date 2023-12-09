@@ -566,8 +566,7 @@
 <span class="sd">        :rtype: numpy.ndarray</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">indices</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">axis</span> <span class="ow">in</span> <span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">Z</span><span class="p">:</span>
-            <span class="n">values</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">+=</span> <span class="n">loc</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span>
+        <span class="n">values</span> <span class="o">=</span> <span class="n">shift_index_origin</span><span class="p">(</span><span class="n">values</span><span class="p">,</span> <span class="n">loc</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">direction</span> <span class="o">==</span> <span class="s1">&#39;v&#39;</span><span class="p">:</span>
             <span class="n">values</span> <span class="o">=</span> <span class="n">values</span><span class="p">[</span><span class="n">X</span><span class="p">]</span> <span class="o">+</span> <span class="n">values</span><span class="p">[</span><span class="n">Z</span><span class="p">]</span>
         <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">direction</span> <span class="o">==</span> <span class="s1">&#39;h&#39;</span><span class="p">:</span>
@@ -634,13 +633,12 @@
         <span class="c1"># Map out the volume of space that will be created.</span>
         <span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
         <span class="n">c</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">indices</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
-        <span class="n">center</span> <span class="o">=</span> <span class="p">[(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">o</span> <span class="k">for</span> <span class="n">n</span><span class="p">,</span> <span class="n">o</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">loc</span><span class="p">)]</span>
-        <span class="k">for</span> <span class="n">axis</span> <span class="ow">in</span> <span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">Z</span><span class="p">:</span>
-            <span class="n">c</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">-=</span> <span class="n">center</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span>
+        <span class="n">c</span> <span class="o">=</span> <span class="n">center_index_origin</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+        <span class="n">c</span> <span class="o">=</span> <span class="n">shift_index_origin</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">loc</span><span class="p">)</span>
 
         <span class="c1"># Perform a spherical interpolation on the points in the</span>
         <span class="c1"># volume and run the easing function on the results.</span>
-        <span class="n">c</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">c</span><span class="p">[</span><span class="n">X</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">c</span><span class="p">[</span><span class="n">Y</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="n">c</span> <span class="o">=</span> <span class="n">index_to_distance_from_origin</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">growth</span> <span class="o">==</span> <span class="s1">&#39;l&#39;</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">growth</span> <span class="o">==</span> <span class="s1">&#39;linear&#39;</span><span class="p">:</span>
             <span class="n">a</span> <span class="o">=</span> <span class="n">c</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">length</span>
             <span class="n">a</span> <span class="o">/=</span> <span class="bp">self</span><span class="o">.</span><span class="n">length</span>
@@ -709,14 +707,11 @@
 <span class="sd">        :return: An :class:`numpy.ndarray` with image data.</span>
 <span class="sd">        :rtype: numpy.ndarray</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1"># Determine the center of the effect.</span>
-        <span class="n">center</span> <span class="o">=</span> <span class="p">[(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">o</span> <span class="k">for</span> <span class="n">n</span><span class="p">,</span> <span class="n">o</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">loc</span><span class="p">)]</span>
-
         <span class="c1"># Determine the angle from center for every point</span>
-        <span class="c1"># in the array.</span>
+        <span class="c1"># in the array.        </span>
         <span class="n">indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">indices</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">axis</span> <span class="ow">in</span> <span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">:</span>
-            <span class="n">indices</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">-=</span> <span class="n">center</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span>
+        <span class="n">indices</span> <span class="o">=</span> <span class="n">center_index_origin</span><span class="p">(</span><span class="n">indices</span><span class="p">)</span>
+        <span class="n">indices</span> <span class="o">=</span> <span class="n">shift_index_origin</span><span class="p">(</span><span class="n">indices</span><span class="p">,</span> <span class="n">loc</span><span class="p">)</span>
         <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">indices</span><span class="p">[</span><span class="n">X</span><span class="p">],</span> <span class="n">indices</span><span class="p">[</span><span class="n">Y</span><span class="p">]</span>
         <span class="n">angle</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
         <span class="n">angle</span><span class="p">[</span><span class="n">x</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arctan</span><span class="p">(</span><span class="n">y</span><span class="p">[</span><span class="n">x</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="n">x</span><span class="p">[</span><span class="n">x</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">])</span>
@@ -736,9 +731,14 @@
         <span class="n">rays</span> <span class="o">=</span> <span class="p">(</span><span class="n">angle</span> <span class="o">+</span> <span class="n">offset</span><span class="p">)</span> <span class="o">%</span> <span class="n">ray_angle</span>
         <span class="n">rays</span> <span class="o">/=</span> <span class="n">ray_angle</span>
         <span class="n">rays</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">rays</span> <span class="o">-</span> <span class="mf">.5</span><span class="p">)</span> <span class="o">*</span> <span class="mi">2</span>
+        
+        <span class="c1"># Fill in the center if needed.</span>
+        <span class="n">center</span> <span class="o">=</span> <span class="p">[(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">o</span> <span class="k">for</span> <span class="n">n</span><span class="p">,</span> <span class="n">o</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">loc</span><span class="p">)]</span>
         <span class="k">if</span> <span class="n">center</span><span class="p">[</span><span class="n">X</span><span class="p">]</span> <span class="o">%</span> <span class="mi">1</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">center</span><span class="p">[</span><span class="n">Y</span><span class="p">]</span> <span class="o">%</span> <span class="mi">1</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="n">center</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">center</span><span class="p">]</span>
             <span class="n">rays</span><span class="p">[(</span><span class="n">center</span><span class="p">[</span><span class="n">Y</span><span class="p">],</span> <span class="n">center</span><span class="p">[</span><span class="n">X</span><span class="p">])]</span> <span class="o">=</span> <span class="mi">1</span>
+        
+        <span class="c1"># Fill out the Z axis and return.</span>
         <span class="n">rays</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">rays</span><span class="p">,</span> <span class="p">(</span><span class="n">size</span><span class="p">[</span><span class="n">Z</span><span class="p">],</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
         <span class="k">return</span> <span class="n">rays</span></div>
 
@@ -807,18 +807,14 @@
 <span class="sd">        :rtype: numpy.ndarray</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Map out the volume of space that will be created.</span>
-        <span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">size</span><span class="p">)</span>
-        <span class="n">c</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">indices</span><span class="p">(</span><span class="n">size</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">axis</span> <span class="ow">in</span> <span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">Z</span><span class="p">:</span>
-            <span class="n">c</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">+=</span> <span class="n">loc</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span>
-
-            <span class="c1"># Calculate where every point is relative to the center</span>
-            <span class="c1"># of the spot.</span>
-            <span class="n">c</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">c</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">-</span> <span class="n">size</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">//</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+        <span class="n">c</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">indices</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+        <span class="n">c</span> <span class="o">=</span> <span class="n">center_index_origin</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+        <span class="n">c</span> <span class="o">=</span> <span class="n">shift_index_origin</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">loc</span><span class="p">)</span>
 
         <span class="c1"># Perform a spherical interpolation on the points in the</span>
         <span class="c1"># volume and run the easing function on the results.</span>
-        <span class="n">c</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">c</span><span class="p">[</span><span class="n">X</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">c</span><span class="p">[</span><span class="n">Y</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="n">c</span> <span class="o">=</span> <span class="n">index_to_distance_from_origin</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">count</span><span class="p">):</span>
             <span class="n">radius</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">radius</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">gap</span> <span class="o">*</span> <span class="n">i</span>
             <span class="k">if</span> <span class="n">radius</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
@@ -939,8 +935,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Map out the volume of space that will be created.</span>
         <span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">indices</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">axis</span> <span class="ow">in</span> <span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">Z</span><span class="p">:</span>
-            <span class="n">a</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">+=</span> <span class="n">loc</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="n">shift_index_origin</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">loc</span><span class="p">)</span>
 
         <span class="c1"># If configured, offset every other row, column, or plane by</span>
         <span class="c1"># by the radius of the circle.</span>
@@ -1037,16 +1032,12 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Map out the volume of space that will be created.</span>
         <span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">indices</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">axis</span> <span class="ow">in</span> <span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">Z</span><span class="p">:</span>
-            <span class="n">a</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">+=</span> <span class="n">loc</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span>
-
-            <span class="c1"># Calculate where every point is relative to the center</span>
-            <span class="c1"># of the spot.</span>
-            <span class="n">a</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">a</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">-</span> <span class="n">size</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">//</span> <span class="mi">2</span><span class="p">)</span>
-
+        <span class="n">a</span> <span class="o">=</span> <span class="n">center_index_origin</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="n">shift_index_origin</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">loc</span><span class="p">)</span>
+        
         <span class="c1"># Perform a spherical interpolation on the points in the</span>
         <span class="c1"># volume and run the easing function on the results.</span>
-        <span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">a</span><span class="p">[</span><span class="n">X</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">a</span><span class="p">[</span><span class="n">Y</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="n">index_to_distance_from_origin</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
         <span class="n">a</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="p">(</span><span class="n">a</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">radius</span> <span class="o">**</span> <span class="mi">2</span><span class="p">))</span>
         <span class="n">a</span><span class="p">[</span><span class="n">a</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
         <span class="n">a</span><span class="p">[</span><span class="n">a</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
@@ -1231,6 +1222,8 @@
 <span class="sd">        alter the space the wave is propagating through, allowing you</span>
 <span class="sd">        to change the wavelength based on the position in the image.</span>
 <span class="sd">        Defaults to `None`.</span>
+<span class="sd">    :param radial: (Optional.) When true, the waves should radiate from</span>
+<span class="sd">        a central point in a circular pattern. Defaults to `False`.</span>
 <span class="sd">    :return: :class:`Waves` object.</span>
 <span class="sd">    :rtype: sources.patterns.Waves</span>
 <span class="sd">    </span>
@@ -1254,20 +1247,34 @@
         <span class="bp">self</span><span class="p">,</span> <span class="n">unit</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1279</span><span class="p">,</span>
         <span class="n">angle</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
         <span class="n">wavelength</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
-        <span class="n">warp</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">[[</span><span class="n">ImgAry</span><span class="p">],</span> <span class="n">ImgAry</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">warp</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">[[</span><span class="n">ImgAry</span><span class="p">],</span> <span class="n">ImgAry</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">radial</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="n">unit</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">angle</span> <span class="o">=</span> <span class="n">angle</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">wavelength</span> <span class="o">=</span> <span class="n">wavelength</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">warp</span> <span class="o">=</span> <span class="n">warp</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">radial</span> <span class="o">=</span> <span class="n">radial</span>
     
     <span class="k">def</span> <span class="nf">fill</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="p">:</span> <span class="n">Size</span><span class="p">,</span> <span class="n">loc</span><span class="p">:</span> <span class="n">Loc</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span> <span class="o">-&gt;</span> <span class="n">ImgAry</span><span class="p">:</span>
         <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">angle</span> <span class="o">/</span> <span class="mi">90</span>
         <span class="n">indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">indices</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+        <span class="n">indices</span> <span class="o">=</span> <span class="n">shift_index_origin</span><span class="p">(</span><span class="n">indices</span><span class="p">,</span> <span class="n">loc</span><span class="p">)</span>
         <span class="n">f</span> <span class="o">=</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">wavelength</span>
         
         <span class="c1"># Set the angle of the wave.</span>
-        <span class="n">a</span> <span class="o">=</span> <span class="n">indices</span><span class="p">[</span><span class="n">X</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">x</span><span class="p">)</span> <span class="o">+</span> <span class="n">indices</span><span class="p">[</span><span class="n">Y</span><span class="p">]</span> <span class="o">*</span> <span class="n">x</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">radial</span><span class="p">:</span>
+            <span class="n">a</span> <span class="o">=</span> <span class="n">indices</span><span class="p">[</span><span class="n">X</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">x</span><span class="p">)</span> <span class="o">+</span> <span class="n">indices</span><span class="p">[</span><span class="n">Y</span><span class="p">]</span> <span class="o">*</span> <span class="n">x</span>
+            
+            <span class="c1"># Factors in the Z axis for video. The pace of change</span>
+            <span class="c1"># over the Z axis should probably be something that can</span>
+            <span class="c1"># be set.</span>
+            <span class="k">if</span> <span class="n">size</span><span class="p">[</span><span class="n">Z</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">a</span> <span class="o">+=</span> <span class="n">indices</span><span class="p">[</span><span class="n">Z</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">unit</span> <span class="o">/</span> <span class="mi">48</span><span class="p">)</span>
+        
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">indices</span> <span class="o">=</span> <span class="n">center_index_origin</span><span class="p">(</span><span class="n">indices</span><span class="p">)</span>
+            <span class="n">a</span> <span class="o">=</span> <span class="n">index_to_distance_from_origin</span><span class="p">(</span><span class="n">indices</span><span class="p">)</span>
         
         <span class="c1"># Break the grid into units.</span>
         <span class="n">a</span> <span class="o">/=</span> <span class="bp">self</span><span class="o">.</span><span class="n">unit</span>
@@ -1280,6 +1287,44 @@
         <span class="n">a</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">f</span> <span class="o">*</span> <span class="n">a</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
         <span class="k">return</span> <span class="n">a</span></div>
 
+
+
+<span class="c1"># Utility functions.</span>
+<span class="k">def</span> <span class="nf">center_index_origin</span><span class="p">(</span><span class="n">indices</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ImgAry</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Move the origin point of an indices array to the center of</span>
+<span class="sd">    the array.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">size</span> <span class="o">=</span> <span class="n">indices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span>
+    <span class="n">shifts</span> <span class="o">=</span> <span class="p">[(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">size</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">shift_index_origin</span><span class="p">(</span><span class="n">indices</span><span class="p">,</span> <span class="n">shifts</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">index_to_distance_from_origin</span><span class="p">(</span><span class="n">indices</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ImgAry</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Transform indices into distances from the origin. In general,</span>
+<span class="sd">    it transforms rectangular shapes to circular ones.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">indices</span><span class="p">[</span><span class="n">X</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">indices</span><span class="p">[</span><span class="n">Y</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">shift_index_origin</span><span class="p">(</span><span class="n">indices</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">,</span> <span class="n">shifts</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">ImgAry</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Adjust the values in an indices array to move the origin point.&quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">axis</span><span class="p">,</span> <span class="n">shift</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">shifts</span><span class="p">):</span>
+        <span class="n">indices</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">-=</span> <span class="n">shift</span>
+    <span class="k">return</span> <span class="n">indices</span>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">pjimg.util.debug</span> <span class="kn">import</span> <span class="n">print_array</span>
+    
+    <span class="k">def</span> <span class="nf">warp</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">a</span> <span class="o">+</span> <span class="mf">0.25</span>
+
+    <span class="n">size</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
+    <span class="n">source</span> <span class="o">=</span> <span class="n">Waves</span><span class="p">(</span><span class="n">unit</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">radial</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="n">source</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="n">size</span><span class="p">)</span>
+    <span class="n">a</span> <span class="o">*=</span> <span class="mh">0xff</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>
+    <span class="n">print_array</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
 </pre></div>
         </article>
       </div>

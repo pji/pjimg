@@ -156,6 +156,10 @@
   <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../index.html">pjimg</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../blends.html">blends</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../eases.html">eases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../filters.html">filters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../sources.html">sources</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../imgio.html">imgio</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../util.html">util</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../requirements.html">pjimg Requirements</a></li>
@@ -199,9 +203,11 @@
 
 <span class="sd">Decorators for :mod:`pjimg.eases`.</span>
 
+<span class="sd">.. autofunction:: pjimg.eases.register</span>
 <span class="sd">.. autofunction:: pjimg.eases.will_scale</span>
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">wraps</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Callable</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
@@ -210,8 +216,24 @@
 
 
 <span class="c1"># Decorators.</span>
+<span class="k">def</span> <span class="nf">register</span><span class="p">(</span><span class="n">registry</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Ease</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">Ease</span><span class="p">,],</span> <span class="n">Ease</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Registers the decorated function under the function&#39;s name</span>
+<span class="sd">    in the given registry dictionary.</span>
+<span class="sd">    </span>
+<span class="sd">    :param registry: The registry to register the given function in.</span>
+<span class="sd">    :return: The registration :mod:`function` pointed to the given</span>
+<span class="sd">        registry.</span>
+<span class="sd">    :rtype: function</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">decorator</span><span class="p">(</span><span class="n">fn</span><span class="p">:</span> <span class="n">Ease</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Ease</span><span class="p">:</span>
+        <span class="n">key</span> <span class="o">=</span> <span class="n">fn</span><span class="o">.</span><span class="vm">__name__</span>
+        <span class="n">registry</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">fn</span>
+        <span class="k">return</span> <span class="n">fn</span>
+    <span class="k">return</span> <span class="n">decorator</span>
+
+
 <div class="viewcode-block" id="will_scale">
-<a class="viewcode-back" href="../../../imgease.html#pjimg.eases.will_scale">[docs]</a>
+<a class="viewcode-back" href="../../../eases.html#pjimg.eases.will_scale">[docs]</a>
 <span class="k">def</span> <span class="nf">will_scale</span><span class="p">(</span><span class="n">fn</span><span class="p">:</span> <span class="n">Ease</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Ease</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;These eases only work for values between zero and one. If</span>
 <span class="sd">    given values outside of that range, it will scale the values</span>

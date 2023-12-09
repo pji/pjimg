@@ -156,6 +156,10 @@
   <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../index.html">pjimg</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../blends.html">blends</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../eases.html">eases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../filters.html">filters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../sources.html">sources</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../imgio.html">imgio</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../util.html">util</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../requirements.html">pjimg Requirements</a></li>
@@ -199,12 +203,14 @@
 
 <span class="sd">Decorators for :mod:`pjimg.filters`.</span>
 
+<span class="sd">.. autofunction:: pjimg.filters.register</span>
 <span class="sd">.. autofunction:: pjimg.filters.processes_by_grayscale_frame</span>
 <span class="sd">.. autofunction:: pjimg.filters.uses_uint8</span>
 <span class="sd">.. autofunction:: pjimg.filters.will_square</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">wraps</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Callable</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
@@ -213,12 +219,33 @@
 
 
 <span class="c1"># Names available for import.</span>
-<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;processes_by_grayscale_frame&#39;</span><span class="p">,</span> <span class="s1">&#39;uses_uint8&#39;</span><span class="p">,</span> <span class="s1">&#39;will_square&#39;</span><span class="p">,]</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">&#39;register&#39;</span><span class="p">,</span> <span class="s1">&#39;processes_by_grayscale_frame&#39;</span><span class="p">,</span> <span class="s1">&#39;uses_uint8&#39;</span><span class="p">,</span> <span class="s1">&#39;will_square&#39;</span><span class="p">,</span>
+<span class="p">]</span>
 
 
 <span class="c1"># Decorators.</span>
+<div class="viewcode-block" id="register">
+<a class="viewcode-back" href="../../../filters.html#pjimg.filters.register">[docs]</a>
+<span class="k">def</span> <span class="nf">register</span><span class="p">(</span><span class="n">registry</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Filter</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">Filter</span><span class="p">,],</span> <span class="n">Filter</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Registers the decorated function under the function&#39;s name</span>
+<span class="sd">    in the given registry dictionary.</span>
+<span class="sd">    </span>
+<span class="sd">    :param registry: The registry to register the given function in.</span>
+<span class="sd">    :return: The registration :mod:`function` pointed to the given</span>
+<span class="sd">        registry.</span>
+<span class="sd">    :rtype: function</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">decorator</span><span class="p">(</span><span class="n">fn</span><span class="p">:</span> <span class="n">Filter</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Filter</span><span class="p">:</span>
+        <span class="n">key</span> <span class="o">=</span> <span class="n">fn</span><span class="o">.</span><span class="vm">__name__</span>
+        <span class="n">registry</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">fn</span>
+        <span class="k">return</span> <span class="n">fn</span>
+    <span class="k">return</span> <span class="n">decorator</span></div>
+
+
+
 <div class="viewcode-block" id="processes_by_grayscale_frame">
-<a class="viewcode-back" href="../../../imgfilt.html#pjimg.filters.processes_by_grayscale_frame">[docs]</a>
+<a class="viewcode-back" href="../../../filters.html#pjimg.filters.processes_by_grayscale_frame">[docs]</a>
 <span class="k">def</span> <span class="nf">processes_by_grayscale_frame</span><span class="p">(</span><span class="n">fn</span><span class="p">:</span> <span class="n">Filter</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Filter</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;If the given array is more than two dimensions, iterate</span>
 <span class="sd">    through each two dimensional slice. This is used when the</span>
@@ -247,7 +274,7 @@
 
 
 <div class="viewcode-block" id="uses_uint8">
-<a class="viewcode-back" href="../../../imgfilt.html#pjimg.filters.uses_uint8">[docs]</a>
+<a class="viewcode-back" href="../../../filters.html#pjimg.filters.uses_uint8">[docs]</a>
 <span class="k">def</span> <span class="nf">uses_uint8</span><span class="p">(</span><span class="n">fn</span><span class="p">:</span> <span class="n">Filter</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Filter</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Converts the image data from floats to ints.&quot;&quot;&quot;</span>
     <span class="nd">@wraps</span><span class="p">(</span><span class="n">fn</span><span class="p">)</span>
@@ -271,7 +298,7 @@
 
 
 <div class="viewcode-block" id="will_square">
-<a class="viewcode-back" href="../../../imgfilt.html#pjimg.filters.will_square">[docs]</a>
+<a class="viewcode-back" href="../../../filters.html#pjimg.filters.will_square">[docs]</a>
 <span class="k">def</span> <span class="nf">will_square</span><span class="p">(</span><span class="n">fn</span><span class="p">:</span> <span class="n">Filter</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Filter</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;The array needs to have equal sized X and Y axes. The result</span>
 <span class="sd">    will be sliced to the size of the original array.</span>

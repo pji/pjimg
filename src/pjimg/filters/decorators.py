@@ -4,12 +4,14 @@ Decorators
 
 Decorators for :mod:`pjimg.filters`.
 
+.. autofunction:: pjimg.filters.register
 .. autofunction:: pjimg.filters.processes_by_grayscale_frame
 .. autofunction:: pjimg.filters.uses_uint8
 .. autofunction:: pjimg.filters.will_square
 
 """
 from functools import wraps
+from typing import Callable
 
 import numpy as np
 
@@ -18,10 +20,28 @@ from pjimg.util import ImgAry, X, X_, Y, Y_, Z, Z_
 
 
 # Names available for import.
-__all__ = ['processes_by_grayscale_frame', 'uses_uint8', 'will_square',]
+__all__ = [
+    'register', 'processes_by_grayscale_frame', 'uses_uint8', 'will_square',
+]
 
 
 # Decorators.
+def register(registry: dict[str, Filter]) -> Callable[[Filter,], Filter]:
+    """Registers the decorated function under the function's name
+    in the given registry dictionary.
+    
+    :param registry: The registry to register the given function in.
+    :return: The registration :mod:`function` pointed to the given
+        registry.
+    :rtype: function
+    """
+    def decorator(fn: Filter) -> Filter:
+        key = fn.__name__
+        registry[key] = fn
+        return fn
+    return decorator
+
+
 def processes_by_grayscale_frame(fn: Filter) -> Filter:
     """If the given array is more than two dimensions, iterate
     through each two dimensional slice. This is used when the

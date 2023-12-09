@@ -18,8 +18,3 @@ import pjimg.blends.ops as ops
 from pjimg.blends.decorators import *
 from pjimg.blends.model import Blend
 from pjimg.blends.ops import *
-from pjimg.util import get_prefixed_functions as _get_prefixed_functions
-
-
-# Mapping of registered eases.
-blends = _get_prefixed_functions('', ops)

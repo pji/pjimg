@@ -375,21 +375,27 @@
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
 <span class="kn">from</span> <span class="nn">pjimg.blends.decorators</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">pjimg.blends.model</span> <span class="kn">import</span> <span class="n">Blend</span>
 <span class="kn">from</span> <span class="nn">pjimg.util</span> <span class="kn">import</span> <span class="n">ImgAry</span>
 
 
 <span class="c1"># Names available for export.</span>
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="s1">&#39;replace&#39;</span><span class="p">,</span> <span class="s1">&#39;darker&#39;</span><span class="p">,</span> <span class="s1">&#39;multiply&#39;</span><span class="p">,</span> <span class="s1">&#39;color_burn&#39;</span><span class="p">,</span> <span class="s1">&#39;linear_burn&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;lighter&#39;</span><span class="p">,</span> <span class="s1">&#39;screen&#39;</span><span class="p">,</span> <span class="s1">&#39;color_dodge&#39;</span><span class="p">,</span> <span class="s1">&#39;linear_dodge&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;blends&#39;</span><span class="p">,</span> <span class="s1">&#39;replace&#39;</span><span class="p">,</span> <span class="s1">&#39;darker&#39;</span><span class="p">,</span> <span class="s1">&#39;multiply&#39;</span><span class="p">,</span> <span class="s1">&#39;color_burn&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;linear_burn&#39;</span><span class="p">,</span> <span class="s1">&#39;lighter&#39;</span><span class="p">,</span> <span class="s1">&#39;screen&#39;</span><span class="p">,</span> <span class="s1">&#39;color_dodge&#39;</span><span class="p">,</span> <span class="s1">&#39;linear_dodge&#39;</span><span class="p">,</span>
     <span class="s1">&#39;difference&#39;</span><span class="p">,</span> <span class="s1">&#39;exclusion&#39;</span><span class="p">,</span> <span class="s1">&#39;hard_light&#39;</span><span class="p">,</span> <span class="s1">&#39;hard_mix&#39;</span><span class="p">,</span> <span class="s1">&#39;linear_light&#39;</span><span class="p">,</span>
     <span class="s1">&#39;overlay&#39;</span><span class="p">,</span> <span class="s1">&#39;pin_light&#39;</span><span class="p">,</span> <span class="s1">&#39;soft_light&#39;</span><span class="p">,</span> <span class="s1">&#39;vivid_light&#39;</span><span class="p">,</span>
 <span class="p">]</span>
 
 
+<span class="c1"># Registry of ease functions.</span>
+<span class="n">blends</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Blend</span><span class="p">]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+
+
 <span class="c1"># Simple replacement blends.</span>
 <div class="viewcode-block" id="replace">
 <a class="viewcode-back" href="../../../blends.html#pjimg.blends.replace">[docs]</a>
+<span class="nd">@register</span><span class="p">(</span><span class="n">blends</span><span class="p">)</span>
 <span class="nd">@can_mask</span>
 <span class="nd">@can_fade</span>
 <span class="nd">@will_match_size</span>
@@ -438,6 +444,7 @@
 <span class="c1"># Darker/burn blends.</span>
 <div class="viewcode-block" id="darker">
 <a class="viewcode-back" href="../../../blends.html#pjimg.blends.darker">[docs]</a>
+<span class="nd">@register</span><span class="p">(</span><span class="n">blends</span><span class="p">)</span>
 <span class="nd">@will_clip</span>
 <span class="nd">@can_mask</span>
 <span class="nd">@can_fade</span>
@@ -487,6 +494,7 @@
 
 <div class="viewcode-block" id="multiply">
 <a class="viewcode-back" href="../../../blends.html#pjimg.blends.multiply">[docs]</a>
+<span class="nd">@register</span><span class="p">(</span><span class="n">blends</span><span class="p">)</span>
 <span class="nd">@will_clip</span>
 <span class="nd">@can_mask</span>
 <span class="nd">@can_fade</span>
@@ -534,6 +542,7 @@
 
 <div class="viewcode-block" id="color_burn">
 <a class="viewcode-back" href="../../../blends.html#pjimg.blends.color_burn">[docs]</a>
+<span class="nd">@register</span><span class="p">(</span><span class="n">blends</span><span class="p">)</span>
 <span class="nd">@will_clip</span>
 <span class="nd">@can_mask</span>
 <span class="nd">@can_fade</span>
@@ -585,6 +594,7 @@
 
 <div class="viewcode-block" id="linear_burn">
 <a class="viewcode-back" href="../../../blends.html#pjimg.blends.linear_burn">[docs]</a>
+<span class="nd">@register</span><span class="p">(</span><span class="n">blends</span><span class="p">)</span>
 <span class="nd">@will_clip</span>
 <span class="nd">@can_mask</span>
 <span class="nd">@can_fade</span>
@@ -633,6 +643,7 @@
 <span class="c1"># Lighter/dodge blends.</span>
 <div class="viewcode-block" id="lighter">
 <a class="viewcode-back" href="../../../blends.html#pjimg.blends.lighter">[docs]</a>
+<span class="nd">@register</span><span class="p">(</span><span class="n">blends</span><span class="p">)</span>
 <span class="nd">@will_clip</span>
 <span class="nd">@can_mask</span>
 <span class="nd">@can_fade</span>
@@ -682,6 +693,7 @@
 
 <div class="viewcode-block" id="screen">
 <a class="viewcode-back" href="../../../blends.html#pjimg.blends.screen">[docs]</a>
+<span class="nd">@register</span><span class="p">(</span><span class="n">blends</span><span class="p">)</span>
 <span class="nd">@will_clip</span>
 <span class="nd">@can_mask</span>
 <span class="nd">@can_fade</span>
@@ -733,6 +745,7 @@
 
 <div class="viewcode-block" id="color_dodge">
 <a class="viewcode-back" href="../../../blends.html#pjimg.blends.color_dodge">[docs]</a>
+<span class="nd">@register</span><span class="p">(</span><span class="n">blends</span><span class="p">)</span>
 <span class="nd">@will_clip</span>
 <span class="nd">@can_mask</span>
 <span class="nd">@can_fade</span>
@@ -781,6 +794,7 @@
 
 <div class="viewcode-block" id="linear_dodge">
 <a class="viewcode-back" href="../../../blends.html#pjimg.blends.linear_dodge">[docs]</a>
+<span class="nd">@register</span><span class="p">(</span><span class="n">blends</span><span class="p">)</span>
 <span class="nd">@will_clip</span>
 <span class="nd">@can_mask</span>
 <span class="nd">@can_fade</span>
@@ -828,6 +842,7 @@
 <span class="c1"># Inversion blends.</span>
 <div class="viewcode-block" id="difference">
 <a class="viewcode-back" href="../../../blends.html#pjimg.blends.difference">[docs]</a>
+<span class="nd">@register</span><span class="p">(</span><span class="n">blends</span><span class="p">)</span>
 <span class="nd">@will_clip</span>
 <span class="nd">@can_mask</span>
 <span class="nd">@can_fade</span>
@@ -876,6 +891,7 @@
 
 <div class="viewcode-block" id="exclusion">
 <a class="viewcode-back" href="../../../blends.html#pjimg.blends.exclusion">[docs]</a>
+<span class="nd">@register</span><span class="p">(</span><span class="n">blends</span><span class="p">)</span>
 <span class="nd">@will_clip</span>
 <span class="nd">@can_mask</span>
 <span class="nd">@can_fade</span>
@@ -925,6 +941,7 @@
 <span class="c1"># Contrast blends.</span>
 <div class="viewcode-block" id="hard_light">
 <a class="viewcode-back" href="../../../blends.html#pjimg.blends.hard_light">[docs]</a>
+<span class="nd">@register</span><span class="p">(</span><span class="n">blends</span><span class="p">)</span>
 <span class="nd">@will_clip</span>
 <span class="nd">@can_mask</span>
 <span class="nd">@can_fade</span>
@@ -975,6 +992,7 @@
 
 <div class="viewcode-block" id="hard_mix">
 <a class="viewcode-back" href="../../../blends.html#pjimg.blends.hard_mix">[docs]</a>
+<span class="nd">@register</span><span class="p">(</span><span class="n">blends</span><span class="p">)</span>
 <span class="nd">@will_clip</span>
 <span class="nd">@can_mask</span>
 <span class="nd">@can_fade</span>
@@ -1025,6 +1043,7 @@
 
 <div class="viewcode-block" id="linear_light">
 <a class="viewcode-back" href="../../../blends.html#pjimg.blends.linear_light">[docs]</a>
+<span class="nd">@register</span><span class="p">(</span><span class="n">blends</span><span class="p">)</span>
 <span class="nd">@will_clip</span>
 <span class="nd">@can_mask</span>
 <span class="nd">@can_fade</span>
@@ -1072,6 +1091,7 @@
 
 <div class="viewcode-block" id="overlay">
 <a class="viewcode-back" href="../../../blends.html#pjimg.blends.overlay">[docs]</a>
+<span class="nd">@register</span><span class="p">(</span><span class="n">blends</span><span class="p">)</span>
 <span class="nd">@will_clip</span>
 <span class="nd">@can_mask</span>
 <span class="nd">@can_fade</span>
@@ -1122,6 +1142,7 @@
 
 <div class="viewcode-block" id="pin_light">
 <a class="viewcode-back" href="../../../blends.html#pjimg.blends.pin_light">[docs]</a>
+<span class="nd">@register</span><span class="p">(</span><span class="n">blends</span><span class="p">)</span>
 <span class="nd">@will_clip</span>
 <span class="nd">@can_mask</span>
 <span class="nd">@can_fade</span>
@@ -1182,6 +1203,7 @@
 
 <div class="viewcode-block" id="soft_light">
 <a class="viewcode-back" href="../../../blends.html#pjimg.blends.soft_light">[docs]</a>
+<span class="nd">@register</span><span class="p">(</span><span class="n">blends</span><span class="p">)</span>
 <span class="nd">@will_clip</span>
 <span class="nd">@can_mask</span>
 <span class="nd">@can_fade</span>
@@ -1234,6 +1256,7 @@
 
 <div class="viewcode-block" id="vivid_light">
 <a class="viewcode-back" href="../../../blends.html#pjimg.blends.vivid_light">[docs]</a>
+<span class="nd">@register</span><span class="p">(</span><span class="n">blends</span><span class="p">)</span>
 <span class="nd">@will_clip</span>
 <span class="nd">@can_mask</span>
 <span class="nd">@can_fade</span>

@@ -22,15 +22,6 @@ from pjimg.blends import Blend
 from pjimg.util import ImgAry, Size, X, Y, Z
 
 
-# Private utility functions.
-def _get_blends() -> dict[str, Blend]:
-    """Get the list of blending functions."""
-    members = getmembers(ib, isfunction)
-    blends = [blend for blend in members if not blend[0].startswith('can_')]
-    blends = [blend for blend in blends if not blend[0].startswith('will_')]
-    return dict(blends)
-
-
 # Make the example images.
 def make_base_images(size: Size) -> tuple[ImgAry, ImgAry]:
     """Make the base images for the blend."""
@@ -55,7 +46,7 @@ def make_images(path: Path, size: Size):
     iw.write(path / 'b.jpg', b)
     print('Base images made.')
 
-    blends = _get_blends()
+    blends = ib.blends
 
     for key in blends:
         blend = blends[key]

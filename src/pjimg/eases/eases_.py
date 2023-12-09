@@ -9,7 +9,7 @@ Usage::
 
     >>> import numpy as np
     >>> a = np.array([[[0., .25, .5, .75, 1.], [0., .25, .5, .75, 1.]]])
-    >>> ease_in_circ(a)
+    >>> in_circ(a)
     array([[[0.        , 0.03175416, 0.1339746 , 0.33856217, 1.        ],
             [0.        , 0.03175416, 0.1339746 , 0.33856217, 1.        ]]])
 
@@ -71,40 +71,40 @@ Ease In
 -------
 These functions start slow or extend the darkness in an image:
 
-.. autofunction:: pjimg.eases.ease_in_back
-.. autofunction:: pjimg.eases.ease_in_circ
-.. autofunction:: pjimg.eases.ease_in_cubic
-.. autofunction:: pjimg.eases.ease_in_elastic
-.. autofunction:: pjimg.eases.ease_in_quad
-.. autofunction:: pjimg.eases.ease_in_quint
-.. autofunction:: pjimg.eases.ease_in_sin
+.. autofunction:: pjimg.eases.in_back
+.. autofunction:: pjimg.eases.in_circ
+.. autofunction:: pjimg.eases.in_cubic
+.. autofunction:: pjimg.eases.in_elastic
+.. autofunction:: pjimg.eases.in_quad
+.. autofunction:: pjimg.eases.in_quint
+.. autofunction:: pjimg.eases.in_sin
 
 
 Ease Out
 --------
 These functions start fast or extend the lightness in an image:
 
-.. autofunction:: pjimg.eases.ease_out_bounce
-.. autofunction:: pjimg.eases.ease_out_circ
-.. autofunction:: pjimg.eases.ease_out_cubic
-.. autofunction:: pjimg.eases.ease_out_elastic
-.. autofunction:: pjimg.eases.ease_out_quad
-.. autofunction:: pjimg.eases.ease_out_quint
-.. autofunction:: pjimg.eases.ease_out_sin
+.. autofunction:: pjimg.eases.out_bounce
+.. autofunction:: pjimg.eases.out_circ
+.. autofunction:: pjimg.eases.out_cubic
+.. autofunction:: pjimg.eases.out_elastic
+.. autofunction:: pjimg.eases.out_quad
+.. autofunction:: pjimg.eases.out_quint
+.. autofunction:: pjimg.eases.out_sin
 
 
 Ease In Out
 -----------
 These functions go fast in the middle or compress the midtones of the image.
 
-.. autofunction:: pjimg.eases.ease_in_out_back
-.. autofunction:: pjimg.eases.ease_in_out_circ
-.. autofunction:: pjimg.eases.ease_in_out_cos
-.. autofunction:: pjimg.eases.ease_in_out_cubic
-.. autofunction:: pjimg.eases.ease_in_out_elastic
-.. autofunction:: pjimg.eases.ease_in_out_quad
-.. autofunction:: pjimg.eases.ease_in_out_quint
-.. autofunction:: pjimg.eases.ease_in_out_sin
+.. autofunction:: pjimg.eases.in_out_back
+.. autofunction:: pjimg.eases.in_out_circ
+.. autofunction:: pjimg.eases.in_out_cos
+.. autofunction:: pjimg.eases.in_out_cubic
+.. autofunction:: pjimg.eases.in_out_elastic
+.. autofunction:: pjimg.eases.in_out_quad
+.. autofunction:: pjimg.eases.in_out_quint
+.. autofunction:: pjimg.eases.in_out_sin
 
 
 Ease Mid
@@ -112,38 +112,44 @@ Ease Mid
 These functions change the values in the data, making the midtones dark
 and the edges light.
 
-.. autofunction:: pjimg.eases.ease_mid_bump_linear
-.. autofunction:: pjimg.eases.ease_mid_bump_sin
+.. autofunction:: pjimg.eases.mid_bump_linear
+.. autofunction:: pjimg.eases.mid_bump_sin
 
 """
 import numpy as np
 
-from pjimg.eases.decorators import will_scale
+from pjimg.eases.decorators import register, will_scale
+from pjimg.eases.model import Ease
 from pjimg.util import ImgAry
 
 
 # Names available for import.
 __all__ = [
-    'ease_in_back', 'ease_in_circ', 'ease_in_cubic', 'ease_in_elastic',
-    'ease_in_out_back', 'ease_in_out_circ', 'ease_in_out_cos',
-    'ease_in_out_cubic', 'ease_in_out_elastic', 'ease_in_out_quad',
-    'ease_in_out_quint', 'ease_in_out_sin', 'ease_in_quad',
-    'ease_in_quint', 'ease_in_sin', 'ease_mid_bump_linear',
-    'ease_mid_bump_sin', 'ease_out_bounce', 'ease_out_circ',
-    'ease_out_cubic', 'ease_out_elastic', 'ease_out_quad',
-    'ease_out_quint', 'ease_out_sin',
+    'eases', 'in_back', 'in_circ', 'in_cubic', 'in_elastic',
+    'in_out_back', 'in_out_circ', 'in_out_cos',
+    'in_out_cubic', 'in_out_elastic', 'in_out_quad',
+    'in_out_quint', 'in_out_sin', 'in_quad',
+    'in_quint', 'in_sin', 'mid_bump_linear',
+    'mid_bump_sin', 'out_bounce', 'out_circ',
+    'out_cubic', 'out_elastic', 'out_quad',
+    'out_quint', 'out_sin',
 ]
 
 
+# Registry of ease functions.
+eases: dict[str, Ease] = dict()
+
+
 # Ease in functions.
+@register(eases)
 @will_scale
-def ease_in_back(a: ImgAry) -> ImgAry:
+def in_back(a: ImgAry) -> ImgAry:
     """An easing function that backs up a little before starting.
     
-    .. figure:: images/plot_ease_in_back.png
+    .. figure:: images/plot_in_back.png
        :alt: A chart showing the action of the easing function.
        
-       The action of :func:`ease_in_back`.
+       The action of :func:`in_back`.
        
     With image data, it extends the darker areas and compresses the
     lighter ones. The dip into negative values can be a little
@@ -151,10 +157,10 @@ def ease_in_back(a: ImgAry) -> ImgAry:
     handle it. In the following example, values are just truncated at
     zero.
     
-    .. figure:: images/ex_ease_in_back.png
+    .. figure:: images/ex_in_back.png
        :alt: An example of the easing function affecting a gradient.
        
-       An example of how :func:`ease_in_back` affects a simple gradient. 
+       An example of how :func:`in_back` affects a simple gradient. 
     
     :param a: An array of image data.
     :return: The eased data as a :class:`numpy.ndarray`.
@@ -165,23 +171,24 @@ def ease_in_back(a: ImgAry) -> ImgAry:
     return c3 * a ** 3 - c1 * a ** 2
 
 
+@register(eases)
 @will_scale
-def ease_in_circ(a: ImgAry) -> ImgAry:
+def in_circ(a: ImgAry) -> ImgAry:
     """An easing function that has a circular curve.
     
-    .. figure:: images/plot_ease_in_circ.png
+    .. figure:: images/plot_in_circ.png
        :alt: A chart showing the action of the easing function.
        
-       The action of :func:`ease_in_circ`.
+       The action of :func:`in_circ`.
        
     With image data, it is a moderate extension of the darker areas
     and compression of the lighter ones. This should not generate
     values outside of the original range.
     
-    .. figure:: images/ex_ease_in_circ.png
+    .. figure:: images/ex_in_circ.png
        :alt: An example of the easing function affecting a gradient.
        
-       An example of how :func:`ease_in_circ` affects a simple gradient. 
+       An example of how :func:`in_circ` affects a simple gradient. 
     
     :param a: An array of image data.
     :return: The eased data as a :class:`numpy.ndarray`.
@@ -190,23 +197,24 @@ def ease_in_circ(a: ImgAry) -> ImgAry:
     return 1 - np.sqrt(1 - a ** 2)
 
 
+@register(eases)
 @will_scale
-def ease_in_cubic(a: ImgAry) -> ImgAry:
+def in_cubic(a: ImgAry) -> ImgAry:
     """An easing function that has a cubic curve.
     
-    .. figure:: images/plot_ease_in_cubic.png
+    .. figure:: images/plot_in_cubic.png
        :alt: A chart showing the action of the easing function.
        
-       The action of :func:`ease_in_cubic`.
+       The action of :func:`in_cubic`.
        
     With image data, it is a moderate extension of the darker areas
     and compression of the lighter ones. This should not generate
     values outside of the original range.
     
-    .. figure:: images/ex_ease_in_cubic.png
+    .. figure:: images/ex_in_cubic.png
        :alt: An example of the easing function affecting a gradient.
        
-       An example of how :func:`ease_in_cubic` affects a simple gradient. 
+       An example of how :func:`in_cubic` affects a simple gradient. 
     
     :param a: An array of image data.
     :return: The eased data as a :class:`numpy.ndarray`.
@@ -215,14 +223,15 @@ def ease_in_cubic(a: ImgAry) -> ImgAry:
     return a ** 3
 
 
+@register(eases)
 @will_scale
-def ease_in_elastic(a: ImgAry) -> ImgAry:
+def in_elastic(a: ImgAry) -> ImgAry:
     """An easing function that bounces.
     
-    .. figure:: images/plot_ease_in_elastic.png
+    .. figure:: images/plot_in_elastic.png
        :alt: A chart showing the action of the easing function.
        
-       The action of :func:`ease_in_elastic`.
+       The action of :func:`in_elastic`.
        
     With image data, it extends the darker areas and compresses the
     lighter ones. The dip into negative values can be a little
@@ -230,10 +239,10 @@ def ease_in_elastic(a: ImgAry) -> ImgAry:
     handle it. In the following example, values are just truncated at
     zero.
     
-    .. figure:: images/ex_ease_in_elastic.png
+    .. figure:: images/ex_in_elastic.png
        :alt: An example of the easing function affecting a gradient.
        
-       An example of how :func:`ease_in_elastic` affects a simple gradient. 
+       An example of how :func:`in_elastic` affects a simple gradient. 
     
     :param a: An array of image data.
     :return: The eased data as a :class:`numpy.ndarray`.
@@ -247,23 +256,24 @@ def ease_in_elastic(a: ImgAry) -> ImgAry:
     return a
 
 
+@register(eases)
 @will_scale
-def ease_in_quad(a: ImgAry) -> ImgAry:
+def in_quad(a: ImgAry) -> ImgAry:
     """An easing function that has a quadratic curve.
     
-    .. figure:: images/plot_ease_in_quad.png
+    .. figure:: images/plot_in_quad.png
        :alt: A chart showing the action of the easing function.
        
-       The action of :func:`ease_in_quad`.
+       The action of :func:`in_quad`.
        
     With image data, it is a moderate extension of the darker areas
     and compression of the lighter ones. This should not generate
     values outside of the original range.
     
-    .. figure:: images/ex_ease_in_quad.png
+    .. figure:: images/ex_in_quad.png
        :alt: An example of the easing function affecting a gradient.
        
-       An example of how :func:`ease_in_quad` affects a simple gradient. 
+       An example of how :func:`in_quad` affects a simple gradient. 
     
     :param a: An array of image data.
     :return: The eased data as a :class:`numpy.ndarray`.
@@ -272,23 +282,24 @@ def ease_in_quad(a: ImgAry) -> ImgAry:
     return a ** 2
 
 
+@register(eases)
 @will_scale
-def ease_in_quint(a: ImgAry) -> ImgAry:
+def in_quint(a: ImgAry) -> ImgAry:
     """An easing function that has a quintic curve.
     
-    .. figure:: images/plot_ease_in_quint.png
+    .. figure:: images/plot_in_quint.png
        :alt: A chart showing the action of the easing function.
        
-       The action of :func:`ease_in_quint`.
+       The action of :func:`in_quint`.
        
     With image data, it is a large extension of the darker areas
     and compression of the lighter ones. This should not generate
     values outside of the original range.
     
-    .. figure:: images/ex_ease_in_quint.png
+    .. figure:: images/ex_in_quint.png
        :alt: An example of the easing function affecting a gradient.
        
-       An example of how :func:`ease_in_quint` affects a simple gradient. 
+       An example of how :func:`in_quint` affects a simple gradient. 
     
     :param a: An array of image data.
     :return: The eased data as a :class:`numpy.ndarray`.
@@ -297,23 +308,24 @@ def ease_in_quint(a: ImgAry) -> ImgAry:
     return a ** 5
 
 
+@register(eases)
 @will_scale
-def ease_in_sin(a: ImgAry) -> ImgAry:
+def in_sin(a: ImgAry) -> ImgAry:
     """An easing function that has a sine curve.
     
-    .. figure:: images/plot_ease_in_sin.png
+    .. figure:: images/plot_in_sin.png
        :alt: A chart showing the action of the easing function.
        
-       The action of :func:`ease_in_sin`.
+       The action of :func:`in_sin`.
        
     With image data, it is a small extension of the darker areas
     and compression of the lighter ones. This should not generate
     values outside of the original range.
     
-    .. figure:: images/ex_ease_in_sin.png
+    .. figure:: images/ex_in_sin.png
        :alt: An example of the easing function affecting a gradient.
        
-       An example of how :func:`ease_in_sin` affects a simple gradient. 
+       An example of how :func:`in_sin` affects a simple gradient. 
     
     :param a: An array of image data.
     :return: The eased data as a :class:`numpy.ndarray`.
@@ -323,22 +335,23 @@ def ease_in_sin(a: ImgAry) -> ImgAry:
 
 
 # Ease out functions.
+@register(eases)
 @will_scale
-def ease_out_bounce(a: ImgAry) -> ImgAry:
+def out_bounce(a: ImgAry) -> ImgAry:
     """An easing function that has a bounce.
     
-    .. figure:: images/plot_ease_out_bounce.png
+    .. figure:: images/plot_out_bounce.png
        :alt: A chart showing the action of the easing function.
        
-       The action of :func:`ease_out_bounce`.
+       The action of :func:`out_bounce`.
        
     With image data, it is a large extension of the lighter areas
     with multiple peaks and compression of the darker ones.
     
-    .. figure:: images/ex_ease_out_bounce.png
+    .. figure:: images/ex_out_bounce.png
        :alt: An example of the easing function affecting a gradient.
        
-       An example of how :func:`ease_out_bounce` affects a simple gradient. 
+       An example of how :func:`out_bounce` affects a simple gradient. 
     
     :param a: An array of image data.
     :return: The eased data as a :class:`numpy.ndarray`.
@@ -357,22 +370,23 @@ def ease_out_bounce(a: ImgAry) -> ImgAry:
     return b
 
 
+@register(eases)
 @will_scale
-def ease_out_circ(a: ImgAry) -> ImgAry:
+def out_circ(a: ImgAry) -> ImgAry:
     """An easing function that has a circular curve.
     
-    .. figure:: images/plot_ease_out_circ.png
+    .. figure:: images/plot_out_circ.png
        :alt: A chart showing the action of the easing function.
        
-       The action of :func:`ease_out_circ`.
+       The action of :func:`out_circ`.
        
     With image data, it is a moderate extension of the lighter areas
     and compression of the darker ones.
     
-    .. figure:: images/ex_ease_out_circ.png
+    .. figure:: images/ex_out_circ.png
        :alt: An example of the easing function affecting a gradient.
        
-       An example of how :func:`ease_out_circ` affects a simple gradient. 
+       An example of how :func:`out_circ` affects a simple gradient. 
     
     :param a: An array of image data.
     :return: The eased data as a :class:`numpy.ndarray`.
@@ -381,22 +395,23 @@ def ease_out_circ(a: ImgAry) -> ImgAry:
     return np.sqrt(1 - (a - 1) ** 2)
 
 
+@register(eases)
 @will_scale
-def ease_out_cubic(a: ImgAry) -> ImgAry:
+def out_cubic(a: ImgAry) -> ImgAry:
     """An easing function that has a cubic curve.
     
-    .. figure:: images/plot_ease_out_cubic.png
+    .. figure:: images/plot_out_cubic.png
        :alt: A chart showing the action of the easing function.
        
-       The action of :func:`ease_out_cubic`.
+       The action of :func:`out_cubic`.
        
     With image data, it is a moderate extension of the lighter areas
     and compression of the darker ones.
     
-    .. figure:: images/ex_ease_out_cubic.png
+    .. figure:: images/ex_out_cubic.png
        :alt: An example of the easing function affecting a gradient.
        
-       An example of how :func:`ease_out_cubic` affects a simple gradient. 
+       An example of how :func:`out_cubic` affects a simple gradient. 
     
     :param a: An array of image data.
     :return: The eased data as a :class:`numpy.ndarray`.
@@ -405,14 +420,15 @@ def ease_out_cubic(a: ImgAry) -> ImgAry:
     return 1 - (1 - a) ** 3
 
 
+@register(eases)
 @will_scale
-def ease_out_elastic(a: ImgAry) -> ImgAry:
+def out_elastic(a: ImgAry) -> ImgAry:
     """An easing function that bounces.
     
-    .. figure:: images/plot_ease_out_elastic.png
+    .. figure:: images/plot_out_elastic.png
        :alt: A chart showing the action of the easing function.
        
-       The action of :func:`ease_out_elastic`.
+       The action of :func:`out_elastic`.
        
     With image data, it extends the lighter areas and compresses the
     darker ones. The bounce into values over one can be a little
@@ -420,10 +436,10 @@ def ease_out_elastic(a: ImgAry) -> ImgAry:
     handle it. In the following example, values are just truncated at
     one.
     
-    .. figure:: images/ex_ease_out_elastic.png
+    .. figure:: images/ex_out_elastic.png
        :alt: An example of the easing function affecting a gradient.
        
-       An example of how :func:`ease_out_elastic` affects a simple gradient. 
+       An example of how :func:`out_elastic` affects a simple gradient. 
     
     :param a: An array of image data.
     :return: The eased data as a :class:`numpy.ndarray`.
@@ -437,22 +453,23 @@ def ease_out_elastic(a: ImgAry) -> ImgAry:
     return a
 
 
+@register(eases)
 @will_scale
-def ease_out_quad(a: ImgAry) -> ImgAry:
+def out_quad(a: ImgAry) -> ImgAry:
     """An easing function that has a quadratic curve.
     
-    .. figure:: images/plot_ease_out_quad.png
+    .. figure:: images/plot_out_quad.png
        :alt: A chart showing the action of the easing function.
        
-       The action of :func:`ease_out_quad`.
+       The action of :func:`out_quad`.
        
     With image data, it is a moderate extension of the lighter areas
     and compression of the darker ones.
     
-    .. figure:: images/ex_ease_out_quad.png
+    .. figure:: images/ex_out_quad.png
        :alt: An example of the easing function affecting a gradient.
        
-       An example of how :func:`ease_out_quad` affects a simple gradient. 
+       An example of how :func:`out_quad` affects a simple gradient. 
     
     :param a: An array of image data.
     :return: The eased data as a :class:`numpy.ndarray`.
@@ -461,22 +478,23 @@ def ease_out_quad(a: ImgAry) -> ImgAry:
     return 1 - (1 - a) ** 2
 
 
+@register(eases)
 @will_scale
-def ease_out_quint(a: ImgAry) -> ImgAry:
+def out_quint(a: ImgAry) -> ImgAry:
     """An easing function that has a quintic curve.
     
-    .. figure:: images/plot_ease_out_quint.png
+    .. figure:: images/plot_out_quint.png
        :alt: A chart showing the action of the easing function.
        
-       The action of :func:`ease_out_quint`.
+       The action of :func:`out_quint`.
        
     With image data, it is a large extension of the lighter areas
     and compression of the darker ones.
     
-    .. figure:: images/ex_ease_out_quint.png
+    .. figure:: images/ex_out_quint.png
        :alt: An example of the easing function affecting a gradient.
        
-       An example of how :func:`ease_out_quint` affects a simple gradient. 
+       An example of how :func:`out_quint` affects a simple gradient. 
     
     :param a: An array of image data.
     :return: The eased data as a :class:`numpy.ndarray`.
@@ -485,22 +503,23 @@ def ease_out_quint(a: ImgAry) -> ImgAry:
     return 1 - (1 - a) ** 5
 
 
+@register(eases)
 @will_scale
-def ease_out_sin(a: ImgAry) -> ImgAry:
+def out_sin(a: ImgAry) -> ImgAry:
     """An easing function that has a sine curve.
     
-    .. figure:: images/plot_ease_out_sin.png
+    .. figure:: images/plot_out_sin.png
        :alt: A chart showing the action of the easing function.
        
-       The action of :func:`ease_out_sin`.
+       The action of :func:`out_sin`.
        
     With image data, it is a small extension of the lighter areas
     and compression of the darker ones.
     
-    .. figure:: images/ex_ease_out_sin.png
+    .. figure:: images/ex_out_sin.png
        :alt: An example of the easing function affecting a gradient.
        
-       An example of how :func:`ease_out_sin` affects a simple gradient. 
+       An example of how :func:`out_sin` affects a simple gradient. 
     
     :param a: An array of image data.
     :return: The eased data as a :class:`numpy.ndarray`.
@@ -510,24 +529,25 @@ def ease_out_sin(a: ImgAry) -> ImgAry:
 
 
 # Ease in and out functions.
+@register(eases)
 @will_scale
-def ease_in_out_back(a: ImgAry) -> ImgAry:
+def in_out_back(a: ImgAry) -> ImgAry:
     """An easing function that backs up then overshoots.
     
-    .. figure:: images/plot_ease_in_out_back.png
+    .. figure:: images/plot_in_out_back.png
        :alt: A chart showing the action of the easing function.
        
-       The action of :func:`ease_in_out_back`.
+       The action of :func:`in_out_back`.
        
     With image data, it extends the darker and lighter areas. The dip
     into negative values and bounce over one can be a little awkward.
     It's left to the calling application to decide how to handle it. In
     the following example, values are just truncated at zero and one.
     
-    .. figure:: images/ex_ease_in_out_back.png
+    .. figure:: images/ex_in_out_back.png
        :alt: An example of the easing function affecting a gradient.
        
-       An example of how :func:`ease_in_out_back` affects a simple gradient. 
+       An example of how :func:`in_out_back` affects a simple gradient. 
     
     :param a: An array of image data.
     :return: The eased data as a :class:`numpy.ndarray`.
@@ -542,23 +562,24 @@ def ease_in_out_back(a: ImgAry) -> ImgAry:
     return a
 
 
+@register(eases)
 @will_scale
-def ease_in_out_circ(a: ImgAry) -> ImgAry:
+def in_out_circ(a: ImgAry) -> ImgAry:
     """An easing function that uses a circular curve to compress the
     middle.
     
-    .. figure:: images/plot_ease_in_out_circ.png
+    .. figure:: images/plot_in_out_circ.png
        :alt: A chart showing the action of the easing function.
        
-       The action of :func:`ease_in_out_circ`.
+       The action of :func:`in_out_circ`.
        
     With image data, it extends the darker and lighter areas. This
     should not generate values outside of the original range.
     
-    .. figure:: images/ex_ease_in_out_circ.png
+    .. figure:: images/ex_in_out_circ.png
        :alt: An example of the easing function affecting a gradient.
        
-       An example of how :func:`ease_in_out_circ` affects a simple gradient. 
+       An example of how :func:`in_out_circ` affects a simple gradient. 
     
     :param a: An array of image data.
     :return: The eased data as a :class:`numpy.ndarray`.
@@ -571,24 +592,25 @@ def ease_in_out_circ(a: ImgAry) -> ImgAry:
     return a
 
 
+@register(eases)
 @will_scale
-def ease_in_out_cos(a: ImgAry) -> ImgAry:
+def in_out_cos(a: ImgAry) -> ImgAry:
     """An easing function that uses a cosine curve to turn the make the
     middle low and the edges high.
     
-    .. figure:: images/plot_ease_in_out_cos.png
+    .. figure:: images/plot_in_out_cos.png
        :alt: A chart showing the action of the easing function.
        
-       The action of :func:`ease_in_out_cos`.
+       The action of :func:`in_out_cos`.
        
     With image data, it turns the midtones dark and the dark and light
     become midtones. This should not generate values outside of the
     original range.
     
-    .. figure:: images/ex_ease_in_out_cos.png
+    .. figure:: images/ex_in_out_cos.png
        :alt: An example of the easing function affecting a gradient.
        
-       An example of how :func:`ease_in_out_cos` affects a simple gradient. 
+       An example of how :func:`in_out_cos` affects a simple gradient. 
     
     :param a: An array of image data.
     :return: The eased data as a :class:`numpy.ndarray`.
@@ -597,23 +619,24 @@ def ease_in_out_cos(a: ImgAry) -> ImgAry:
     return -1 * (np.sin(np.pi * a) - 1) / 2
 
 
+@register(eases)
 @will_scale
-def ease_in_out_cubic(a: ImgAry) -> ImgAry:
+def in_out_cubic(a: ImgAry) -> ImgAry:
     """An easing function that uses a cubic curve to compress the
     middle.
     
-    .. figure:: images/plot_ease_in_out_cubic.png
+    .. figure:: images/plot_in_out_cubic.png
        :alt: A chart showing the action of the easing function.
        
-       The action of :func:`ease_in_out_cubic`.
+       The action of :func:`in_out_cubic`.
        
     With image data, it extends the darker and lighter areas. This
     should not generate values outside of the original range.
     
-    .. figure:: images/ex_ease_in_out_cubic.png
+    .. figure:: images/ex_in_out_cubic.png
        :alt: An example of the easing function affecting a gradient.
        
-       An example of how :func:`ease_in_out_cubic` affects a simple gradient. 
+       An example of how :func:`in_out_cubic` affects a simple gradient. 
     
     :param a: An array of image data.
     :return: The eased data as a :class:`numpy.ndarray`.
@@ -624,15 +647,16 @@ def ease_in_out_cubic(a: ImgAry) -> ImgAry:
     return a
 
 
+@register(eases)
 @will_scale
-def ease_in_out_elastic(a: ImgAry) -> ImgAry:
+def in_out_elastic(a: ImgAry) -> ImgAry:
     """An easing function that uses a bouncy curve to compress the
     middle.
     
-    .. figure:: images/plot_ease_in_out_elastic.png
+    .. figure:: images/plot_in_out_elastic.png
        :alt: A chart showing the action of the easing function.
        
-       The action of :func:`ease_in_out_elastic`.
+       The action of :func:`in_out_elastic`.
        
     With image data, it extends the darker and lighter areas. The 
     dip into values below zero or bounce into values over one can
@@ -640,10 +664,10 @@ def ease_in_out_elastic(a: ImgAry) -> ImgAry:
     decide how to handle it. In the following example, values are
     just truncated at one.
     
-    .. figure:: images/ex_ease_in_out_elastic.png
+    .. figure:: images/ex_in_out_elastic.png
        :alt: An example of the easing function affecting a gradient.
        
-       An example of how :func:`ease_in_out_elastic` affects a simple
+       An example of how :func:`in_out_elastic` affects a simple
        gradient. 
     
     :param a: An array of image data.
@@ -668,23 +692,24 @@ def ease_in_out_elastic(a: ImgAry) -> ImgAry:
     return a
 
 
+@register(eases)
 @will_scale
-def ease_in_out_quad(a: ImgAry) -> ImgAry:
+def in_out_quad(a: ImgAry) -> ImgAry:
     """An easing function that uses a quadratic curve to compress the
     middle.
     
-    .. figure:: images/plot_ease_in_out_quad.png
+    .. figure:: images/plot_in_out_quad.png
        :alt: A chart showing the action of the easing function.
        
-       The action of :func:`ease_in_out_quad`.
+       The action of :func:`in_out_quad`.
        
     With image data, it extends the darker and lighter areas. This
     should not generate values outside of the original range.
     
-    .. figure:: images/ex_ease_in_out_quad.png
+    .. figure:: images/ex_in_out_quad.png
        :alt: An example of the easing function affecting a gradient.
        
-       An example of how :func:`ease_in_out_quad` affects a simple
+       An example of how :func:`in_out_quad` affects a simple
        gradient. 
     
     :param a: An array of image data.
@@ -698,23 +723,24 @@ def ease_in_out_quad(a: ImgAry) -> ImgAry:
     return a
 
 
+@register(eases)
 @will_scale
-def ease_in_out_quint(a: ImgAry) -> ImgAry:
+def in_out_quint(a: ImgAry) -> ImgAry:
     """An easing function that uses a quintic curve to compress the
     middle.
     
-    .. figure:: images/plot_ease_in_out_quint.png
+    .. figure:: images/plot_in_out_quint.png
        :alt: A chart showing the action of the easing function.
        
-       The action of :func:`ease_in_out_quint`.
+       The action of :func:`in_out_quint`.
        
     With image data, it greatly extends the darker and lighter areas.
     This should not generate values outside of the original range.
     
-    .. figure:: images/ex_ease_in_out_quint.png
+    .. figure:: images/ex_in_out_quint.png
        :alt: An example of the easing function affecting a gradient.
        
-       An example of how :func:`ease_in_out_quint` affects a simple
+       An example of how :func:`in_out_quint` affects a simple
        gradient. 
     
     :param a: An array of image data.
@@ -726,23 +752,24 @@ def ease_in_out_quint(a: ImgAry) -> ImgAry:
     return a
 
 
+@register(eases)
 @will_scale
-def ease_in_out_sin(a: ImgAry) -> ImgAry:
+def in_out_sin(a: ImgAry) -> ImgAry:
     """An easing function that uses a sine curve to compress the
     middle.
     
-    .. figure:: images/plot_ease_in_out_sin.png
+    .. figure:: images/plot_in_out_sin.png
        :alt: A chart showing the action of the easing function.
        
-       The action of :func:`ease_in_out_sin`.
+       The action of :func:`in_out_sin`.
        
     With image data, it slightly extends the darker and lighter areas.
     This should not generate values outside of the original range.
     
-    .. figure:: images/ex_ease_in_out_sin.png
+    .. figure:: images/ex_in_out_sin.png
        :alt: An example of the easing function affecting a gradient.
        
-       An example of how :func:`ease_in_out_sin` affects a simple gradient. 
+       An example of how :func:`in_out_sin` affects a simple gradient. 
     
     :param a: An array of image data.
     :return: The eased data as a :class:`numpy.ndarray`.
@@ -752,22 +779,23 @@ def ease_in_out_sin(a: ImgAry) -> ImgAry:
 
 
 # Ease mid functions.
+@register(eases)
 @will_scale
-def ease_mid_bump_linear(a: ImgAry) -> ImgAry:
+def mid_bump_linear(a: ImgAry) -> ImgAry:
     """An easing function that makes the middle of the range the peak
     of the values.
     
-    .. figure:: images/plot_ease_mid_bump_linear.png
+    .. figure:: images/plot_mid_bump_linear.png
        :alt: A chart showing the action of the easing function.
        
-       The action of :func:`ease_mid_bump_linear`.
+       The action of :func:`mid_bump_linear`.
        
     With image data, it makes the midtones light and the edges dark.
     
-    .. figure:: images/ex_ease_mid_bump_linear.png
+    .. figure:: images/ex_mid_bump_linear.png
        :alt: An example of the easing function affecting a gradient.
        
-       An example of how :func:`ease_mid_bump_linear` affects a simple
+       An example of how :func:`mid_bump_linear` affects a simple
        gradient. 
     
     :param a: An array of image data.
@@ -782,22 +810,23 @@ def ease_mid_bump_linear(a: ImgAry) -> ImgAry:
     return a
 
 
+@register(eases)
 @will_scale
-def ease_mid_bump_sin(a: ImgAry) -> ImgAry:
+def mid_bump_sin(a: ImgAry) -> ImgAry:
     """An easing function that makes the middle of the range the peak
     of the values.
     
-    .. figure:: images/plot_ease_mid_bump_sin.png
+    .. figure:: images/plot_mid_bump_sin.png
        :alt: A chart showing the action of the easing function.
        
-       The action of :func:`ease_mid_bump_sin`.
+       The action of :func:`mid_bump_sin`.
        
     With image data, it makes the midtones light and the edges dark.
     
-    .. figure:: images/ex_ease_mid_bump_sin.png
+    .. figure:: images/ex_mid_bump_sin.png
        :alt: An example of the easing function affecting a gradient.
        
-       An example of how :func:`ease_mid_bump_sin` affects a simple
+       An example of how :func:`mid_bump_sin` affects a simple
        gradient. 
     
     :param a: An array of image data.
@@ -809,4 +838,4 @@ def ease_mid_bump_sin(a: ImgAry) -> ImgAry:
     m[a < .25] = True
     a[m] = (.25 - a[m]) * 4
     a[~m] = 0
-    return ease_in_out_sin(a)
+    return in_out_sin(a)

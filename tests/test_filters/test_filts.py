@@ -100,10 +100,10 @@ def video_2_5_5():
 # Test cases.
 class TestFilterBoxBlur:
     def test_filter(self, a):
-        """Given image data and a box size, :func:`filter_box_blur`
+        """Given image data and a box size, :func:`box_blur`
          perform a box blur on the image data.
         """
-        result = f.filter_box_blur(a, size=2)
+        result = f.box_blur(a, size=2)
         assert (np.around(result, 4) == np.array([
             [0.2500, 0.2500, 0.5000, 0.7500, 0.8750],
             [0.2500, 0.2500, 0.5000, 0.7500, 0.8750],
@@ -112,11 +112,11 @@ class TestFilterBoxBlur:
             [0.8750, 0.8750, 0.7500, 0.5000, 0.2500],
         ], dtype=float)).all()
 
-    def test_filter_video(self, video_2_5_5):
-        """Given three dimensional image data, :func:`filter_box_blur`
+    def test_video(self, video_2_5_5):
+        """Given three dimensional image data, :func:`box_blur`
         the blur should be performed on all frames of the image data.
         """
-        result = f.filter_box_blur(video_2_5_5, size=2)
+        result = f.box_blur(video_2_5_5, size=2)
         assert (np.around(result, 4) == np.array([
             [
                 [0.2500, 0.2500, 0.5000, 0.7500, 0.8750],
@@ -138,10 +138,10 @@ class TestFilterBoxBlur:
 class TestFilterColorize:
     def test_filter(self, image_1_3_3):
         """Given an RGB color and grayscale image data,
-        :func:`filter_colorize` should apply the color to
+        :func:`colorize` should apply the color to
         the image data.
         """
-        result = f.filter_colorize(
+        result = f.colorize(
             image_1_3_3,
             white='hsv(350, 100%, 100%)',
             black='hsv(10, 100%, 0%)'
@@ -164,12 +164,12 @@ class TestFilterColorize:
             ],
         ], dtype=float)).all()
 
-    def test_filter_by_colorkey(self, image_1_3_3):
+    def test_by_colorkey(self, image_1_3_3):
         """Given an color key and grayscale image data,
-        :func:`filter_colorize` should apply the color to
+        :func:`colorize` should apply the color to
         the image data.
         """
-        result = f.filter_colorize(
+        result = f.colorize(
             image_1_3_3,
             colorkey='s'
         )
@@ -191,12 +191,12 @@ class TestFilterColorize:
             ],
         ], dtype=float)).all()
 
-    def test_filter_on_video(self, video_2_3_3):
+    def test_on_video(self, video_2_3_3):
         """Given an RGB color and grayscale image data,
-        :func:`filter_colorize` should apply the color to
+        :func:`colorize` should apply the color to
         the video data.
         """
-        result = f.filter_colorize(
+        result = f.colorize(
             video_2_3_3,
             colorkey='s'
         )
@@ -240,11 +240,11 @@ class TestFilterColorize:
 
 class TestFilterContrast:
     def test_filter(self, image_5_5_low_contrast):
-        """Given image data, :func:`filter_contrast` adjust the
+        """Given image data, :func:`contrast` adjust the
         range of the data to ensure the darkest color is black
         and the lightest is white.
         """
-        result = f.filter_contrast(image_5_5_low_contrast)
+        result = f.contrast(image_5_5_low_contrast)
         assert (np.around(result, 4) == np.array([
             [0.0000, 0.2500, 0.5000, 0.7500, 1.0000],
             [0.0000, 0.2500, 0.5000, 0.7500, 1.0000],
@@ -253,12 +253,12 @@ class TestFilterContrast:
             [0.0000, 0.2500, 0.5000, 0.7500, 1.0000],
         ], dtype=float)).all()
 
-    def test_filter_black(self, image_5_5_low_contrast):
-        """Given image data and a black point, :func:`filter_contrast`
+    def test_black(self, image_5_5_low_contrast):
+        """Given image data and a black point, :func:`contrast`
         adjust the range of the data to ensure the darkest color is the
         given black point and the lightest is white.
         """
-        result = f.filter_contrast(image_5_5_low_contrast, black=0.5)
+        result = f.contrast(image_5_5_low_contrast, black=0.5)
         assert (np.around(result, 4) == np.array([
             [0.5000, 0.6250, 0.7500, 0.8750, 1.0000],
             [0.5000, 0.6250, 0.7500, 0.8750, 1.0000],
@@ -267,12 +267,12 @@ class TestFilterContrast:
             [0.5000, 0.6250, 0.7500, 0.8750, 1.0000],
         ], dtype=float)).all()
 
-    def test_filter_white(self, image_5_5_low_contrast):
-        """Given image data and a white point, :func:`filter_contrast`
+    def test_white(self, image_5_5_low_contrast):
+        """Given image data and a white point, :func:`contrast`
         adjust the range of the data to ensure the darkest color is black
         and the lightest is the given maximum.
         """
-        result = f.filter_contrast(image_5_5_low_contrast, white=0.5)
+        result = f.contrast(image_5_5_low_contrast, white=0.5)
         assert (np.around(result, 4) == np.array([
             [0.0000, 0.1250, 0.2500, 0.3750, 0.5000],
             [0.0000, 0.1250, 0.2500, 0.3750, 0.5000],
@@ -283,11 +283,11 @@ class TestFilterContrast:
 
 
 class TestFilterFlip:
-    def test_filter_x_axis(self, a):
-        """Given image data and an axis, :func:`filter_flip` flip the
+    def test_x_axis(self, a):
+        """Given image data and an axis, :func:`flip` flip the
         image around that axis.
         """
-        result = f.filter_flip(a, axis=f.X_)
+        result = f.flip(a, axis=f.X_)
         assert (np.around(result, 4) == np.array([
             [1.0000, 0.7500, 0.5000, 0.2500, 0.0000],
             [0.7500, 1.0000, 0.7500, 0.5000, 0.2500],
@@ -296,12 +296,12 @@ class TestFilterFlip:
             [0.0000, 0.2500, 0.5000, 0.7500, 1.0000],
         ], dtype=float)).all()
 
-    def test_filter_y_axis(self, a):
-        """Given image data and an axis, :func:`filter_flip` flip the
+    def test_y_axis(self, a):
+        """Given image data and an axis, :func:`flip` flip the
         image around that axis. If the axis is the Y axis, the flip
         happens around the Y axis.
         """
-        result = f.filter_flip(a, axis=f.Y)
+        result = f.flip(a, axis=f.Y)
         assert (np.around(result, 4) == np.array([
             [1.0000, 0.7500, 0.5000, 0.2500, 0.0000],
             [0.7500, 1.0000, 0.7500, 0.5000, 0.2500],
@@ -310,12 +310,12 @@ class TestFilterFlip:
             [0.0000, 0.2500, 0.5000, 0.7500, 1.0000],
         ], dtype=float)).all()
 
-    def test_filter_z_axis(self, video_2_5_5):
-        """Given image data and an axis, :func:`filter_flip` flip the
+    def test_z_axis(self, video_2_5_5):
+        """Given image data and an axis, :func:`flip` flip the
         image around that axis. If the axis is the Z axis, the flip
         happens around the Z axis.
         """
-        result = f.filter_flip(video_2_5_5, axis=f.Z)
+        result = f.flip(video_2_5_5, axis=f.Z)
         assert (np.around(result, 4) == np.array([
             [
                 [1.0000, 0.7500, 0.5000, 0.2500, 0.0000],
@@ -336,10 +336,10 @@ class TestFilterFlip:
 
 class TestFilterGaussianBlue:
     def test_filter(self, a):
-        """Given image data and a sigma, :func:`filter_gaussian_blur`
+        """Given image data and a sigma, :func:`gaussian_blur`
         should perform a gaussian blur on the image data.
         """
-        result = f.filter_gaussian_blur(a, sigma=0.5)
+        result = f.gaussian_blur(a, sigma=0.5)
         assert (np.around(result, 4) == np.array([
             [0.1070, 0.3036, 0.5534, 0.7918, 0.9158],
             [0.3036, 0.5002, 0.7442, 0.9046, 0.7918],
@@ -348,11 +348,11 @@ class TestFilterGaussianBlue:
             [0.9158, 0.7918, 0.5534, 0.3036, 0.1070],
         ], dtype=float)).all()
 
-    def test_filter_video(self, video_2_5_5):
-        """Given image data and a sigma, :func:`filter_gaussian_blur`
+    def test_video(self, video_2_5_5):
+        """Given image data and a sigma, :func:`gaussian_blur`
         should perform a gaussian blur on the image data.
         """
-        result = f.filter_gaussian_blur(video_2_5_5, sigma=0.5)
+        result = f.gaussian_blur(video_2_5_5, sigma=0.5)
         assert (np.around(result, 4) == np.array([
             [
                 [0.1070, 0.3036, 0.5534, 0.7918, 0.9158],
@@ -373,10 +373,10 @@ class TestFilterGaussianBlue:
 
 class TestFilterGlow:
     def test_filter(self, video_2_5_5):
-        """Given image data and a size factor, :func:`filter_glow`
+        """Given image data and a size factor, :func:`glow`
         should zoom into the image by the size factor.
         """
-        result = f.filter_glow(video_2_5_5, sigma=4)
+        result = f.glow(video_2_5_5, sigma=4)
         assert (np.around(result, 4) == np.array([
             [
                 [0.7802, 0.8597, 0.9389, 0.9813, 1.0000],
@@ -397,10 +397,10 @@ class TestFilterGlow:
 
 class TestFilterGrow:
     def test_filter(self, video_2_3_3):
-        """Given image data and a size factor, :func:`filter_glow`
+        """Given image data and a size factor, :func:`glow`
         should zoom into the image by the size factor.
         """
-        result = f.filter_grow(video_2_3_3, factor=2)
+        result = f.grow(video_2_3_3, factor=2)
         assert (np.around(result, 4) == np.array([
             [
                 [1.0000, 0.7500, 0.5000, 0.2500, 0.0000, 0.0000],
@@ -436,11 +436,11 @@ class TestFilterGrow:
             ],
         ], dtype=float)).all()
 
-    def test_filter_image(self, image_1_3_3):
+    def test_image(self, image_1_3_3):
         """Given image data and a size factor, zoom into the image
         by the size factor. This should work on still image data.
         """
-        result = f.filter_grow(image_1_3_3, factor=2)
+        result = f.grow(image_1_3_3, factor=2)
         assert (np.around(result, 4) == np.array([
             [1.0000, 0.7500, 0.5000, 0.2500, 0.0000, 0.0000],
             [0.7500, 0.5000, 0.2500, 0.2500, 0.2500, 0.2500],
@@ -453,10 +453,10 @@ class TestFilterGrow:
 
 class TestFilterInverse:
     def test_filter(self, a):
-        """Given image data, :func:`filter_inverse` should invert the
+        """Given image data, :func:`inverse` should invert the
         colors of the image data.
         """
-        result = f.filter_inverse(a)
+        result = f.inverse(a)
         assert (np.around(result, 4) == np.array([
             [1.0000, 0.7500, 0.5000, 0.2500, 0.0000],
             [0.7500, 0.5000, 0.2500, 0.0000, 0.2500],
@@ -468,10 +468,10 @@ class TestFilterInverse:
 
 class TestFilterLinearToPolar:
     def test_filter(self, a):
-        """Given image data, :func:`filter_linear_to_polar` convert the
+        """Given image data, :func:`linear_to_polar` convert the
         linear coordinates to polar coordinates.
         """
-        result = f.filter_linear_to_polar(a)
+        result = f.linear_to_polar(a)
         assert (np.around(result, 4) == np.array([
             [1.0000, 0.2500, 0.0000, 0.0000, 0.0000],
             [0.2500, 0.5000, 0.7500, 0.5000, 0.2500],
@@ -480,12 +480,12 @@ class TestFilterLinearToPolar:
             [0.5000, 0.7500, 1.0000, 0.7500, 1.0000],
         ], dtype=float)).all()
 
-    def test_filter_video(self, video_2_5_5):
-        """Given image data, :func:`filter_linear_to_polar` convert the
+    def test_video(self, video_2_5_5):
+        """Given image data, :func:`linear_to_polar` convert the
         linear coordinates to polar coordinates. This should also work
         for video.
         """
-        result = f.filter_linear_to_polar(video_2_5_5)
+        result = f.linear_to_polar(video_2_5_5)
         assert (np.around(result, 4) == np.array([
             [
                 [0.0000, 0.2500, 0.0000, 0.0000, 0.0000],
@@ -510,7 +510,7 @@ class TestFilterMotionBlur:
         :func:`motion_blur` should perform a motion blur
         on the image data.
         """
-        result = f.filter_motion_blur(a, amount=2, axis=f.X_)
+        result = f.motion_blur(a, amount=2, axis=f.X_)
         assert (np.around(result, 4) == np.array([
             [0.1250, 0.1250, 0.3750, 0.6250, 0.8750],
             [0.3750, 0.3750, 0.6250, 0.8750, 0.8750],
@@ -519,13 +519,13 @@ class TestFilterMotionBlur:
             [0.8750, 0.8750, 0.6250, 0.3750, 0.1250],
         ], dtype=float)).all()
 
-    def test_filter_vertical(self, a):
+    def test_vertical(self, a):
         """Given image data, an amount, and a direction,
         :func:`motion_blur` should perform a motion blur
         on the image data. If the direction is the Y axis,
         the blur should be vertical.
         """
-        result = f.filter_motion_blur(a, amount=2, axis=f.Y_)
+        result = f.motion_blur(a, amount=2, axis=f.Y_)
         assert (np.around(result, 4) == np.array([
             [0.1250, 0.3750, 0.6250, 0.8750, 0.8750],
             [0.1250, 0.3750, 0.6250, 0.8750, 0.8750],
@@ -534,12 +534,12 @@ class TestFilterMotionBlur:
             [0.8750, 0.8750, 0.6250, 0.3750, 0.1250],
         ], dtype=float)).all()
 
-    def test_filter_video(self, video_2_5_5):
+    def test_video(self, video_2_5_5):
         """Given image data, an amount, and a direction,
         :func:`motion_blur` should perform a motion blur
         on the video data.
         """
-        result = f.filter_motion_blur(video_2_5_5, amount=2, axis=f.X_)
+        result = f.motion_blur(video_2_5_5, amount=2, axis=f.X_)
         assert (np.around(result, 4) == np.array([
             [
                 [0.1250, 0.1250, 0.3750, 0.6250, 0.8750],
@@ -557,23 +557,23 @@ class TestFilterMotionBlur:
             ],
         ], dtype=float)).all()
 
-    def test_filter_invalid_axis(self, a):
-        """If given an invalid axis, :func:`filter_motion_blur` should
+    def test_invalid_axis(self, a):
+        """If given an invalid axis, :func:`motion_blur` should
         raise a :class:`ValueError` exception.
         """
         with pt.raises(
             ValueError, match='motion_blur can only affect the X or Y axis.'
         ):
-            _ = f.filter_motion_blur(a, amount=2, axis=f.Z)
+            _ = f.motion_blur(a, amount=2, axis=f.Z)
 
 
 class TestFilterPinch:
     def test_filter(self, a):
         """Given image data, an amount of the pinch, a radius, a
-        scale, and an offset, :func:`filter_pinch` should perform
+        scale, and an offset, :func:`pinch` should perform
         a pinch on the image data.
         """
-        result = f.filter_pinch(
+        result = f.pinch(
             a,
             amount=0.5,
             radius=3.0,
@@ -588,12 +588,12 @@ class TestFilterPinch:
             [0.3438, 0.3896, 0.0713, 0.0225, 0.0000],
         ], dtype=float)).all()
 
-    def test_filter_video(self, video_2_5_5):
-        """Given image data, :func:`filter_linear_to_polar` convert the
+    def test_video(self, video_2_5_5):
+        """Given image data, :func:`linear_to_polar` convert the
         linear coordinates to polar coordinates. This should also work
         for video.
         """
-        result = f.filter_pinch(
+        result = f.pinch(
             video_2_5_5,
             amount=0.5,
             radius=3.0,
@@ -623,7 +623,7 @@ class TestFilterPolarToLinear:
         """Given image data, :func:`polar_to_linear` should convert
         the polar coordinates to linear coordinates.
         """
-        result = f.filter_polar_to_linear(a)
+        result = f.polar_to_linear(a)
         assert (np.around(result, 4) == np.array([
             [1.0000, 0.7500, 0.5000, 0.0000, 0.0000],
             [1.0000, 0.5000, 0.2500, 0.0000, 0.0000],
@@ -632,12 +632,12 @@ class TestFilterPolarToLinear:
             [1.0000, 0.7500, 1.0000, 0.7500, 0.7500],
         ], dtype=float)).all()
 
-    def test_filter_video(self, video_2_5_5):
-        """Given image data, :func:`filter_linear_to_polar` convert the
+    def test_video(self, video_2_5_5):
+        """Given image data, :func:`linear_to_polar` convert the
         linear coordinates to polar coordinates. This should also work
         for video.
         """
-        result = f.filter_polar_to_linear(video_2_5_5)
+        result = f.polar_to_linear(video_2_5_5)
         assert (np.around(result, 4) == np.array([
             [
                 [1.0000, 0.7500, 0.5000, 0.0000, 0.0000],
@@ -656,12 +656,50 @@ class TestFilterPolarToLinear:
         ], dtype=float)).all()
 
 
+class TestFilterPosterize:
+    def test_filter(self, a):
+        """Given image data, :func:`posterize` should reduce the
+        number of colors in the image data.
+        """
+        result = f.posterize(a, levels=3)
+        assert (np.around(result, 4) == np.array([
+            [0.0000, 0.0000, 0.5000, 1.0000, 1.0000],
+            [0.0000, 0.5000, 1.0000, 1.0000, 1.0000],
+            [0.5000, 1.0000, 1.0000, 1.0000, 0.5000],
+            [1.0000, 1.0000, 1.0000, 0.5000, 0.0000],
+            [1.0000, 1.0000, 0.5000, 0.0000, 0.0000],
+        ], dtype=float)).all()
+
+    def test_video(self, video_2_5_5):
+        """Given image data, :func:`posterize` should reduce the
+        number of colors in the image data. This should also work
+        for video.
+        """
+        result = f.posterize(video_2_5_5, levels=3)
+        assert (np.around(result, 4) == np.array([
+            [
+                [0.0000, 0.0000, 0.5000, 1.0000, 1.0000],
+                [0.0000, 0.5000, 1.0000, 1.0000, 1.0000],
+                [0.5000, 1.0000, 1.0000, 1.0000, 0.5000],
+                [1.0000, 1.0000, 1.0000, 0.5000, 0.0000],
+                [1.0000, 1.0000, 0.5000, 0.0000, 0.0000],
+            ],
+            [
+                [1.0000, 1.0000, 0.5000, 0.0000, 0.0000],
+                [1.0000, 1.0000, 1.0000, 0.5000, 0.0000],
+                [0.5000, 1.0000, 1.0000, 1.0000, 0.5000],
+                [0.0000, 0.5000, 1.0000, 1.0000, 1.0000],
+                [0.0000, 0.0000, 0.5000, 1.0000, 1.0000],
+            ],
+        ], dtype=float)).all()
+
+
 class TestFilterRipple:
     def test_filter(self, a):
-        """Given image data, :func:`filter_ripple` should convert
+        """Given image data, :func:`ripple` should convert
         the polar coordinates to linear coordinates.
         """
-        result = f.filter_ripple(
+        result = f.ripple(
             a,
             wave=(2, 2),
             amp=(2, 2),
@@ -676,12 +714,12 @@ class TestFilterRipple:
             [0.0000, 0.7500, 0.0000, 0.0000, 0.0000],
         ], dtype=float)).all()
 
-    def test_filter_video(self, video_2_5_5):
-        """Given image data, :func:`filter_ripple` convert the
+    def test_video(self, video_2_5_5):
+        """Given image data, :func:`ripple` convert the
         linear coordinates to polar coordinates. This should also work
         for video.
         """
-        result = f.filter_ripple(
+        result = f.ripple(
             video_2_5_5,
             wave=(2, 2),
             amp=(2, 2),
@@ -708,10 +746,10 @@ class TestFilterRipple:
 
 class TestFilterRotate90:
     def test_filter(self, image_5_5_tenths):
-        """Given image data and a direction, :func:`filter_rotate_90`
+        """Given image data and a direction, :func:`rotate_90`
         should rotate the image data 90° in that direction.
         """
-        result = f.filter_rotate_90(image_5_5_tenths)
+        result = f.rotate_90(image_5_5_tenths)
         assert (np.around(result, 4) == np.array([
             [
                 [0.8000, 0.6000, 0.4000, 0.2000, 0.0000],
@@ -722,11 +760,11 @@ class TestFilterRotate90:
             ],
         ], dtype=float)).all()
 
-    def test_filter_ccw(self, image_5_5_tenths):
-        """Given image data and a direction, :func:`filter_rotate_90`
+    def test_ccw(self, image_5_5_tenths):
+        """Given image data and a direction, :func:`rotate_90`
         rotate the image data 90° in that direction.
         """
-        result = f.filter_rotate_90(image_5_5_tenths, direction='ccw')
+        result = f.rotate_90(image_5_5_tenths, direction='ccw')
         assert (np.around(result, 4) == np.array([
             [
                 [0.4000, 0.6000, 0.8000, 1.0000, 0.8000],
@@ -740,10 +778,10 @@ class TestFilterRotate90:
 
 class TestFilterSkew:
     def test_filter(self, a):
-        """Given image data and a slope, :func:`filter_skew` should
+        """Given image data and a slope, :func:`skew` should
         skew the image data by an amount equal to the slope.
         """
-        result = f.filter_skew(a, slope=2.0)
+        result = f.skew(a, slope=2.0)
         assert (np.around(result, 4) == np.array([
             [0.0000, 0.2500, 0.5000, 0.7500, 1.0000],
             [1.0000, 0.7500, 0.2500, 0.5000, 0.7500],
@@ -752,12 +790,12 @@ class TestFilterSkew:
             [0.5000, 0.2500, 0.0000, 1.0000, 0.7500],
         ], dtype=float)).all()
 
-    def test_filter_video(self, video_2_5_5):
-        """Given image data and a slope, :func:`filter_skew` should
+    def test_video(self, video_2_5_5):
+        """Given image data and a slope, :func:`skew` should
         skew the image data by an amount equal to the slope. This
         should also work for video.
         """
-        result = f.filter_skew(video_2_5_5, slope=2.0)
+        result = f.skew(video_2_5_5, slope=2.0)
         assert (np.around(result, 4) == np.array([
             [
                 [0.0000, 0.2500, 0.5000, 0.7500, 1.0000],
@@ -779,10 +817,10 @@ class TestFilterSkew:
 class TestFilterSkew:
     def test_filter(self, a):
         """Given image data, a radius, a strength, and an offset,
-        :func:`filter_skew` should perform a twirl distortion on
+        :func:`skew` should perform a twirl distortion on
         the data.
         """
-        result = f.filter_twirl(a, radius=5.0, strength=0.25)
+        result = f.twirl(a, radius=5.0, strength=0.25)
         assert (np.around(result, 4) == np.array([
             [0.0019, 0.2537, 0.5047, 0.7547, 0.9963],
             [0.2491, 0.5001, 0.7565, 0.9871, 0.7499],
@@ -791,12 +829,12 @@ class TestFilterSkew:
             [0.9963, 0.7586, 0.5129, 0.2627, 0.0088],
         ], dtype=float)).all()
 
-    def test_filter_video(self, video_2_5_5):
+    def test_video(self, video_2_5_5):
         """Given image data, a radius, a strength, and an offset,
-        :func:`filter_skew` should perform a twirl distortion on
+        :func:`skew` should perform a twirl distortion on
         the data. This should also work for video.
         """
-        result = f.filter_twirl(video_2_5_5, radius=5.0, strength=0.25)
+        result = f.twirl(video_2_5_5, radius=5.0, strength=0.25)
         assert (np.around(result, 4) == np.array([
             [
                 [0.0019, 0.2537, 0.5047, 0.7547, 0.9963],
@@ -814,13 +852,13 @@ class TestFilterSkew:
             ],
         ], dtype=float)).all()
 
-    def test_filter_video_offset(self, video_2_5_5):
+    def test_video_offset(self, video_2_5_5):
         """Given image data, a radius, a strength, and an offset,
-        :func:`filter_skew` should perform a twirl distortion on
+        :func:`skew` should perform a twirl distortion on
         the data. This should also work for video. The offset
         should move the center of the effect by the amount given.
         """
-        result = f.filter_twirl(
+        result = f.twirl(
             video_2_5_5, radius=5.0, strength=0.25, offset=(-2, 2)
         )
         assert (np.around(result, 4) == np.array([

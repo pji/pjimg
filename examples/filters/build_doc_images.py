@@ -58,7 +58,7 @@ def make_image(
     # of the filtered data matches the shape of the bottom half of the
     # original data.
     if color:
-        a = ift.filter_colorize(a)
+        a = ift.colorize(a)
         
     if filtered.shape != a.shape and not color:
         mshape = tuple(max(a, b) for a, b in zip(a.shape, filtered.shape))
@@ -81,7 +81,7 @@ def make_image(
     # Add the label.
     label, ystart, ystop = make_label(size)
     if color:
-        label = ift.filter_colorize(label)
+        label = ift.colorize(label)
     a[:, ystart:ystop, :] = label
     return a
 
@@ -89,31 +89,32 @@ def make_image(
 def make_images(path: Path, size: Size, ext: str = 'jpg') -> None:
     """Make the example images."""
     filters = [
-        (ift.filter_box_blur, {'size': size[X] // 32,}, False),
-        (ift.filter_colorize, {'colorkey': 'g',}, True),
-        (ift.filter_contrast, {}, False),
-        (ift.filter_flip, {'axis': X,}, False),
-        (ift.filter_gaussian_blur, {'sigma': 12.0,}, False),
-        (ift.filter_glow, {'sigma': 3,}, False),
-        (ift.filter_grow, {'factor': 2,}, False),
-        (ift.filter_inverse, {}, False),
-        (ift.filter_linear_to_polar, {}, False),
-        (ift.filter_motion_blur, {'amount': size[X] // 32, 'axis': X}, False),
-        (ift.filter_pinch, {
-            'amount': 0.5,
-            'radius': size[X] // 3,
-            'scale': (0, 0.5, 0.5),
-            'offset': (0, 0, 0)
-        }, False),
-        (ift.filter_polar_to_linear, {}, False),
-        (ift.filter_ripple, {
+#         (ift.box_blur, {'size': size[X] // 32,}, False),
+#         (ift.colorize, {'colorkey': 'g',}, True),
+#         (ift.contrast, {}, False),
+#         (ift.flip, {'axis': X,}, False),
+#         (ift.gaussian_blur, {'sigma': 12.0,}, False),
+#         (ift.glow, {'sigma': 3,}, False),
+#         (ift.grow, {'factor': 2,}, False),
+#         (ift.inverse, {}, False),
+#         (ift.linear_to_polar, {}, False),
+#         (ift.motion_blur, {'amount': size[X] // 32, 'axis': X}, False),
+#         (ift.pinch, {
+#             'amount': 0.5,
+#             'radius': size[X] // 3,
+#             'scale': (0, 0.5, 0.5),
+#             'offset': (0, 0, 0)
+#         }, False),
+#         (ift.polar_to_linear, {}, False),
+        (ift.posterize, {'levels': 6,}, False),
+        (ift.ripple, {
             'wave': (0, size[Y] // 5, size[Y] // 5),
             'amp': (0, size[Y] // 80, size[Y] // 80),
             'distaxis': (Z, Y, X),
         }, False),
-        (ift.filter_rotate_90, {}, False),
-        (ift.filter_skew, {'slope': 0.25,}, False),
-        (ift.filter_twirl, {
+        (ift.rotate_90, {}, False),
+        (ift.skew, {'slope': 0.25,}, False),
+        (ift.twirl, {
             'radius': size[X],
             'strength': 3,
         }, False),

@@ -29,7 +29,7 @@ def float_to_uint8(a: ArrayLike) -> IntAry:
     """
     a = np.array(a)
     if np.max(a) > 1 or np.min(a) < 0:
-        msg = 'Array values must be 0 >= x >= 1.'
+        msg = f'Array values must be 0 >= x >= 1. {np.max(a)}, {np.min(a)}'
         raise ValueError(msg)
     a *= 0xff
     return a.astype(np.uint8)

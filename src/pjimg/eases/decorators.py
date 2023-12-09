@@ -4,9 +4,11 @@ Decorators
 
 Decorators for :mod:`pjimg.eases`.
 
+.. autofunction:: pjimg.eases.register
 .. autofunction:: pjimg.eases.will_scale
 """
 from functools import wraps
+from typing import Callable
 
 import numpy as np
 
@@ -15,6 +17,22 @@ from pjimg.util import NumAry
 
 
 # Decorators.
+def register(registry: dict[str, Ease]) -> Callable[[Ease,], Ease]:
+    """Registers the decorated function under the function's name
+    in the given registry dictionary.
+    
+    :param registry: The registry to register the given function in.
+    :return: The registration :mod:`function` pointed to the given
+        registry.
+    :rtype: function
+    """
+    def decorator(fn: Ease) -> Ease:
+        key = fn.__name__
+        registry[key] = fn
+        return fn
+    return decorator
+
+
 def will_scale(fn: Ease) -> Ease:
     """These eases only work for values between zero and one. If
     given values outside of that range, it will scale the values

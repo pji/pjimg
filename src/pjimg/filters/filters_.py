@@ -9,7 +9,7 @@ Usage::
 
     >>> import numpy as np
     >>> a = np.array([[[0., .25, .5, .75, 1.], [0., .25, .5, .75, 1.]]])
-    >>> filter_box_blur(a, size=2)
+    >>> box_blur(a, size=2)
     array([[[0.125, 0.125, 0.375, 0.625, 0.875],
             [0.125, 0.125, 0.375, 0.625, 0.875]]])
 
@@ -31,22 +31,23 @@ Filter Functions
 ================
 The following are the filter functions available in :mod:`pjimg`.
 
-.. autofunction:: pjimg.filters.filter_box_blur
-.. autofunction:: pjimg.filters.filter_colorize
-.. autofunction:: pjimg.filters.filter_contrast
-.. autofunction:: pjimg.filters.filter_flip
-.. autofunction:: pjimg.filters.filter_gaussian_blur
-.. autofunction:: pjimg.filters.filter_glow
-.. autofunction:: pjimg.filters.filter_grow
-.. autofunction:: pjimg.filters.filter_inverse
-.. autofunction:: pjimg.filters.filter_linear_to_polar
-.. autofunction:: pjimg.filters.filter_motion_blur
-.. autofunction:: pjimg.filters.filter_pinch
-.. autofunction:: pjimg.filters.filter_polar_to_linear
-.. autofunction:: pjimg.filters.filter_ripple
-.. autofunction:: pjimg.filters.filter_rotate_90
-.. autofunction:: pjimg.filters.filter_skew
-.. autofunction:: pjimg.filters.filter_twirl
+.. autofunction:: pjimg.filters.box_blur
+.. autofunction:: pjimg.filters.colorize
+.. autofunction:: pjimg.filters.contrast
+.. autofunction:: pjimg.filters.flip
+.. autofunction:: pjimg.filters.gaussian_blur
+.. autofunction:: pjimg.filters.glow
+.. autofunction:: pjimg.filters.grow
+.. autofunction:: pjimg.filters.inverse
+.. autofunction:: pjimg.filters.linear_to_polar
+.. autofunction:: pjimg.filters.motion_blur
+.. autofunction:: pjimg.filters.pinch
+.. autofunction:: pjimg.filters.polar_to_linear
+.. autofunction:: pjimg.filters.posterize
+.. autofunction:: pjimg.filters.ripple
+.. autofunction:: pjimg.filters.rotate_90
+.. autofunction:: pjimg.filters.skew
+.. autofunction:: pjimg.filters.twirl
 
 """
 from typing import Sequence
@@ -58,30 +59,36 @@ from PIL import Image, ImageOps
 
 import pjimg.util.resize as rsz
 from pjimg.filters.decorators import *
+from pjimg.filters.model import Filter
 from pjimg.filters.util import get_color_for_key
 from pjimg.util import ImgAry, Loc, Size, X, Y, Z, X_, Y_, Z_
 
 
 # Names available for import.
 __all__ = [
-    'filter_box_blur', 'filter_colorize', 'filter_contrast',
-    'filter_flip', 'filter_gaussian_blur', 'filter_glow',
-    'filter_grow', 'filter_inverse', 'filter_linear_to_polar',
-    'filter_motion_blur', 'filter_pinch', 'filter_polar_to_linear',
-    'filter_ripple', 'filter_rotate_90', 'filter_skew',
-    'filter_twirl',
+    'box_blur', 'colorize', 'contrast', 'filters',
+    'flip', 'gaussian_blur', 'glow',
+    'grow', 'inverse', 'linear_to_polar',
+    'motion_blur', 'pinch', 'polar_to_linear', 'posterize',
+    'ripple', 'rotate_90', 'skew',
+    'twirl'
 ]
 
 
+# Registry of ease functions.
+filters: dict[str, Filter] = dict()
+
+
 # Image filter functions.
+@register(filters)
 @processes_by_grayscale_frame
-def filter_box_blur(a: ImgAry, size: int) -> ImgAry:
+def box_blur(a: ImgAry, size: int) -> ImgAry:
     """Perform a box blur.
 
-    .. figure:: images/filter_box_blur.jpg
+    .. figure:: images/box_blur.jpg
        :alt: An example of the filter affecting an image.
        
-       An example of :func:`filter_box_blur` affecting an image.
+       An example of :func:`box_blur` affecting an image.
     
     :param a: The image data to alter.
     :param size: The size of the blox used in the blur.
@@ -92,9 +99,10 @@ def filter_box_blur(a: ImgAry, size: int) -> ImgAry:
     return cv2.filter2D(a, -1, kernel)
 
 
+@register(filters)
 @processes_by_grayscale_frame
 @uses_uint8
-def filter_colorize(
+def colorize(
     a: ImgAry,
     colorkey: str = '',
     white: str = '#FFFFFF',
@@ -102,10 +110,10 @@ def filter_colorize(
 ) -> ImgAry:
     """Colorize a grayscale image.
 
-    .. figure:: images/filter_colorize.jpg
+    .. figure:: images/colorize.jpg
        :alt: An example of the filter affecting an image.
        
-       An example of :func:`filter_colorize` affecting an image.
+       An example of :func:`colorize` affecting an image.
     
     :param a: The image data to alter.
     :param colorkey: (Optional.) The key for the pre-defined
@@ -138,15 +146,16 @@ def filter_colorize(
     return out
 
 
-def filter_contrast(
+@register(filters)
+def contrast(
     a: ImgAry, black: float = 0.0, white: float = 1.0
 ) -> ImgAry:
     """Adjust the image to fill the full dynamic range.
 
-    .. figure:: images/filter_contrast.jpg
+    .. figure:: images/contrast.jpg
        :alt: An example of the filter affecting an image.
        
-       An example of :func:`filter_contrast` affecting an image.
+       An example of :func:`contrast` affecting an image.
     
     :param a: The image data to alter.
     :param black: (Optional.) The minimum value in the output.
@@ -172,13 +181,14 @@ def filter_contrast(
     return a
 
 
-def filter_flip(a: ImgAry, axis: int) -> ImgAry:
+@register(filters)
+def flip(a: ImgAry, axis: int) -> ImgAry:
     """Flip the image around an axis.
 
-    .. figure:: images/filter_flip.jpg
+    .. figure:: images/flip.jpg
        :alt: An example of the filter affecting an image.
        
-       An example of :func:`filter_flip` affecting an image.
+       An example of :func:`flip` affecting an image.
     
     :param a: The image data to alter.
     :param axis: The axis to flip the image data around.
@@ -188,14 +198,15 @@ def filter_flip(a: ImgAry, axis: int) -> ImgAry:
     return np.flip(a, axis)
 
 
+@register(filters)
 @processes_by_grayscale_frame
-def filter_gaussian_blur(a: ImgAry, sigma: float) -> ImgAry:
+def gaussian_blur(a: ImgAry, sigma: float) -> ImgAry:
     """Perform a gaussian blur.
 
-    .. figure:: images/filter_gaussian_blur.jpg
+    .. figure:: images/gaussian_blur.jpg
        :alt: An example of the filter affecting an image.
        
-       An example of :func:`filter_gaussian_blur` affecting an image.
+       An example of :func:`gaussian_blur` affecting an image.
     
     :param a: The image data to alter.
     :param sigma: The sigma value of the blur. A gaussian blur uses a
@@ -209,14 +220,15 @@ def filter_gaussian_blur(a: ImgAry, sigma: float) -> ImgAry:
     return cv2.GaussianBlur(a, (0, 0), sigma, sigma, 0)
 
 
-def filter_glow(a: ImgAry, sigma: int) -> ImgAry:
+@register(filters)
+def glow(a: ImgAry, sigma: int) -> ImgAry:
     """Use gaussian blurs to create a halo around brighter objects
     in the image.
 
-    .. figure:: images/filter_glow.jpg
+    .. figure:: images/glow.jpg
        :alt: An example of the filter affecting an image.
        
-       An example of :func:`filter_gaussian_blur` affecting an image.
+       An example of :func:`gaussian_blur` affecting an image.
     
     :param a: The image data to alter.
     :param sigma: The sigma value of the blur. A gaussian blur uses a
@@ -237,19 +249,20 @@ def filter_glow(a: ImgAry, sigma: int) -> ImgAry:
     while sigma > 0:
         if sigma % 2 != 1:
             sigma -= 1
-        b = filter_gaussian_blur(b, sigma)
+        b = gaussian_blur(b, sigma)
         b = _screen(a, b)
         sigma = sigma // 2
     return b
 
 
-def filter_grow(a: ImgAry, factor: float) -> ImgAry:
+@register(filters)
+def grow(a: ImgAry, factor: float) -> ImgAry:
     """Increase the size of an image.
 
-    .. figure:: images/filter_grow.jpg
+    .. figure:: images/grow.jpg
        :alt: An example of the filter affecting an image.
        
-       An example of :func:`filter_grow` affecting an image.
+       An example of :func:`grow` affecting an image.
     
     :param a: The image data to alter.
     :param factor: The scaling factor to use when increasing the
@@ -262,13 +275,14 @@ def filter_grow(a: ImgAry, factor: float) -> ImgAry:
     return rsz.trilinear_interpolation(a, factor)
 
 
-def filter_inverse(a: ImgAry) -> ImgAry:
+@register(filters)
+def inverse(a: ImgAry) -> ImgAry:
     """Inverse the colors of an image.
 
-    .. figure:: images/filter_inverse.jpg
+    .. figure:: images/inverse.jpg
        :alt: An example of the filter affecting an image.
        
-       An example of :func:`filter_inverse` affecting an image.
+       An example of :func:`inverse` affecting an image.
     
     :param a: The image data to alter.
     :returns: A :class:`np.ndarray` object.
@@ -277,16 +291,17 @@ def filter_inverse(a: ImgAry) -> ImgAry:
     return 1 - a
 
 
+@register(filters)
 @processes_by_grayscale_frame
 @will_square
-def filter_linear_to_polar(a: ImgAry) -> ImgAry:
+def linear_to_polar(a: ImgAry) -> ImgAry:
     """Convert the linear coordinates of the image data to
     polar coordinates.
 
-    .. figure:: images/filter_linear_to_polar.jpg
+    .. figure:: images/linear_to_polar.jpg
        :alt: An example of the filter affecting an image.
        
-       An example of :func:`filter_linear_to_polar` affecting an image.
+       An example of :func:`linear_to_polar` affecting an image.
     
     :param a: The image data to alter.
     :returns: A :class:`np.ndarray` object.
@@ -298,18 +313,19 @@ def filter_linear_to_polar(a: ImgAry) -> ImgAry:
     return cv2.warpPolar(a, a.shape, center, max_radius, flags)
 
 
+@register(filters)
 @processes_by_grayscale_frame
-def filter_motion_blur(
+def motion_blur(
     a: ImgAry,
     amount: int,
     axis: int
 ) -> ImgAry:
     """Perform a motion blur.
 
-    .. figure:: images/filter_motion_blur.jpg
+    .. figure:: images/motion_blur.jpg
        :alt: An example of the filter affecting an image.
        
-       An example of :func:`filter_motion_blur` affecting an image.
+       An example of :func:`motion_blur` affecting an image.
     
     :param a: The image data to alter.
     :param size: The size of the blur to apply.
@@ -333,8 +349,9 @@ def filter_motion_blur(
     return cv2.filter2D(a, -1, kernel)
 
 
+@register(filters)
 @processes_by_grayscale_frame
-def filter_pinch(
+def pinch(
     a: ImgAry,
     amount: float,
     radius: float,
@@ -344,10 +361,10 @@ def filter_pinch(
     """Distort an image to make it appear as though it is being
     pinched or swelling.
 
-    .. figure:: images/filter_pinch.jpg
+    .. figure:: images/pinch.jpg
        :alt: An example of the filter affecting an image.
        
-       An example of :func:`filter_pinch` affecting an image.
+       An example of :func:`pinch` affecting an image.
     
     :param a: The image data to alter.
     :param amount: How much the image should be distorted. Best results
@@ -400,16 +417,17 @@ def filter_pinch(
     return cv2.remap(a, flex_x, flex_y, cv2.INTER_LINEAR)
 
 
+@register(filters)
 @processes_by_grayscale_frame
 @will_square
-def filter_polar_to_linear(a: ImgAry) -> ImgAry:
+def polar_to_linear(a: ImgAry) -> ImgAry:
     """Convert the polar coordinates of the image data to
     linear coordinates.
 
-    .. figure:: images/filter_polar_to_linear.jpg
+    .. figure:: images/polar_to_linear.jpg
        :alt: An example of the filter affecting an image.
        
-       An example of :func:`filter_polar_to_linear` affecting an image.
+       An example of :func:`polar_to_linear` affecting an image.
     
     :param a: The image data to alter.
     :returns: A :class:`np.ndarray` object.
@@ -420,8 +438,31 @@ def filter_polar_to_linear(a: ImgAry) -> ImgAry:
     return cv2.linearPolar(a, center, max_radius, cv2.WARP_FILL_OUTLIERS)
 
 
+@register(filters)
+def posterize(a: ImgAry, levels: int = 2):
+    """Reduce the number of colors in the image data.
+    
+    .. figure:: images/posterize.jpg
+       :alt: An example of the filter affecting an image.
+       
+       An example of :func:`posterize` affecting an image.
+    
+    :param a: The image data to alter.
+    :param levels: (Optional.) The number of colors in the resulting data.
+        Default is 2.
+    :returns: A :class:`np.ndarray` object.
+    :rtype: numpy.ndarray
+    """
+    a = a.copy()
+    a *= levels - 1
+    a = np.around(a, 0)
+    a /= levels - 1
+    return a.astype(float)
+
+
+@register(filters)
 @processes_by_grayscale_frame
-def filter_ripple(
+def ripple(
     a: ImgAry,
     wave: Sequence[float],
     amp: Sequence[float],
@@ -430,10 +471,10 @@ def filter_ripple(
 ) -> ImgAry:
     """Perform a ripple distortion.
 
-    .. figure:: images/filter_ripple.jpg
+    .. figure:: images/ripple.jpg
        :alt: An example of the filter affecting an image.
        
-       An example of :func:`filter_ripple` affecting an image.
+       An example of :func:`ripple` affecting an image.
     
     :param a: The image data to alter.
     :param wave: The distance between peaks in the distortion.
@@ -477,13 +518,14 @@ def filter_ripple(
     return cv2.remap(a, flex_x, flex_y, cv2.INTER_LINEAR)
 
 
-def filter_rotate_90(a: ImgAry, direction: str = 'cw') -> ImgAry:
+@register(filters)
+def rotate_90(a: ImgAry, direction: str = 'cw') -> ImgAry:
     """Rotate the data 90° around the Z axis.
 
-    .. figure:: images/filter_rotate_90.jpg
+    .. figure:: images/rotate_90.jpg
        :alt: An example of the filter affecting an image.
        
-       An example of :func:`filter_filter_rotate_90` affecting an image.
+       An example of :func:`rotate_90` affecting an image.
     
     :param a: The image data to alter.
     :param direction: (Optional.) Whether to rotate the data
@@ -497,14 +539,15 @@ def filter_rotate_90(a: ImgAry, direction: str = 'cw') -> ImgAry:
     return np.rot90(a, spin, (Y, X))
 
 
+@register(filters)
 @processes_by_grayscale_frame
-def filter_skew(a: ImgAry, slope: float) -> ImgAry:
+def skew(a: ImgAry, slope: float) -> ImgAry:
     """Perform a skew distort on the data.
 
-    .. figure:: images/filter_skew.jpg
+    .. figure:: images/skew.jpg
        :alt: An example of the filter affecting an image.
        
-       An example of :func:`filter_skew` affecting an image.
+       An example of :func:`skew` affecting an image.
     
     :param a: The image data to alter.
     :param slope: The slope of the Y axis of the image after the skew.
@@ -537,8 +580,9 @@ def filter_skew(a: ImgAry, slope: float) -> ImgAry:
     )
 
 
+@register(filters)
 @processes_by_grayscale_frame
-def filter_twirl(
+def twirl(
     a: ImgAry,
     radius: float,
     strength: float,
@@ -546,10 +590,10 @@ def filter_twirl(
 ) -> ImgAry:
     """Swirl the image data.
 
-    .. figure:: images/filter_twirl.jpg
+    .. figure:: images/twirl.jpg
        :alt: An example of the filter affecting an image.
        
-       An example of :func:`filter_twirl` affecting an image.
+       An example of :func:`twirl` affecting an image.
     
     :param a: The image data to alter.
     :param radius: The location of the edge of the distortion. This
@@ -565,3 +609,34 @@ def filter_twirl(
     # Determine the location of the center of the twirl effect.
     center = [n / 2 + o for n, o in zip(a.shape, offset)]
     return sktf.swirl(a, center[::-1], strength, radius)
+
+
+if __name__ == '__main__':
+    from pjimg.util.debug import print_array
+    
+    a = np.array([
+        [0.00, 0.25, 0.50, 0.75, 1.00,],
+        [0.25, 0.50, 0.75, 1.00, 0.75,],
+        [0.50, 0.75, 1.00, 0.75, 0.50,],
+        [0.75, 1.00, 0.75, 0.50, 0.25,],
+        [1.00, 0.75, 0.50, 0.25, 0.00,],
+    ], dtype=float)
+    v = np.array([
+        [
+            [0.00, 0.25, 0.50, 0.75, 1.00,],
+            [0.25, 0.50, 0.75, 1.00, 0.75,],
+            [0.50, 0.75, 1.00, 0.75, 0.50,],
+            [0.75, 1.00, 0.75, 0.50, 0.25,],
+            [1.00, 0.75, 0.50, 0.25, 0.00,],
+        ],
+        [
+            [1.00, 0.75, 0.50, 0.25, 0.00,],
+            [0.75, 1.00, 0.75, 0.50, 0.25,],
+            [0.50, 0.75, 1.00, 0.75, 0.50,],
+            [0.25, 0.50, 0.75, 1.00, 0.75,],
+            [0.00, 0.25, 0.50, 0.75, 1.00,],
+        ],
+    ], dtype=float)
+
+    a = posterize(v, 3)
+    print_array(a)

@@ -176,19 +176,25 @@ Contrast Blends
 import numpy as np
 
 from pjimg.blends.decorators import *
+from pjimg.blends.model import Blend
 from pjimg.util import ImgAry
 
 
 # Names available for export.
 __all__ = [
-    'replace', 'darker', 'multiply', 'color_burn', 'linear_burn',
-    'lighter', 'screen', 'color_dodge', 'linear_dodge',
+    'blends', 'replace', 'darker', 'multiply', 'color_burn',
+    'linear_burn', 'lighter', 'screen', 'color_dodge', 'linear_dodge',
     'difference', 'exclusion', 'hard_light', 'hard_mix', 'linear_light',
     'overlay', 'pin_light', 'soft_light', 'vivid_light',
 ]
 
 
+# Registry of ease functions.
+blends: dict[str, Blend] = dict()
+
+
 # Simple replacement blends.
+@register(blends)
 @can_mask
 @can_fade
 @will_match_size
@@ -234,6 +240,7 @@ def replace(a: ImgAry, b: ImgAry) -> ImgAry:
 
 
 # Darker/burn blends.
+@register(blends)
 @will_clip
 @can_mask
 @can_fade
@@ -280,6 +287,7 @@ def darker(a: ImgAry, b: ImgAry) -> ImgAry:
     return ab
 
 
+@register(blends)
 @will_clip
 @can_mask
 @can_fade
@@ -324,6 +332,7 @@ def multiply(a: ImgAry, b: ImgAry) -> ImgAry:
     return a * b
 
 
+@register(blends)
 @will_clip
 @can_mask
 @can_fade
@@ -372,6 +381,7 @@ def color_burn(a: ImgAry, b: ImgAry) -> ImgAry:
     return ab
 
 
+@register(blends)
 @will_clip
 @can_mask
 @can_fade
@@ -417,6 +427,7 @@ def linear_burn(a: ImgAry, b: ImgAry) -> ImgAry:
 
 
 # Lighter/dodge blends.
+@register(blends)
 @will_clip
 @can_mask
 @can_fade
@@ -463,6 +474,7 @@ def lighter(a: ImgAry, b: ImgAry) -> ImgAry:
     return ab
 
 
+@register(blends)
 @will_clip
 @can_mask
 @can_fade
@@ -511,6 +523,7 @@ def screen(a: ImgAry, b: ImgAry) -> ImgAry:
     return 1.0 - ab
 
 
+@register(blends)
 @will_clip
 @can_mask
 @can_fade
@@ -556,6 +569,7 @@ def color_dodge(a: ImgAry, b: ImgAry) -> ImgAry:
     return ab
 
 
+@register(blends)
 @will_clip
 @can_mask
 @can_fade
@@ -600,6 +614,7 @@ def linear_dodge(a: ImgAry, b: ImgAry) -> ImgAry:
 
 
 # Inversion blends.
+@register(blends)
 @will_clip
 @can_mask
 @can_fade
@@ -645,6 +660,7 @@ def difference(a: ImgAry, b: ImgAry) -> ImgAry:
     return np.abs(a - b)
 
 
+@register(blends)
 @will_clip
 @can_mask
 @can_fade
@@ -691,6 +707,7 @@ def exclusion(a: ImgAry, b: ImgAry) -> ImgAry:
 
 
 # Contrast blends.
+@register(blends)
 @will_clip
 @can_mask
 @can_fade
@@ -738,6 +755,7 @@ def hard_light(a: ImgAry, b: ImgAry) -> ImgAry:
     return ab
 
 
+@register(blends)
 @will_clip
 @can_mask
 @can_fade
@@ -785,6 +803,7 @@ def hard_mix(a: ImgAry, b: ImgAry) -> ImgAry:
     return ab
 
 
+@register(blends)
 @will_clip
 @can_mask
 @can_fade
@@ -829,6 +848,7 @@ def linear_light(a: ImgAry, b: ImgAry) -> ImgAry:
     return ab
 
 
+@register(blends)
 @will_clip
 @can_mask
 @can_fade
@@ -876,6 +896,7 @@ def overlay(a: ImgAry, b: ImgAry) -> ImgAry:
     return ab
 
 
+@register(blends)
 @will_clip
 @can_mask
 @can_fade
@@ -933,6 +954,7 @@ def pin_light(a: ImgAry, b: ImgAry) -> ImgAry:
     return ab
 
 
+@register(blends)
 @will_clip
 @can_mask
 @can_fade
@@ -982,6 +1004,7 @@ def soft_light(a: ImgAry, b: ImgAry) -> ImgAry:
     return ab
 
 
+@register(blends)
 @will_clip
 @can_mask
 @can_fade

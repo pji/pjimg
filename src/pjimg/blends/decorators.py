@@ -6,6 +6,7 @@ Common decorators used by :mod:`pjimg.blends`.
 
 .. autofunction:: pjimg.blends.can_fade
 .. autofunction:: pjimg.blends.can_mask
+.. autofunction:: pjimg.blends.register
 .. autofunction:: pjimg.blends.will_clip
 .. autofunction:: pjimg.blends.will_colorize
 .. autofunction:: pjimg.blends.will_match_size
@@ -22,7 +23,8 @@ from pjimg.util import ImgAry, grayscale_to_rgb, pad_array
 
 # Names available for import.
 __all__ = [
-    'can_fade', 'can_mask', 'will_clip', 'will_colorize', 'will_match_size'
+    'can_fade', 'can_mask', 'register', 'will_clip', 'will_colorize',
+    'will_match_size'
 ]
 
 
@@ -81,6 +83,22 @@ def can_mask(fn: Blend) -> Blend:
         ab = a * (1 - mask) + ab * mask
         return ab
     return wrapper
+
+
+def register(registry: dict[str, Blend]) -> Callable[[Blend,], Blend]:
+    """Registers the decorated function under the function's name
+    in the given registry dictionary.
+    
+    :param registry: The registry to register the given function in.
+    :return: The registration :mod:`function` pointed to the given
+        registry.
+    :rtype: function
+    """
+    def decorator(fn: Blend) -> Blend:
+        key = fn.__name__
+        registry[key] = fn
+        return fn
+    return decorator
 
 
 def will_clip(fn: Blend) -> Blend:

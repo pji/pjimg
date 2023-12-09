@@ -155,11 +155,13 @@
 <div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
   <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../index.html">pjimg documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../index.html">pjimg</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../blends.html">blends</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../eases.html">eases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../filters.html">filters</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../sources.html">sources</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../imgio.html">imgio</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../util.html">__init__</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../util.html">util</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../requirements.html">pjimg Requirements</a></li>
 </ul>
 
@@ -228,7 +230,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="ow">or</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="n">msg</span> <span class="o">=</span> <span class="s1">&#39;Array values must be 0 &gt;= x &gt;= 1.&#39;</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;Array values must be 0 &gt;= x &gt;= 1. </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">a</span><span class="p">)</span><span class="si">}</span><span class="s1">, </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">a</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
     <span class="n">a</span> <span class="o">*=</span> <span class="mh">0xff</span>
     <span class="k">return</span> <span class="n">a</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span></div>
