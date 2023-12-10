@@ -526,7 +526,11 @@
 
 <span class="sd">    :param direction: (Optional.) This should be &#39;h&#39; for a horizontal</span>
 <span class="sd">        gradient or &#39;v&#39; for a vertical gradient.</span>
-<span class="sd">    :param length: (Optional.) The distance between each line.</span>
+<span class="sd">    :param length: (Optional.) The distance between each line. Note:</span>
+<span class="sd">        This parameter is hostile to proportional resizing. This is</span>
+<span class="sd">        because one is subtracted from it when determining the period</span>
+<span class="sd">        of the line. To allow for proportional resizing, add one to</span>
+<span class="sd">        the value before passing it to this parameter.</span>
 <span class="sd">    :return: :class:`Lines` object.</span>
 <span class="sd">    :rtype: sources.patterns.Lines</span>
 
@@ -543,7 +547,6 @@
 <span class="sd">            :class:`Lines`.</span>
 <span class="sd">       </span>
 <span class="sd">       The image data created by the usage example.</span>
-
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">direction</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;h&#39;</span><span class="p">,</span>

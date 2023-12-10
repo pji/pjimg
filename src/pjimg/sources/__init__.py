@@ -36,6 +36,7 @@ generates image data.
 .. automodule:: pjimg.sources.worley
 
 """
+from pjimg.sources.constants import P
 from pjimg.sources.model import Seed, Source
 from pjimg.sources.patterns import *
 from pjimg.sources.maze import Maze, AnimatedMaze, SolvedMaze

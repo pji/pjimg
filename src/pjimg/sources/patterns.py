@@ -316,7 +316,11 @@ class Lines(Source):
 
     :param direction: (Optional.) This should be 'h' for a horizontal
         gradient or 'v' for a vertical gradient.
-    :param length: (Optional.) The distance between each line.
+    :param length: (Optional.) The distance between each line. Note:
+        This parameter is hostile to proportional resizing. This is
+        because one is subtracted from it when determining the period
+        of the line. To allow for proportional resizing, add one to
+        the value before passing it to this parameter.
     :return: :class:`Lines` object.
     :rtype: sources.patterns.Lines
 
@@ -333,7 +337,6 @@ class Lines(Source):
             :class:`Lines`.
        
        The image data created by the usage example.
-
     """
     def __init__(
         self, direction: str = 'h',

@@ -30,7 +30,7 @@ layers of unit noise.
 
 """
 from operator import mul, truediv
-from typing import Callable, NamedTuple, Sequence, Union
+from typing import Callable, NamedTuple, Optional, Sequence, Union
 
 import numpy as np
 
@@ -67,12 +67,15 @@ class UnitNoise(Noise):
         appear on the unit grid. This is involved in setting the
         maximum size of noise that can be generated from the object.
     :param seed: (Optional.) An int, bytes, or string used to seed
-        therandom number generator used to generate the image data.
+        the random number generator used to generate the image data.
         If no value is passed, the RNG will not be seeded, so
         serialized versions of this source will not produce the
         same values. Note: strings that are passed to seed will
         be converted to UTF-8 bytes before being converted to
         integers for seeding.
+    :param table: (Optional.) A table of values to use when generating
+        the image data. If no value is passed, the table will be generated
+        randomly. Default is `None`.
     :return: An instance of :class:`UnitNoise`.
     :rtype: sources.unitnoise.UnitNoise
     
@@ -98,7 +101,8 @@ class UnitNoise(Noise):
         min: int = 0x00,
         max: int = 0xff,
         repeats: int = 0,
-        seed: Seed = None
+        seed: Seed = None,
+        table: Optional[Sequence[int]] = None
     ) -> None:
         """Initialize an instance of UnitNoise."""
         # Initialize public values.
@@ -109,7 +113,9 @@ class UnitNoise(Noise):
         super().__init__(seed)
 
         # Initialize the randomized table.
-        self._table = self._init_table()
+        if table is  None:
+            table = self._init_table()
+        self._table = table
 
         # Prime the names of the grids used for interpolation.
         tmp = '{:>0' + str(self._axes) + 'b}'

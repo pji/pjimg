@@ -51,6 +51,16 @@ class TestUnitNoise:
         for attr in optional:
             assert getattr(obj, attr) == optional[attr]
 
+    def test_init_given_table(self):
+        """Given a table value, :class:`UnitNoise` should use that table
+        value to initialize its table instead of randomly generated values.
+        """
+        table = [0, 1, 2, 3, 4, 5, 6, 7, 0, 1, 2, 3, 4, 5, 6, 7]
+        noise = un.UnitNoise(
+            unit=(4, 4, 4), table=table
+        )
+        assert noise._table == table
+
     def test_init_seeded_table(self):
         """Given a seed value, :class:`UnitNoise` should use that seed
         value to initialize its table with randomly generated values.
