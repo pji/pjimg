@@ -433,7 +433,8 @@ def octave_noise_factory(
             min: int = defaults.min,
             max: int = defaults.max,
             repeats: int = defaults.repeats,
-            seed: Seed = defaults.seed
+            seed: Seed = defaults.seed,
+            table: Optional[Sequence[int]] = None
         ) -> None:
             self.octaves = octaves
             self.persistence = persistence
@@ -444,6 +445,7 @@ def octave_noise_factory(
             self.max = max
             self.repeats = repeats
             self.seed = seed
+            self.table = table
 
         def fill(
             self, size: Size,
@@ -468,7 +470,8 @@ def octave_noise_factory(
                     min=self.min,
                     max=self.max,
                     repeats=self.repeats,
-                    seed=self.seed
+                    seed=self.seed,
+                    table=self.table
                 )
                 a += octave.fill(size, loc) * amp
                 max_value += amp

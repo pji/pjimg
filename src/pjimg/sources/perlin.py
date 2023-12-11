@@ -10,7 +10,7 @@ images.
 .. autoclass:: pjimg.sources.OctavePerlin
 
 """
-from typing import Sequence
+from typing import Optional, Sequence
 
 import numpy as np
 
@@ -70,10 +70,11 @@ class Perlin(un.UnitNoise):
         min: int = 0x00,
         max: int = 0xff,
         repeats: int = 1,
-        seed: Seed = None
+        seed: Seed = None,
+        table: Optional[Sequence[int]] = None
     ) -> None:
         """Initialize an instance of UnitNoise."""
-        super().__init__(unit, min, max, repeats, seed)
+        super().__init__(unit, min, max, repeats, seed, table)
 
     # Public classes.
     def fill(

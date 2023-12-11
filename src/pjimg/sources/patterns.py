@@ -545,6 +545,8 @@ class Rings(Source):
         there is only one ring.
     :param count: (Optional.) The number of rings to draw. The
         default is one.
+    :param count_offset: (Optional.) Set to `1` for backwards
+        compatibility with :mod:`pjinoise`.
     :return: :class:`Rings` object.
     :rtype: sources.patterns.Rings
 
@@ -569,13 +571,15 @@ class Rings(Source):
         self, radius: float,
         width: float,
         gap: float = 0,
-        count: int = 1
+        count: int = 1,
+        count_offset: int = 0
     ) -> None:
         """Initialize an instance of Ring."""
         self.radius = float(radius)
         self.width = float(width)
         self.gap = float(gap)
         self.count = int(count)
+        self.count_offset = count_offset
 
     # Public methods.
     def fill(
@@ -600,7 +604,7 @@ class Rings(Source):
         # volume and run the easing function on the results.
         c = index_to_distance_from_origin(c)
         for i in range(self.count):
-            radius = self.radius + self.gap * i
+            radius = self.radius + self.gap * (i - self.count_offset)
             if radius != 0:
                 working = c / np.sqrt(radius ** 2)
                 working = np.abs(working - 1)
