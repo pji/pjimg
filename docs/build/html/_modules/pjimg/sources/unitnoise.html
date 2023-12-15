@@ -314,7 +314,7 @@
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
 
         <span class="c1"># Initialize the randomized table.</span>
-        <span class="k">if</span> <span class="n">table</span> <span class="ow">is</span>  <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">table</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">table</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_init_table</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_table</span> <span class="o">=</span> <span class="n">table</span>
 
@@ -641,7 +641,8 @@
             <span class="nb">min</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">defaults</span><span class="o">.</span><span class="n">min</span><span class="p">,</span>
             <span class="nb">max</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">defaults</span><span class="o">.</span><span class="n">max</span><span class="p">,</span>
             <span class="n">repeats</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">defaults</span><span class="o">.</span><span class="n">repeats</span><span class="p">,</span>
-            <span class="n">seed</span><span class="p">:</span> <span class="n">Seed</span> <span class="o">=</span> <span class="n">defaults</span><span class="o">.</span><span class="n">seed</span>
+            <span class="n">seed</span><span class="p">:</span> <span class="n">Seed</span> <span class="o">=</span> <span class="n">defaults</span><span class="o">.</span><span class="n">seed</span><span class="p">,</span>
+            <span class="n">table</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Sequence</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">octaves</span> <span class="o">=</span> <span class="n">octaves</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">persistence</span> <span class="o">=</span> <span class="n">persistence</span>
@@ -652,6 +653,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">max</span> <span class="o">=</span> <span class="nb">max</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">repeats</span> <span class="o">=</span> <span class="n">repeats</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">seed</span> <span class="o">=</span> <span class="n">seed</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">table</span> <span class="o">=</span> <span class="n">table</span>
 
         <span class="k">def</span> <span class="nf">fill</span><span class="p">(</span>
             <span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="p">:</span> <span class="n">Size</span><span class="p">,</span>
@@ -676,7 +678,8 @@
                     <span class="nb">min</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">min</span><span class="p">,</span>
                     <span class="nb">max</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">max</span><span class="p">,</span>
                     <span class="n">repeats</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">repeats</span><span class="p">,</span>
-                    <span class="n">seed</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">seed</span>
+                    <span class="n">seed</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">seed</span><span class="p">,</span>
+                    <span class="n">table</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">table</span>
                 <span class="p">)</span>
                 <span class="n">a</span> <span class="o">+=</span> <span class="n">octave</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">loc</span><span class="p">)</span> <span class="o">*</span> <span class="n">amp</span>
                 <span class="n">max_value</span> <span class="o">+=</span> <span class="n">amp</span>

@@ -37,6 +37,7 @@ def make_patterns(size: Size, path: Path) -> None:
             length=(size[X] / 8) - (size[X] / 64)
         ),
         ig.Radials(length=size[Y] / 16, growth='g'),
+        ig.Regular(sides=5, rho=size[Y] / 2),
         ig.Rays(count=7, offset=0.178),
         ig.Rings(
             radius=size[X] / 6,

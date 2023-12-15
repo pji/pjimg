@@ -161,3 +161,4 @@ class Perlin(un.UnitNoise):
 # Octave unit noise classes.
 defaults = un.OctaveNoiseDefaults(6, -4, 24, 4)
 OctavePerlin = un.octave_noise_factory(Perlin, defaults)
+BorktavePerlin = un.octave_noise_factory(Perlin, defaults, True)

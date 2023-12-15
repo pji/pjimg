@@ -11,6 +11,7 @@ image and video data.
 .. autoclass:: pjimg.sources.Lines
 .. autoclass:: pjimg.sources.Radials
 .. autoclass:: pjimg.sources.Rays
+.. autoclass:: pjimg.sources.Regular
 .. autoclass:: pjimg.sources.Rings
 .. autoclass:: pjimg.sources.Solid
 .. autoclass:: pjimg.sources.Spheres
@@ -22,6 +23,7 @@ image and video data.
 from math import sqrt
 from typing import Callable, Literal, Optional, Sequence
 
+import cv2
 import numpy as np
 from PIL import Image, ImageDraw, ImageFont
 
@@ -31,8 +33,8 @@ from pjimg.util import ImgAry, Loc, Size, X, Y, Z
 
 # Names available for import.
 __all__ = [
-    'Box', 'Gradient', 'Hexes', 'Lines', 'Radials', 'Rays', 'Rings',
-    'Solid', 'Spheres', 'Spot', 'Text', 'Waves',
+    'Box', 'Gradient', 'Hexes', 'Lines', 'Radials', 'Rays', 'Regular',
+    'Rings', 'Solid', 'Spheres', 'Spot', 'Text', 'Waves',
 ]
 
 
@@ -528,6 +530,84 @@ class Rays(Source):
         # Fill out the Z axis and return.
         rays = np.tile(rays, (size[Z], 1, 1))
         return rays
+
+
+class Regular(Source):
+    """Create a regular polygon.
+    
+    :param sides: The number of sides of the polygon.
+    :param rho: The distance from the center of the polygon to
+        a vertex of the polygon.
+    :param rotate: (Optional.) How much to rotate the polygon in
+        radians. The default is `0.0`.
+    :param color: (Optional.) The color of the polygon. Default is
+        `1.0`.
+    :param antialias: (Optional.) Whether to antialias the edge
+        of the polygon. Default is `True`.
+
+    Usage::
+    
+        >>> # Create a pentagon in a 1280x720 image.
+        >>> size = (1, 720, 1280) 
+        >>> source = Regular(5, size[1] / 2)
+        >>> img = source.fill(size)
+    
+    .. figure:: images/regular.jpg
+       :alt: A pentagon in the center of a 1280x720 image.
+       
+       The image data created by the usage example.
+
+    """
+    def __init__(
+        self, sides: int,
+        rho: float,
+        rotate: float = 0.0,
+        color: float = 1.0,
+        bg_color: float = 0.0,
+        antialias: bool = False
+    ) -> None:
+        self.sides = sides
+        self.rho = rho
+        self.rotate = rotate
+        self.color = color
+        self.bg_color = bg_color
+        self.antialias = antialias
+    
+    def fill(
+        self, size: Size,
+        loc: Loc = (0, 0, 0)
+    ) -> ImgAry:
+        """Fill a volume with image data.
+
+        :param size: The size of the volume of image data to generate.
+        :param loc: (Optional.) How much to shift the starting point
+            for the noise generation along each axis.
+        :return: An :class:`numpy.ndarray` with image data.
+        :rtype: numpy.ndarray
+        """
+        center = [n // 2 + o for n, o in zip(size, loc)]
+        angle = 2 * np.pi / self.sides
+        rho = self.rho
+        start = (3 * np.pi / 2 + self.rotate) % (2 * np.pi)
+        vertices = np.array([[
+            (
+                rho * np.cos(start + i * angle) + center[2],
+                rho * np.sin(start + i * angle) + center[1],
+            )
+            for i in range(self.sides)
+        ]], dtype=np.int32)
+        
+        a = np.zeros(size[1:], dtype=np.uint8)
+        bg_color = int(self.bg_color * 255)
+        a.fill(bg_color)
+        color = int(self.color * 255)
+        line_type = cv2.LINE_8
+        if self.antialias:
+            line_type = cv2.LINE_AA
+        cv2.fillConvexPoly(a, vertices, color=color, lineType=line_type)
+        a = a[np.newaxis, :, :]
+        a = np.tile(a, (size[Z], 1, 1))
+        return a.astype(float) / 255
 
 
 class Rings(Source):
@@ -1092,8 +1172,8 @@ if __name__ == '__main__':
         return a + 0.25
 
     size = (1, 8, 8)
-    source = Waves(unit=7, radial=True)
+    source = Regular(5, 3, antialias=True)
     a = source.fill(size)
     a *= 0xff
     a = a.astype(np.uint8)
-    print_array(a)
+    print_array(a, depth=2)

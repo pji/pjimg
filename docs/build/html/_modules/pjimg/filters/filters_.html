@@ -265,7 +265,7 @@
 
 <span class="c1"># Names available for import.</span>
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="s1">&#39;box_blur&#39;</span><span class="p">,</span> <span class="s1">&#39;colorize&#39;</span><span class="p">,</span> <span class="s1">&#39;contrast&#39;</span><span class="p">,</span> <span class="s1">&#39;filters&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;box_blur&#39;</span><span class="p">,</span> <span class="s1">&#39;colorize&#39;</span><span class="p">,</span> <span class="s1">&#39;contrast&#39;</span><span class="p">,</span> <span class="s1">&#39;cut_shadow&#39;</span><span class="p">,</span> <span class="s1">&#39;filters&#39;</span><span class="p">,</span>
     <span class="s1">&#39;flip&#39;</span><span class="p">,</span> <span class="s1">&#39;gaussian_blur&#39;</span><span class="p">,</span> <span class="s1">&#39;glow&#39;</span><span class="p">,</span>
     <span class="s1">&#39;grow&#39;</span><span class="p">,</span> <span class="s1">&#39;inverse&#39;</span><span class="p">,</span> <span class="s1">&#39;linear_to_polar&#39;</span><span class="p">,</span>
     <span class="s1">&#39;motion_blur&#39;</span><span class="p">,</span> <span class="s1">&#39;pinch&#39;</span><span class="p">,</span> <span class="s1">&#39;polar_to_linear&#39;</span><span class="p">,</span> <span class="s1">&#39;posterize&#39;</span><span class="p">,</span>
@@ -389,6 +389,15 @@
 
 
 
+<span class="nd">@register</span><span class="p">(</span><span class="n">filters</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">cut_shadow</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">,</span> <span class="n">threshold</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ImgAry</span><span class="p">:</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">-</span> <span class="n">a</span>
+    <span class="n">threshold</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">-</span> <span class="n">threshold</span>
+    <span class="n">a</span><span class="p">[</span><span class="n">a</span> <span class="o">&gt;</span> <span class="n">threshold</span><span class="p">]</span> <span class="o">=</span> <span class="n">threshold</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="n">a</span> <span class="o">/</span> <span class="n">threshold</span>
+    <span class="k">return</span> <span class="mf">1.0</span> <span class="o">-</span> <span class="n">a</span>
+
+
 <div class="viewcode-block" id="flip">
 <a class="viewcode-back" href="../../../filters.html#pjimg.filters.flip">[docs]</a>
 <span class="nd">@register</span><span class="p">(</span><span class="n">filters</span><span class="p">)</span>
@@ -475,7 +484,7 @@
 <div class="viewcode-block" id="grow">
 <a class="viewcode-back" href="../../../filters.html#pjimg.filters.grow">[docs]</a>
 <span class="nd">@register</span><span class="p">(</span><span class="n">filters</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">grow</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">,</span> <span class="n">factor</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ImgAry</span><span class="p">:</span>
+<span class="k">def</span> <span class="nf">grow</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">,</span> <span class="n">factor</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">yx_only</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ImgAry</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Increase the size of an image.</span>
 
 <span class="sd">    .. figure:: images/grow.jpg</span>
@@ -486,9 +495,15 @@
 <span class="sd">    :param a: The image data to alter.</span>
 <span class="sd">    :param factor: The scaling factor to use when increasing the</span>
 <span class="sd">        size of the image.</span>
+<span class="sd">    :param xy_only: (Optional.) Only grow the length and the width</span>
+<span class="sd">        of a three-dimensional array.</span>
 <span class="sd">    :returns: A :class:`np.ndarray` object.</span>
 <span class="sd">    :rtype: numpy.ndarray</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">yx_only</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="n">frames</span> <span class="o">=</span> <span class="p">[</span><span class="n">grow</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="n">factor</span><span class="p">)</span> <span class="k">for</span> <span class="n">frame</span> <span class="ow">in</span> <span class="n">a</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">frames</span><span class="p">)</span>
+    
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">rsz</span><span class="o">.</span><span class="n">bilinear_interpolation</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">factor</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">rsz</span><span class="o">.</span><span class="n">trilinear_interpolation</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">factor</span><span class="p">)</span></div>
@@ -610,11 +625,16 @@
 <span class="sd">        distortion should be offset from the center of the image.</span>
 <span class="sd">    :returns: A :class:`np.ndarray` object.</span>
 <span class="sd">    :rtype: numpy.ndarray</span>
+<span class="sd">    </span>
+<span class="sd">    ..warning:</span>
+<span class="sd">        If done too close to the edge of the image data, you will get</span>
+<span class="sd">        artifacts due to the lack of data. To calculate the minimum</span>
+<span class="sd">        safe distance from the edge:</span>
+<span class="sd">        </span>
+<span class="sd">            radius * (1 + amount)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Set up for creating the maps.</span>
     <span class="n">center</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">((</span><span class="n">n</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">o</span> <span class="k">for</span> <span class="n">n</span><span class="p">,</span> <span class="n">o</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">offset</span><span class="p">))</span>
-    <span class="n">flex_x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
-    <span class="n">flex_y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
 
     <span class="c1"># Create a map of the distance from each pixel in the image to</span>
     <span class="c1"># the center of the image.</span>
@@ -628,6 +648,8 @@
     <span class="c1"># Mask out the area covered by not within the radius of the effect.</span>
     <span class="n">r_mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="nb">bool</span><span class="p">)</span>
     <span class="n">r_mask</span><span class="p">[</span><span class="n">distance</span> <span class="o">&gt;=</span> <span class="n">radius</span> <span class="o">**</span> <span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">flex_x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+    <span class="n">flex_y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
     <span class="n">flex_x</span><span class="p">[</span><span class="n">r_mask</span><span class="p">]</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="n">r_mask</span><span class="p">]</span>
     <span class="n">flex_y</span><span class="p">[</span><span class="n">r_mask</span><span class="p">]</span> <span class="o">=</span> <span class="n">y</span><span class="p">[</span><span class="n">r_mask</span><span class="p">]</span>
 

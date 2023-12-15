@@ -345,8 +345,8 @@ class TestRays:
     # Tests for fill.
     def test_fill(self):
         """Given origin, dimensions, and a color, :meth:`Rays.fill`
-        should return a volume filled with a box of the origin,
-        dimensions, and color given when the object was created.
+        should return a volume filled with a rays of the count,
+        and rotation given when the object was initialized.
         """
         obj = p.Rays(count=3, offset=np.pi / 2)
         result = obj.fill((1, 8, 8))
@@ -360,6 +360,162 @@ class TestRays:
                 [0x53, 0x32, 0x09, 0x7a, 0xe6, 0x75, 0x3a, 0x19],
                 [0x1e, 0x09, 0x45, 0x98, 0xf8, 0xb1, 0x75, 0x4d],
                 [0x09, 0x31, 0x66, 0xa6, 0xeb, 0xd2, 0x9e, 0x75],
+            ],
+        ], dtype=np.uint8)).all()
+
+
+class TestRegular:
+    # Tests for initialization.
+    def test_init_all_default(self):
+        """Given only required parameters, :class:`Regular` should
+        initialize the required attributes with the given values.
+        It should then initialize the optional attributes with
+        default values.
+        """
+        required = {
+            'sides': 3,
+            'rho': 3.0,
+        }
+        optional = {
+            'rotate': 0.0,
+            'color': 1.0,
+            'bg_color': 0.0,
+            'antialias': False,
+        }
+        obj = p.Regular(**required)
+        for attr in required:
+            assert getattr(obj, attr) == required[attr]
+        for attr in optional:
+            assert getattr(obj, attr) == optional[attr]
+
+    def test_init_all_optional(self):
+        """Given optional parameters, :class:`Regular` should
+        initialize the given attributes with the given values.
+        """
+        required = {
+            'sides': 3,
+            'rho': 3.0,
+        }
+        optional = {
+            'rotate': 0.1,
+            'color': 0.5,
+            'bg_color': 1.0,
+            'antialias': True,
+        }
+        obj = p.Regular(**required, **optional)
+        for attr in required:
+            assert getattr(obj, attr) == required[attr]
+        for attr in optional:
+            assert getattr(obj, attr) == optional[attr]
+
+    # Tests for fill.
+    def test_fill(self):
+        """Given origin, dimensions, and a color, :meth:`Regular.fill`
+        should return a volume filled with a regular polygon of the
+        number of sides and distance from center to vertex (rho) given
+        when the object was created.
+        """
+        obj = p.Regular(5, 3)
+        result = obj.fill((1, 8, 8))
+        assert (mkhex(result) == np.array([
+            [
+                [0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00],
+                [0x00, 0x00, 0x00, 0xff, 0x00, 0x00, 0x00, 0x00],
+                [0x00, 0x00, 0xff, 0xff, 0xff, 0xff, 0x00, 0x00],
+                [0x00, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0x00],
+                [0x00, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0x00],
+                [0x00, 0x00, 0xff, 0xff, 0xff, 0xff, 0x00, 0x00],
+                [0x00, 0x00, 0xff, 0xff, 0xff, 0xff, 0x00, 0x00],
+                [0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00],
+            ],
+        ], dtype=np.uint8)).all()
+
+    def test_fill_antialias(self):
+        """Given origin, dimensions, and a color, :meth:`Regular.fill`
+        should return a volume filled with a regular polygon of the
+        number of sides and distance from center to vertex (rho) given
+        when the object was created. If antialiased, the edge of the
+        polygon should be antialiased.
+        """
+        obj = p.Regular(5, 3, antialias=True)
+        result = obj.fill((1, 8, 8))
+        assert (mkhex(result) == np.array([
+            [
+                [0x00, 0x00, 0x00, 0x1f, 0x00, 0x00, 0x00, 0x00],
+                [0x00, 0x00, 0x25, 0xff, 0xaa, 0x12, 0x00, 0x00],
+                [0x00, 0x48, 0xff, 0xff, 0xff, 0xe7, 0x25, 0x00],
+                [0x3d, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0x21],
+                [0x14, 0xd6, 0xff, 0xff, 0xff, 0xff, 0xdb, 0x14],
+                [0x00, 0x8c, 0xff, 0xff, 0xff, 0xff, 0x8c, 0x00],
+                [0x00, 0x21, 0xff, 0xff, 0xff, 0xff, 0x23, 0x00],
+                [0x00, 0x00, 0x1f, 0x3a, 0x3a, 0x21, 0x00, 0x00],
+            ],
+        ], dtype=np.uint8)).all()
+
+    def test_fill_bg_color(self):
+        """Given origin, dimensions, and a color, :meth:`Regular.fill`
+        should return a volume filled with a regular polygon of the
+        number of sides and distance from center to vertex (rho) given
+        when the object was created. If background color is given, the
+        area outside the polygon should be filled with the given color.
+        """
+        obj = p.Regular(5, 3, bg_color=0.5)
+        result = obj.fill((1, 8, 8))
+        assert (mkhex(result) == np.array([
+            [
+                [0x7f, 0x7f, 0x7f, 0x7f, 0x7f, 0x7f, 0x7f, 0x7f],
+                [0x7f, 0x7f, 0x7f, 0xff, 0x7f, 0x7f, 0x7f, 0x7f],
+                [0x7f, 0x7f, 0xff, 0xff, 0xff, 0xff, 0x7f, 0x7f],
+                [0x7f, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0x7f],
+                [0x7f, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0x7f],
+                [0x7f, 0x7f, 0xff, 0xff, 0xff, 0xff, 0x7f, 0x7f],
+                [0x7f, 0x7f, 0xff, 0xff, 0xff, 0xff, 0x7f, 0x7f],
+                [0x7f, 0x7f, 0x7f, 0x7f, 0x7f, 0x7f, 0x7f, 0x7f],
+            ],
+        ], dtype=np.uint8)).all()
+
+    def test_fill_color(self):
+        """Given origin, dimensions, and a color, :meth:`Regular.fill`
+        should return a volume filled with a regular polygon of the
+        number of sides and distance from center to vertex (rho) given
+        when the object was created. If color is given, the polygon
+        should be filled with the given color.
+        """
+        obj = p.Regular(5, 3, color=0.5)
+        result = obj.fill((1, 8, 8))
+        assert (mkhex(result) == np.array([
+            [
+                [0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00],
+                [0x00, 0x00, 0x00, 0x7f, 0x00, 0x00, 0x00, 0x00],
+                [0x00, 0x00, 0x7f, 0x7f, 0x7f, 0x7f, 0x00, 0x00],
+                [0x00, 0x7f, 0x7f, 0x7f, 0x7f, 0x7f, 0x7f, 0x00],
+                [0x00, 0x7f, 0x7f, 0x7f, 0x7f, 0x7f, 0x7f, 0x00],
+                [0x00, 0x00, 0x7f, 0x7f, 0x7f, 0x7f, 0x00, 0x00],
+                [0x00, 0x00, 0x7f, 0x7f, 0x7f, 0x7f, 0x00, 0x00],
+                [0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00],
+            ],
+        ], dtype=np.uint8)).all()
+
+    def test_fill_rotate(self):
+        """Given origin, dimensions, and a color, :meth:`Regular.fill`
+        should return a volume filled with a regular polygon of the
+        number of sides and distance from center to vertex (rho) given
+        when the object was created. When given a value of rotate in
+        radians, the polygon should be rotated clockwise by that amount.
+        """
+        rotate = 2 * np.pi / 10
+        obj = p.Regular(5, 3, rotate=rotate)
+        result = obj.fill((1, 8, 8))
+        assert (mkhex(result) == np.array([
+            [
+                [0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00],
+                [0x00, 0x00, 0xff, 0xff, 0xff, 0xff, 0x00, 0x00],
+                [0x00, 0x00, 0xff, 0xff, 0xff, 0xff, 0x00, 0x00],
+                [0x00, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0x00],
+                [0x00, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0x00],
+                [0x00, 0x00, 0xff, 0xff, 0xff, 0xff, 0x00, 0x00],
+                [0x00, 0x00, 0x00, 0xff, 0xff, 0xff, 0x00, 0x00],
+                [0x00, 0x00, 0x00, 0x00, 0xff, 0x00, 0x00, 0x00],
             ],
         ], dtype=np.uint8)).all()
 

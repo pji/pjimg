@@ -210,6 +210,7 @@
 <span class="sd">.. autoclass:: pjimg.sources.Lines</span>
 <span class="sd">.. autoclass:: pjimg.sources.Radials</span>
 <span class="sd">.. autoclass:: pjimg.sources.Rays</span>
+<span class="sd">.. autoclass:: pjimg.sources.Regular</span>
 <span class="sd">.. autoclass:: pjimg.sources.Rings</span>
 <span class="sd">.. autoclass:: pjimg.sources.Solid</span>
 <span class="sd">.. autoclass:: pjimg.sources.Spheres</span>
@@ -221,6 +222,7 @@
 <span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">sqrt</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Literal</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Sequence</span>
 
+<span class="kn">import</span> <span class="nn">cv2</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span><span class="p">,</span> <span class="n">ImageDraw</span><span class="p">,</span> <span class="n">ImageFont</span>
 
@@ -230,8 +232,8 @@
 
 <span class="c1"># Names available for import.</span>
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="s1">&#39;Box&#39;</span><span class="p">,</span> <span class="s1">&#39;Gradient&#39;</span><span class="p">,</span> <span class="s1">&#39;Hexes&#39;</span><span class="p">,</span> <span class="s1">&#39;Lines&#39;</span><span class="p">,</span> <span class="s1">&#39;Radials&#39;</span><span class="p">,</span> <span class="s1">&#39;Rays&#39;</span><span class="p">,</span> <span class="s1">&#39;Rings&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;Solid&#39;</span><span class="p">,</span> <span class="s1">&#39;Spheres&#39;</span><span class="p">,</span> <span class="s1">&#39;Spot&#39;</span><span class="p">,</span> <span class="s1">&#39;Text&#39;</span><span class="p">,</span> <span class="s1">&#39;Waves&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Box&#39;</span><span class="p">,</span> <span class="s1">&#39;Gradient&#39;</span><span class="p">,</span> <span class="s1">&#39;Hexes&#39;</span><span class="p">,</span> <span class="s1">&#39;Lines&#39;</span><span class="p">,</span> <span class="s1">&#39;Radials&#39;</span><span class="p">,</span> <span class="s1">&#39;Rays&#39;</span><span class="p">,</span> <span class="s1">&#39;Regular&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Rings&#39;</span><span class="p">,</span> <span class="s1">&#39;Solid&#39;</span><span class="p">,</span> <span class="s1">&#39;Spheres&#39;</span><span class="p">,</span> <span class="s1">&#39;Spot&#39;</span><span class="p">,</span> <span class="s1">&#39;Text&#39;</span><span class="p">,</span> <span class="s1">&#39;Waves&#39;</span><span class="p">,</span>
 <span class="p">]</span>
 
 
@@ -747,6 +749,84 @@
 
 
 
+<div class="viewcode-block" id="Regular">
+<a class="viewcode-back" href="../../../sources.html#pjimg.sources.Regular">[docs]</a>
+<span class="k">class</span> <span class="nc">Regular</span><span class="p">(</span><span class="n">Source</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create a regular polygon.</span>
+<span class="sd">    </span>
+<span class="sd">    :param sides: The number of sides of the polygon.</span>
+<span class="sd">    :param rho: The distance from the center of the polygon to</span>
+<span class="sd">        a vertex of the polygon.</span>
+<span class="sd">    :param rotate: (Optional.) How much to rotate the polygon in</span>
+<span class="sd">        radians. The default is `0.0`.</span>
+<span class="sd">    :param color: (Optional.) The color of the polygon.</span>
+
+<span class="sd">    Usage::</span>
+<span class="sd">    </span>
+<span class="sd">        &gt;&gt;&gt; # Create a pentagon in a 1280x720 image.</span>
+<span class="sd">        &gt;&gt;&gt; size = (1, 720, 1280) </span>
+<span class="sd">        &gt;&gt;&gt; source = Regular(5, size[1] / 2)</span>
+<span class="sd">        &gt;&gt;&gt; img = source.fill(size)</span>
+<span class="sd">    </span>
+<span class="sd">    .. figure:: images/regular.jpg</span>
+<span class="sd">       :alt: A pentagon in the center of a 1280x720 image.</span>
+<span class="sd">       </span>
+<span class="sd">       The image data created by the usage example.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">sides</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">rho</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">rotate</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span>
+        <span class="n">color</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span>
+        <span class="n">bg_color</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span>
+        <span class="n">antialias</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sides</span> <span class="o">=</span> <span class="n">sides</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rho</span> <span class="o">=</span> <span class="n">rho</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rotate</span> <span class="o">=</span> <span class="n">rotate</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">color</span> <span class="o">=</span> <span class="n">color</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bg_color</span> <span class="o">=</span> <span class="n">bg_color</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">antialias</span> <span class="o">=</span> <span class="n">antialias</span>
+    
+    <span class="k">def</span> <span class="nf">fill</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="p">:</span> <span class="n">Size</span><span class="p">,</span>
+        <span class="n">loc</span><span class="p">:</span> <span class="n">Loc</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ImgAry</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Fill a volume with image data.</span>
+
+<span class="sd">        :param size: The size of the volume of image data to generate.</span>
+<span class="sd">        :param loc: (Optional.) How much to shift the starting point</span>
+<span class="sd">            for the noise generation along each axis.</span>
+<span class="sd">        :return: An :class:`numpy.ndarray` with image data.</span>
+<span class="sd">        :rtype: numpy.ndarray</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">center</span> <span class="o">=</span> <span class="p">[</span><span class="n">n</span> <span class="o">//</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">o</span> <span class="k">for</span> <span class="n">n</span><span class="p">,</span> <span class="n">o</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">loc</span><span class="p">)]</span>
+        <span class="n">angle</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">sides</span>
+        <span class="n">rho</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rho</span>
+        <span class="n">start</span> <span class="o">=</span> <span class="p">(</span><span class="mi">3</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">rotate</span><span class="p">)</span> <span class="o">%</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span>
+        <span class="n">vertices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span>
+            <span class="p">(</span>
+                <span class="n">rho</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">start</span> <span class="o">+</span> <span class="n">i</span> <span class="o">*</span> <span class="n">angle</span><span class="p">)</span> <span class="o">+</span> <span class="n">center</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span>
+                <span class="n">rho</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">start</span> <span class="o">+</span> <span class="n">i</span> <span class="o">*</span> <span class="n">angle</span><span class="p">)</span> <span class="o">+</span> <span class="n">center</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+            <span class="p">)</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sides</span><span class="p">)</span>
+        <span class="p">]],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span>
+        
+        <span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">size</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>
+        <span class="n">bg_color</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bg_color</span> <span class="o">*</span> <span class="mi">255</span><span class="p">)</span>
+        <span class="n">a</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="n">bg_color</span><span class="p">)</span>
+        <span class="n">color</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">color</span> <span class="o">*</span> <span class="mi">255</span><span class="p">)</span>
+        <span class="n">line_type</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">LINE_8</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">antialias</span><span class="p">:</span>
+            <span class="n">line_type</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">LINE_AA</span>
+        <span class="n">cv2</span><span class="o">.</span><span class="n">fillPoly</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">vertices</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">lineType</span><span class="o">=</span><span class="n">line_type</span><span class="p">)</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="n">a</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:]</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="p">(</span><span class="n">size</span><span class="p">[</span><span class="n">Z</span><span class="p">],</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">a</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span> <span class="o">/</span> <span class="mi">255</span></div>
+
+
+
 <div class="viewcode-block" id="Rings">
 <a class="viewcode-back" href="../../../sources.html#pjimg.sources.Rings">[docs]</a>
 <span class="k">class</span> <span class="nc">Rings</span><span class="p">(</span><span class="n">Source</span><span class="p">):</span>
@@ -764,6 +844,8 @@
 <span class="sd">        there is only one ring.</span>
 <span class="sd">    :param count: (Optional.) The number of rings to draw. The</span>
 <span class="sd">        default is one.</span>
+<span class="sd">    :param count_offset: (Optional.) Set to `1` for backwards</span>
+<span class="sd">        compatibility with :mod:`pjinoise`.</span>
 <span class="sd">    :return: :class:`Rings` object.</span>
 <span class="sd">    :rtype: sources.patterns.Rings</span>
 
@@ -788,13 +870,15 @@
         <span class="bp">self</span><span class="p">,</span> <span class="n">radius</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
         <span class="n">width</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
         <span class="n">gap</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
-        <span class="n">count</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="n">count</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="n">count_offset</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize an instance of Ring.&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">radius</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">radius</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">width</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">width</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">gap</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">gap</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">count</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">count</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">count_offset</span> <span class="o">=</span> <span class="n">count_offset</span>
 
     <span class="c1"># Public methods.</span>
     <span class="k">def</span> <span class="nf">fill</span><span class="p">(</span>
@@ -819,7 +903,7 @@
         <span class="c1"># volume and run the easing function on the results.</span>
         <span class="n">c</span> <span class="o">=</span> <span class="n">index_to_distance_from_origin</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">count</span><span class="p">):</span>
-            <span class="n">radius</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">radius</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">gap</span> <span class="o">*</span> <span class="n">i</span>
+            <span class="n">radius</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">radius</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">gap</span> <span class="o">*</span> <span class="p">(</span><span class="n">i</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">count_offset</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">radius</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
                 <span class="n">working</span> <span class="o">=</span> <span class="n">c</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">radius</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
                 <span class="n">working</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">working</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
@@ -1323,11 +1407,11 @@
         <span class="k">return</span> <span class="n">a</span> <span class="o">+</span> <span class="mf">0.25</span>
 
     <span class="n">size</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
-    <span class="n">source</span> <span class="o">=</span> <span class="n">Waves</span><span class="p">(</span><span class="n">unit</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">radial</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">source</span> <span class="o">=</span> <span class="n">Regular</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">antialias</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="n">a</span> <span class="o">=</span> <span class="n">source</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="n">size</span><span class="p">)</span>
     <span class="n">a</span> <span class="o">*=</span> <span class="mh">0xff</span>
     <span class="n">a</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>
-    <span class="n">print_array</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+    <span class="n">print_array</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">depth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 </pre></div>
         </article>
       </div>

@@ -66,7 +66,7 @@ from pjimg.util import ImgAry, Loc, Size, X, Y, Z, X_, Y_, Z_
 
 # Names available for import.
 __all__ = [
-    'box_blur', 'colorize', 'contrast', 'filters',
+    'box_blur', 'colorize', 'contrast', 'cut_shadow', 'filters',
     'flip', 'gaussian_blur', 'glow',
     'grow', 'inverse', 'linear_to_polar',
     'motion_blur', 'pinch', 'polar_to_linear', 'posterize',
@@ -182,6 +182,15 @@ def contrast(
 
 
 @register(filters)
+def cut_shadow(a: ImgAry, threshold: float) -> ImgAry:
+    a = 1.0 - a
+    threshold = 1.0 - threshold
+    a[a > threshold] = threshold
+    a = a / threshold
+    return 1.0 - a
+
+
+@register(filters)
 def flip(a: ImgAry, axis: int) -> ImgAry:
     """Flip the image around an axis.
 
@@ -256,7 +265,7 @@ def glow(a: ImgAry, sigma: int) -> ImgAry:
 
 
 @register(filters)
-def grow(a: ImgAry, factor: float) -> ImgAry:
+def grow(a: ImgAry, factor: float, yx_only: bool = False) -> ImgAry:
     """Increase the size of an image.
 
     .. figure:: images/grow.jpg
@@ -267,9 +276,15 @@ def grow(a: ImgAry, factor: float) -> ImgAry:
     :param a: The image data to alter.
     :param factor: The scaling factor to use when increasing the
         size of the image.
+    :param xy_only: (Optional.) Only grow the length and the width
+        of a three-dimensional array.
     :returns: A :class:`np.ndarray` object.
     :rtype: numpy.ndarray
     """
+    if yx_only and len(a.shape) > 2:
+        frames = [grow(frame, factor) for frame in a]
+        return np.array(frames)
+    
     if len(a.shape) == 2:
         return rsz.bilinear_interpolation(a, factor)
     return rsz.trilinear_interpolation(a, factor)
@@ -379,11 +394,16 @@ def pinch(
         distortion should be offset from the center of the image.
     :returns: A :class:`np.ndarray` object.
     :rtype: numpy.ndarray
+    
+    ..warning:
+        If done too close to the edge of the image data, you will get
+        artifacts due to the lack of data. To calculate the minimum
+        safe distance from the edge:
+        
+            radius * (1 + amount)
     """
     # Set up for creating the maps.
     center = tuple((n) / 2 + o for n, o in zip(a.shape, offset))
-    flex_x = np.zeros(a.shape, np.float32)
-    flex_y = np.zeros(a.shape, np.float32)
 
     # Create a map of the distance from each pixel in the image to
     # the center of the image.
@@ -397,6 +417,8 @@ def pinch(
     # Mask out the area covered by not within the radius of the effect.
     r_mask = np.zeros(x.shape, bool)
     r_mask[distance >= radius ** 2] = True
+    flex_x = np.zeros(a.shape, np.float32)
+    flex_y = np.zeros(a.shape, np.float32)
     flex_x[r_mask] = x[r_mask]
     flex_y[r_mask] = y[r_mask]
 

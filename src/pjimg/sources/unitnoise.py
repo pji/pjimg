@@ -113,7 +113,7 @@ class UnitNoise(Noise):
         super().__init__(seed)
 
         # Initialize the randomized table.
-        if table is  None:
+        if table is None:
             table = self._init_table()
         self._table = table
 

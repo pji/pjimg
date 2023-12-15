@@ -209,7 +209,7 @@
 <span class="sd">.. autoclass:: pjimg.sources.OctavePerlin</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Sequence</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Sequence</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
@@ -271,10 +271,11 @@
         <span class="nb">min</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mh">0x00</span><span class="p">,</span>
         <span class="nb">max</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mh">0xff</span><span class="p">,</span>
         <span class="n">repeats</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
-        <span class="n">seed</span><span class="p">:</span> <span class="n">Seed</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">seed</span><span class="p">:</span> <span class="n">Seed</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">table</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Sequence</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize an instance of UnitNoise.&quot;&quot;&quot;</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">unit</span><span class="p">,</span> <span class="nb">min</span><span class="p">,</span> <span class="nb">max</span><span class="p">,</span> <span class="n">repeats</span><span class="p">,</span> <span class="n">seed</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">unit</span><span class="p">,</span> <span class="nb">min</span><span class="p">,</span> <span class="nb">max</span><span class="p">,</span> <span class="n">repeats</span><span class="p">,</span> <span class="n">seed</span><span class="p">,</span> <span class="n">table</span><span class="p">)</span>
 
     <span class="c1"># Public classes.</span>
     <span class="k">def</span> <span class="nf">fill</span><span class="p">(</span>
@@ -362,6 +363,7 @@
 <span class="c1"># Octave unit noise classes.</span>
 <span class="n">defaults</span> <span class="o">=</span> <span class="n">un</span><span class="o">.</span><span class="n">OctaveNoiseDefaults</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="mi">24</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
 <span class="n">OctavePerlin</span> <span class="o">=</span> <span class="n">un</span><span class="o">.</span><span class="n">octave_noise_factory</span><span class="p">(</span><span class="n">Perlin</span><span class="p">,</span> <span class="n">defaults</span><span class="p">)</span>
+<span class="n">BorktavePerlin</span> <span class="o">=</span> <span class="n">un</span><span class="o">.</span><span class="n">octave_noise_factory</span><span class="p">(</span><span class="n">Perlin</span><span class="p">,</span> <span class="n">defaults</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
 </pre></div>
         </article>
       </div>
