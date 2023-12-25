@@ -1151,6 +1151,11 @@ def center_index_origin(indices: ImgAry) -> ImgAry:
     return shift_index_origin(indices, shifts)
 
 
+def find_center(size: Size, loc: Loc) -> Size:
+    """Find the center pixel of an image of the given size."""
+    return tuple([n // 2 + o for n, o in zip(size, loc)])
+
+
 def index_to_distance_from_origin(indices: ImgAry) -> ImgAry:
     """Transform indices into distances from the origin. In general,
     it transforms rectangular shapes to circular ones.

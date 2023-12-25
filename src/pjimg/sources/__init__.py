@@ -42,5 +42,6 @@ from pjimg.sources.patterns import *
 from pjimg.sources.maze import Maze, AnimatedMaze, SolvedMaze
 from pjimg.sources.noise import Embers, Noise
 from pjimg.sources.perlin import BorktavePerlin, OctavePerlin, Perlin
+from pjimg.sources.tile import Tile
 from pjimg.sources.unitnoise import *
 from pjimg.sources.worley import OctaveWorley, Worley
