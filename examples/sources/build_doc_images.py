@@ -62,6 +62,9 @@ def make_patterns(size: Size, path: Path) -> None:
             stroke_fill=0x00
         ),
         ig.Waves(size[X], angle=30, wavelength=0.2),
+        
+        # Tiles.
+        ig.Tile('triangle', 20, 3),
     ]
     for src in srcs:
         save(src, size, path)

@@ -106,18 +106,19 @@ def make_images(path: Path, size: Size, ext: str = 'jpg') -> None:
 #             'offset': (0, 0, 0)
 #         }, False),
 #         (ift.polar_to_linear, {}, False),
-        (ift.posterize, {'levels': 6,}, False),
-        (ift.ripple, {
-            'wave': (0, size[Y] // 5, size[Y] // 5),
-            'amp': (0, size[Y] // 80, size[Y] // 80),
-            'distaxis': (Z, Y, X),
-        }, False),
-        (ift.rotate_90, {}, False),
-        (ift.skew, {'slope': 0.25,}, False),
-        (ift.twirl, {
-            'radius': size[X],
-            'strength': 3,
-        }, False),
+#         (ift.posterize, {'levels': 6,}, False),
+#         (ift.ripple, {
+#             'wave': (0, size[Y] // 5, size[Y] // 5),
+#             'amp': (0, size[Y] // 80, size[Y] // 80),
+#             'distaxis': (Z, Y, X),
+#         }, False),
+        (ift.rotate_2d, {'angle': 30,}, False),
+#         (ift.rotate_90, {}, False),
+#         (ift.skew, {'slope': 0.25,}, False),
+#         (ift.twirl, {
+#             'radius': size[X],
+#             'strength': 3,
+#         }, False),
     ]
     for item in filters:
         a = make_base_image(size)

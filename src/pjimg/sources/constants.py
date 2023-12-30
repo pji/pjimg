@@ -4,6 +4,15 @@ constants
 
 Constants for :mod:`pjimg.sources`.
 """
+import numpy as np
+
+
+# Common orientation angles.
+DOWN = np.pi / 2
+LEFT = np.pi
+RIGHT = 0
+UP = 3 * np.pi / 2
+
 # Standard table for unit noise.
 P = (
     151, 160, 137, 91, 90, 15, 131, 13, 201, 95, 96, 53, 194, 233, 7, 225, 

@@ -244,12 +244,13 @@
 <span class="sd">.. autofunction:: pjimg.filters.polar_to_linear</span>
 <span class="sd">.. autofunction:: pjimg.filters.posterize</span>
 <span class="sd">.. autofunction:: pjimg.filters.ripple</span>
+<span class="sd">.. autofunction:: pjimg.filters.rotate_2d</span>
 <span class="sd">.. autofunction:: pjimg.filters.rotate_90</span>
 <span class="sd">.. autofunction:: pjimg.filters.skew</span>
 <span class="sd">.. autofunction:: pjimg.filters.twirl</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Sequence</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Sequence</span>
 
 <span class="kn">import</span> <span class="nn">cv2</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -260,7 +261,7 @@
 <span class="kn">from</span> <span class="nn">pjimg.filters.decorators</span> <span class="kn">import</span> <span class="o">*</span>
 <span class="kn">from</span> <span class="nn">pjimg.filters.model</span> <span class="kn">import</span> <span class="n">Filter</span>
 <span class="kn">from</span> <span class="nn">pjimg.filters.util</span> <span class="kn">import</span> <span class="n">get_color_for_key</span>
-<span class="kn">from</span> <span class="nn">pjimg.util</span> <span class="kn">import</span> <span class="n">ImgAry</span><span class="p">,</span> <span class="n">Loc</span><span class="p">,</span> <span class="n">Size</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">Z</span><span class="p">,</span> <span class="n">X_</span><span class="p">,</span> <span class="n">Y_</span><span class="p">,</span> <span class="n">Z_</span>
+<span class="kn">from</span> <span class="nn">pjimg.util</span> <span class="kn">import</span> <span class="n">find_center</span><span class="p">,</span> <span class="n">ImgAry</span><span class="p">,</span> <span class="n">Loc</span><span class="p">,</span> <span class="n">Size</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">Z</span><span class="p">,</span> <span class="n">X_</span><span class="p">,</span> <span class="n">Y_</span><span class="p">,</span> <span class="n">Z_</span>
 
 
 <span class="c1"># Names available for import.</span>
@@ -269,12 +270,12 @@
     <span class="s1">&#39;flip&#39;</span><span class="p">,</span> <span class="s1">&#39;gaussian_blur&#39;</span><span class="p">,</span> <span class="s1">&#39;glow&#39;</span><span class="p">,</span>
     <span class="s1">&#39;grow&#39;</span><span class="p">,</span> <span class="s1">&#39;inverse&#39;</span><span class="p">,</span> <span class="s1">&#39;linear_to_polar&#39;</span><span class="p">,</span>
     <span class="s1">&#39;motion_blur&#39;</span><span class="p">,</span> <span class="s1">&#39;pinch&#39;</span><span class="p">,</span> <span class="s1">&#39;polar_to_linear&#39;</span><span class="p">,</span> <span class="s1">&#39;posterize&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;ripple&#39;</span><span class="p">,</span> <span class="s1">&#39;rotate_90&#39;</span><span class="p">,</span> <span class="s1">&#39;skew&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;ripple&#39;</span><span class="p">,</span> <span class="s1">&#39;rotate_2d&#39;</span><span class="p">,</span> <span class="s1">&#39;rotate_90&#39;</span><span class="p">,</span> <span class="s1">&#39;skew&#39;</span><span class="p">,</span>
     <span class="s1">&#39;twirl&#39;</span>
 <span class="p">]</span>
 
 
-<span class="c1"># Registry of ease functions.</span>
+<span class="c1"># Registry of filter functions.</span>
 <span class="n">filters</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Filter</span><span class="p">]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
 
 
@@ -781,6 +782,47 @@
 
 
 
+<div class="viewcode-block" id="rotate_2d">
+<a class="viewcode-back" href="../../../filters.html#pjimg.filters.rotate_2d">[docs]</a>
+<span class="nd">@register</span><span class="p">(</span><span class="n">filters</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">rotate_2d</span><span class="p">(</span>
+    <span class="n">a</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">,</span> <span class="n">angle</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">origin</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Loc</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">safe</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ImgAry</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Rotate the image by an arbitrary angle around the Z axis.</span>
+<span class="sd">    </span>
+<span class="sd">    .. figure:: images/rotate_2d.jpg</span>
+<span class="sd">       :alt: An example of the filter affecting an image.</span>
+<span class="sd">       </span>
+<span class="sd">       An example of :func:`rotate_2d` affecting an image.</span>
+<span class="sd">    </span>
+<span class="sd">    :param a: The image data to alter.</span>
+<span class="sd">    :param angle: The angle to rotate the image in degrees.</span>
+<span class="sd">    :param origin: (Optional.) The point of rotation. Defaults to</span>
+<span class="sd">        the center of the image.</span>
+<span class="sd">    :param safe: (Optional.) Make a defensive copy of the image data</span>
+<span class="sd">        before operating on the data to prevent unexpected changes to</span>
+<span class="sd">        the original image data. This can be turned off in cases where</span>
+<span class="sd">        it is more important to preserve the memory. Defaults to `True`.</span>
+<span class="sd">    :returns: An array of image data.</span>
+<span class="sd">    :rtype: A :class:numpy.ndarray object.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">safe</span><span class="p">:</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">size</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">shape</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">size</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">frame</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
+            <span class="n">frame</span> <span class="o">=</span> <span class="n">rotate_2d</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="n">angle</span><span class="p">,</span> <span class="n">origin</span><span class="p">,</span> <span class="n">safe</span><span class="p">)</span>
+            <span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">frame</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:]</span>
+        <span class="k">return</span> <span class="n">a</span>
+    
+    <span class="k">if</span> <span class="n">origin</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">origin</span> <span class="o">=</span> <span class="n">find_center</span><span class="p">(</span><span class="n">size</span><span class="p">)</span>
+    <span class="n">y</span><span class="p">,</span> <span class="n">x</span> <span class="o">=</span> <span class="n">origin</span>
+    <span class="n">matrix</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">getRotationMatrix2D</span><span class="p">((</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">),</span> <span class="n">angle</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">cv2</span><span class="o">.</span><span class="n">warpAffine</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">matrix</span><span class="p">,</span> <span class="p">(</span><span class="n">size</span><span class="p">[</span><span class="n">X_</span><span class="p">],</span> <span class="n">size</span><span class="p">[</span><span class="n">Y_</span><span class="p">]))</span></div>
+
+
+
 <div class="viewcode-block" id="rotate_90">
 <a class="viewcode-back" href="../../../filters.html#pjimg.filters.rotate_90">[docs]</a>
 <span class="nd">@register</span><span class="p">(</span><span class="n">filters</span><span class="p">)</span>
@@ -910,7 +952,7 @@
         <span class="p">],</span>
     <span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
 
-    <span class="n">a</span> <span class="o">=</span> <span class="n">posterize</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="n">rotate_2d</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="mi">45</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
     <span class="n">print_array</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
 </pre></div>
         </article>

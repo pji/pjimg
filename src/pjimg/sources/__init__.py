@@ -29,19 +29,26 @@ generates image data.
 .. autofunction:: pjimg.sources.Source
 
 .. automodule:: pjimg.sources.patterns
+.. automodule:: pjimg.sources.tile
 .. automodule:: pjimg.sources.noise
 .. automodule:: pjimg.sources.unitnoise
 .. automodule:: pjimg.sources.perlin
 .. automodule:: pjimg.sources.maze
 .. automodule:: pjimg.sources.worley
 
+
+Source Utilities
+================
+.. automodule:: pjimg.sources.decorators
+
 """
-from pjimg.sources.constants import P
+from pjimg.sources.constants import DOWN, LEFT, P, RIGHT, UP
+from pjimg.sources.decorators import register
 from pjimg.sources.model import Seed, Source
 from pjimg.sources.patterns import *
 from pjimg.sources.maze import Maze, AnimatedMaze, SolvedMaze
 from pjimg.sources.noise import Embers, Noise
 from pjimg.sources.perlin import BorktavePerlin, OctavePerlin, Perlin
-from pjimg.sources.tile import Tile
+from pjimg.sources.tile import Tile, tile_patterns
 from pjimg.sources.unitnoise import *
 from pjimg.sources.worley import OctaveWorley, Worley

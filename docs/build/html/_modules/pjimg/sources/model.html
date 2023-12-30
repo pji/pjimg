@@ -156,6 +156,10 @@
   <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../index.html">pjimg</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../blends.html">blends</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../eases.html">eases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../filters.html">filters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../sources.html">sources</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../imgio.html">imgio</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../util.html">util</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../requirements.html">pjimg Requirements</a></li>
@@ -201,12 +205,17 @@
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">ABC</span><span class="p">,</span> <span class="n">abstractmethod</span>
 <span class="kn">from</span> <span class="nn">inspect</span> <span class="kn">import</span> <span class="n">signature</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Union</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">numpy.typing</span> <span class="kn">import</span> <span class="n">NDArray</span>
 
-<span class="kn">from</span> <span class="nn">pjimg.util</span> <span class="kn">import</span> <span class="n">ImgAry</span><span class="p">,</span> <span class="n">Loc</span><span class="p">,</span> <span class="n">Size</span>
+<span class="kn">from</span> <span class="nn">pjimg.sources.constants</span> <span class="kn">import</span> <span class="n">DOWN</span><span class="p">,</span> <span class="n">LEFT</span><span class="p">,</span> <span class="n">RIGHT</span><span class="p">,</span> <span class="n">UP</span>
+<span class="kn">from</span> <span class="nn">pjimg.util</span> <span class="kn">import</span> <span class="o">*</span>
 
+
+<span class="c1"># Two-dimensional axes.</span>
+<span class="n">y</span><span class="p">,</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span>
 
 <span class="c1"># Typing.</span>
 <span class="n">Seed</span> <span class="o">=</span> <span class="n">Union</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">]</span>
@@ -214,6 +223,9 @@
 
 <span class="c1"># Base classes.</span>
 <span class="k">class</span> <span class="nc">Serializable</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;An object that can be serialized as either a :class:`tuple` or</span>
+<span class="sd">    a :class:`dict`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Determine the equality of this and another object.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">):</span>
@@ -247,7 +259,7 @@
 
 
 <div class="viewcode-block" id="Source">
-<a class="viewcode-back" href="../../../imggen.html#pjimg.sources.Source">[docs]</a>
+<a class="viewcode-back" href="../../../sources.html#pjimg.sources.Source">[docs]</a>
 <span class="k">class</span> <span class="nc">Source</span><span class="p">(</span><span class="n">Serializable</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;A source of image data.&quot;&quot;&quot;</span>
     <span class="nd">@abstractmethod</span>
@@ -264,6 +276,169 @@
 <span class="sd">        :rtype: numpy.ndarray</span>
 <span class="sd">        &quot;&quot;&quot;</span></div>
 
+
+
+<span class="k">class</span> <span class="nc">TilePattern</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Base class for tiling patterns.</span>
+<span class="sd">    </span>
+<span class="sd">    :param size: The size of the image data to be tiled.</span>
+<span class="sd">    :param vp: The distance in pixels from the center of a tile to each</span>
+<span class="sd">        of its vertices.</span>
+<span class="sd">    :param gap: The distance in pixel between a side of a tile to the</span>
+<span class="sd">        nearest point of its neighbor.</span>
+<span class="sd">    :param rotation: The amount in radians to rotate each tile.</span>
+<span class="sd">    :param loc: (Optional.) How much to offset the position of the tiles</span>
+<span class="sd">        in each dimension of the image data.</span>
+<span class="sd">    :return: A :class:`TilePattern` object.</span>
+<span class="sd">    :rtype: pjimg.sources.model.TilePattern</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">sides</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">mod_next_o</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">1</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="p">:</span> <span class="n">Size</span><span class="p">,</span>
+        <span class="n">vp</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">gap</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">rotation</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">loc</span><span class="p">:</span> <span class="n">Loc</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">loc</span> <span class="o">=</span> <span class="n">loc</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">size</span> <span class="o">=</span> <span class="n">size</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vp</span> <span class="o">=</span> <span class="n">vp</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gap</span> <span class="o">=</span> <span class="n">gap</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rotation</span> <span class="o">=</span> <span class="n">rotation</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">vso</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">sides</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vso</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">vp</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vgap</span> <span class="o">=</span> <span class="n">gap</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vso</span><span class="p">)</span>
+    
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">h_row</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mi">2</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">vp</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">vgap</span>
+    
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">home</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Loc</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_home</span>
+    
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">next_p</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_next_p</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_next_p</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">sp</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">gap</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_next_p</span>
+    
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">orient_start</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">DOWN</span>
+    
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">rows</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">home</span><span class="p">[</span><span class="n">Y</span><span class="p">]</span> <span class="o">//</span> <span class="bp">self</span><span class="o">.</span><span class="n">h_row</span> <span class="o">+</span> <span class="mi">2</span><span class="p">)</span>
+    
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">size</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Size</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_size</span>
+    
+    <span class="nd">@size</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">size</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="p">:</span> <span class="n">Size</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_size</span> <span class="o">=</span> <span class="n">size</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_home</span> <span class="o">=</span> <span class="n">find_center</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">loc</span><span class="p">)</span>
+    
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">x_start</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="n">w_col</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">h_row</span>
+        <span class="n">cols</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">home</span><span class="p">[</span><span class="n">X</span><span class="p">]</span> <span class="o">//</span> <span class="n">w_col</span> <span class="o">+</span> <span class="mi">2</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">home</span><span class="p">[</span><span class="n">X</span><span class="p">]</span> <span class="o">-</span> <span class="n">w_col</span> <span class="o">*</span> <span class="n">cols</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">y_start</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">home</span><span class="p">[</span><span class="n">Y</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">h_row</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">rows</span>
+
+    <span class="c1"># Public methods.</span>
+    <span class="k">def</span> <span class="nf">get_next_center</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">center</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span> <span class="n">orient</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span> <span class="nb">float</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the linear coordinates of the next tile.</span>
+<span class="sd">        </span>
+<span class="sd">        :param center: The linear coordinates of the current tile.</span>
+<span class="sd">        :param orient: The orientation in the pattern of the current tile.</span>
+<span class="sd">        :return: A :class:`tuple` containing the linear coordinates of</span>
+<span class="sd">            the next tile in the pattern and the orientation of that tile</span>
+<span class="sd">            in the pattern.</span>
+<span class="sd">        :rtype: tuple</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">orient</span> <span class="o">==</span> <span class="n">UP</span><span class="p">:</span>
+            <span class="n">o</span> <span class="o">=</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">mod_next_o</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">vso</span>
+            <span class="n">orient</span> <span class="o">=</span> <span class="n">DOWN</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">o</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mod_next_o</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">vso</span>
+            <span class="n">orient</span> <span class="o">=</span> <span class="n">UP</span>
+        <span class="n">center</span> <span class="o">=</span> <span class="n">translate_by_polar_coords</span><span class="p">(</span><span class="n">center</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">next_p</span><span class="p">,</span> <span class="n">o</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">center</span><span class="p">,</span> <span class="n">orient</span>
+            
+    <span class="k">def</span> <span class="nf">get_next_row_start</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">last_row</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span>
+        <span class="n">last_orient</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span> <span class="nb">float</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the linear coordinates of the first tile of the next row.</span>
+<span class="sd">        </span>
+<span class="sd">        :param center: The linear coordinates of the first tile of the</span>
+<span class="sd">            current row.</span>
+<span class="sd">        :param orient: The orientation in the pattern of the first tile</span>
+<span class="sd">            of the current row.</span>
+<span class="sd">        :return: A :class:`tuple` containing the linear coordinates of</span>
+<span class="sd">            the first tile in the next row of the pattern and the</span>
+<span class="sd">            orientation of that tile in the pattern.</span>
+<span class="sd">        :rtype: tuple</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">((</span>
+            <span class="n">last_row</span><span class="p">[</span><span class="n">y</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">h_row</span><span class="p">,</span>
+            <span class="n">last_row</span><span class="p">[</span><span class="n">x</span><span class="p">]</span>
+        <span class="p">),</span> <span class="n">last_orient</span><span class="p">)</span>
+        
+    <span class="k">def</span> <span class="nf">get_vertices</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">center</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span>
+        <span class="n">o</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">vp</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">sides</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">vso</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the vertices of the tile.</span>
+<span class="sd">        </span>
+<span class="sd">        :param center: The linear coordinates of the tile.</span>
+<span class="sd">        :param o: The theta polar coordinate of the first vertex.</span>
+<span class="sd">        :param vp: (Optional.) The rho polar coordinate of vertices.</span>
+<span class="sd">            Defaults to a value based on the values given when the</span>
+<span class="sd">            :class:`TilePattern` was initialized.</span>
+<span class="sd">        :param sides: (Optional.) The number of sides for the tile.</span>
+<span class="sd">            Defaults to the number of sides given to the</span>
+<span class="sd">            :class:`TilePattern`.</span>
+<span class="sd">        :param vso: (Optional.) The theta polar coordinate for the</span>
+<span class="sd">            angle between a line from the center to a vertex of the</span>
+<span class="sd">            tile and a line from the center to the center of the</span>
+<span class="sd">            nearest side to that vertex. Defaults to a value based</span>
+<span class="sd">            on the values given when the :class:`TilePattern` was</span>
+<span class="sd">            initialized.</span>
+<span class="sd">        :return: A :class:`numpy.ndarray` of the linear coordinates</span>
+<span class="sd">            of the vertices of the tile.</span>
+<span class="sd">        :rtype: numpy.ndarray</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">vp</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">vp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vp</span>
+        <span class="k">if</span> <span class="n">sides</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">sides</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sides</span>
+        <span class="k">if</span> <span class="n">vso</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">vso</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vso</span>
+        
+        <span class="n">vvo</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">vso</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span>
+            <span class="p">(</span>
+                <span class="n">vp</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">o</span> <span class="o">+</span> <span class="n">i</span> <span class="o">*</span> <span class="n">vvo</span><span class="p">)</span> <span class="o">+</span> <span class="n">center</span><span class="p">[</span><span class="n">x</span><span class="p">],</span>
+                <span class="n">vp</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">o</span> <span class="o">+</span> <span class="n">i</span> <span class="o">*</span> <span class="n">vvo</span><span class="p">)</span> <span class="o">+</span> <span class="n">center</span><span class="p">[</span><span class="n">y</span><span class="p">],</span>
+            <span class="p">)</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">sides</span><span class="p">)</span>
+        <span class="p">]],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span>
 </pre></div>
         </article>
       </div>

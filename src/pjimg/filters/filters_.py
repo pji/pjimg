@@ -45,12 +45,13 @@ The following are the filter functions available in :mod:`pjimg`.
 .. autofunction:: pjimg.filters.polar_to_linear
 .. autofunction:: pjimg.filters.posterize
 .. autofunction:: pjimg.filters.ripple
+.. autofunction:: pjimg.filters.rotate_2d
 .. autofunction:: pjimg.filters.rotate_90
 .. autofunction:: pjimg.filters.skew
 .. autofunction:: pjimg.filters.twirl
 
 """
-from typing import Sequence
+from typing import Optional, Sequence
 
 import cv2
 import numpy as np
@@ -61,7 +62,7 @@ import pjimg.util.resize as rsz
 from pjimg.filters.decorators import *
 from pjimg.filters.model import Filter
 from pjimg.filters.util import get_color_for_key
-from pjimg.util import ImgAry, Loc, Size, X, Y, Z, X_, Y_, Z_
+from pjimg.util import find_center, ImgAry, Loc, Size, X, Y, Z, X_, Y_, Z_
 
 
 # Names available for import.
@@ -70,12 +71,12 @@ __all__ = [
     'flip', 'gaussian_blur', 'glow',
     'grow', 'inverse', 'linear_to_polar',
     'motion_blur', 'pinch', 'polar_to_linear', 'posterize',
-    'ripple', 'rotate_90', 'skew',
+    'ripple', 'rotate_2d', 'rotate_90', 'skew',
     'twirl'
 ]
 
 
-# Registry of ease functions.
+# Registry of filter functions.
 filters: dict[str, Filter] = dict()
 
 
@@ -541,6 +542,44 @@ def ripple(
 
 
 @register(filters)
+def rotate_2d(
+    a: ImgAry, angle: float, origin: Optional[Loc] = None, safe: bool = True
+) -> ImgAry:
+    """Rotate the image by an arbitrary angle around the Z axis.
+    
+    .. figure:: images/rotate_2d.jpg
+       :alt: An example of the filter affecting an image.
+       
+       An example of :func:`rotate_2d` affecting an image.
+    
+    :param a: The image data to alter.
+    :param angle: The angle to rotate the image in degrees.
+    :param origin: (Optional.) The point of rotation. Defaults to
+        the center of the image.
+    :param safe: (Optional.) Make a defensive copy of the image data
+        before operating on the data to prevent unexpected changes to
+        the original image data. This can be turned off in cases where
+        it is more important to preserve the memory. Defaults to `True`.
+    :returns: An array of image data.
+    :rtype: A :class:numpy.ndarray object.
+    """
+    if safe:
+        a = a.copy()
+    size = a.shape
+    if len(size) > 2:
+        for i, frame in enumerate(a):
+            frame = rotate_2d(frame, angle, origin, safe)
+            a[i] = frame[np.newaxis, :, :]
+        return a
+    
+    if origin is None:
+        origin = find_center(size)
+    y, x = origin
+    matrix = cv2.getRotationMatrix2D((x, y), angle, 1)
+    return cv2.warpAffine(a, matrix, (size[X_], size[Y_]))
+
+
+@register(filters)
 def rotate_90(a: ImgAry, direction: str = 'cw') -> ImgAry:
     """Rotate the data 90° around the Z axis.
 
@@ -660,5 +699,5 @@ if __name__ == '__main__':
         ],
     ], dtype=float)
 
-    a = posterize(v, 3)
+    a = rotate_2d(a, 45, (1, 1))
     print_array(a)

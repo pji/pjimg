@@ -744,6 +744,67 @@ class TestFilterRipple:
         ], dtype=float)).all()
 
 
+class TestFilterRotate2d:
+    def test_filter(self, a):
+        """Given image data and an angle, :func:`rotate_2d`
+        should rotate the image data by that amount in the
+        clockwise direction.
+        """
+        result = f.rotate_2d(a, 45.0)
+        assert (np.around(result, 4) == np.array([
+            [
+                [0.0938, 0.5947, 0.8794, 0.5947, 0.0781],
+                [0.2803, 0.6484, 0.8989, 0.6484, 0.2803],
+                [0.2969, 0.6406, 1.0000, 0.6406, 0.2969],
+                [0.2803, 0.6484, 0.8989, 0.6484, 0.2803],
+                [0.0938, 0.5947, 0.8794, 0.5947, 0.0781],
+            ],
+        ], dtype=float)).all()
+
+    def test_filter_origin(self, a):
+        """Given image data and an angle, :func:`rotate_2d`
+        should rotate the image data by that amount in the
+        clockwise direction. If an origin is given, the
+        image should be rotated around that point.
+        """
+        result = f.rotate_2d(a, 45.0, origin=(1, 1))
+        assert (np.around(result, 4) == np.array([
+            [
+                [0.1484, 0.5000, 0.8516, 0.7891, 0.4375],
+                [0.1406, 0.5000, 0.8594, 0.7969, 0.4375],
+                [0.1484, 0.5000, 0.8516, 0.7891, 0.4375],
+                [0.0000, 0.3572, 0.8340, 0.7891, 0.2673],
+                [0.0000, 0.0000, 0.5706, 0.4358, 0.0000],
+            ],
+        ], dtype=float)).all()
+
+    def test_filter_video(self, video_2_5_5):
+        """Given image data and an angle, :func:`rotate_2d`
+        should rotate the image data by that amount in the
+        clockwise direction. If given video data, each frame
+        of the data should be rotated.
+        """
+        result = f.rotate_2d(video_2_5_5, 45.0)
+        assert (np.around(result, 4) == np.array([
+            [
+                [
+                    [0.0938, 0.5947, 0.8794, 0.5947, 0.0781],
+                    [0.2803, 0.6484, 0.8989, 0.6484, 0.2803],
+                    [0.2969, 0.6406, 1.0000, 0.6406, 0.2969],
+                    [0.2803, 0.6484, 0.8989, 0.6484, 0.2803],
+                    [0.0938, 0.5947, 0.8794, 0.5947, 0.0781],
+                ],
+                [
+                    [0.0938, 0.2803, 0.2969, 0.2803, 0.0781],
+                    [0.5947, 0.6484, 0.6406, 0.6484, 0.5947],
+                    [0.8794, 0.8989, 1.0000, 0.8989, 0.8794],
+                    [0.5947, 0.6484, 0.6406, 0.6484, 0.5947],
+                    [0.0938, 0.2803, 0.2969, 0.2803, 0.0781],
+                ],
+            ],
+        ], dtype=float)).all()
+
+
 class TestFilterRotate90:
     def test_filter(self, image_5_5_tenths):
         """Given image data and a direction, :func:`rotate_90`
