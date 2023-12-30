@@ -26,7 +26,7 @@ def register(
     :rtype: class
     """
     def decorator(fn: TilePattern) -> TilePattern:
-        key = fn.__name__.lower()
+        key = fn.__name__.lower()               # type: ignore
         registry[key] = fn
         return fn
     return decorator

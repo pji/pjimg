@@ -29,7 +29,7 @@ tile_patterns: dict[str, TilePattern] = dict()
 
 
 # Pattern classes.
-@register(tile_patterns)
+@register(tile_patterns)                                # type: ignore
 class Hexagon(TilePattern):
     """Tile with hexagons."""
     sides: int = 6
@@ -57,7 +57,7 @@ class Hexagon(TilePattern):
         return self.home[X] - w_col * cols
     
 
-@register(tile_patterns)
+@register(tile_patterns)                                # type: ignore
 class Octagon(TilePattern):
     """Tile with octagons."""
     sides: int = 8
@@ -103,12 +103,12 @@ class Octagon(TilePattern):
         vp: Optional[float] = None,
         sides: Optional[int] = None,
         vso: Optional[float] = None
-    ) -> NDArray[np.int32]:
+    ) -> list[NDArray[np.int32]]:
         o -= self.vso
         return super().get_vertices(center, o, vp, sides, vso)
     
 
-@register(tile_patterns)
+@register(tile_patterns)                                # type: ignore
 class OctagonWithSquares(TilePattern):
     """Tile with octagons."""
     sides: int = 8
@@ -158,10 +158,12 @@ class OctagonWithSquares(TilePattern):
         sides: Optional[int] = None,
         vso: Optional[float] = None
     ) -> list[NDArray[np.int32]]:
+        # Create the octagon.
         o -= self.vso
         oct_center = center[:]
-        octagon = super().get_vertices(oct_center, o, vp, sides, vso)
+        tiles = super().get_vertices(oct_center, o, vp, sides, vso)
         
+        # Create the square.
         o += self.vso
         s1_center_o = 0
         s1_center_x = self.get_next_center(oct_center, UP)[0][x]
@@ -174,11 +176,13 @@ class OctagonWithSquares(TilePattern):
         s1_o = o + np.pi / 4
         s1_vso = np.pi / 4
         s1 = super().get_vertices(s1_center, s1_o, s1_p, 4, s1_vso)
+        tiles.extend(s1)
         
-        return [octagon, s1]
+        # Return the shapes.
+        return tiles
     
 
-@register(tile_patterns)
+@register(tile_patterns)                                # type: ignore
 class Square(TilePattern):
     """Tile with squares."""
     sides: int = 4
@@ -193,7 +197,7 @@ class Square(TilePattern):
         super().__init__(size, vp, gap, rotation, loc)
 
 
-@register(tile_patterns)
+@register(tile_patterns)                                # type: ignore
 class Triangle(TilePattern):
     """Tile with triangles."""
     sides: int = 3
@@ -319,7 +323,7 @@ class Tile(Noise):
     
     def fill(self, size: Size, loc: Loc = (0, 0, 0)) -> ImgAry:
         pattern_type = tile_patterns[self.pattern]
-        pattern = pattern_type(
+        pattern = pattern_type(                     # type: ignore
             size, self.radius, self.gap, self.rotation, loc
         )
         color = int(self.color * 0xff)

@@ -123,7 +123,7 @@ class TilePattern(ABC):
         try:
             return self._next_p
         except AttributeError:
-            self._next_p = 2 * self.sp + self.gap
+            self._next_p: float = 2 * self.sp + self.gap
             return self._next_p
     
     @property
@@ -201,7 +201,7 @@ class TilePattern(ABC):
         vp: Optional[float] = None,
         sides: Optional[int] = None,
         vso: Optional[float] = None
-    ) -> NDArray[np.int32]:
+    ) -> list[NDArray[np.int32]]:
         """Get the vertices of the tile.
         
         :param center: The linear coordinates of the tile.
@@ -230,10 +230,10 @@ class TilePattern(ABC):
             vso = self.vso
         
         vvo = 2 * vso
-        return np.array([[
+        return [np.array([[
             (
                 vp * np.cos(o + i * vvo) + center[x],
                 vp * np.sin(o + i * vvo) + center[y],
             )
             for i in range(sides)
-        ]], dtype=np.int32)
+        ]], dtype=np.int32),]

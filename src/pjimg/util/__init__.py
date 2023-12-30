@@ -7,6 +7,7 @@ Common utilities for the :mod:`pjimg` packages.
 .. automodule:: pjimg.util.convert
 .. automodule:: pjimg.util.lerps
 .. automodule:: pjimg.util.resize
+.. automodule:: pjimg.util.util
 .. automodule:: pjimg.util.debug
 
 """

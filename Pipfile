@@ -13,7 +13,6 @@ sphinx = "*"
 furo = "*"
 rstcheck = {extras = ["toml", "sphinx"], version = "*"}
 pycodestyle = "*"
-mypy = "*"
 pytest = "*"
 isort = "*"
 tox = "*"
@@ -23,6 +22,7 @@ twine = "*"
 matplotlib = "*"
 pjimg = {file = ".", editable = true}
 types-pillow = "*"
+mypy = "*"
 
 [requires]
 python_version = "3.12"
