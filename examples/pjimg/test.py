@@ -29,7 +29,7 @@ stops = (0, 1, 0.3, 1, 0.75, 0.7, 1, 0)
 grad = srcs.Gradient(stops=stops)
 heat = grad.fill(size)
 tile = srcs.Tile(
-    'octagonwithsquares', vp, gap=gap, color=0.5
+    'octagonwithsquares', vp, gap=gap, color=0.5, color_img=heat
 )
 img = tile.fill(size)
 

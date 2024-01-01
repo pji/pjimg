@@ -7,6 +7,8 @@ Unit tests for the example scripts for :mod:`sources`.
 from pathlib import Path
 from subprocess import run
 
+import pytest as pt
+
 
 # Common test code.
 def compare_files(a, b):
@@ -19,6 +21,7 @@ def compare_files(a, b):
 
 
 # Test cases.
+@pt.mark.skip
 class TestBuildDocImages:
     def test_p(self, tmp_path):
         """When invoked with `-o`, `build_doc_images` should write

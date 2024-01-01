@@ -274,16 +274,20 @@ class Tile(Noise):
         tile in radians. (Future versions may change this to degrees for
         consistency.) Defaults to `0`.
     :param color: (Optional.) The color of each tile. Defaults to `1.0`.
+    :param color_img: (Optional.) Image data that is used to determine
+        the color of each tile. The color is based on the average of
+        the values within the same area the tile would be in on the
+        final image. Defaults to `None`.
     :param drop: (Optional.) The likelihood a tile is not placed. This
         is a percentage chance within the range 0.0 <= x <= 1.0.
         Defaults to `0.0`.
-    :param seed: (Optional.) A seed value for the random number generator
-        used to determine whether tiles are dropped. Defaults to the
-        generator running without a seed.
-    :param seed_img: (Optional.) Image data that is used to determine the
+    :param drop_img: (Optional.) Image data that is used to determine the
         likelihood a tile is dropped from the pattern. The drop percentage
         is based on the average of the values within the same area the
         tile would be in on the final image. Defaults to `None`.
+    :param seed: (Optional.) A seed value for the random number generator
+        used to determine whether tiles are dropped. Defaults to the
+        generator running without a seed.
     :return: :class:Tile object.
     :rtype: sources.tile.Tile
     
@@ -308,17 +312,19 @@ class Tile(Noise):
         gap: int,
         rotation: float = 0.0,
         color: float = 1.0,
+        color_img: Optional[ImgAry] = None,
         drop: float = 0.0,
-        seed: Seed = None,
-        seed_img: Optional[ImgAry] = None
+        drop_img: Optional[ImgAry] = None,
+        seed: Seed = None
     ) -> None:
         self.pattern = pattern
         self.radius = radius
         self.gap = gap
         self.rotation = rotation
         self.color = color
+        self.color_img = color_img
         self.drop = drop
-        self.seed_img = seed_img
+        self.drop_img = drop_img
         super().__init__(seed)
     
     def fill(self, size: Size, loc: Loc = (0, 0, 0)) -> ImgAry:
@@ -345,9 +351,9 @@ class Tile(Noise):
                 vertices = pattern.get_vertices(center, modo)
                 if isinstance(vertices, list):
                     for polygon in vertices:
-                        self._draw_polygon(a, polygon, color, line)
+                        self._draw_polygon(a, polygon, line)
                 else:
-                    self._draw_polygon(a, vertices, color, line)
+                    self._draw_polygon(a, vertices, line)
         
                 # Find next polygon.
                 center, orient = pattern.get_next_center(center, orient)
@@ -368,12 +374,17 @@ class Tile(Noise):
     def _draw_polygon(
         self, a: IntAry,
         vertices: NDArray[np.int32],
-        color: int,
         line: int
     ) -> None:
         drop = self.drop
-        if self.seed_img is not None:
-            drop = 1 - average_color_in_shape(self.seed_img, vertices)
+        if self.drop_img is not None:
+            drop = 1 - average_color_in_shape(self.drop_img, vertices)
+        
+        color = self.color
+        if self.color_img is not None:
+            color = average_color_in_shape(self.color_img, vertices)
+        color = int(color * 0xff)
+        
         if self._rng.random([1,])[0] > drop:
             cv2.fillConvexPoly(a, vertices, color=color, lineType=line)
 
@@ -412,7 +423,7 @@ if __name__ == '__main__':
     ],], dtype=float)
     seed = 'spam'
     
-    tile = Tile(pattern, radius, gap, seed_img=seed_img, seed=seed)
+    tile = Tile(pattern, radius, gap, color_img=seed_img)
     a = tile.fill(size)
     
     a *= 0xff

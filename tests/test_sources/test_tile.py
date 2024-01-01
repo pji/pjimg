@@ -25,9 +25,10 @@ class TestTile:
         optional = {
             'rotation': 0.0,
             'color': 1.0,
+            'color_img': None,
             'drop': 0.0,
             'seed': None,
-            'seed_img': None,
+            'drop_img': None,
         }
         obj = t.Tile(**required)
         for attr in required:
@@ -47,9 +48,10 @@ class TestTile:
         optional = {
             'rotation': np.pi / 2,
             'color': 0.5,
+            'color_img': np.zeros((1, 8, 8), dtype=float),
             'drop': 0.25,
             'seed': 'spam',
-            'seed_img': np.ones((1, 8, 8), dtype=float),
+            'drop_img': np.ones((1, 8, 8), dtype=float),
         }
         obj = t.Tile(**required, **optional)
         for attr in required:
@@ -60,6 +62,39 @@ class TestTile:
             else:
                 assert (getattr(obj, attr) == optional[attr]).all()
 
+    def test_fill_color_img(self):
+        """Given a size for image data, :meth:`Tile.fill` should
+        return a volume of image data filled with the tile pattern
+        given by the attributes of the :class:`Tile`. If `color_img`
+        is set on the object, the color of the tiles in the final
+        image should be based on the colors in the `color_img`.
+        """
+        pattern = 'triangle'
+        radius = 2
+        gap = 1
+        color_img = np.array([[
+            [0.9, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3, 0.2],
+            [0.9, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3, 0.2],
+            [0.9, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3, 0.2],
+            [0.9, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3, 0.2],
+            [0.9, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3, 0.2],
+            [0.9, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3, 0.2],
+            [0.9, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3, 0.2],
+            [0.9, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3, 0.2],
+        ],], dtype=float)
+        obj = t.Tile(pattern, radius, gap, color_img=color_img)
+        result = obj.fill((1, 8, 8))
+        assert (mkhex(result) == np.array([[
+            [0x59, 0xbf, 0xbf, 0x99, 0x13, 0x40, 0x53, 0x53],
+            [0xa4, 0xc0, 0xc0, 0xb1, 0x4d, 0x53, 0x53, 0x53],
+            [0xc4, 0xc4, 0xb8, 0x89, 0x51, 0x51, 0x51, 0x51],
+            [0xa8, 0xc4, 0xa8, 0x91, 0x62, 0x51, 0x51, 0x51],
+            [0x6b, 0xc0, 0x97, 0x91, 0x8d, 0x52, 0x51, 0x3d],
+            [0x32, 0xbe, 0x82, 0x91, 0x91, 0x83, 0x48, 0x2e],
+            [0xe5, 0x13, 0x91, 0x91, 0x91, 0x91, 0x19, 0x33],
+            [0x2e, 0xc8, 0x84, 0x91, 0x91, 0x5b, 0x4c, 0x24],
+        ]], dtype=np.uint8)).all()
+    
     def test_fill_drop(self):
         """Given a size for image data, :meth:`Tile.fill` should
         return a volume of image data filled with the tile pattern
@@ -83,6 +118,40 @@ class TestTile:
             [0x00, 0x1d, 0xd7, 0xff, 0xff, 0xff, 0xeb, 0xe4],
             [0x00, 0x1b, 0xff, 0xff, 0xff, 0xff, 0x2f, 0x23],
             [0x36, 0xff, 0xe4, 0xff, 0xff, 0xbb, 0xff, 0x40],
+        ]], dtype=np.uint8)).all()
+    
+    def test_fill_drop_img(self):
+        """Given a size for image data, :meth:`Tile.fill` should
+        return a volume of image data filled with the tile pattern
+        given by the attributes of the :class:`Tile`. If `drop_img`
+        is set on the object, a percentage of tiles should be
+        dropped from the pattern based on the seed image.
+        """
+        pattern = 'triangle'
+        radius = 2
+        gap = 1
+        drop_img = np.array([[
+            [0.9, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3, 0.2],
+            [0.9, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3, 0.2],
+            [0.9, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3, 0.2],
+            [0.9, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3, 0.2],
+            [0.9, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3, 0.2],
+            [0.9, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3, 0.2],
+            [0.9, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3, 0.2],
+            [0.9, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3, 0.2],
+        ],], dtype=float)
+        seed = 'spam'
+        obj = t.Tile(pattern, radius, gap, drop_img=drop_img, seed=seed)
+        result = obj.fill((1, 8, 8))
+        assert (mkhex(result) == np.array([[
+            [0x77, 0xff, 0xff, 0x3f, 0x00, 0x00, 0x00, 0x00],
+            [0xd6, 0xff, 0xff, 0xff, 0x28, 0x00, 0x00, 0x00],
+            [0x1f, 0x3a, 0x64, 0xff, 0x40, 0x00, 0x00, 0x00],
+            [0x00, 0x00, 0x8b, 0xff, 0xe7, 0x12, 0x00, 0x00],
+            [0x00, 0x10, 0xdb, 0xff, 0xff, 0xa7, 0x00, 0x00],
+            [0x04, 0x1d, 0xd7, 0xff, 0xff, 0xff, 0x23, 0x00],
+            [0xff, 0x1b, 0xff, 0xff, 0xff, 0xff, 0x28, 0x00],
+            [0x3a, 0xff, 0xe4, 0xff, 0xff, 0xbb, 0xff, 0x40],
         ]], dtype=np.uint8)).all()
     
     def test_fill_hexagon(self):
@@ -152,40 +221,6 @@ class TestTile:
             [0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff],
         ]], dtype=np.uint8)).all()
 
-    def test_fill_seed_img(self):
-        """Given a size for image data, :meth:`Tile.fill` should
-        return a volume of image data filled with the tile pattern
-        given by the attributes of the :class:`Tile`. If `seed_img`
-        is set on the object, a percentage of tiles should be
-        dropped from the pattern based on the seed image.
-        """
-        pattern = 'triangle'
-        radius = 2
-        gap = 1
-        seed_img = np.array([[
-            [0.9, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3, 0.2],
-            [0.9, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3, 0.2],
-            [0.9, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3, 0.2],
-            [0.9, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3, 0.2],
-            [0.9, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3, 0.2],
-            [0.9, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3, 0.2],
-            [0.9, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3, 0.2],
-            [0.9, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3, 0.2],
-        ],], dtype=float)
-        seed = 'spam'
-        obj = t.Tile(pattern, radius, gap, seed_img=seed_img, seed=seed)
-        result = obj.fill((1, 8, 8))
-        assert (mkhex(result) == np.array([[
-            [0x77, 0xff, 0xff, 0x3f, 0x00, 0x00, 0x00, 0x00],
-            [0xd6, 0xff, 0xff, 0xff, 0x28, 0x00, 0x00, 0x00],
-            [0x1f, 0x3a, 0x64, 0xff, 0x40, 0x00, 0x00, 0x00],
-            [0x00, 0x00, 0x8b, 0xff, 0xe7, 0x12, 0x00, 0x00],
-            [0x00, 0x10, 0xdb, 0xff, 0xff, 0xa7, 0x00, 0x00],
-            [0x04, 0x1d, 0xd7, 0xff, 0xff, 0xff, 0x23, 0x00],
-            [0xff, 0x1b, 0xff, 0xff, 0xff, 0xff, 0x28, 0x00],
-            [0x3a, 0xff, 0xe4, 0xff, 0xff, 0xbb, 0xff, 0x40],
-        ]], dtype=np.uint8)).all()
-    
     def test_fill_square(self):
         """Given a size for image data, :meth:`Tile.fill` should
         return a volume of image data filled with the tile pattern
