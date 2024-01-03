@@ -253,12 +253,12 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">fn</span><span class="o">.</span><span class="vm">__doc__</span><span class="p">:</span>
         <span class="n">fn</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">+=</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">((</span>
-            <span class="s1">&#39;&#39;</span><span class="p">,</span>
-            <span class="s1">&#39;.. warning::&#39;</span><span class="p">,</span>
-            <span class="s1">&#39;   This filter uses a third-party library that cannot handle &#39;</span><span class="p">,</span>
-            <span class="s1">&#39;   color or three-dimensional arrays. The filter itself will &#39;</span><span class="p">,</span>
-            <span class="s1">&#39;   be able to handle three-dimensional arrays, but the filter &#39;</span><span class="p">,</span>
-            <span class="s1">&#39;   will affect each two-dimensional slice individually.&#39;</span>
+            <span class="s1">&#39;   &#39;</span><span class="p">,</span>
+            <span class="s1">&#39;   .. warning::&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;      This filter uses a third-party library that cannot handle &#39;</span><span class="p">,</span>
+            <span class="s1">&#39;      color or three-dimensional arrays. The filter itself will &#39;</span><span class="p">,</span>
+            <span class="s1">&#39;      be able to handle three-dimensional arrays, but the filter &#39;</span><span class="p">,</span>
+            <span class="s1">&#39;      will affect each two-dimensional slice individually.&#39;</span>
         <span class="p">))</span>
     
     <span class="nd">@wraps</span><span class="p">(</span><span class="n">fn</span><span class="p">)</span>

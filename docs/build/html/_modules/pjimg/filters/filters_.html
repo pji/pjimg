@@ -230,16 +230,14 @@
 <span class="sd">================</span>
 <span class="sd">The following are the filter functions available in :mod:`pjimg`.</span>
 
-<span class="sd">.. autofunction:: pjimg.filters.box_blur</span>
 <span class="sd">.. autofunction:: pjimg.filters.colorize</span>
 <span class="sd">.. autofunction:: pjimg.filters.contrast</span>
+<span class="sd">.. autofunction:: pjimg.filters.cut_highlight</span>
+<span class="sd">.. autofunction:: pjimg.filters.cut_shadow</span>
 <span class="sd">.. autofunction:: pjimg.filters.flip</span>
-<span class="sd">.. autofunction:: pjimg.filters.gaussian_blur</span>
-<span class="sd">.. autofunction:: pjimg.filters.glow</span>
 <span class="sd">.. autofunction:: pjimg.filters.grow</span>
 <span class="sd">.. autofunction:: pjimg.filters.inverse</span>
 <span class="sd">.. autofunction:: pjimg.filters.linear_to_polar</span>
-<span class="sd">.. autofunction:: pjimg.filters.motion_blur</span>
 <span class="sd">.. autofunction:: pjimg.filters.pinch</span>
 <span class="sd">.. autofunction:: pjimg.filters.polar_to_linear</span>
 <span class="sd">.. autofunction:: pjimg.filters.posterize</span>
@@ -266,10 +264,10 @@
 
 <span class="c1"># Names available for import.</span>
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="s1">&#39;box_blur&#39;</span><span class="p">,</span> <span class="s1">&#39;colorize&#39;</span><span class="p">,</span> <span class="s1">&#39;contrast&#39;</span><span class="p">,</span> <span class="s1">&#39;cut_shadow&#39;</span><span class="p">,</span> <span class="s1">&#39;filters&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;flip&#39;</span><span class="p">,</span> <span class="s1">&#39;gaussian_blur&#39;</span><span class="p">,</span> <span class="s1">&#39;glow&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;colorize&#39;</span><span class="p">,</span> <span class="s1">&#39;contrast&#39;</span><span class="p">,</span> <span class="s1">&#39;cut_highlight&#39;</span><span class="p">,</span> <span class="s1">&#39;cut_shadow&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;filters&#39;</span><span class="p">,</span> <span class="s1">&#39;flip&#39;</span><span class="p">,</span>
     <span class="s1">&#39;grow&#39;</span><span class="p">,</span> <span class="s1">&#39;inverse&#39;</span><span class="p">,</span> <span class="s1">&#39;linear_to_polar&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;motion_blur&#39;</span><span class="p">,</span> <span class="s1">&#39;pinch&#39;</span><span class="p">,</span> <span class="s1">&#39;polar_to_linear&#39;</span><span class="p">,</span> <span class="s1">&#39;posterize&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;pinch&#39;</span><span class="p">,</span> <span class="s1">&#39;polar_to_linear&#39;</span><span class="p">,</span> <span class="s1">&#39;posterize&#39;</span><span class="p">,</span>
     <span class="s1">&#39;ripple&#39;</span><span class="p">,</span> <span class="s1">&#39;rotate_2d&#39;</span><span class="p">,</span> <span class="s1">&#39;rotate_90&#39;</span><span class="p">,</span> <span class="s1">&#39;skew&#39;</span><span class="p">,</span>
     <span class="s1">&#39;twirl&#39;</span>
 <span class="p">]</span>
@@ -280,28 +278,6 @@
 
 
 <span class="c1"># Image filter functions.</span>
-<div class="viewcode-block" id="box_blur">
-<a class="viewcode-back" href="../../../filters.html#pjimg.filters.box_blur">[docs]</a>
-<span class="nd">@register</span><span class="p">(</span><span class="n">filters</span><span class="p">)</span>
-<span class="nd">@processes_by_grayscale_frame</span>
-<span class="k">def</span> <span class="nf">box_blur</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">,</span> <span class="n">size</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ImgAry</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Perform a box blur.</span>
-
-<span class="sd">    .. figure:: images/box_blur.jpg</span>
-<span class="sd">       :alt: An example of the filter affecting an image.</span>
-<span class="sd">       </span>
-<span class="sd">       An example of :func:`box_blur` affecting an image.</span>
-<span class="sd">    </span>
-<span class="sd">    :param a: The image data to alter.</span>
-<span class="sd">    :param size: The size of the blox used in the blur.</span>
-<span class="sd">    :returns: A :class:`np.ndarray` object.</span>
-<span class="sd">    :rtype: numpy.ndarray</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">kernel</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">size</span><span class="p">,</span> <span class="n">size</span><span class="p">),</span> <span class="nb">float</span><span class="p">)</span> <span class="o">/</span> <span class="n">size</span> <span class="o">**</span> <span class="mi">2</span>
-    <span class="k">return</span> <span class="n">cv2</span><span class="o">.</span><span class="n">filter2D</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">kernel</span><span class="p">)</span></div>
-
-
-
 <div class="viewcode-block" id="colorize">
 <a class="viewcode-back" href="../../../filters.html#pjimg.filters.colorize">[docs]</a>
 <span class="nd">@register</span><span class="p">(</span><span class="n">filters</span><span class="p">)</span>
@@ -317,13 +293,13 @@
 
 <span class="sd">    .. figure:: images/colorize.jpg</span>
 <span class="sd">       :alt: An example of the filter affecting an image.</span>
-<span class="sd">       </span>
+<span class="sd">   </span>
 <span class="sd">       An example of :func:`colorize` affecting an image.</span>
-<span class="sd">    </span>
+
 <span class="sd">    :param a: The image data to alter.</span>
 <span class="sd">    :param colorkey: (Optional.) The key for the pre-defined</span>
 <span class="sd">        colors to use in the colorization. These are defined</span>
-<span class="sd">        in utility.COLOR.</span>
+<span class="sd">        in `pjimg.filters.constants.COLORS`.</span>
 <span class="sd">    :param white: (Optional.) The color name for the color</span>
 <span class="sd">        to use to replace white in the image. Color names</span>
 <span class="sd">        are defined by PIL.ImageColor.</span>
@@ -332,6 +308,12 @@
 <span class="sd">        are defined by PIL.ImageColor.</span>
 <span class="sd">    :returns: A :class:`np.ndarray` object.</span>
 <span class="sd">    :rtype: numpy.ndarray</span>
+
+<span class="sd">    .. warning::</span>
+<span class="sd">        The output of this filter is in RGB color rather than</span>
+<span class="sd">        grayscale. This will impact the ability to use the</span>
+<span class="sd">        output with other features of :mod:`pjimg`.</span>
+<span class="sd">    </span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">src_space</span> <span class="o">=</span> <span class="s1">&#39;L&#39;</span>
     <span class="n">dst_space</span> <span class="o">=</span> <span class="s1">&#39;RGB&#39;</span>
@@ -390,13 +372,52 @@
 
 
 
+<div class="viewcode-block" id="cut_highlight">
+<a class="viewcode-back" href="../../../filters.html#pjimg.filters.cut_highlight">[docs]</a>
+<span class="nd">@register</span><span class="p">(</span><span class="n">filters</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">cut_highlight</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">,</span> <span class="n">threshold</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ImgAry</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Set the white point of the image to the given threshold, removing</span>
+<span class="sd">    detail from and increasing the size of the highlights.</span>
+<span class="sd">    </span>
+<span class="sd">    .. figure:: images/cut_highlight.jpg</span>
+<span class="sd">       :alt: An example of the filter affecting an image.</span>
+<span class="sd">       </span>
+<span class="sd">       An example of :func:`cut_highlight` affecting an image.</span>
+<span class="sd">    </span>
+<span class="sd">    :param a: The image data to alter.</span>
+<span class="sd">    :param threshold: The threshold value for the new white point.</span>
+<span class="sd">    :returns: A :class:`np.ndarray` object.</span>
+<span class="sd">    :rtype: numpy.ndarray</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">a</span><span class="p">[</span><span class="n">a</span> <span class="o">&gt;</span> <span class="n">threshold</span><span class="p">]</span> <span class="o">=</span> <span class="n">threshold</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="n">a</span> <span class="o">/</span> <span class="n">threshold</span>
+    <span class="k">return</span> <span class="n">a</span></div>
+
+
+
+<div class="viewcode-block" id="cut_shadow">
+<a class="viewcode-back" href="../../../filters.html#pjimg.filters.cut_shadow">[docs]</a>
 <span class="nd">@register</span><span class="p">(</span><span class="n">filters</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">cut_shadow</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">,</span> <span class="n">threshold</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ImgAry</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Set the black point of the image to the given threshold, removing</span>
+<span class="sd">    detail from and increasing the size of the shadows.</span>
+<span class="sd">    </span>
+<span class="sd">    .. figure:: images/cut_shadow.jpg</span>
+<span class="sd">       :alt: An example of the filter affecting an image.</span>
+<span class="sd">       </span>
+<span class="sd">       An example of :func:`cut_shadow` affecting an image.</span>
+<span class="sd">    </span>
+<span class="sd">    :param a: The image data to alter.</span>
+<span class="sd">    :param threshold: The threshold value for the new black point.</span>
+<span class="sd">    :returns: A :class:`np.ndarray` object.</span>
+<span class="sd">    :rtype: numpy.ndarray</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">a</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">-</span> <span class="n">a</span>
     <span class="n">threshold</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">-</span> <span class="n">threshold</span>
     <span class="n">a</span><span class="p">[</span><span class="n">a</span> <span class="o">&gt;</span> <span class="n">threshold</span><span class="p">]</span> <span class="o">=</span> <span class="n">threshold</span>
     <span class="n">a</span> <span class="o">=</span> <span class="n">a</span> <span class="o">/</span> <span class="n">threshold</span>
-    <span class="k">return</span> <span class="mf">1.0</span> <span class="o">-</span> <span class="n">a</span>
+    <span class="k">return</span> <span class="mf">1.0</span> <span class="o">-</span> <span class="n">a</span></div>
+
 
 
 <div class="viewcode-block" id="flip">
@@ -416,69 +437,6 @@
 <span class="sd">    :rtype: numpy.ndarray</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">flip</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">axis</span><span class="p">)</span></div>
-
-
-
-<div class="viewcode-block" id="gaussian_blur">
-<a class="viewcode-back" href="../../../filters.html#pjimg.filters.gaussian_blur">[docs]</a>
-<span class="nd">@register</span><span class="p">(</span><span class="n">filters</span><span class="p">)</span>
-<span class="nd">@processes_by_grayscale_frame</span>
-<span class="k">def</span> <span class="nf">gaussian_blur</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">,</span> <span class="n">sigma</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ImgAry</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Perform a gaussian blur.</span>
-
-<span class="sd">    .. figure:: images/gaussian_blur.jpg</span>
-<span class="sd">       :alt: An example of the filter affecting an image.</span>
-<span class="sd">       </span>
-<span class="sd">       An example of :func:`gaussian_blur` affecting an image.</span>
-<span class="sd">    </span>
-<span class="sd">    :param a: The image data to alter.</span>
-<span class="sd">    :param sigma: The sigma value of the blur. A gaussian blur uses a</span>
-<span class="sd">        gaussian function to determine how much the other pixels in</span>
-<span class="sd">        the image should affect the value of a pixel. Gaussian</span>
-<span class="sd">        functions produce a normal distribution. This value is the</span>
-<span class="sd">        size of a standard deviation in that normal distribution.</span>
-<span class="sd">    :returns: A :class:`numpy.ndarray` object.</span>
-<span class="sd">    :rtype: numpy.ndarray</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">cv2</span><span class="o">.</span><span class="n">GaussianBlur</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">sigma</span><span class="p">,</span> <span class="n">sigma</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span></div>
-
-
-
-<div class="viewcode-block" id="glow">
-<a class="viewcode-back" href="../../../filters.html#pjimg.filters.glow">[docs]</a>
-<span class="nd">@register</span><span class="p">(</span><span class="n">filters</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">glow</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">,</span> <span class="n">sigma</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ImgAry</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Use gaussian blurs to create a halo around brighter objects</span>
-<span class="sd">    in the image.</span>
-
-<span class="sd">    .. figure:: images/glow.jpg</span>
-<span class="sd">       :alt: An example of the filter affecting an image.</span>
-<span class="sd">       </span>
-<span class="sd">       An example of :func:`gaussian_blur` affecting an image.</span>
-<span class="sd">    </span>
-<span class="sd">    :param a: The image data to alter.</span>
-<span class="sd">    :param sigma: The sigma value of the blur. A gaussian blur uses a</span>
-<span class="sd">        gaussian function to determine how much the other pixels in</span>
-<span class="sd">        the image should affect the value of a pixel. Gaussian</span>
-<span class="sd">        functions produce a normal distribution. This value is the</span>
-<span class="sd">        size of a standard deviation in that normal distribution.</span>
-<span class="sd">    :returns: A :class:`np.ndarray` object.</span>
-<span class="sd">    :rtype: numpy.ndarray</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">_screen</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ImgAry</span><span class="p">:</span>
-        <span class="n">rev_a</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">a</span>
-        <span class="n">rev_b</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">b</span>
-        <span class="n">ab</span> <span class="o">=</span> <span class="n">rev_a</span> <span class="o">*</span> <span class="n">rev_b</span>
-        <span class="k">return</span> <span class="mf">1.0</span> <span class="o">-</span> <span class="n">ab</span>
-
-    <span class="n">b</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-    <span class="k">while</span> <span class="n">sigma</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">sigma</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="n">sigma</span> <span class="o">-=</span> <span class="mi">1</span>
-        <span class="n">b</span> <span class="o">=</span> <span class="n">gaussian_blur</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">sigma</span><span class="p">)</span>
-        <span class="n">b</span> <span class="o">=</span> <span class="n">_screen</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
-        <span class="n">sigma</span> <span class="o">=</span> <span class="n">sigma</span> <span class="o">//</span> <span class="mi">2</span>
-    <span class="k">return</span> <span class="n">b</span></div>
 
 
 
@@ -552,45 +510,6 @@
     <span class="n">max_radius</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">n</span> <span class="o">**</span> <span class="mi">2</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">center</span><span class="p">))</span>
     <span class="n">flags</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">WARP_POLAR_LINEAR</span> <span class="o">+</span> <span class="n">cv2</span><span class="o">.</span><span class="n">WARP_INVERSE_MAP</span>
     <span class="k">return</span> <span class="n">cv2</span><span class="o">.</span><span class="n">warpPolar</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">a</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">center</span><span class="p">,</span> <span class="n">max_radius</span><span class="p">,</span> <span class="n">flags</span><span class="p">)</span></div>
-
-
-
-<div class="viewcode-block" id="motion_blur">
-<a class="viewcode-back" href="../../../filters.html#pjimg.filters.motion_blur">[docs]</a>
-<span class="nd">@register</span><span class="p">(</span><span class="n">filters</span><span class="p">)</span>
-<span class="nd">@processes_by_grayscale_frame</span>
-<span class="k">def</span> <span class="nf">motion_blur</span><span class="p">(</span>
-    <span class="n">a</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">,</span>
-    <span class="n">amount</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
-    <span class="n">axis</span><span class="p">:</span> <span class="nb">int</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ImgAry</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Perform a motion blur.</span>
-
-<span class="sd">    .. figure:: images/motion_blur.jpg</span>
-<span class="sd">       :alt: An example of the filter affecting an image.</span>
-<span class="sd">       </span>
-<span class="sd">       An example of :func:`motion_blur` affecting an image.</span>
-<span class="sd">    </span>
-<span class="sd">    :param a: The image data to alter.</span>
-<span class="sd">    :param size: The size of the blur to apply.</span>
-<span class="sd">    :param direction: The axis that the blur should be performed along.</span>
-<span class="sd">        The index should be indicated using the filters.X or filters.Y</span>
-<span class="sd">        objects.</span>
-<span class="sd">    :returns: A :class:`np.ndarray` object.</span>
-<span class="sd">    :rtype: numpy.ndarray</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">kernel</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">amount</span><span class="p">,</span> <span class="n">amount</span><span class="p">),</span> <span class="nb">float</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">axis</span> <span class="o">==</span> <span class="n">X_</span><span class="p">:</span>
-        <span class="n">y</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">amount</span> <span class="o">//</span> <span class="mi">2</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">amount</span><span class="p">):</span>
-            <span class="n">kernel</span><span class="p">[</span><span class="n">y</span><span class="p">][</span><span class="n">x</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">amount</span>
-    <span class="k">elif</span> <span class="n">axis</span> <span class="o">==</span> <span class="n">Y_</span><span class="p">:</span>
-        <span class="n">x</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">amount</span> <span class="o">//</span> <span class="mi">2</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">amount</span><span class="p">):</span>
-            <span class="n">kernel</span><span class="p">[</span><span class="n">y</span><span class="p">][</span><span class="n">x</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">amount</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;motion_blur can only affect the X or Y axis.&#39;</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">cv2</span><span class="o">.</span><span class="n">filter2D</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">kernel</span><span class="p">)</span></div>
 
 
 

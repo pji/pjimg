@@ -351,12 +351,27 @@
 <span class="sd">        the pixels.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">grids</span> <span class="o">=</span> <span class="p">{}</span>
+        
+        <span class="c1"># The _hashes here are identifiers for each of the eight vertices</span>
+        <span class="c1"># that surround any given point. It&#39;s a binary number with one</span>
+        <span class="c1"># digit per dimension in the noise being generated. The digit</span>
+        <span class="c1"># indicates whether to use the vertex before or after the given</span>
+        <span class="c1"># point. Therefore, if the value of `key` is `010`, it would be</span>
+        <span class="c1"># generating the grid based on the vertices before the point on</span>
+        <span class="c1"># the Z and X axes but after the point on the Y axis.</span>
         <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_hashes</span><span class="p">:</span>
+            
+            <span class="c1"># Identify the multidimensional indices of the vertex for</span>
+            <span class="c1"># each point.</span>
             <span class="n">grid_whole</span> <span class="o">=</span> <span class="n">whole</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
             <span class="n">a_grid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span>
             <span class="k">for</span> <span class="n">axis</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_axes</span><span class="p">):</span>
                 <span class="n">grid_whole</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">+=</span> <span class="nb">int</span><span class="p">(</span><span class="n">key</span><span class="p">[</span><span class="n">axis</span><span class="p">])</span>
 
+            <span class="c1"># The values of the vertices are stored in a one-dimensional</span>
+            <span class="c1"># array. This translates the multidimensional indices into</span>
+            <span class="c1"># single-dimensional indices to allow a lookup in the vertices</span>
+            <span class="c1"># value table,</span>
             <span class="k">for</span> <span class="n">axis</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_axes</span><span class="p">):</span>
                 <span class="n">remaining_axes</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_axes</span><span class="p">)[</span><span class="n">axis</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:]</span>
                 <span class="n">axis_incr</span> <span class="o">=</span> <span class="mi">1</span>
@@ -365,6 +380,8 @@
                 <span class="n">a_grid</span> <span class="o">+=</span> <span class="n">grid_whole</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">*</span> <span class="n">axis_incr</span>
                 <span class="n">a_grid</span> <span class="o">%=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_table</span><span class="p">)</span>
 
+            <span class="c1"># Get the value of the vertex for each point and store it in</span>
+            <span class="c1"># a dictionary by the identifier for the vertex.</span>
             <span class="n">a_grid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">take</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_table</span><span class="p">,</span> <span class="n">a_grid</span><span class="p">)</span>
             <span class="n">grids</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">a_grid</span>
         <span class="k">return</span> <span class="n">grids</span>

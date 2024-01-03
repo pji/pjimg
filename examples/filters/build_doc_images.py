@@ -51,7 +51,7 @@ def make_image(
 ) -> ImgAry:
     """Make an example image for a filter."""
     # Filter the image data.
-    filtered = filter(a, **kwargs)
+    filtered = filter(a.copy(), **kwargs)
     
     # Because we are putting the filtered data back into the bottom half
     # of the original data, work needs to be done to make sure the shape
@@ -92,6 +92,8 @@ def make_images(path: Path, size: Size, ext: str = 'jpg') -> None:
 #         (ift.box_blur, {'size': size[X] // 32,}, False),
 #         (ift.colorize, {'colorkey': 'g',}, True),
 #         (ift.contrast, {}, False),
+        (ift.cut_highlight, {'threshold': 0.4,}, False),
+        (ift.cut_shadow, {'threshold': 0.6,}, False),
 #         (ift.flip, {'axis': X,}, False),
 #         (ift.gaussian_blur, {'sigma': 12.0,}, False),
 #         (ift.glow, {'sigma': 3,}, False),

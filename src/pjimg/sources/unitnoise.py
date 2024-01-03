@@ -150,12 +150,27 @@ class UnitNoise(Noise):
         the pixels.
         """
         grids = {}
+        
+        # The _hashes here are identifiers for each of the eight vertices
+        # that surround any given point. It's a binary number with one
+        # digit per dimension in the noise being generated. The digit
+        # indicates whether to use the vertex before or after the given
+        # point. Therefore, if the value of `key` is `010`, it would be
+        # generating the grid based on the vertices before the point on
+        # the Z and X axes but after the point on the Y axis.
         for key in self._hashes:
+            
+            # Identify the multidimensional indices of the vertex for
+            # each point.
             grid_whole = whole.copy()
             a_grid = np.zeros(size, dtype=np.int64)
             for axis in range(self._axes):
                 grid_whole[axis] += int(key[axis])
 
+            # The values of the vertices are stored in a one-dimensional
+            # array. This translates the multidimensional indices into
+            # single-dimensional indices to allow a lookup in the vertices
+            # value table,
             for axis in range(self._axes):
                 remaining_axes = range(self._axes)[axis + 1:]
                 axis_incr = 1
@@ -164,6 +179,8 @@ class UnitNoise(Noise):
                 a_grid += grid_whole[axis] * axis_incr
                 a_grid %= len(self._table)
 
+            # Get the value of the vertex for each point and store it in
+            # a dictionary by the identifier for the vertex.
             a_grid = np.take(self._table, a_grid)
             grids[key] = a_grid
         return grids

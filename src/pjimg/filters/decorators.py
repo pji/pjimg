@@ -49,12 +49,12 @@ def processes_by_grayscale_frame(fn: Filter) -> Filter:
     """
     if fn.__doc__:
         fn.__doc__ += '\n'.join((
-            '',
-            '.. warning::',
-            '   This filter uses a third-party library that cannot handle ',
-            '   color or three-dimensional arrays. The filter itself will ',
-            '   be able to handle three-dimensional arrays, but the filter ',
-            '   will affect each two-dimensional slice individually.'
+            '   ',
+            '   .. warning::',
+            '      This filter uses a third-party library that cannot handle ',
+            '      color or three-dimensional arrays. The filter itself will ',
+            '      be able to handle three-dimensional arrays, but the filter ',
+            '      will affect each two-dimensional slice individually.'
         ))
     
     @wraps(fn)

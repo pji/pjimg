@@ -496,6 +496,77 @@ least two dimensions.</p></li>
 </dd></dl>
 
 </section>
+<section id="module-pjimg.util.util">
+<span id="id1"></span><h2>util<a class="headerlink" href="#module-pjimg.util.util" title="Link to this heading">#</a></h2>
+<p>General utility functions for <code class="xref py py-mod docutils literal notranslate"><span class="pre">pjimg</span></code>.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="pjimg.util.find_center">
+<span class="sig-prename descclassname"><span class="pre">pjimg.util.</span></span><span class="sig-name descname"><span class="pre">find_center</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Sequence" title="(in Python v3.12)"><span class="pre">Sequence</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">loc</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Sequence" title="(in Python v3.12)"><span class="pre">Sequence</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">(0,</span> <span class="pre">0,</span> <span class="pre">0)</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Sequence" title="(in Python v3.12)"><span class="pre">Sequence</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/pjimg/util/util.html#find_center"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pjimg.util.find_center" title="Link to this definition">#</a></dt>
+<dd><p>Find the center pixel of an image of the given size.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>size</strong> – The shape of the image data.</p></li>
+<li><p><strong>loc</strong> – (Optional.) How much to offset the center in each
+dimension. Defaults to no offset.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></a> with the center location of the image.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.12)">tuple</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pjimg.util.get_free_rotation_size_2d">
+<span class="sig-prename descclassname"><span class="pre">pjimg.util.</span></span><span class="sig-name descname"><span class="pre">get_free_rotation_size_2d</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Sequence" title="(in Python v3.12)"><span class="pre">Sequence</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Sequence" title="(in Python v3.12)"><span class="pre">Sequence</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/pjimg/util/util.html#get_free_rotation_size_2d"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pjimg.util.get_free_rotation_size_2d" title="Link to this definition">#</a></dt>
+<dd><p>Given the size of a final image, return the size of the image
+data you need to create in order to rotate the final image within
+the image data freely around the Z axis without the corners of
+the final image going outside of the bounds of the image data.</p>
+<p>Basically, it says how big the image data needs to be so the
+corners of the final image won’t be black if you rotate the image.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>size</strong> – The size of the final image.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></a> containing the shape of the needed image
+data.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.12)">tuple</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pjimg.util.translate_by_polar_coords">
+<span class="sig-prename descclassname"><span class="pre">pjimg.util.</span></span><span class="sig-name descname"><span class="pre">translate_by_polar_coords</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.12)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><span class="pre">float</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><span class="pre">float</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">o</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><span class="pre">float</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.12)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><span class="pre">float</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/pjimg/util/util.html#translate_by_polar_coords"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pjimg.util.translate_by_polar_coords" title="Link to this definition">#</a></dt>
+<dd><p>Given a two-dimensional location in linear coordinates and
+a distance in polar coordinates, return the linear coordinates
+of the location that distance away from the original location.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>start</strong> – The starting location.</p></li>
+<li><p><strong>p</strong> – The rho (distance) of the polar coordinates.</p></li>
+<li><p><strong>o</strong> – The theta (angle) of the polar coordinates in radians.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></a> with the final coordinates.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.12)">tuple</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
 <section id="debug">
 <span id="module-pjimg.util.debug"></span><h2>debug<a class="headerlink" href="#debug" title="Link to this heading">#</a></h2>
 <p>Utilities useful for debugging code that uses <code class="xref py py-mod docutils literal notranslate"><span class="pre">pjimg</span></code>.</p>
@@ -596,6 +667,12 @@ least two dimensions.</p></li>
 <li><a class="reference internal" href="#pjimg.util.magnify_size"><code class="docutils literal notranslate"><span class="pre">magnify_size()</span></code></a></li>
 <li><a class="reference internal" href="#pjimg.util.pad_array"><code class="docutils literal notranslate"><span class="pre">pad_array()</span></code></a></li>
 <li><a class="reference internal" href="#pjimg.util.resize_array"><code class="docutils literal notranslate"><span class="pre">resize_array()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-pjimg.util.util">util</a><ul>
+<li><a class="reference internal" href="#pjimg.util.find_center"><code class="docutils literal notranslate"><span class="pre">find_center()</span></code></a></li>
+<li><a class="reference internal" href="#pjimg.util.get_free_rotation_size_2d"><code class="docutils literal notranslate"><span class="pre">get_free_rotation_size_2d()</span></code></a></li>
+<li><a class="reference internal" href="#pjimg.util.translate_by_polar_coords"><code class="docutils literal notranslate"><span class="pre">translate_by_polar_coords()</span></code></a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#debug">debug</a><ul>

@@ -15,8 +15,8 @@ from pjimg.sources.model import TilePattern
 
 # Decorators.
 def register(
-    registry: dict[str, TilePattern]
-) -> Callable[[TilePattern,], TilePattern]:
+    registry: dict[str, type[TilePattern]]
+) -> Callable[[type[TilePattern],], type[TilePattern]]:
     """Registers the decorated function under the function's name
     in the given registry dictionary.
     
@@ -25,8 +25,8 @@ def register(
         registry.
     :rtype: class
     """
-    def decorator(fn: TilePattern) -> TilePattern:
-        key = fn.__name__.lower()               # type: ignore
+    def decorator(fn: type[TilePattern]) -> type[TilePattern]:
+        key = fn.__name__.lower()
         registry[key] = fn
         return fn
     return decorator

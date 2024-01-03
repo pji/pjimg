@@ -224,7 +224,7 @@
 <span class="n">y</span><span class="p">,</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span>
 
 <span class="c1"># Registry of tile patterns.</span>
-<span class="n">tile_patterns</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">TilePattern</span><span class="p">]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+<span class="n">tile_patterns</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">type</span><span class="p">[</span><span class="n">TilePattern</span><span class="p">]]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
 
 
 <span class="c1"># Pattern classes.</span>
@@ -302,7 +302,7 @@
         <span class="n">vp</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">sides</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">vso</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">]:</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">]]:</span>
         <span class="n">o</span> <span class="o">-=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vso</span>
         <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">get_vertices</span><span class="p">(</span><span class="n">center</span><span class="p">,</span> <span class="n">o</span><span class="p">,</span> <span class="n">vp</span><span class="p">,</span> <span class="n">sides</span><span class="p">,</span> <span class="n">vso</span><span class="p">)</span>
     
@@ -357,10 +357,12 @@
         <span class="n">sides</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">vso</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">]]:</span>
+        <span class="c1"># Create the octagon.</span>
         <span class="n">o</span> <span class="o">-=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vso</span>
         <span class="n">oct_center</span> <span class="o">=</span> <span class="n">center</span><span class="p">[:]</span>
-        <span class="n">octagon</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">get_vertices</span><span class="p">(</span><span class="n">oct_center</span><span class="p">,</span> <span class="n">o</span><span class="p">,</span> <span class="n">vp</span><span class="p">,</span> <span class="n">sides</span><span class="p">,</span> <span class="n">vso</span><span class="p">)</span>
+        <span class="n">tiles</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">get_vertices</span><span class="p">(</span><span class="n">oct_center</span><span class="p">,</span> <span class="n">o</span><span class="p">,</span> <span class="n">vp</span><span class="p">,</span> <span class="n">sides</span><span class="p">,</span> <span class="n">vso</span><span class="p">)</span>
         
+        <span class="c1"># Create the square.</span>
         <span class="n">o</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vso</span>
         <span class="n">s1_center_o</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="n">s1_center_x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_next_center</span><span class="p">(</span><span class="n">oct_center</span><span class="p">,</span> <span class="n">UP</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="n">x</span><span class="p">]</span>
@@ -373,8 +375,10 @@
         <span class="n">s1_o</span> <span class="o">=</span> <span class="n">o</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">4</span>
         <span class="n">s1_vso</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">4</span>
         <span class="n">s1</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">get_vertices</span><span class="p">(</span><span class="n">s1_center</span><span class="p">,</span> <span class="n">s1_o</span><span class="p">,</span> <span class="n">s1_p</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="n">s1_vso</span><span class="p">)</span>
+        <span class="n">tiles</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">s1</span><span class="p">)</span>
         
-        <span class="k">return</span> <span class="p">[</span><span class="n">octagon</span><span class="p">,</span> <span class="n">s1</span><span class="p">]</span>
+        <span class="c1"># Return the shapes.</span>
+        <span class="k">return</span> <span class="n">tiles</span>
     
 
 <span class="nd">@register</span><span class="p">(</span><span class="n">tile_patterns</span><span class="p">)</span>
@@ -471,16 +475,20 @@
 <span class="sd">        tile in radians. (Future versions may change this to degrees for</span>
 <span class="sd">        consistency.) Defaults to `0`.</span>
 <span class="sd">    :param color: (Optional.) The color of each tile. Defaults to `1.0`.</span>
+<span class="sd">    :param color_img: (Optional.) Image data that is used to determine</span>
+<span class="sd">        the color of each tile. The color is based on the average of</span>
+<span class="sd">        the values within the same area the tile would be in on the</span>
+<span class="sd">        final image. Defaults to `None`.</span>
 <span class="sd">    :param drop: (Optional.) The likelihood a tile is not placed. This</span>
 <span class="sd">        is a percentage chance within the range 0.0 &lt;= x &lt;= 1.0.</span>
 <span class="sd">        Defaults to `0.0`.</span>
-<span class="sd">    :param seed: (Optional.) A seed value for the random number generator</span>
-<span class="sd">        used to determine whether tiles are dropped. Defaults to the</span>
-<span class="sd">        generator running without a seed.</span>
-<span class="sd">    :param seed_img: (Optional.) Image data that is used to determine the</span>
+<span class="sd">    :param drop_img: (Optional.) Image data that is used to determine the</span>
 <span class="sd">        likelihood a tile is dropped from the pattern. The drop percentage</span>
 <span class="sd">        is based on the average of the values within the same area the</span>
 <span class="sd">        tile would be in on the final image. Defaults to `None`.</span>
+<span class="sd">    :param seed: (Optional.) A seed value for the random number generator</span>
+<span class="sd">        used to determine whether tiles are dropped. Defaults to the</span>
+<span class="sd">        generator running without a seed.</span>
 <span class="sd">    :return: :class:Tile object.</span>
 <span class="sd">    :rtype: sources.tile.Tile</span>
 <span class="sd">    </span>
@@ -505,22 +513,24 @@
         <span class="n">gap</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
         <span class="n">rotation</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span>
         <span class="n">color</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span>
+        <span class="n">color_img</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">ImgAry</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">drop</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span>
-        <span class="n">seed</span><span class="p">:</span> <span class="n">Seed</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">seed_img</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">ImgAry</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">drop_img</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">ImgAry</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">seed</span><span class="p">:</span> <span class="n">Seed</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">pattern</span> <span class="o">=</span> <span class="n">pattern</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">radius</span> <span class="o">=</span> <span class="n">radius</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">gap</span> <span class="o">=</span> <span class="n">gap</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">rotation</span> <span class="o">=</span> <span class="n">rotation</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">color</span> <span class="o">=</span> <span class="n">color</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">color_img</span> <span class="o">=</span> <span class="n">color_img</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">drop</span> <span class="o">=</span> <span class="n">drop</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">seed_img</span> <span class="o">=</span> <span class="n">seed_img</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">drop_img</span> <span class="o">=</span> <span class="n">drop_img</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
     
     <span class="k">def</span> <span class="nf">fill</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="p">:</span> <span class="n">Size</span><span class="p">,</span> <span class="n">loc</span><span class="p">:</span> <span class="n">Loc</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span> <span class="o">-&gt;</span> <span class="n">ImgAry</span><span class="p">:</span>
         <span class="n">pattern_type</span> <span class="o">=</span> <span class="n">tile_patterns</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">pattern</span><span class="p">]</span>
-        <span class="n">pattern</span> <span class="o">=</span> <span class="n">pattern_type</span><span class="p">(</span>
+        <span class="n">pattern</span> <span class="o">=</span> <span class="n">pattern_type</span><span class="p">(</span>                     <span class="c1"># type: ignore</span>
             <span class="n">size</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">radius</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">gap</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">rotation</span><span class="p">,</span> <span class="n">loc</span>
         <span class="p">)</span>
         <span class="n">color</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">color</span> <span class="o">*</span> <span class="mh">0xff</span><span class="p">)</span>
@@ -542,9 +552,9 @@
                 <span class="n">vertices</span> <span class="o">=</span> <span class="n">pattern</span><span class="o">.</span><span class="n">get_vertices</span><span class="p">(</span><span class="n">center</span><span class="p">,</span> <span class="n">modo</span><span class="p">)</span>
                 <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">vertices</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
                     <span class="k">for</span> <span class="n">polygon</span> <span class="ow">in</span> <span class="n">vertices</span><span class="p">:</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">_draw_polygon</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">polygon</span><span class="p">,</span> <span class="n">color</span><span class="p">,</span> <span class="n">line</span><span class="p">)</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">_draw_polygon</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">polygon</span><span class="p">,</span> <span class="n">line</span><span class="p">)</span>
                 <span class="k">else</span><span class="p">:</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">_draw_polygon</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">vertices</span><span class="p">,</span> <span class="n">color</span><span class="p">,</span> <span class="n">line</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_draw_polygon</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">vertices</span><span class="p">,</span> <span class="n">line</span><span class="p">)</span>
         
                 <span class="c1"># Find next polygon.</span>
                 <span class="n">center</span><span class="p">,</span> <span class="n">orient</span> <span class="o">=</span> <span class="n">pattern</span><span class="o">.</span><span class="n">get_next_center</span><span class="p">(</span><span class="n">center</span><span class="p">,</span> <span class="n">orient</span><span class="p">)</span>
@@ -565,12 +575,17 @@
     <span class="k">def</span> <span class="nf">_draw_polygon</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">:</span> <span class="n">IntAry</span><span class="p">,</span>
         <span class="n">vertices</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">],</span>
-        <span class="n">color</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
         <span class="n">line</span><span class="p">:</span> <span class="nb">int</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">drop</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">drop</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">seed_img</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">drop</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">average_color_in_shape</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">seed_img</span><span class="p">,</span> <span class="n">vertices</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">drop_img</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">drop</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">average_color_in_shape</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">drop_img</span><span class="p">,</span> <span class="n">vertices</span><span class="p">)</span>
+        
+        <span class="n">color</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">color</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">color_img</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">color</span> <span class="o">=</span> <span class="n">average_color_in_shape</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">color_img</span><span class="p">,</span> <span class="n">vertices</span><span class="p">)</span>
+        <span class="n">color</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">color</span> <span class="o">*</span> <span class="mh">0xff</span><span class="p">)</span>
+        
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rng</span><span class="o">.</span><span class="n">random</span><span class="p">([</span><span class="mi">1</span><span class="p">,])[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">drop</span><span class="p">:</span>
             <span class="n">cv2</span><span class="o">.</span><span class="n">fillConvexPoly</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">vertices</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">lineType</span><span class="o">=</span><span class="n">line</span><span class="p">)</span></div>
 
@@ -598,8 +613,19 @@
     <span class="n">pattern</span> <span class="o">=</span> <span class="s1">&#39;triangle&#39;</span>
     <span class="n">radius</span> <span class="o">=</span> <span class="mi">2</span>
     <span class="n">gap</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">seed_img</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span>
+        <span class="p">[</span><span class="mf">0.9</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">],</span>
+        <span class="p">[</span><span class="mf">0.9</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">],</span>
+        <span class="p">[</span><span class="mf">0.9</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">],</span>
+        <span class="p">[</span><span class="mf">0.9</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">],</span>
+        <span class="p">[</span><span class="mf">0.9</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">],</span>
+        <span class="p">[</span><span class="mf">0.9</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">],</span>
+        <span class="p">[</span><span class="mf">0.9</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">],</span>
+        <span class="p">[</span><span class="mf">0.9</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">],</span>
+    <span class="p">],],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+    <span class="n">seed</span> <span class="o">=</span> <span class="s1">&#39;spam&#39;</span>
     
-    <span class="n">tile</span> <span class="o">=</span> <span class="n">Tile</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="n">gap</span><span class="p">)</span>
+    <span class="n">tile</span> <span class="o">=</span> <span class="n">Tile</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="n">gap</span><span class="p">,</span> <span class="n">color_img</span><span class="o">=</span><span class="n">seed_img</span><span class="p">)</span>
     <span class="n">a</span> <span class="o">=</span> <span class="n">tile</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="n">size</span><span class="p">)</span>
     
     <span class="n">a</span> <span class="o">*=</span> <span class="mh">0xff</span>

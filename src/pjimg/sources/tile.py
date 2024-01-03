@@ -25,11 +25,11 @@ from pjimg.util.util import translate_by_polar_coords
 y, x = 0, 1
 
 # Registry of tile patterns.
-tile_patterns: dict[str, TilePattern] = dict()
+tile_patterns: dict[str, type[TilePattern]] = dict()
 
 
 # Pattern classes.
-@register(tile_patterns)                                # type: ignore
+@register(tile_patterns)
 class Hexagon(TilePattern):
     """Tile with hexagons."""
     sides: int = 6
@@ -57,7 +57,7 @@ class Hexagon(TilePattern):
         return self.home[X] - w_col * cols
     
 
-@register(tile_patterns)                                # type: ignore
+@register(tile_patterns)
 class Octagon(TilePattern):
     """Tile with octagons."""
     sides: int = 8
@@ -108,7 +108,7 @@ class Octagon(TilePattern):
         return super().get_vertices(center, o, vp, sides, vso)
     
 
-@register(tile_patterns)                                # type: ignore
+@register(tile_patterns)
 class OctagonWithSquares(TilePattern):
     """Tile with octagons."""
     sides: int = 8
@@ -182,7 +182,7 @@ class OctagonWithSquares(TilePattern):
         return tiles
     
 
-@register(tile_patterns)                                # type: ignore
+@register(tile_patterns)
 class Square(TilePattern):
     """Tile with squares."""
     sides: int = 4
@@ -197,7 +197,7 @@ class Square(TilePattern):
         super().__init__(size, vp, gap, rotation, loc)
 
 
-@register(tile_patterns)                                # type: ignore
+@register(tile_patterns)
 class Triangle(TilePattern):
     """Tile with triangles."""
     sides: int = 3
