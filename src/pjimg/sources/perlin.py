@@ -121,11 +121,22 @@ class Perlin(un.UnitNoise):
         return grids
 
     def _grad(self, loc_mask, grid, parts):
-        """To be honest, I don't fully understand what this part of
-        the Perlin noise algorithm is doing. It's called the
-        gradient, so it must have something to do with how the
-        level of noise changes between unit vertices. Beyond that
-        I'm not sure.
+        """Calculate the dot product of the randomized gradient vector
+        and the eight location vectors.
+        
+        This uses the optimization of the gradient function that was
+        developed by Riven. At time of writing, that optimization can
+        be found here::
+        
+            http://riven8192.blogspot.com/2010/08/
+            calculate-perlinnoise-twice-as-fast.html
+        
+        :param loc_mask: The identifier for the vertex being worked on.
+        :param grid: The vector for the vertex being worked on.
+        :param parts: The relative distance from the vertex before the
+            pixel and the pixel.
+        :return: The dot products as a :class:`numpy.ndarray`.
+        :rtype: numpy.ndarray
         """
         z = parts[Z].copy()
         y = parts[Y].copy()
@@ -136,7 +147,8 @@ class Perlin(un.UnitNoise):
             y -= 1
         if loc_mask[2] == '1':
             x -= 1
-
+        
+        # Calculate the dot products and return the result.
         m = grid & 0xf
         out = np.zeros_like(x)
         out[m == 0x0] = x[m == 0x0] + y[m == 0x0]

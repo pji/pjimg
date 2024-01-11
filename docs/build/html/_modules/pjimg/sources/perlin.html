@@ -322,11 +322,22 @@
         <span class="k">return</span> <span class="n">grids</span>
 
     <span class="k">def</span> <span class="nf">_grad</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">loc_mask</span><span class="p">,</span> <span class="n">grid</span><span class="p">,</span> <span class="n">parts</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;To be honest, I don&#39;t fully understand what this part of</span>
-<span class="sd">        the Perlin noise algorithm is doing. It&#39;s called the</span>
-<span class="sd">        gradient, so it must have something to do with how the</span>
-<span class="sd">        level of noise changes between unit vertices. Beyond that</span>
-<span class="sd">        I&#39;m not sure.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculate the dot product of the randomized gradient vector</span>
+<span class="sd">        and the eight location vectors.</span>
+<span class="sd">        </span>
+<span class="sd">        This uses the optimization of the gradient function that was</span>
+<span class="sd">        developed by Riven. At time of writing, that optimization can</span>
+<span class="sd">        be found here::</span>
+<span class="sd">        </span>
+<span class="sd">            http://riven8192.blogspot.com/2010/08/</span>
+<span class="sd">            calculate-perlinnoise-twice-as-fast.html</span>
+<span class="sd">        </span>
+<span class="sd">        :param loc_mask: The identifier for the vertex being worked on.</span>
+<span class="sd">        :param grid: The vector for the vertex being worked on.</span>
+<span class="sd">        :param parts: The relative distance from the vertex before the</span>
+<span class="sd">            pixel and the pixel.</span>
+<span class="sd">        :return: The dot products as a :class:`numpy.ndarray`.</span>
+<span class="sd">        :rtype: numpy.ndarray</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">z</span> <span class="o">=</span> <span class="n">parts</span><span class="p">[</span><span class="n">Z</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
         <span class="n">y</span> <span class="o">=</span> <span class="n">parts</span><span class="p">[</span><span class="n">Y</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
@@ -337,7 +348,8 @@
             <span class="n">y</span> <span class="o">-=</span> <span class="mi">1</span>
         <span class="k">if</span> <span class="n">loc_mask</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;1&#39;</span><span class="p">:</span>
             <span class="n">x</span> <span class="o">-=</span> <span class="mi">1</span>
-
+        
+        <span class="c1"># Calculate the dot products and return the result.</span>
         <span class="n">m</span> <span class="o">=</span> <span class="n">grid</span> <span class="o">&amp;</span> <span class="mh">0xf</span>
         <span class="n">out</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
         <span class="n">out</span><span class="p">[</span><span class="n">m</span> <span class="o">==</span> <span class="mh">0x0</span><span class="p">]</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="n">m</span> <span class="o">==</span> <span class="mh">0x0</span><span class="p">]</span> <span class="o">+</span> <span class="n">y</span><span class="p">[</span><span class="n">m</span> <span class="o">==</span> <span class="mh">0x0</span><span class="p">]</span>

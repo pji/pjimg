@@ -301,6 +301,7 @@
 <span class="sd">.. autofunction:: pjimg.eases.in_out_cos</span>
 <span class="sd">.. autofunction:: pjimg.eases.in_out_cubic</span>
 <span class="sd">.. autofunction:: pjimg.eases.in_out_elastic</span>
+<span class="sd">.. autofunction:: pjimg.eases.in_out_perlin</span>
 <span class="sd">.. autofunction:: pjimg.eases.in_out_quad</span>
 <span class="sd">.. autofunction:: pjimg.eases.in_out_quint</span>
 <span class="sd">.. autofunction:: pjimg.eases.in_out_sin</span>
@@ -326,7 +327,7 @@
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
     <span class="s1">&#39;eases&#39;</span><span class="p">,</span> <span class="s1">&#39;in_back&#39;</span><span class="p">,</span> <span class="s1">&#39;in_circ&#39;</span><span class="p">,</span> <span class="s1">&#39;in_cubic&#39;</span><span class="p">,</span> <span class="s1">&#39;in_elastic&#39;</span><span class="p">,</span>
     <span class="s1">&#39;in_out_back&#39;</span><span class="p">,</span> <span class="s1">&#39;in_out_circ&#39;</span><span class="p">,</span> <span class="s1">&#39;in_out_cos&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;in_out_cubic&#39;</span><span class="p">,</span> <span class="s1">&#39;in_out_elastic&#39;</span><span class="p">,</span> <span class="s1">&#39;in_out_quad&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;in_out_cubic&#39;</span><span class="p">,</span> <span class="s1">&#39;in_out_elastic&#39;</span><span class="p">,</span> <span class="s1">&#39;in_out_perlin&#39;</span><span class="p">,</span> <span class="s1">&#39;in_out_quad&#39;</span><span class="p">,</span>
     <span class="s1">&#39;in_out_quint&#39;</span><span class="p">,</span> <span class="s1">&#39;in_out_sin&#39;</span><span class="p">,</span> <span class="s1">&#39;in_quad&#39;</span><span class="p">,</span>
     <span class="s1">&#39;in_quint&#39;</span><span class="p">,</span> <span class="s1">&#39;in_sin&#39;</span><span class="p">,</span> <span class="s1">&#39;mid_bump_linear&#39;</span><span class="p">,</span>
     <span class="s1">&#39;mid_bump_sin&#39;</span><span class="p">,</span> <span class="s1">&#39;out_bounce&#39;</span><span class="p">,</span> <span class="s1">&#39;out_circ&#39;</span><span class="p">,</span>
@@ -948,6 +949,35 @@
 
 
 
+<div class="viewcode-block" id="in_out_perlin">
+<a class="viewcode-back" href="../../../eases.html#pjimg.eases.in_out_perlin">[docs]</a>
+<span class="nd">@register</span><span class="p">(</span><span class="n">eases</span><span class="p">)</span>
+<span class="nd">@will_scale</span>
+<span class="k">def</span> <span class="nf">in_out_perlin</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ImgAry</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;An easing function that uses the easing equation from Ken</span>
+<span class="sd">    Perlin&#39;s &quot;Improved Perlin Noise&quot; papaer.</span>
+<span class="sd">    </span>
+<span class="sd">    .. figure:: images/plot_in_out_perlin.png</span>
+<span class="sd">       :alt: A chart showing the action of the easing function.</span>
+<span class="sd">       </span>
+<span class="sd">       The action of :func:`in_out_perlin`.</span>
+<span class="sd">       </span>
+<span class="sd">    With image data, it slightly extends the darker and lighter areas.</span>
+<span class="sd">    This should not generate values outside of the original range.</span>
+<span class="sd">    </span>
+<span class="sd">    .. figure:: images/ex_in_out_perlin.png</span>
+<span class="sd">       :alt: An example of the easing function affecting a gradient.</span>
+<span class="sd">       </span>
+<span class="sd">       An example of how :func:`in_out_perlin` affects a simple gradient. </span>
+<span class="sd">    </span>
+<span class="sd">    :param a: An array of image data.</span>
+<span class="sd">    :return: The eased data as a :class:`numpy.ndarray`.</span>
+<span class="sd">    :rtype: numpy.ndarray</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="mi">6</span> <span class="o">*</span> <span class="n">a</span> <span class="o">**</span> <span class="mi">5</span> <span class="o">-</span> <span class="mi">15</span> <span class="o">*</span> <span class="n">a</span> <span class="o">**</span> <span class="mi">4</span> <span class="o">+</span> <span class="mi">10</span> <span class="o">*</span> <span class="n">a</span> <span class="o">**</span> <span class="mi">3</span></div>
+
+
+
 <div class="viewcode-block" id="in_out_quad">
 <a class="viewcode-back" href="../../../eases.html#pjimg.eases.in_out_quad">[docs]</a>
 <span class="nd">@register</span><span class="p">(</span><span class="n">eases</span><span class="p">)</span>
@@ -1110,6 +1140,21 @@
     <span class="n">a</span><span class="p">[</span><span class="o">~</span><span class="n">m</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="k">return</span> <span class="n">in_out_sin</span><span class="p">(</span><span class="n">a</span><span class="p">)</span></div>
 
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">pjimg.util.debug</span> <span class="kn">import</span> <span class="n">print_array</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span>
+        <span class="p">[</span>
+            <span class="p">[</span><span class="mf">0.00</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">,</span> <span class="mf">0.50</span><span class="p">,</span> <span class="mf">0.75</span><span class="p">,</span> <span class="mf">1.00</span><span class="p">,</span> <span class="p">],</span>
+            <span class="p">[</span><span class="mf">0.25</span><span class="p">,</span> <span class="mf">0.50</span><span class="p">,</span> <span class="mf">0.75</span><span class="p">,</span> <span class="mf">1.00</span><span class="p">,</span> <span class="mf">0.75</span><span class="p">,</span> <span class="p">],</span>
+            <span class="p">[</span><span class="mf">0.50</span><span class="p">,</span> <span class="mf">0.75</span><span class="p">,</span> <span class="mf">1.00</span><span class="p">,</span> <span class="mf">0.75</span><span class="p">,</span> <span class="mf">0.50</span><span class="p">,</span> <span class="p">],</span>
+            <span class="p">[</span><span class="mf">0.75</span><span class="p">,</span> <span class="mf">1.00</span><span class="p">,</span> <span class="mf">0.75</span><span class="p">,</span> <span class="mf">0.50</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">,</span> <span class="p">],</span>
+            <span class="p">[</span><span class="mf">1.00</span><span class="p">,</span> <span class="mf">0.75</span><span class="p">,</span> <span class="mf">0.50</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">,</span> <span class="mf">0.00</span><span class="p">,</span> <span class="p">],</span>
+        <span class="p">],</span>
+    <span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="n">in_out_perlin</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+    <span class="n">print_array</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
 </pre></div>
         </article>
       </div>

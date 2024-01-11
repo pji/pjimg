@@ -37,8 +37,10 @@ def make_base_image(size: Size) -> ImgAry:
     )
     a = source.fill(size)
     a += text.fill(size)
-    a /= 2
-    a += 0.25
+    a /= np.max(a)
+    a -= np.min(a)
+#     a /= 2
+#     a += 0.25
     return a
 
 
@@ -89,41 +91,44 @@ def make_image(
 def make_images(path: Path, size: Size, ext: str = 'jpg') -> None:
     """Make the example images."""
     filters = [
-#         (ift.box_blur, {'size': size[X] // 32,}, False),
-#         (ift.colorize, {'colorkey': 'g',}, True),
-#         (ift.contrast, {}, False),
+        (ift.box_blur, {'size': size[X] // 32,}, False),
+        (ift.colorize, {'colorkey': 'g',}, True),
+        (ift.contrast, {}, False),
         (ift.cut_highlight, {'threshold': 0.4,}, False),
         (ift.cut_shadow, {'threshold': 0.6,}, False),
-#         (ift.flip, {'axis': X,}, False),
-#         (ift.gaussian_blur, {'sigma': 12.0,}, False),
-#         (ift.glow, {'sigma': 3,}, False),
-#         (ift.grow, {'factor': 2,}, False),
-#         (ift.inverse, {}, False),
-#         (ift.linear_to_polar, {}, False),
-#         (ift.motion_blur, {'amount': size[X] // 32, 'axis': X}, False),
-#         (ift.pinch, {
-#             'amount': 0.5,
-#             'radius': size[X] // 3,
-#             'scale': (0, 0.5, 0.5),
-#             'offset': (0, 0, 0)
-#         }, False),
-#         (ift.polar_to_linear, {}, False),
-#         (ift.posterize, {'levels': 6,}, False),
-#         (ift.ripple, {
-#             'wave': (0, size[Y] // 5, size[Y] // 5),
-#             'amp': (0, size[Y] // 80, size[Y] // 80),
-#             'distaxis': (Z, Y, X),
-#         }, False),
+        (ift.distance, {}, False),
+        (ift.flip, {'axis': X,}, False),
+        (ift.gaussian_blur, {'sigma': 12.0,}, False),
+        (ift.glow, {'sigma': 3,}, False),
+        (ift.grow, {'factor': 2,}, False),
+        (ift.inverse, {}, False),
+        (ift.linear_to_polar, {}, False),
+        (ift.motion_blur, {'amount': size[X] // 32, 'axis': X}, False),
+        (ift.pinch, {
+            'amount': 0.5,
+            'radius': size[X] // 3,
+            'scale': (0, 0.5, 0.5),
+            'offset': (0, 0, 0)
+        }, False),
+        (ift.polar_to_linear, {}, False),
+        (ift.posterize, {'levels': 6,}, False),
+        (ift.ripple, {
+            'wave': (0, size[Y] // 5, size[Y] // 5),
+            'amp': (0, size[Y] // 80, size[Y] // 80),
+            'distaxis': (Z, Y, X),
+        }, False),
         (ift.rotate_2d, {'angle': 30,}, False),
-#         (ift.rotate_90, {}, False),
-#         (ift.skew, {'slope': 0.25,}, False),
-#         (ift.twirl, {
-#             'radius': size[X],
-#             'strength': 3,
-#         }, False),
+        (ift.rotate_90, {}, False),
+        (ift.skew, {'slope': 0.25,}, False),
+        (ift.twirl, {
+            'radius': size[X],
+            'strength': 3,
+        }, False),
     ]
+    
+    base_image = make_base_image(size)
     for item in filters:
-        a = make_base_image(size)
+        a = base_image.copy()
         filter, kwargs, color = item
         fname = f'{filter.__name__}.{ext}'
         print(f'Making {fname}...')

@@ -38,7 +38,10 @@ def find_center(size: Size, loc: Loc = (0, 0, 0)) -> Size:
     return tuple([n // 2 + o for n, o in zip(size, loc)])
 
 
-def get_free_rotation_size_2d(size: Size) -> Size:
+def get_free_rotation_size_2d(
+    size: Size,
+    pivot_offset: Loc = (0, 0, 0)
+) -> Size:
     """Given the size of a final image, return the size of the image
     data you need to create in order to rotate the final image within
     the image data freely around the Z axis without the corners of
@@ -52,10 +55,10 @@ def get_free_rotation_size_2d(size: Size) -> Size:
         data.
     :rtype: tuple
     """
-    z, h, w = size
+    _, h, w = [n / 2 + abs(o) for n, o in zip(size, pivot_offset)]
     o = math.atan(h / w)
-    d = int(h // math.sin(o) + 1)
-    return (z, d, d)
+    d = 2 * int(h // math.sin(o)) + 1
+    return (size[Z], d, d)
 
 
 def translate_by_polar_coords(

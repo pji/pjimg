@@ -11,3 +11,7 @@ from pjimg.util import ImgAry
 
 # Typing.
 Ease = Callable[[ImgAry], ImgAry]
+
+
+# Registry of ease functions.
+eases: dict[str, Ease] = dict()

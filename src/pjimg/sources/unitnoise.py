@@ -138,7 +138,7 @@ class UnitNoise(Noise):
         whole, parts = self._map_unit_grid(size, location)
         grids = self._build_grids(whole, size, shape)
         a = self._interp(grids, parts)
-        return a / (self.max - self.min)
+        return a / self.max
 
     # Private methods.
     def _build_grids(

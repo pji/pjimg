@@ -23,7 +23,7 @@ protocol:
 
 Value Scaling
 =============
-Eases work best on image data. That is to say, the work best on arrays of
+Eases work best on image data. That is to say, they work best on arrays of
 floating point data with values from zero to one. This is because the
 math in many of the eases relies on the fact that multiplication results
 in a smaller number and division results in a larger one.
@@ -51,15 +51,8 @@ working in. For example, if you are working with the range 0–255 but the
 lowest and highest values in the data are 127 and 215, the ease will
 act like you are working in the range 127–215.
 
-If this will cause problems for you code, you should scale the data
+If this will cause problems for your code, you should scale the data
 yourself before using the easing function.
-
-
-Registration
-============
-All easing functions are registered in :class:`dict`
-`pjimg.eases.eases` for convenience, but they can also
-be called directly.
 
 
 Easing Operations
@@ -72,10 +65,13 @@ Ease In
 These functions start slow or extend the darkness in an image:
 
 .. autofunction:: pjimg.eases.in_back
+.. autofunction:: pjimg.eases.in_bounce
 .. autofunction:: pjimg.eases.in_circ
 .. autofunction:: pjimg.eases.in_cubic
 .. autofunction:: pjimg.eases.in_elastic
+.. autofunction:: pjimg.eases.in_expo
 .. autofunction:: pjimg.eases.in_quad
+.. autofunction:: pjimg.eases.in_quart
 .. autofunction:: pjimg.eases.in_quint
 .. autofunction:: pjimg.eases.in_sin
 
@@ -84,6 +80,7 @@ Ease Out
 --------
 These functions start fast or extend the lightness in an image:
 
+.. autofunction:: pjimg.eases.out_back
 .. autofunction:: pjimg.eases.out_bounce
 .. autofunction:: pjimg.eases.out_circ
 .. autofunction:: pjimg.eases.out_cubic
@@ -102,6 +99,7 @@ These functions go fast in the middle or compress the midtones of the image.
 .. autofunction:: pjimg.eases.in_out_cos
 .. autofunction:: pjimg.eases.in_out_cubic
 .. autofunction:: pjimg.eases.in_out_elastic
+.. autofunction:: pjimg.eases.in_out_perlin
 .. autofunction:: pjimg.eases.in_out_quad
 .. autofunction:: pjimg.eases.in_out_quint
 .. autofunction:: pjimg.eases.in_out_sin
@@ -115,29 +113,34 @@ and the edges light.
 .. autofunction:: pjimg.eases.mid_bump_linear
 .. autofunction:: pjimg.eases.mid_bump_sin
 
+
+Registration
+============
+All easing functions are registered in :class:`dict`
+`pjimg.eases.eases` for convenience, but they can also
+be called directly.
 """
 import numpy as np
 
 from pjimg.eases.decorators import register, will_scale
-from pjimg.eases.model import Ease
+from pjimg.eases.model import Ease, eases
 from pjimg.util import ImgAry
 
 
 # Names available for import.
 __all__ = [
-    'eases', 'in_back', 'in_circ', 'in_cubic', 'in_elastic',
+    'in_back', 'in_bounce', 'in_circ', 'in_cubic', 'in_elastic',
+    'in_expo',
     'in_out_back', 'in_out_circ', 'in_out_cos',
-    'in_out_cubic', 'in_out_elastic', 'in_out_quad',
+    'in_out_cubic', 'in_out_elastic', 'in_out_perlin',
+    'in_out_quad',
     'in_out_quint', 'in_out_sin', 'in_quad',
+    'in_quart',
     'in_quint', 'in_sin', 'mid_bump_linear',
-    'mid_bump_sin', 'out_bounce', 'out_circ',
+    'mid_bump_sin', 'out_back', 'out_bounce', 'out_circ',
     'out_cubic', 'out_elastic', 'out_quad',
     'out_quint', 'out_sin',
 ]
-
-
-# Registry of ease functions.
-eases: dict[str, Ease] = dict()
 
 
 # Ease in functions.
@@ -169,6 +172,31 @@ def in_back(a: ImgAry) -> ImgAry:
     c1 = 1.70158
     c3 = c1 + 1
     return c3 * a ** 3 - c1 * a ** 2
+
+
+@register(eases)
+@will_scale
+def in_bounce(a: ImgAry) -> ImgAry:
+    """An easing function that has a bounce.
+    
+    .. figure:: images/plot_in_bounce.png
+       :alt: A chart showing the action of the easing function.
+       
+       The action of :func:`in_bounce`.
+       
+    With image data, it is a large extension of the lighter areas
+    with multiple peaks and compression of the darker ones.
+    
+    .. figure:: images/ex_in_bounce.png
+       :alt: An example of the easing function affecting a gradient.
+       
+       An example of how :func:`in_bounce` affects a simple gradient. 
+    
+    :param a: An array of image data.
+    :return: The eased data as a :class:`numpy.ndarray`.
+    :rtype: numpy.ndarray
+    """
+    return 1 - out_bounce(1 - a)
 
 
 @register(eases)
@@ -258,6 +286,33 @@ def in_elastic(a: ImgAry) -> ImgAry:
 
 @register(eases)
 @will_scale
+def in_expo(a: ImgAry) -> ImgAry:
+    """An easing function that has an exponential curve.
+    
+    .. figure:: images/plot_in_expo.png
+       :alt: A chart showing the action of the easing function.
+       
+       The action of :func:`in_expo`.
+       
+    With image data, it is a moderate extension of the darker areas
+    and compression of the lighter ones. This should not generate
+    values outside of the original range.
+    
+    .. figure:: images/ex_in_expo.png
+       :alt: An example of the easing function affecting a gradient.
+       
+       An example of how :func:`in_expo` affects a simple gradient. 
+    
+    :param a: An array of image data.
+    :return: The eased data as a :class:`numpy.ndarray`.
+    :rtype: numpy.ndarray
+    """
+    a[a != 0] = 2 ** (10 * a[a !=0] - 10)
+    return a
+
+
+@register(eases)
+@will_scale
 def in_quad(a: ImgAry) -> ImgAry:
     """An easing function that has a quadratic curve.
     
@@ -280,6 +335,32 @@ def in_quad(a: ImgAry) -> ImgAry:
     :rtype: numpy.ndarray
     """
     return a ** 2
+
+
+@register(eases)
+@will_scale
+def in_quart(a: ImgAry) -> ImgAry:
+    """An easing function that has a quadric curve.
+    
+    .. figure:: images/plot_in_quart.png
+       :alt: A chart showing the action of the easing function.
+       
+       The action of :func:`in_quart`.
+       
+    With image data, it is a moderate extension of the darker areas
+    and compression of the lighter ones. This should not generate
+    values outside of the original range.
+    
+    .. figure:: images/ex_in_quart.png
+       :alt: An example of the easing function affecting a gradient.
+       
+       An example of how :func:`in_quart` affects a simple gradient. 
+    
+    :param a: An array of image data.
+    :return: The eased data as a :class:`numpy.ndarray`.
+    :rtype: numpy.ndarray
+    """
+    return a ** 4
 
 
 @register(eases)
@@ -335,6 +416,36 @@ def in_sin(a: ImgAry) -> ImgAry:
 
 
 # Ease out functions.
+@register(eases)
+@will_scale
+def out_back(a: ImgAry) -> ImgAry:
+    """An easing function that backs up a little before ending.
+    
+    .. figure:: images/plot_out_back.png
+       :alt: A chart showing the action of the easing function.
+       
+       The action of :func:`out_back`.
+       
+    With image data, it extends the lighter areas and compresses the
+    darker ones. The dip into negative values can be a little
+    awkward. It's left to the calling application to decide how to
+    handle it. In the following example, values are just truncated at
+    zero.
+    
+    .. figure:: images/ex_out_back.png
+       :alt: An example of the easing function affecting a gradient.
+       
+       An example of how :func:`out_back` affects a simple gradient. 
+    
+    :param a: An array of image data.
+    :return: The eased data as a :class:`numpy.ndarray`.
+    :rtype: numpy.ndarray
+    """
+    c1 = 1.70158
+    c3 = c1 + 1
+    return 1 + c3 * (a - 1) ** 3 + c1 * (a - 1) ** 2
+
+
 @register(eases)
 @will_scale
 def out_bounce(a: ImgAry) -> ImgAry:
@@ -694,6 +805,32 @@ def in_out_elastic(a: ImgAry) -> ImgAry:
 
 @register(eases)
 @will_scale
+def in_out_perlin(a: ImgAry) -> ImgAry:
+    """An easing function that uses the easing equation from Ken
+    Perlin's "Improved Perlin Noise" papaer.
+    
+    .. figure:: images/plot_in_out_perlin.png
+       :alt: A chart showing the action of the easing function.
+       
+       The action of :func:`in_out_perlin`.
+       
+    With image data, it slightly extends the darker and lighter areas.
+    This should not generate values outside of the original range.
+    
+    .. figure:: images/ex_in_out_perlin.png
+       :alt: An example of the easing function affecting a gradient.
+       
+       An example of how :func:`in_out_perlin` affects a simple gradient. 
+    
+    :param a: An array of image data.
+    :return: The eased data as a :class:`numpy.ndarray`.
+    :rtype: numpy.ndarray
+    """
+    return 6 * a ** 5 - 15 * a ** 4 + 10 * a ** 3
+
+
+@register(eases)
+@will_scale
 def in_out_quad(a: ImgAry) -> ImgAry:
     """An easing function that uses a quadratic curve to compress the
     middle.
@@ -839,3 +976,18 @@ def mid_bump_sin(a: ImgAry) -> ImgAry:
     a[m] = (.25 - a[m]) * 4
     a[~m] = 0
     return in_out_sin(a)
+
+
+if __name__ == '__main__':
+    from pjimg.util.debug import print_array
+    a = np.array([
+        [
+            [0.00, 0.25, 0.50, 0.75, 1.00, ],
+            [0.25, 0.50, 0.75, 1.00, 0.75, ],
+            [0.50, 0.75, 1.00, 0.75, 0.50, ],
+            [0.75, 1.00, 0.75, 0.50, 0.25, ],
+            [1.00, 0.75, 0.50, 0.25, 0.00, ],
+        ],
+    ], dtype=float)
+    a = out_back(a)
+    print_array(a)

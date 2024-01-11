@@ -214,10 +214,17 @@
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
 <span class="kn">from</span> <span class="nn">pjimg.filters.decorators</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="kn">from</span> <span class="nn">pjimg.filters.filters_</span> <span class="kn">import</span> <span class="n">filters</span>
+<span class="kn">from</span> <span class="nn">pjimg.filters.model</span> <span class="kn">import</span> <span class="n">filters</span>
 <span class="kn">from</span> <span class="nn">pjimg.util</span> <span class="kn">import</span> <span class="n">ImgAry</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">X_</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">Y_</span><span class="p">,</span> <span class="n">Z</span><span class="p">,</span> <span class="n">Z_</span>
 
 
+<span class="c1"># Names available for import.</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">&#39;box_blur&#39;</span><span class="p">,</span> <span class="s1">&#39;gaussian_blur&#39;</span><span class="p">,</span> <span class="s1">&#39;glow&#39;</span><span class="p">,</span> <span class="s1">&#39;motion_blur&#39;</span><span class="p">,</span> <span class="s1">&#39;unsharp_mask&#39;</span><span class="p">,</span>
+<span class="p">]</span>
+
+
+<span class="c1"># Filters.</span>
 <div class="viewcode-block" id="box_blur">
 <a class="viewcode-back" href="../../../filters.html#pjimg.filters.box_blur">[docs]</a>
 <span class="nd">@register</span><span class="p">(</span><span class="n">filters</span><span class="p">)</span>
@@ -340,6 +347,44 @@
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;motion_blur can only affect the X or Y axis.&#39;</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">cv2</span><span class="o">.</span><span class="n">filter2D</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">kernel</span><span class="p">)</span></div>
 
+
+
+<span class="nd">@register</span><span class="p">(</span><span class="n">filters</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">unsharp_mask</span><span class="p">(</span>
+    <span class="n">a</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">,</span>
+    <span class="n">sigma</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">weight_a</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">2.0</span><span class="p">,</span>
+    <span class="n">weight_blurred</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span>
+    <span class="n">modifier</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ImgAry</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Use a gaussian blur to increase the difference between big</span>
+<span class="sd">    differences of value in the image, which gives the appearance</span>
+<span class="sd">    of sharpening the image.</span>
+<span class="sd">    </span>
+<span class="sd">    .. figure:: images/unsharp_mask.jpg</span>
+<span class="sd">       :alt: An example of the filter affecting an image.</span>
+<span class="sd">       </span>
+<span class="sd">       An example of :func:`unsharp_mask` affecting an image.</span>
+<span class="sd">    </span>
+<span class="sd">    :param a: The image data to alter.</span>
+<span class="sd">    :param sigma: The sigma value of the blur. A gaussian blur uses a</span>
+<span class="sd">        gaussian function to determine how much the other pixels in</span>
+<span class="sd">        the image should affect the value of a pixel. Gaussian</span>
+<span class="sd">        functions produce a normal distribution. This value is the</span>
+<span class="sd">        size of a standard deviation in that normal distribution.</span>
+<span class="sd">    :param weight_a: (Optional.) How much to value the original image</span>
+<span class="sd">        in the output. Defaults to `2.0`.</span>
+<span class="sd">    :param weight_blurred: (Optional.) How much to value the blurred</span>
+<span class="sd">        image in the output. Defaults to `-1.0`.</span>
+<span class="sd">    :param modifier: (Optional.) A scalar value added to all values in</span>
+<span class="sd">        the output.</span>
+<span class="sd">    :returns: A :class:`np.ndarray` object.</span>
+<span class="sd">    :rtype: numpy.ndarray</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">blurred</span> <span class="o">=</span> <span class="n">gaussian_blur</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">sigma</span><span class="p">)</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">addWeighted</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">weight_a</span><span class="p">,</span> <span class="n">blurred</span><span class="p">,</span> <span class="n">weight_blurred</span><span class="p">,</span> <span class="n">modifier</span><span class="p">)</span>
+    <span class="n">a</span> <span class="o">-=</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">a</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
 </pre></div>
         </article>
       </div>

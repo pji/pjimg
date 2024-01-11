@@ -2,7 +2,7 @@
 Decorators
 ==========
 
-Decorators for :mod:`pjimg.filters`.
+These decorators provide useful functions for building new filters:
 
 .. autofunction:: pjimg.filters.register
 .. autofunction:: pjimg.filters.processes_by_grayscale_frame
@@ -23,6 +23,28 @@ from pjimg.util import ImgAry, X, X_, Y, Y_, Z, Z_
 __all__ = [
     'register', 'processes_by_grayscale_frame', 'uses_uint8', 'will_square',
 ]
+
+
+# Docstring additions.
+docstrings = {
+    'process': """
+    .. warning::
+       This filter uses a third-party library that cannot handle 
+       color or three-dimensional arrays. The filter itself will 
+       be able to handle three-dimensional arrays, but the filter 
+       will affect each two-dimensional slice individually.
+    
+    """,
+    'square': """
+    .. warning::
+       This function works best if you provide it a square image.
+       If you provide image data that doesn\'t have equal sized X
+       and Y axes, it will square them itself for processing then
+       trim them back to the original shape after. This may
+       introduce unwanted artifacts into the image.
+    
+    """,
+}
 
 
 # Decorators.
@@ -48,14 +70,7 @@ def processes_by_grayscale_frame(fn: Filter) -> Filter:
     filter can't handle more than two dimensions in an array.
     """
     if fn.__doc__:
-        fn.__doc__ += '\n'.join((
-            '   ',
-            '   .. warning::',
-            '      This filter uses a third-party library that cannot handle ',
-            '      color or three-dimensional arrays. The filter itself will ',
-            '      be able to handle three-dimensional arrays, but the filter ',
-            '      will affect each two-dimensional slice individually.'
-        ))
+        fn.__doc__ += docstrings['process']
     
     @wraps(fn)
     def wrapper(a: ImgAry, *args, **kwargs) -> ImgAry:
@@ -94,16 +109,7 @@ def will_square(fn: Filter) -> Filter:
     will be sliced to the size of the original array.
     """
     if fn.__doc__:
-        fn.__doc__ += '\n'.join((
-            '',
-            '.. warning::'
-            '   This function works best if you provide it a square image.',
-            '   If you provide image data that doesn\'t have equal sized X',
-            '   and Y axes, it will square them itself for processing then',
-            '   trim them back to the original shape after. This may',
-            '   introduce unwanted artifacts into the image.',
-            ''
-        ))
+        fn.__doc__ += docstrings['square']
     
     @wraps(fn)
     def wrapper(a: ImgAry, *args, **kwargs) -> ImgAry:

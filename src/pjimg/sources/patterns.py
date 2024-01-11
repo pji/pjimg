@@ -29,6 +29,7 @@ from PIL import Image, ImageDraw, ImageFont
 
 from pjimg.sources.model import Source
 from pjimg.util import ImgAry, Loc, Size, X, Y, Z
+from pjimg.util.util import find_center
 
 
 # Names available for import.
@@ -1149,11 +1150,6 @@ def center_index_origin(indices: ImgAry) -> ImgAry:
     size = indices[0].shape
     shifts = [(n - 1) / 2 for n in size]
     return shift_index_origin(indices, shifts)
-
-
-def find_center(size: Size, loc: Loc) -> Size:
-    """Find the center pixel of an image of the given size."""
-    return tuple([n // 2 + o for n, o in zip(size, loc)])
 
 
 def index_to_distance_from_origin(indices: ImgAry) -> ImgAry:

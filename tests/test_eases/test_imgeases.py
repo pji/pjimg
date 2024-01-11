@@ -7,7 +7,7 @@ Unit tests for :mod:`pjimg.eases`.
 import numpy as np
 import pytest as pt
 
-import pjimg.eases.eases_ as ie
+import pjimg.eases.ops as ie
 
 
 # Fixtures.
@@ -52,6 +52,22 @@ def test_in_back(a):
             [-0.0877, 0.1826, 1.0000, 0.1826, -0.0877],
             [0.1826, 1.0000, 0.1826, -0.0877, -0.0641],
             [1.0000, 0.1826, -0.0877, -0.0641, 0.0000],
+        ],
+    ], dtype=float)).all()
+
+
+def test_in_bounce(a):
+    """Given an array of image data, :func:`in_bounce` should run
+    the 'in bounce' easing function on the data and return the result.
+    """
+    result = ie.in_bounce(a)
+    assert (np.around(result, 4) == np.array([
+        [
+            [0.0000, 0.0273, 0.2344, 0.5273, 1.0000],
+            [0.0273, 0.2344, 0.5273, 1.0000, 0.5273],
+            [0.2344, 0.5273, 1.0000, 0.5273, 0.2344],
+            [0.5273, 1.0000, 0.5273, 0.2344, 0.0273],
+            [1.0000, 0.5273, 0.2344, 0.0273, 0.0000],
         ],
     ], dtype=float)).all()
 
@@ -104,6 +120,22 @@ def test_in_elastic(a):
     ], dtype=float)).all()
 
 
+def test_in_expo(a):
+    """Given an array of image data, :func:`in_expo` should run
+    the 'in expo' easing function on the data and return the result.
+    """
+    result = ie.in_expo(a)
+    assert (np.around(result, 4) == np.array([
+        [
+            [0.0000, 0.0055, 0.0312, 0.1768, 1.0000],
+            [0.0055, 0.0312, 0.1768, 1.0000, 0.1768],
+            [0.0312, 0.1768, 1.0000, 0.1768, 0.0312],
+            [0.1768, 1.0000, 0.1768, 0.0312, 0.0055],
+            [1.0000, 0.1768, 0.0312, 0.0055, 0.0000],
+        ],
+    ], dtype=float)).all()
+
+
 def test_in_quad(a):
     """Given an array of image data, :func:`in_quad` should run
     the 'in quad' easing function on the data and return the result.
@@ -116,6 +148,22 @@ def test_in_quad(a):
             [0.2500, 0.5625, 1.0000, 0.5625, 0.2500],
             [0.5625, 1.0000, 0.5625, 0.2500, 0.0625],
             [1.0000, 0.5625, 0.2500, 0.0625, 0.0000],
+        ],
+    ], dtype=float)).all()
+
+
+def test_in_quart(a):
+    """Given an array of image data, :func:`in_quart` should run
+    the 'in quart' easing function on the data and return the result.
+    """
+    result = ie.in_quart(a)
+    assert (np.around(result, 4) == np.array([
+        [
+            [0.0000, 0.0039, 0.0625, 0.3164, 1.0000],
+            [0.0039, 0.0625, 0.3164, 1.0000, 0.3164],
+            [0.0625, 0.3164, 1.0000, 0.3164, 0.0625],
+            [0.3164, 1.0000, 0.3164, 0.0625, 0.0039],
+            [1.0000, 0.3164, 0.0625, 0.0039, 0.0000],
         ],
     ], dtype=float)).all()
 
@@ -238,6 +286,23 @@ def test_in_out_elastic(a):
     ], dtype=float)).all()
 
 
+def test_in_out_perlin(a):
+    """Given an array of image data, :func:`in_out_perlin` should
+    run the 'in out perlin' easing function on the data and return the
+    result.
+    """
+    result = ie.in_out_perlin(a)
+    assert (np.around(result, 4) == np.array([
+        [
+            [0.0000, 0.1035, 0.5000, 0.8965, 1.0000],
+            [0.1035, 0.5000, 0.8965, 1.0000, 0.8965],
+            [0.5000, 0.8965, 1.0000, 0.8965, 0.5000],
+            [0.8965, 1.0000, 0.8965, 0.5000, 0.1035],
+            [1.0000, 0.8965, 0.5000, 0.1035, 0.0000],
+        ],
+    ], dtype=float)).all()
+
+
 def test_in_out_quad(a):
     """Given an array of image data, :func:`in_out_quad` should
     run the 'in out quad' easing function on the data and return the
@@ -325,6 +390,23 @@ def test_mid_bump_sin(e):
 
 
 # Tests for ease out.
+def test_out_back(a):
+    """Given an array of image data, :func:`out_back` should
+    run the 'out back' easing function on the data and return the
+    result.
+    """
+    result = ie.out_back(a)
+    assert (np.around(result, 4) == np.array([
+        [
+            [0.0000, 0.8174, 1.0877, 1.0641, 1.0000],
+            [0.8174, 1.0877, 1.0641, 1.0000, 1.0641],
+            [1.0877, 1.0641, 1.0000, 1.0641, 1.0877],
+            [1.0641, 1.0000, 1.0641, 1.0877, 0.8174],
+            [1.0000, 1.0641, 1.0877, 0.8174, 0.0000],
+        ],
+    ], dtype=float)).all()
+
+
 def test_out_bounce(a):
     """Given an array of image data, :func:`out_bounce` should
     run the 'out bounce' easing function on the data and return the

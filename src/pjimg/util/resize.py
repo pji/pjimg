@@ -2,9 +2,10 @@
 resize
 ~~~~~~
 
-Functions for resizing numpy arrays through interpolation.
+Functions for resizing numpy arrays.
 
 .. autofunction:: pjimg.util.build_resizing_matrices
+.. autofunction:: pjimg.util.crop_array
 .. autofunction:: pjimg.util.magnify_size
 .. autofunction:: pjimg.util.pad_array
 .. autofunction:: pjimg.util.resize_array
@@ -21,7 +22,8 @@ from pjimg.util.model import *
 
 # Names available for import.
 __all__ = [
-    'bilinear_interpolation', 'build_resizing_matrices', 'magnify_size',
+    'bilinear_interpolation', 'build_resizing_matrices',
+    'crop_array', 'magnify_size',
     'pad_array', 'resize_array', 'trilinear_interpolation',
 ]
 
@@ -187,6 +189,23 @@ def build_resizing_matrices(
     return a, b, x
 
 
+def crop_array(a: NumAry, new_size: Size, loc: Loc = (0, 0, 0)) -> NumAry:
+    """Crop an array to a smaller size.
+    
+    :param a: The array to crop.
+    :param new_size: The size of the cropped array.
+    :param loc: (Optional.) How far to offset the crop from the center
+        of the image. Defaults to no offset.
+    :return: The cropped :class:`numpy.ndarray`.
+    :rtype: numpy.ndarray
+    """
+    size = a.shape
+    starts = [((n - f) // 2) + o for n, f, o in zip(size, new_size, loc)]
+    stops = [s + f for s, f in zip(starts, new_size)]
+    slices = [slice(start, stop) for start, stop in zip(starts, stops)]
+    return a[*slices]
+
+
 def magnify_size(shape: Size, factor: int) -> Size:
     """Magnify the shape of an array.
 
@@ -217,9 +236,10 @@ def pad_array(
     size_diff = [n - o for n, o in zip(size, a.shape)]
     pad = [dim // 2 for dim in size_diff]
     end = [n + o for n, o in zip(pad, a.shape)]
+    slices = [slice(p, e) for p, e in zip(pad, end)]
 
     # Place the image and return.
-    resized[pad[Z]:end[Z], pad[Y]:end[Y], pad[X]:end[X]] = a
+    resized[*slices] = a
     return resized
 
 

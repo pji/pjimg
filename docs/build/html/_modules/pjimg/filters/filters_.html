@@ -198,54 +198,18 @@
         <article role="main">
           <h1>Source code for pjimg.filters.filters_</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">Basic Usage: Filters</span>
-<span class="sd">====================</span>
-<span class="sd">The filter operation functions (filters) are used to make changes to</span>
-<span class="sd">values in image data where the resulting value of each pixel can be</span>
-<span class="sd">influenced by the values of other pixels in the data.</span>
-
-<span class="sd">Usage::</span>
-
-<span class="sd">    &gt;&gt;&gt; import numpy as np</span>
-<span class="sd">    &gt;&gt;&gt; a = np.array([[[0., .25, .5, .75, 1.], [0., .25, .5, .75, 1.]]])</span>
-<span class="sd">    &gt;&gt;&gt; box_blur(a, size=2)</span>
-<span class="sd">    array([[[0.125, 0.125, 0.375, 0.625, 0.875],</span>
-<span class="sd">            [0.125, 0.125, 0.375, 0.625, 0.875]]])</span>
-
-<span class="sd">The parameters of a filter depends on what the filter is doing. However,</span>
-<span class="sd">the following is true for all of them:</span>
-
-<span class="sd">*   They take a :class:`numpy.ndarray` of image data as the first parameter.</span>
-<span class="sd">*   They return a :class:`numpy.ndarray` of image data.</span>
-
-
-<span class="sd">Registration</span>
-<span class="sd">============</span>
-<span class="sd">All filter functions are registered in the :class:`dict`</span>
-<span class="sd">`pjimg.filters.filters` for convenience, but they can also</span>
-<span class="sd">be called directly.</span>
-
-
-<span class="sd">Filter Functions</span>
-<span class="sd">================</span>
-<span class="sd">The following are the filter functions available in :mod:`pjimg`.</span>
+<span class="sd">Value Filters</span>
+<span class="sd">=============</span>
+<span class="sd">Value filters operate on the values of the image data without any</span>
+<span class="sd">geometrical transformations or blurs. They are somewhat similar to</span>
+<span class="sd">the easing functions found in :mod:``</span>
 
 <span class="sd">.. autofunction:: pjimg.filters.colorize</span>
 <span class="sd">.. autofunction:: pjimg.filters.contrast</span>
 <span class="sd">.. autofunction:: pjimg.filters.cut_highlight</span>
 <span class="sd">.. autofunction:: pjimg.filters.cut_shadow</span>
-<span class="sd">.. autofunction:: pjimg.filters.flip</span>
-<span class="sd">.. autofunction:: pjimg.filters.grow</span>
 <span class="sd">.. autofunction:: pjimg.filters.inverse</span>
-<span class="sd">.. autofunction:: pjimg.filters.linear_to_polar</span>
-<span class="sd">.. autofunction:: pjimg.filters.pinch</span>
-<span class="sd">.. autofunction:: pjimg.filters.polar_to_linear</span>
 <span class="sd">.. autofunction:: pjimg.filters.posterize</span>
-<span class="sd">.. autofunction:: pjimg.filters.ripple</span>
-<span class="sd">.. autofunction:: pjimg.filters.rotate_2d</span>
-<span class="sd">.. autofunction:: pjimg.filters.rotate_90</span>
-<span class="sd">.. autofunction:: pjimg.filters.skew</span>
-<span class="sd">.. autofunction:: pjimg.filters.twirl</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Sequence</span>
@@ -255,7 +219,6 @@
 <span class="kn">import</span> <span class="nn">skimage.transform</span> <span class="k">as</span> <span class="nn">sktf</span>  <span class="c1"># type: ignore</span>
 <span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span><span class="p">,</span> <span class="n">ImageOps</span>
 
-<span class="kn">import</span> <span class="nn">pjimg.util.resize</span> <span class="k">as</span> <span class="nn">rsz</span>
 <span class="kn">from</span> <span class="nn">pjimg.filters.decorators</span> <span class="kn">import</span> <span class="o">*</span>
 <span class="kn">from</span> <span class="nn">pjimg.filters.model</span> <span class="kn">import</span> <span class="n">Filter</span>
 <span class="kn">from</span> <span class="nn">pjimg.filters.util</span> <span class="kn">import</span> <span class="n">get_color_for_key</span>
@@ -265,11 +228,7 @@
 <span class="c1"># Names available for import.</span>
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
     <span class="s1">&#39;colorize&#39;</span><span class="p">,</span> <span class="s1">&#39;contrast&#39;</span><span class="p">,</span> <span class="s1">&#39;cut_highlight&#39;</span><span class="p">,</span> <span class="s1">&#39;cut_shadow&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;filters&#39;</span><span class="p">,</span> <span class="s1">&#39;flip&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;grow&#39;</span><span class="p">,</span> <span class="s1">&#39;inverse&#39;</span><span class="p">,</span> <span class="s1">&#39;linear_to_polar&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;pinch&#39;</span><span class="p">,</span> <span class="s1">&#39;polar_to_linear&#39;</span><span class="p">,</span> <span class="s1">&#39;posterize&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;ripple&#39;</span><span class="p">,</span> <span class="s1">&#39;rotate_2d&#39;</span><span class="p">,</span> <span class="s1">&#39;rotate_90&#39;</span><span class="p">,</span> <span class="s1">&#39;skew&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;twirl&#39;</span>
+    <span class="s1">&#39;filters&#39;</span><span class="p">,</span> <span class="s1">&#39;inverse&#39;</span><span class="p">,</span> <span class="s1">&#39;posterize&#39;</span><span class="p">,</span>
 <span class="p">]</span>
 
 
@@ -420,55 +379,6 @@
 
 
 
-<div class="viewcode-block" id="flip">
-<a class="viewcode-back" href="../../../filters.html#pjimg.filters.flip">[docs]</a>
-<span class="nd">@register</span><span class="p">(</span><span class="n">filters</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">flip</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">,</span> <span class="n">axis</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ImgAry</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Flip the image around an axis.</span>
-
-<span class="sd">    .. figure:: images/flip.jpg</span>
-<span class="sd">       :alt: An example of the filter affecting an image.</span>
-<span class="sd">       </span>
-<span class="sd">       An example of :func:`flip` affecting an image.</span>
-<span class="sd">    </span>
-<span class="sd">    :param a: The image data to alter.</span>
-<span class="sd">    :param axis: The axis to flip the image data around.</span>
-<span class="sd">    :returns: A :class:`np.ndarray` object.</span>
-<span class="sd">    :rtype: numpy.ndarray</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">flip</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">axis</span><span class="p">)</span></div>
-
-
-
-<div class="viewcode-block" id="grow">
-<a class="viewcode-back" href="../../../filters.html#pjimg.filters.grow">[docs]</a>
-<span class="nd">@register</span><span class="p">(</span><span class="n">filters</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">grow</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">,</span> <span class="n">factor</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">yx_only</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ImgAry</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Increase the size of an image.</span>
-
-<span class="sd">    .. figure:: images/grow.jpg</span>
-<span class="sd">       :alt: An example of the filter affecting an image.</span>
-<span class="sd">       </span>
-<span class="sd">       An example of :func:`grow` affecting an image.</span>
-<span class="sd">    </span>
-<span class="sd">    :param a: The image data to alter.</span>
-<span class="sd">    :param factor: The scaling factor to use when increasing the</span>
-<span class="sd">        size of the image.</span>
-<span class="sd">    :param xy_only: (Optional.) Only grow the length and the width</span>
-<span class="sd">        of a three-dimensional array.</span>
-<span class="sd">    :returns: A :class:`np.ndarray` object.</span>
-<span class="sd">    :rtype: numpy.ndarray</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="n">yx_only</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">:</span>
-        <span class="n">frames</span> <span class="o">=</span> <span class="p">[</span><span class="n">grow</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="n">factor</span><span class="p">)</span> <span class="k">for</span> <span class="n">frame</span> <span class="ow">in</span> <span class="n">a</span><span class="p">]</span>
-        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">frames</span><span class="p">)</span>
-    
-    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">rsz</span><span class="o">.</span><span class="n">bilinear_interpolation</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">factor</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">rsz</span><span class="o">.</span><span class="n">trilinear_interpolation</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">factor</span><span class="p">)</span></div>
-
-
-
 <div class="viewcode-block" id="inverse">
 <a class="viewcode-back" href="../../../filters.html#pjimg.filters.inverse">[docs]</a>
 <span class="nd">@register</span><span class="p">(</span><span class="n">filters</span><span class="p">)</span>
@@ -485,133 +395,6 @@
 <span class="sd">    :rtype: numpy.ndarray</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">a</span></div>
-
-
-
-<div class="viewcode-block" id="linear_to_polar">
-<a class="viewcode-back" href="../../../filters.html#pjimg.filters.linear_to_polar">[docs]</a>
-<span class="nd">@register</span><span class="p">(</span><span class="n">filters</span><span class="p">)</span>
-<span class="nd">@processes_by_grayscale_frame</span>
-<span class="nd">@will_square</span>
-<span class="k">def</span> <span class="nf">linear_to_polar</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ImgAry</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert the linear coordinates of the image data to</span>
-<span class="sd">    polar coordinates.</span>
-
-<span class="sd">    .. figure:: images/linear_to_polar.jpg</span>
-<span class="sd">       :alt: An example of the filter affecting an image.</span>
-<span class="sd">       </span>
-<span class="sd">       An example of :func:`linear_to_polar` affecting an image.</span>
-<span class="sd">    </span>
-<span class="sd">    :param a: The image data to alter.</span>
-<span class="sd">    :returns: A :class:`np.ndarray` object.</span>
-<span class="sd">    :rtype: numpy.ndarray</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">center</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">n</span> <span class="o">/</span> <span class="mi">2</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">a</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
-    <span class="n">max_radius</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">n</span> <span class="o">**</span> <span class="mi">2</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">center</span><span class="p">))</span>
-    <span class="n">flags</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">WARP_POLAR_LINEAR</span> <span class="o">+</span> <span class="n">cv2</span><span class="o">.</span><span class="n">WARP_INVERSE_MAP</span>
-    <span class="k">return</span> <span class="n">cv2</span><span class="o">.</span><span class="n">warpPolar</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">a</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">center</span><span class="p">,</span> <span class="n">max_radius</span><span class="p">,</span> <span class="n">flags</span><span class="p">)</span></div>
-
-
-
-<div class="viewcode-block" id="pinch">
-<a class="viewcode-back" href="../../../filters.html#pjimg.filters.pinch">[docs]</a>
-<span class="nd">@register</span><span class="p">(</span><span class="n">filters</span><span class="p">)</span>
-<span class="nd">@processes_by_grayscale_frame</span>
-<span class="k">def</span> <span class="nf">pinch</span><span class="p">(</span>
-    <span class="n">a</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">,</span>
-    <span class="n">amount</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-    <span class="n">radius</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-    <span class="n">scale</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span>
-    <span class="n">offset</span><span class="p">:</span> <span class="n">Loc</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ImgAry</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Distort an image to make it appear as though it is being</span>
-<span class="sd">    pinched or swelling.</span>
-
-<span class="sd">    .. figure:: images/pinch.jpg</span>
-<span class="sd">       :alt: An example of the filter affecting an image.</span>
-<span class="sd">       </span>
-<span class="sd">       An example of :func:`pinch` affecting an image.</span>
-<span class="sd">    </span>
-<span class="sd">    :param a: The image data to alter.</span>
-<span class="sd">    :param amount: How much the image should be distorted. Best results</span>
-<span class="sd">        seem to be with numbers in the range of -1 &lt;= x &lt;= 1.</span>
-<span class="sd">    :param radius: Sets the outside edge of the distortion, measured</span>
-<span class="sd">        from the center of the distortion.</span>
-<span class="sd">    :param scale: Adjusts the scale of the distortion. I&#39;m not exactly</span>
-<span class="sd">        clear on the math, but values less than one seem to increase</span>
-<span class="sd">        the distortion. Values greater than one seem to decrease the</span>
-<span class="sd">        distortion.</span>
-<span class="sd">    :param offset: (Optional.) Sets how far the center of the</span>
-<span class="sd">        distortion should be offset from the center of the image.</span>
-<span class="sd">    :returns: A :class:`np.ndarray` object.</span>
-<span class="sd">    :rtype: numpy.ndarray</span>
-<span class="sd">    </span>
-<span class="sd">    ..warning:</span>
-<span class="sd">        If done too close to the edge of the image data, you will get</span>
-<span class="sd">        artifacts due to the lack of data. To calculate the minimum</span>
-<span class="sd">        safe distance from the edge:</span>
-<span class="sd">        </span>
-<span class="sd">            radius * (1 + amount)</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="c1"># Set up for creating the maps.</span>
-    <span class="n">center</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">((</span><span class="n">n</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">o</span> <span class="k">for</span> <span class="n">n</span><span class="p">,</span> <span class="n">o</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">offset</span><span class="p">))</span>
-
-    <span class="c1"># Create a map of the distance from each pixel in the image to</span>
-    <span class="c1"># the center of the image.</span>
-    <span class="n">indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">indices</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
-    <span class="n">y</span> <span class="o">=</span> <span class="n">indices</span><span class="p">[</span><span class="n">Y_</span><span class="p">]</span>
-    <span class="n">x</span> <span class="o">=</span> <span class="n">indices</span><span class="p">[</span><span class="n">X_</span><span class="p">]</span>
-    <span class="n">delta_y</span> <span class="o">=</span> <span class="n">scale</span><span class="p">[</span><span class="n">Y_</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">y</span> <span class="o">-</span> <span class="n">center</span><span class="p">[</span><span class="n">Y_</span><span class="p">])</span>
-    <span class="n">delta_x</span> <span class="o">=</span> <span class="n">scale</span><span class="p">[</span><span class="n">X_</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">center</span><span class="p">[</span><span class="n">X_</span><span class="p">])</span>
-    <span class="n">distance</span> <span class="o">=</span> <span class="n">delta_x</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">delta_y</span> <span class="o">**</span> <span class="mi">2</span>
-
-    <span class="c1"># Mask out the area covered by not within the radius of the effect.</span>
-    <span class="n">r_mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="nb">bool</span><span class="p">)</span>
-    <span class="n">r_mask</span><span class="p">[</span><span class="n">distance</span> <span class="o">&gt;=</span> <span class="n">radius</span> <span class="o">**</span> <span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
-    <span class="n">flex_x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
-    <span class="n">flex_y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
-    <span class="n">flex_x</span><span class="p">[</span><span class="n">r_mask</span><span class="p">]</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="n">r_mask</span><span class="p">]</span>
-    <span class="n">flex_y</span><span class="p">[</span><span class="n">r_mask</span><span class="p">]</span> <span class="o">=</span> <span class="n">y</span><span class="p">[</span><span class="n">r_mask</span><span class="p">]</span>
-
-    <span class="c1"># Create maps with the barrel/pincushion formula.</span>
-    <span class="n">pmask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="nb">bool</span><span class="p">)</span>
-    <span class="n">pmask</span><span class="p">[</span><span class="n">distance</span> <span class="o">&gt;</span> <span class="mf">0.0</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
-    <span class="n">pmask</span><span class="p">[</span><span class="n">r_mask</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
-    <span class="n">factor</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">distance</span><span class="p">)</span> <span class="o">/</span> <span class="n">radius</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
-    <span class="n">factor</span><span class="p">[</span><span class="n">factor</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">factor</span><span class="p">[</span><span class="n">factor</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">]</span> <span class="o">**</span> <span class="o">-</span><span class="n">amount</span>
-    <span class="n">factor</span><span class="p">[</span><span class="n">factor</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="p">((</span><span class="o">-</span><span class="n">factor</span><span class="p">[</span><span class="n">factor</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">])</span> <span class="o">**</span> <span class="o">-</span><span class="n">amount</span><span class="p">)</span>
-    <span class="n">flex_x</span><span class="p">[</span><span class="n">pmask</span><span class="p">]</span> <span class="o">=</span> <span class="n">factor</span><span class="p">[</span><span class="n">pmask</span><span class="p">]</span> <span class="o">*</span> <span class="n">delta_x</span><span class="p">[</span><span class="n">pmask</span><span class="p">]</span> <span class="o">/</span> <span class="n">scale</span><span class="p">[</span><span class="n">X_</span><span class="p">]</span> <span class="o">+</span> <span class="n">center</span><span class="p">[</span><span class="n">X_</span><span class="p">]</span>
-    <span class="n">flex_y</span><span class="p">[</span><span class="n">pmask</span><span class="p">]</span> <span class="o">=</span> <span class="n">factor</span><span class="p">[</span><span class="n">pmask</span><span class="p">]</span> <span class="o">*</span> <span class="n">delta_y</span><span class="p">[</span><span class="n">pmask</span><span class="p">]</span> <span class="o">/</span> <span class="n">scale</span><span class="p">[</span><span class="n">Y_</span><span class="p">]</span> <span class="o">+</span> <span class="n">center</span><span class="p">[</span><span class="n">Y_</span><span class="p">]</span>
-
-    <span class="n">flex_x</span><span class="p">[</span><span class="o">~</span><span class="n">pmask</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">*</span> <span class="n">delta_x</span><span class="p">[</span><span class="o">~</span><span class="n">pmask</span><span class="p">]</span> <span class="o">/</span> <span class="n">scale</span><span class="p">[</span><span class="n">X_</span><span class="p">]</span> <span class="o">+</span> <span class="n">center</span><span class="p">[</span><span class="n">X_</span><span class="p">]</span>
-    <span class="n">flex_y</span><span class="p">[</span><span class="o">~</span><span class="n">pmask</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">*</span> <span class="n">delta_y</span><span class="p">[</span><span class="o">~</span><span class="n">pmask</span><span class="p">]</span> <span class="o">/</span> <span class="n">scale</span><span class="p">[</span><span class="n">Y_</span><span class="p">]</span> <span class="o">+</span> <span class="n">center</span><span class="p">[</span><span class="n">Y_</span><span class="p">]</span>
-
-    <span class="c1"># Perform the pinch using the maps and return.</span>
-    <span class="k">return</span> <span class="n">cv2</span><span class="o">.</span><span class="n">remap</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">flex_x</span><span class="p">,</span> <span class="n">flex_y</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">INTER_LINEAR</span><span class="p">)</span></div>
-
-
-
-<div class="viewcode-block" id="polar_to_linear">
-<a class="viewcode-back" href="../../../filters.html#pjimg.filters.polar_to_linear">[docs]</a>
-<span class="nd">@register</span><span class="p">(</span><span class="n">filters</span><span class="p">)</span>
-<span class="nd">@processes_by_grayscale_frame</span>
-<span class="nd">@will_square</span>
-<span class="k">def</span> <span class="nf">polar_to_linear</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ImgAry</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert the polar coordinates of the image data to</span>
-<span class="sd">    linear coordinates.</span>
-
-<span class="sd">    .. figure:: images/polar_to_linear.jpg</span>
-<span class="sd">       :alt: An example of the filter affecting an image.</span>
-<span class="sd">       </span>
-<span class="sd">       An example of :func:`polar_to_linear` affecting an image.</span>
-<span class="sd">    </span>
-<span class="sd">    :param a: The image data to alter.</span>
-<span class="sd">    :returns: A :class:`np.ndarray` object.</span>
-<span class="sd">    :rtype: numpy.ndarray</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">center</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">n</span> <span class="o">/</span> <span class="mi">2</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">a</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
-    <span class="n">max_radius</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">n</span> <span class="o">**</span> <span class="mi">2</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">center</span><span class="p">))</span>
-    <span class="k">return</span> <span class="n">cv2</span><span class="o">.</span><span class="n">linearPolar</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">center</span><span class="p">,</span> <span class="n">max_radius</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">WARP_FILL_OUTLIERS</span><span class="p">)</span></div>
 
 
 
@@ -637,210 +420,6 @@
     <span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">around</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
     <span class="n">a</span> <span class="o">/=</span> <span class="n">levels</span> <span class="o">-</span> <span class="mi">1</span>
     <span class="k">return</span> <span class="n">a</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span></div>
-
-
-
-<div class="viewcode-block" id="ripple">
-<a class="viewcode-back" href="../../../filters.html#pjimg.filters.ripple">[docs]</a>
-<span class="nd">@register</span><span class="p">(</span><span class="n">filters</span><span class="p">)</span>
-<span class="nd">@processes_by_grayscale_frame</span>
-<span class="k">def</span> <span class="nf">ripple</span><span class="p">(</span>
-    <span class="n">a</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">,</span>
-    <span class="n">wave</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span>
-    <span class="n">amp</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span>
-    <span class="n">distaxis</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span>
-    <span class="n">offset</span><span class="p">:</span> <span class="n">Loc</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ImgAry</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Perform a ripple distortion.</span>
-
-<span class="sd">    .. figure:: images/ripple.jpg</span>
-<span class="sd">       :alt: An example of the filter affecting an image.</span>
-<span class="sd">       </span>
-<span class="sd">       An example of :func:`ripple` affecting an image.</span>
-<span class="sd">    </span>
-<span class="sd">    :param a: The image data to alter.</span>
-<span class="sd">    :param wave: The distance between peaks in the distortion.</span>
-<span class="sd">        There needs to be one value in the sequence per dimension</span>
-<span class="sd">        in the image.</span>
-<span class="sd">    :param amp: The amount of change caused by each ripple. There</span>
-<span class="sd">        needs to be one value in the sequence per dimension in the</span>
-<span class="sd">        image.</span>
-<span class="sd">    :param distaxis: Whether the distortion should be along the</span>
-<span class="sd">        same axis being distorted, causing the pattern to bunch up</span>
-<span class="sd">        like it is rippling, or along a different axis, causing the</span>
-<span class="sd">        pattern to wave like it&#39;s the cross-section of a wave. The</span>
-<span class="sd">        values are the indexes of the axis to distort along.</span>
-<span class="sd">    :param offset: (Optional.) The amount to offset the location</span>
-<span class="sd">        of the ripples in the image. There needs to be one value</span>
-<span class="sd">        in the sequence per dimension in the image. The default</span>
-<span class="sd">        value for all dimensions is zero.</span>
-<span class="sd">    :returns: A :class:`np.ndarray` object.</span>
-<span class="sd">    :rtype: numpy.ndarray</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="c1"># Map out the volume of the given image and make sure everything is</span>
-    <span class="c1"># in float32 to keep the cv2.remap function happy.</span>
-    <span class="n">flex</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">indices</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
-    <span class="n">flex_x</span> <span class="o">=</span> <span class="n">flex</span><span class="p">[</span><span class="n">X_</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-    <span class="n">flex_y</span> <span class="o">=</span> <span class="n">flex</span><span class="p">[</span><span class="n">Y_</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-
-    <span class="c1"># Modify the mapping to apply the ripple to create the flex</span>
-    <span class="c1"># maps for cv.remap. The flex map value for each pixel will</span>
-    <span class="c1"># indicate how far that pixel moves in the remapped image.</span>
-    <span class="o">*</span><span class="n">_</span><span class="p">,</span> <span class="n">da_x</span><span class="p">,</span> <span class="n">da_y</span> <span class="o">=</span> <span class="n">distaxis</span>
-    <span class="o">*</span><span class="n">_</span><span class="p">,</span> <span class="n">off_y</span><span class="p">,</span> <span class="n">off_x</span> <span class="o">=</span> <span class="n">offset</span>
-    <span class="k">if</span> <span class="n">wave</span><span class="p">[</span><span class="n">X_</span><span class="p">]:</span>
-        <span class="n">flex_x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">((</span><span class="n">off_x</span> <span class="o">+</span> <span class="n">flex</span><span class="p">[</span><span class="n">da_x</span><span class="p">])</span> <span class="o">/</span> <span class="n">wave</span><span class="p">[</span><span class="n">X_</span><span class="p">]</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span>
-        <span class="n">flex_x</span> <span class="o">=</span> <span class="n">flex</span><span class="p">[</span><span class="n">X_</span><span class="p">]</span> <span class="o">+</span> <span class="n">flex_x</span> <span class="o">*</span> <span class="n">amp</span><span class="p">[</span><span class="n">X_</span><span class="p">]</span>
-    <span class="k">if</span> <span class="n">wave</span><span class="p">[</span><span class="n">Y_</span><span class="p">]:</span>
-        <span class="n">flex_y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">((</span><span class="n">off_y</span> <span class="o">+</span> <span class="n">flex</span><span class="p">[</span><span class="n">da_y</span><span class="p">])</span> <span class="o">/</span> <span class="n">wave</span><span class="p">[</span><span class="n">Y_</span><span class="p">]</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span>
-        <span class="n">flex_y</span> <span class="o">=</span> <span class="n">flex</span><span class="p">[</span><span class="n">Y_</span><span class="p">]</span> <span class="o">+</span> <span class="n">flex_y</span> <span class="o">*</span> <span class="n">amp</span><span class="p">[</span><span class="n">Y_</span><span class="p">]</span>
-
-    <span class="c1"># Remap the color values in the original image using the</span>
-    <span class="c1"># rippled flex map.</span>
-    <span class="k">return</span> <span class="n">cv2</span><span class="o">.</span><span class="n">remap</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">flex_x</span><span class="p">,</span> <span class="n">flex_y</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">INTER_LINEAR</span><span class="p">)</span></div>
-
-
-
-<div class="viewcode-block" id="rotate_2d">
-<a class="viewcode-back" href="../../../filters.html#pjimg.filters.rotate_2d">[docs]</a>
-<span class="nd">@register</span><span class="p">(</span><span class="n">filters</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">rotate_2d</span><span class="p">(</span>
-    <span class="n">a</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">,</span> <span class="n">angle</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">origin</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Loc</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">safe</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ImgAry</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Rotate the image by an arbitrary angle around the Z axis.</span>
-<span class="sd">    </span>
-<span class="sd">    .. figure:: images/rotate_2d.jpg</span>
-<span class="sd">       :alt: An example of the filter affecting an image.</span>
-<span class="sd">       </span>
-<span class="sd">       An example of :func:`rotate_2d` affecting an image.</span>
-<span class="sd">    </span>
-<span class="sd">    :param a: The image data to alter.</span>
-<span class="sd">    :param angle: The angle to rotate the image in degrees.</span>
-<span class="sd">    :param origin: (Optional.) The point of rotation. Defaults to</span>
-<span class="sd">        the center of the image.</span>
-<span class="sd">    :param safe: (Optional.) Make a defensive copy of the image data</span>
-<span class="sd">        before operating on the data to prevent unexpected changes to</span>
-<span class="sd">        the original image data. This can be turned off in cases where</span>
-<span class="sd">        it is more important to preserve the memory. Defaults to `True`.</span>
-<span class="sd">    :returns: An array of image data.</span>
-<span class="sd">    :rtype: A :class:numpy.ndarray object.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="n">safe</span><span class="p">:</span>
-        <span class="n">a</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-    <span class="n">size</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">shape</span>
-    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">size</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">:</span>
-        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">frame</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
-            <span class="n">frame</span> <span class="o">=</span> <span class="n">rotate_2d</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="n">angle</span><span class="p">,</span> <span class="n">origin</span><span class="p">,</span> <span class="n">safe</span><span class="p">)</span>
-            <span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">frame</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:]</span>
-        <span class="k">return</span> <span class="n">a</span>
-    
-    <span class="k">if</span> <span class="n">origin</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">origin</span> <span class="o">=</span> <span class="n">find_center</span><span class="p">(</span><span class="n">size</span><span class="p">)</span>
-    <span class="n">y</span><span class="p">,</span> <span class="n">x</span> <span class="o">=</span> <span class="n">origin</span>
-    <span class="n">matrix</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">getRotationMatrix2D</span><span class="p">((</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">),</span> <span class="n">angle</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">cv2</span><span class="o">.</span><span class="n">warpAffine</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">matrix</span><span class="p">,</span> <span class="p">(</span><span class="n">size</span><span class="p">[</span><span class="n">X_</span><span class="p">],</span> <span class="n">size</span><span class="p">[</span><span class="n">Y_</span><span class="p">]))</span></div>
-
-
-
-<div class="viewcode-block" id="rotate_90">
-<a class="viewcode-back" href="../../../filters.html#pjimg.filters.rotate_90">[docs]</a>
-<span class="nd">@register</span><span class="p">(</span><span class="n">filters</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">rotate_90</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">,</span> <span class="n">direction</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;cw&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ImgAry</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Rotate the data 90° around the Z axis.</span>
-
-<span class="sd">    .. figure:: images/rotate_90.jpg</span>
-<span class="sd">       :alt: An example of the filter affecting an image.</span>
-<span class="sd">       </span>
-<span class="sd">       An example of :func:`rotate_90` affecting an image.</span>
-<span class="sd">    </span>
-<span class="sd">    :param a: The image data to alter.</span>
-<span class="sd">    :param direction: (Optional.) Whether to rotate the data</span>
-<span class="sd">        clockwise or counter clockwise.</span>
-<span class="sd">    :returns: An array of image data.</span>
-<span class="sd">    :rtype: A :class:numpy.ndarray object.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">spin</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
-    <span class="k">if</span> <span class="n">direction</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;ccw&#39;</span><span class="p">,</span> <span class="s1">&#39;counter clockwise&#39;</span><span class="p">,</span> <span class="s1">&#39;l&#39;</span><span class="p">,</span> <span class="s1">&#39;left&#39;</span><span class="p">]:</span>
-        <span class="n">spin</span> <span class="o">=</span> <span class="mi">1</span>
-    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">rot90</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">spin</span><span class="p">,</span> <span class="p">(</span><span class="n">Y</span><span class="p">,</span> <span class="n">X</span><span class="p">))</span></div>
-
-
-
-<div class="viewcode-block" id="skew">
-<a class="viewcode-back" href="../../../filters.html#pjimg.filters.skew">[docs]</a>
-<span class="nd">@register</span><span class="p">(</span><span class="n">filters</span><span class="p">)</span>
-<span class="nd">@processes_by_grayscale_frame</span>
-<span class="k">def</span> <span class="nf">skew</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">,</span> <span class="n">slope</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ImgAry</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Perform a skew distort on the data.</span>
-
-<span class="sd">    .. figure:: images/skew.jpg</span>
-<span class="sd">       :alt: An example of the filter affecting an image.</span>
-<span class="sd">       </span>
-<span class="sd">       An example of :func:`skew` affecting an image.</span>
-<span class="sd">    </span>
-<span class="sd">    :param a: The image data to alter.</span>
-<span class="sd">    :param slope: The slope of the Y axis of the image after the skew.</span>
-<span class="sd">    :returns: A :class:`np.ndarray` object.</span>
-<span class="sd">    :rtype: numpy.ndarray</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="c1"># Create the transform matrix by defining three points in the</span>
-    <span class="c1"># original image, and then showing where they move to in the</span>
-    <span class="c1"># new, transformed image. The order of the axes is reversed</span>
-    <span class="c1"># for this in comparison to how it&#39;s generally used in pjinoise.</span>
-    <span class="c1"># This is due to the implementation of OpenCV.</span>
-    <span class="n">original</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span>
-        <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
-        <span class="p">[</span><span class="n">a</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="n">X_</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
-        <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">a</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="n">Y_</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">],</span>
-    <span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
-    <span class="n">new</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span>
-        <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
-        <span class="p">[</span><span class="n">a</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="n">X_</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
-        <span class="p">[(</span><span class="n">a</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="n">Y_</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">slope</span><span class="p">,</span> <span class="n">a</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="n">Y_</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">],</span>
-    <span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
-
-    <span class="c1"># Perform the transform on the image by first creating a warp</span>
-    <span class="c1"># matrix from the example points. Then apply that matrix to</span>
-    <span class="c1"># the image, telling OpenCV to wrap pixels that are pushed off</span>
-    <span class="c1"># the edge of the image.</span>
-    <span class="n">matrix</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">getAffineTransform</span><span class="p">(</span><span class="n">original</span><span class="p">,</span> <span class="n">new</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">cv2</span><span class="o">.</span><span class="n">warpAffine</span><span class="p">(</span>
-        <span class="n">a</span><span class="p">,</span> <span class="n">matrix</span><span class="p">,</span> <span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="n">X_</span><span class="p">],</span> <span class="n">a</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="n">Y_</span><span class="p">]),</span> <span class="n">borderMode</span><span class="o">=</span><span class="n">cv2</span><span class="o">.</span><span class="n">BORDER_WRAP</span>
-    <span class="p">)</span></div>
-
-
-
-<div class="viewcode-block" id="twirl">
-<a class="viewcode-back" href="../../../filters.html#pjimg.filters.twirl">[docs]</a>
-<span class="nd">@register</span><span class="p">(</span><span class="n">filters</span><span class="p">)</span>
-<span class="nd">@processes_by_grayscale_frame</span>
-<span class="k">def</span> <span class="nf">twirl</span><span class="p">(</span>
-    <span class="n">a</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">,</span>
-    <span class="n">radius</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-    <span class="n">strength</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-    <span class="n">offset</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ImgAry</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Swirl the image data.</span>
-
-<span class="sd">    .. figure:: images/twirl.jpg</span>
-<span class="sd">       :alt: An example of the filter affecting an image.</span>
-<span class="sd">       </span>
-<span class="sd">       An example of :func:`twirl` affecting an image.</span>
-<span class="sd">    </span>
-<span class="sd">    :param a: The image data to alter.</span>
-<span class="sd">    :param radius: The location of the edge of the distortion. This</span>
-<span class="sd">        is measured from the center of the distortion.</span>
-<span class="sd">    :param strength: The amount of the distortion. Its roughly</span>
-<span class="sd">        equivalent to the number of rotations the distortion makes</span>
-<span class="sd">        around the center of the distortion.</span>
-<span class="sd">    :param offset: (Optional.) How far to offset the center of the</span>
-<span class="sd">        distortion from the center of the image.</span>
-<span class="sd">    :returns: A :class:`np.ndarray` object.</span>
-<span class="sd">    :rtype: numpy.ndarray</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="c1"># Determine the location of the center of the twirl effect.</span>
-    <span class="n">center</span> <span class="o">=</span> <span class="p">[</span><span class="n">n</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">o</span> <span class="k">for</span> <span class="n">n</span><span class="p">,</span> <span class="n">o</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">offset</span><span class="p">)]</span>
-    <span class="k">return</span> <span class="n">sktf</span><span class="o">.</span><span class="n">swirl</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">center</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">strength</span><span class="p">,</span> <span class="n">radius</span><span class="p">)</span></div>
 
 
 

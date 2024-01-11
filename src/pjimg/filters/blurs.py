@@ -15,10 +15,17 @@ import cv2
 import numpy as np
 
 from pjimg.filters.decorators import *
-from pjimg.filters.filters_ import filters
+from pjimg.filters.model import filters
 from pjimg.util import ImgAry, X, X_, Y, Y_, Z, Z_
 
 
+# Names available for import.
+__all__ = [
+    'box_blur', 'gaussian_blur', 'glow', 'motion_blur', 'unsharp_mask',
+]
+
+
+# Filters.
 @register(filters)
 @processes_by_grayscale_frame
 def box_blur(a: ImgAry, size: int) -> ImgAry:
@@ -129,3 +136,41 @@ def motion_blur(
     else:
         raise ValueError('motion_blur can only affect the X or Y axis.')
     return cv2.filter2D(a, -1, kernel)
+
+
+@register(filters)
+def unsharp_mask(
+    a: ImgAry,
+    sigma: float,
+    weight_a: float = 2.0,
+    weight_blurred: float = -1.0,
+    modifier: float = 0.0
+) -> ImgAry:
+    """Use a gaussian blur to increase the difference between big
+    differences of value in the image, which gives the appearance
+    of sharpening the image.
+    
+    .. figure:: images/unsharp_mask.jpg
+       :alt: An example of the filter affecting an image.
+       
+       An example of :func:`unsharp_mask` affecting an image.
+    
+    :param a: The image data to alter.
+    :param sigma: The sigma value of the blur. A gaussian blur uses a
+        gaussian function to determine how much the other pixels in
+        the image should affect the value of a pixel. Gaussian
+        functions produce a normal distribution. This value is the
+        size of a standard deviation in that normal distribution.
+    :param weight_a: (Optional.) How much to value the original image
+        in the output. Defaults to `2.0`.
+    :param weight_blurred: (Optional.) How much to value the blurred
+        image in the output. Defaults to `-1.0`.
+    :param modifier: (Optional.) A scalar value added to all values in
+        the output.
+    :returns: A :class:`np.ndarray` object.
+    :rtype: numpy.ndarray
+    """
+    blurred = gaussian_blur(a, sigma)
+    a = cv2.addWeighted(a, weight_a, blurred, weight_blurred, modifier)
+    a -= np.min(a)
+    return a / np.max(a)

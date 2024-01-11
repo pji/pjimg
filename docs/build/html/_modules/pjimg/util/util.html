@@ -242,7 +242,10 @@
 
 <div class="viewcode-block" id="get_free_rotation_size_2d">
 <a class="viewcode-back" href="../../../util.html#pjimg.util.get_free_rotation_size_2d">[docs]</a>
-<span class="k">def</span> <span class="nf">get_free_rotation_size_2d</span><span class="p">(</span><span class="n">size</span><span class="p">:</span> <span class="n">Size</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Size</span><span class="p">:</span>
+<span class="k">def</span> <span class="nf">get_free_rotation_size_2d</span><span class="p">(</span>
+    <span class="n">size</span><span class="p">:</span> <span class="n">Size</span><span class="p">,</span>
+    <span class="n">pivot_offset</span><span class="p">:</span> <span class="n">Loc</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Size</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Given the size of a final image, return the size of the image</span>
 <span class="sd">    data you need to create in order to rotate the final image within</span>
 <span class="sd">    the image data freely around the Z axis without the corners of</span>
@@ -256,10 +259,10 @@
 <span class="sd">        data.</span>
 <span class="sd">    :rtype: tuple</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">z</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">w</span> <span class="o">=</span> <span class="n">size</span>
+    <span class="n">_</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">w</span> <span class="o">=</span> <span class="p">[</span><span class="n">n</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="nb">abs</span><span class="p">(</span><span class="n">o</span><span class="p">)</span> <span class="k">for</span> <span class="n">n</span><span class="p">,</span> <span class="n">o</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">pivot_offset</span><span class="p">)]</span>
     <span class="n">o</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">atan</span><span class="p">(</span><span class="n">h</span> <span class="o">/</span> <span class="n">w</span><span class="p">)</span>
-    <span class="n">d</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">h</span> <span class="o">//</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">o</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
-    <span class="k">return</span> <span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span></div>
+    <span class="n">d</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="nb">int</span><span class="p">(</span><span class="n">h</span> <span class="o">//</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">o</span><span class="p">))</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">size</span><span class="p">[</span><span class="n">Z</span><span class="p">],</span> <span class="n">d</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span></div>
 
 
 

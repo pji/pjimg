@@ -201,7 +201,7 @@
 <span class="sd">Decorators</span>
 <span class="sd">==========</span>
 
-<span class="sd">Decorators for :mod:`pjimg.filters`.</span>
+<span class="sd">These decorators provide useful functions for building new filters:</span>
 
 <span class="sd">.. autofunction:: pjimg.filters.register</span>
 <span class="sd">.. autofunction:: pjimg.filters.processes_by_grayscale_frame</span>
@@ -222,6 +222,28 @@
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
     <span class="s1">&#39;register&#39;</span><span class="p">,</span> <span class="s1">&#39;processes_by_grayscale_frame&#39;</span><span class="p">,</span> <span class="s1">&#39;uses_uint8&#39;</span><span class="p">,</span> <span class="s1">&#39;will_square&#39;</span><span class="p">,</span>
 <span class="p">]</span>
+
+
+<span class="c1"># Docstring additions.</span>
+<span class="n">docstrings</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;process&#39;</span><span class="p">:</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">    .. warning::</span>
+<span class="s2">       This filter uses a third-party library that cannot handle </span>
+<span class="s2">       color or three-dimensional arrays. The filter itself will </span>
+<span class="s2">       be able to handle three-dimensional arrays, but the filter </span>
+<span class="s2">       will affect each two-dimensional slice individually.</span>
+<span class="s2">    </span>
+<span class="s2">    &quot;&quot;&quot;</span><span class="p">,</span>
+    <span class="s1">&#39;square&#39;</span><span class="p">:</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">    .. warning::</span>
+<span class="s2">       This function works best if you provide it a square image.</span>
+<span class="s2">       If you provide image data that doesn</span><span class="se">\&#39;</span><span class="s2">t have equal sized X</span>
+<span class="s2">       and Y axes, it will square them itself for processing then</span>
+<span class="s2">       trim them back to the original shape after. This may</span>
+<span class="s2">       introduce unwanted artifacts into the image.</span>
+<span class="s2">    </span>
+<span class="s2">    &quot;&quot;&quot;</span><span class="p">,</span>
+<span class="p">}</span>
 
 
 <span class="c1"># Decorators.</span>
@@ -252,14 +274,7 @@
 <span class="sd">    filter can&#39;t handle more than two dimensions in an array.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">fn</span><span class="o">.</span><span class="vm">__doc__</span><span class="p">:</span>
-        <span class="n">fn</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">+=</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">((</span>
-            <span class="s1">&#39;   &#39;</span><span class="p">,</span>
-            <span class="s1">&#39;   .. warning::&#39;</span><span class="p">,</span>
-            <span class="s1">&#39;      This filter uses a third-party library that cannot handle &#39;</span><span class="p">,</span>
-            <span class="s1">&#39;      color or three-dimensional arrays. The filter itself will &#39;</span><span class="p">,</span>
-            <span class="s1">&#39;      be able to handle three-dimensional arrays, but the filter &#39;</span><span class="p">,</span>
-            <span class="s1">&#39;      will affect each two-dimensional slice individually.&#39;</span>
-        <span class="p">))</span>
+        <span class="n">fn</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">+=</span> <span class="n">docstrings</span><span class="p">[</span><span class="s1">&#39;process&#39;</span><span class="p">]</span>
     
     <span class="nd">@wraps</span><span class="p">(</span><span class="n">fn</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ImgAry</span><span class="p">:</span>
@@ -304,16 +319,7 @@
 <span class="sd">    will be sliced to the size of the original array.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">fn</span><span class="o">.</span><span class="vm">__doc__</span><span class="p">:</span>
-        <span class="n">fn</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">+=</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">((</span>
-            <span class="s1">&#39;&#39;</span><span class="p">,</span>
-            <span class="s1">&#39;.. warning::&#39;</span>
-            <span class="s1">&#39;   This function works best if you provide it a square image.&#39;</span><span class="p">,</span>
-            <span class="s1">&#39;   If you provide image data that doesn</span><span class="se">\&#39;</span><span class="s1">t have equal sized X&#39;</span><span class="p">,</span>
-            <span class="s1">&#39;   and Y axes, it will square them itself for processing then&#39;</span><span class="p">,</span>
-            <span class="s1">&#39;   trim them back to the original shape after. This may&#39;</span><span class="p">,</span>
-            <span class="s1">&#39;   introduce unwanted artifacts into the image.&#39;</span><span class="p">,</span>
-            <span class="s1">&#39;&#39;</span>
-        <span class="p">))</span>
+        <span class="n">fn</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">+=</span> <span class="n">docstrings</span><span class="p">[</span><span class="s1">&#39;square&#39;</span><span class="p">]</span>
     
     <span class="nd">@wraps</span><span class="p">(</span><span class="n">fn</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ImgAry</span><span class="p">:</span>

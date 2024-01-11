@@ -5,9 +5,40 @@ test_resize
 Unit tests for the lerpy.resize module.
 """
 import numpy as np
+import pytest as pt
 
 from pjimg.util import lerps as lp
 from pjimg.util import resize as rs
+from tests.fixtures import a
+
+
+# Test classes.
+class TestCropArray:
+    def test_crop_centered(self, a):
+        """Given an array and a final size, :func:`crop_array` should
+        crop out a section of the array of the final size from the
+        center of the array.
+        """
+        size = (3, 3)
+        assert (rs.crop_array(a, size) == np.array([
+            [0.50, 0.75, 1.00,],
+            [0.75, 1.00, 0.75,],
+            [1.00, 0.75, 0.50,],
+        ])).all()
+
+    def test_crop_offset(self, a):
+        """Given an array, a final size, and an offset location,
+        :func:`crop_array` should crop out a section of the array of
+        the final size from a location offset center of the array by
+        the offset location.
+        """
+        size = (3, 3)
+        loc = (-1, -1)
+        assert (rs.crop_array(a, size, loc) == np.array([
+            [0.00, 0.25, 0.50],
+            [0.25, 0.50, 0.75],
+            [0.50, 0.75, 1.00],
+        ])).all()
 
 
 # Tests for build_resizing_matrices.

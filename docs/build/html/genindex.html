@@ -242,11 +242,13 @@
 </li>
         <li><a href="filters.html#pjimg.filters.colorize">colorize() (in module pjimg.filters)</a>
 </li>
-    </ul></td>
-    <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="filters.html#pjimg.filters.contrast">contrast() (in module pjimg.filters)</a>
 </li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="sources.html#pjimg.sources.CosineCurtains">CosineCurtains (class in pjimg.sources)</a>
+</li>
+        <li><a href="util.html#pjimg.util.crop_array">crop_array() (in module pjimg.util)</a>
 </li>
         <li><a href="util.html#pjimg.util.cubic_interpolation">cubic_interpolation() (in module pjimg.util)</a>
 </li>
@@ -269,6 +271,8 @@
     </ul></td>
     <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="blends.html#pjimg.blends.difference">difference() (in module pjimg.blends)</a>
+</li>
+        <li><a href="filters.html#pjimg.filters.distance">distance() (in module pjimg.filters)</a>
 </li>
     </ul></td>
   </tr></table>
@@ -348,11 +352,15 @@
     <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="eases.html#pjimg.eases.in_back">in_back() (in module pjimg.eases)</a>
 </li>
+        <li><a href="eases.html#pjimg.eases.in_bounce">in_bounce() (in module pjimg.eases)</a>
+</li>
         <li><a href="eases.html#pjimg.eases.in_circ">in_circ() (in module pjimg.eases)</a>
 </li>
         <li><a href="eases.html#pjimg.eases.in_cubic">in_cubic() (in module pjimg.eases)</a>
 </li>
         <li><a href="eases.html#pjimg.eases.in_elastic">in_elastic() (in module pjimg.eases)</a>
+</li>
+        <li><a href="eases.html#pjimg.eases.in_expo">in_expo() (in module pjimg.eases)</a>
 </li>
         <li><a href="eases.html#pjimg.eases.in_out_back">in_out_back() (in module pjimg.eases)</a>
 </li>
@@ -366,6 +374,8 @@
     <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="eases.html#pjimg.eases.in_out_elastic">in_out_elastic() (in module pjimg.eases)</a>
 </li>
+        <li><a href="eases.html#pjimg.eases.in_out_perlin">in_out_perlin() (in module pjimg.eases)</a>
+</li>
         <li><a href="eases.html#pjimg.eases.in_out_quad">in_out_quad() (in module pjimg.eases)</a>
 </li>
         <li><a href="eases.html#pjimg.eases.in_out_quint">in_out_quint() (in module pjimg.eases)</a>
@@ -373,6 +383,8 @@
         <li><a href="eases.html#pjimg.eases.in_out_sin">in_out_sin() (in module pjimg.eases)</a>
 </li>
         <li><a href="eases.html#pjimg.eases.in_quad">in_quad() (in module pjimg.eases)</a>
+</li>
+        <li><a href="eases.html#pjimg.eases.in_quart">in_quart() (in module pjimg.eases)</a>
 </li>
         <li><a href="eases.html#pjimg.eases.in_quint">in_quint() (in module pjimg.eases)</a>
 </li>
@@ -434,15 +446,19 @@
 </li>
           <li><a href="eases.html#module-pjimg.eases.decorators">pjimg.eases.decorators</a>
 </li>
-          <li><a href="eases.html#module-pjimg.eases.eases_">pjimg.eases.eases_</a>
+          <li><a href="eases.html#module-pjimg.eases.ops">pjimg.eases.ops</a>
 </li>
           <li><a href="filters.html#module-pjimg.filters">pjimg.filters</a>
+</li>
+          <li><a href="filters.html#module-pjimg.filters.affine">pjimg.filters.affine</a>
 </li>
           <li><a href="filters.html#module-pjimg.filters.blurs">pjimg.filters.blurs</a>
 </li>
           <li><a href="filters.html#module-pjimg.filters.decorators">pjimg.filters.decorators</a>
 </li>
-          <li><a href="filters.html#module-pjimg.filters.filters_">pjimg.filters.filters_</a>
+          <li><a href="filters.html#module-pjimg.filters.distort">pjimg.filters.distort</a>
+</li>
+          <li><a href="filters.html#module-pjimg.filters.value">pjimg.filters.value</a>
 </li>
           <li><a href="imgio.html#module-pjimg.imgio">pjimg.imgio</a>
 </li>
@@ -523,6 +539,8 @@
 </li>
         <li><a href="sources.html#pjimg.sources.OctaveWorley">OctaveWorley (class in pjimg.sources)</a>
 </li>
+        <li><a href="eases.html#pjimg.eases.out_back">out_back() (in module pjimg.eases)</a>
+</li>
         <li><a href="eases.html#pjimg.eases.out_bounce">out_bounce() (in module pjimg.eases)</a>
 </li>
     </ul></td>
@@ -593,10 +611,10 @@
 </li>
         </ul></li>
         <li>
-    pjimg.eases.eases_
+    pjimg.eases.ops
 
         <ul>
-          <li><a href="eases.html#module-pjimg.eases.eases_">module</a>
+          <li><a href="eases.html#module-pjimg.eases.ops">module</a>
 </li>
         </ul></li>
         <li>
@@ -604,6 +622,13 @@
 
         <ul>
           <li><a href="filters.html#module-pjimg.filters">module</a>
+</li>
+        </ul></li>
+        <li>
+    pjimg.filters.affine
+
+        <ul>
+          <li><a href="filters.html#module-pjimg.filters.affine">module</a>
 </li>
         </ul></li>
         <li>
@@ -621,10 +646,17 @@
 </li>
         </ul></li>
         <li>
-    pjimg.filters.filters_
+    pjimg.filters.distort
 
         <ul>
-          <li><a href="filters.html#module-pjimg.filters.filters_">module</a>
+          <li><a href="filters.html#module-pjimg.filters.distort">module</a>
+</li>
+        </ul></li>
+        <li>
+    pjimg.filters.value
+
+        <ul>
+          <li><a href="filters.html#module-pjimg.filters.value">module</a>
 </li>
         </ul></li>
         <li>
@@ -648,6 +680,8 @@
           <li><a href="imgio.html#module-pjimg.imgio.writer">module</a>
 </li>
         </ul></li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
         <li>
     pjimg.sources
 
@@ -655,8 +689,6 @@
           <li><a href="sources.html#module-pjimg.sources">module</a>
 </li>
         </ul></li>
-    </ul></td>
-    <td style="width: 33%; vertical-align: top;"><ul>
         <li>
     pjimg.sources.decorators
 
