@@ -85,7 +85,9 @@ These functions start fast or extend the lightness in an image:
 .. autofunction:: pjimg.eases.out_circ
 .. autofunction:: pjimg.eases.out_cubic
 .. autofunction:: pjimg.eases.out_elastic
+.. autofunction:: pjimg.eases.out_expo
 .. autofunction:: pjimg.eases.out_quad
+.. autofunction:: pjimg.eases.out_quart
 .. autofunction:: pjimg.eases.out_quint
 .. autofunction:: pjimg.eases.out_sin
 
@@ -95,12 +97,15 @@ Ease In Out
 These functions go fast in the middle or compress the midtones of the image.
 
 .. autofunction:: pjimg.eases.in_out_back
+.. autofunction:: pjimg.eases.in_out_bounce
 .. autofunction:: pjimg.eases.in_out_circ
 .. autofunction:: pjimg.eases.in_out_cos
 .. autofunction:: pjimg.eases.in_out_cubic
 .. autofunction:: pjimg.eases.in_out_elastic
+.. autofunction:: pjimg.eases.in_out_expo
 .. autofunction:: pjimg.eases.in_out_perlin
 .. autofunction:: pjimg.eases.in_out_quad
+.. autofunction:: pjimg.eases.in_out_quart
 .. autofunction:: pjimg.eases.in_out_quint
 .. autofunction:: pjimg.eases.in_out_sin
 
@@ -129,17 +134,40 @@ from pjimg.util import ImgAry
 
 # Names available for import.
 __all__ = [
-    'in_back', 'in_bounce', 'in_circ', 'in_cubic', 'in_elastic',
+    'in_back',
+    'in_bounce',
+    'in_circ',
+    'in_cubic',
+    'in_elastic',
     'in_expo',
-    'in_out_back', 'in_out_circ', 'in_out_cos',
-    'in_out_cubic', 'in_out_elastic', 'in_out_perlin',
+    'in_out_back',
+    'in_out_bounce',
+    'in_out_circ',
+    'in_out_cos',
+    'in_out_cubic',
+    'in_out_elastic',
+    'in_out_expo',
+    'in_out_perlin',
     'in_out_quad',
-    'in_out_quint', 'in_out_sin', 'in_quad',
+    'in_out_quart',
+    'in_out_quint',
+    'in_out_sin',
+    'in_quad',
     'in_quart',
-    'in_quint', 'in_sin', 'mid_bump_linear',
-    'mid_bump_sin', 'out_back', 'out_bounce', 'out_circ',
-    'out_cubic', 'out_elastic', 'out_quad',
-    'out_quint', 'out_sin',
+    'in_quint',
+    'in_sin',
+    'mid_bump_linear',
+    'mid_bump_sin',
+    'out_back',
+    'out_bounce',
+    'out_circ',
+    'out_cubic',
+    'out_elastic',
+    'out_expo',
+    'out_quad',
+    'out_quart',
+    'out_quint',
+    'out_sin',
 ]
 
 
@@ -566,6 +594,35 @@ def out_elastic(a: ImgAry) -> ImgAry:
 
 @register(eases)
 @will_scale
+def out_expo(a: ImgAry) -> ImgAry:
+    """An easing function that has an exponential curve.
+    
+    .. figure:: images/plot_out_expo.png
+       :alt: A chart showing the action of the easing function.
+       
+       The action of :func:`out_expo`.
+       
+    With image data, it extends the lighter areas and compresses the
+    darker ones. The bounce into values over one can be a little
+    awkward. It's left to the calling application to decide how to
+    handle it. In the following example, values are just truncated at
+    one.
+    
+    .. figure:: images/ex_out_expo.png
+       :alt: An example of the easing function affecting a gradient.
+       
+       An example of how :func:`out_expo` affects a simple gradient. 
+    
+    :param a: An array of image data.
+    :return: The eased data as a :class:`numpy.ndarray`.
+    :rtype: numpy.ndarray
+    """
+    a[a != 1.0] = 1 - 2 ** (-10 * a[a != 1.0])
+    return a
+
+
+@register(eases)
+@will_scale
 def out_quad(a: ImgAry) -> ImgAry:
     """An easing function that has a quadratic curve.
     
@@ -587,6 +644,31 @@ def out_quad(a: ImgAry) -> ImgAry:
     :rtype: numpy.ndarray
     """
     return 1 - (1 - a) ** 2
+
+
+@register(eases)
+@will_scale
+def out_quart(a: ImgAry) -> ImgAry:
+    """An easing function that has a quartic curve.
+    
+    .. figure:: images/plot_out_quart.png
+       :alt: A chart showing the action of the easing function.
+       
+       The action of :func:`out_quart`.
+       
+    With image data, it is a moderate extension of the lighter areas
+    and compression of the darker ones.
+    
+    .. figure:: images/ex_out_quart.png
+       :alt: An example of the easing function affecting a gradient.
+       
+       An example of how :func:`out_quart` affects a simple gradient. 
+    
+    :param a: An array of image data.
+    :return: The eased data as a :class:`numpy.ndarray`.
+    :rtype: numpy.ndarray
+    """
+    return 1 - (1 - a) ** 4
 
 
 @register(eases)
@@ -670,6 +752,35 @@ def in_out_back(a: ImgAry) -> ImgAry:
     m[a < .5] = True
     a[m] = (2 * a[m]) ** 2 * ((c2 + 1) * 2 * a[m] - c2) / 2
     a[~m] = ((2 * a[~m] - 2) ** 2 * ((c2 + 1) * (a[~m] * 2 - 2) + c2) + 2) / 2
+    return a
+
+
+@register(eases)
+@will_scale
+def in_out_bounce(a: ImgAry) -> ImgAry:
+    """An easing function that has a bounce
+    
+    .. figure:: images/plot_in_out_bounce.png
+       :alt: A chart showing the action of the easing function.
+       
+       The action of :func:`in_out_bounce`.
+       
+    With image data, it extends the darker and lighter areas. The dip
+    into negative values and bounce over one can be a little awkward.
+    It's left to the calling application to decide how to handle it. In
+    the following example, values are just truncated at zero and one.
+    
+    .. figure:: images/ex_in_out_bounce.png
+       :alt: An example of the easing function affecting a gradient.
+       
+       An example of how :func:`in_out_bounce` affects a simple gradient. 
+    
+    :param a: An array of image data.
+    :return: The eased data as a :class:`numpy.ndarray`.
+    :rtype: numpy.ndarray
+    """
+    a[a < 0.5] = (1 - out_bounce(1 - 2 * a[a < 0.5])) / 2
+    a[a >= 0.5] = (1 + out_bounce(2 * a[a >= 0.5] - 1)) / 2
     return a
 
 
@@ -805,6 +916,38 @@ def in_out_elastic(a: ImgAry) -> ImgAry:
 
 @register(eases)
 @will_scale
+def in_out_expo(a: ImgAry) -> ImgAry:
+    """An easing function that uses a exponential curve to compress the
+    middle.
+    
+    .. figure:: images/plot_in_out_expo.png
+       :alt: A chart showing the action of the easing function.
+       
+       The action of :func:`in_out_expo`.
+       
+    With image data, it extends the darker and lighter areas. This
+    should not generate values outside of the original range.
+    
+    .. figure:: images/ex_in_out_expo.png
+       :alt: An example of the easing function affecting a gradient.
+       
+       An example of how :func:`in_out_expo` affects a simple gradient. 
+    
+    :param a: An array of image data.
+    :return: The eased data as a :class:`numpy.ndarray`.
+    :rtype: numpy.ndarray
+    """
+    a[np.logical_and(a > 0.0, a < 0.5)] = (
+        2 ** (20 * a[np.logical_and(a > 0.0, a < 0.5)] - 10) / 2
+    )
+    a[np.logical_and(a < 1.0, a >= 0.5)] = (
+        (2 - 2 ** (-20 * a[np.logical_and(a < 1.0, a >= 0.5)] + 10)) / 2
+    )
+    return a
+
+
+@register(eases)
+@will_scale
 def in_out_perlin(a: ImgAry) -> ImgAry:
     """An easing function that uses the easing equation from Ken
     Perlin's "Improved Perlin Noise" papaer.
@@ -857,6 +1000,35 @@ def in_out_quad(a: ImgAry) -> ImgAry:
     m[a < .5] = True
     a[m] = 2 * a[m] ** 2
     a[~m] = 1 - (-2 * a[~m] + 2) ** 2 / 2
+    return a
+
+
+@register(eases)
+@will_scale
+def in_out_quart(a: ImgAry) -> ImgAry:
+    """An easing function that uses a quartic curve to compress the
+    middle.
+    
+    .. figure:: images/plot_in_out_quart.png
+       :alt: A chart showing the action of the easing function.
+       
+       The action of :func:`in_out_quart`.
+       
+    With image data, it extends the darker and lighter areas. This
+    should not generate values outside of the original range.
+    
+    .. figure:: images/ex_in_out_quart.png
+       :alt: An example of the easing function affecting a gradient.
+       
+       An example of how :func:`in_out_quart` affects a simple
+       gradient. 
+    
+    :param a: An array of image data.
+    :return: The eased data as a :class:`numpy.ndarray`.
+    :rtype: numpy.ndarray
+    """
+    a[a < .5] = 8 * a[a < .5] ** 4
+    a[a >= .5] = 1 - (-2 * a[a >= .5] + 2) ** 4 / 2
     return a
 
 
@@ -989,5 +1161,5 @@ if __name__ == '__main__':
             [1.00, 0.75, 0.50, 0.25, 0.00, ],
         ],
     ], dtype=float)
-    a = out_back(a)
-    print_array(a)
+    a = in_out_bounce(a)
+    print_array(a, 1)

@@ -284,7 +284,9 @@
 <span class="sd">.. autofunction:: pjimg.eases.out_circ</span>
 <span class="sd">.. autofunction:: pjimg.eases.out_cubic</span>
 <span class="sd">.. autofunction:: pjimg.eases.out_elastic</span>
+<span class="sd">.. autofunction:: pjimg.eases.out_expo</span>
 <span class="sd">.. autofunction:: pjimg.eases.out_quad</span>
+<span class="sd">.. autofunction:: pjimg.eases.out_quart</span>
 <span class="sd">.. autofunction:: pjimg.eases.out_quint</span>
 <span class="sd">.. autofunction:: pjimg.eases.out_sin</span>
 
@@ -294,12 +296,15 @@
 <span class="sd">These functions go fast in the middle or compress the midtones of the image.</span>
 
 <span class="sd">.. autofunction:: pjimg.eases.in_out_back</span>
+<span class="sd">.. autofunction:: pjimg.eases.in_out_bounce</span>
 <span class="sd">.. autofunction:: pjimg.eases.in_out_circ</span>
 <span class="sd">.. autofunction:: pjimg.eases.in_out_cos</span>
 <span class="sd">.. autofunction:: pjimg.eases.in_out_cubic</span>
 <span class="sd">.. autofunction:: pjimg.eases.in_out_elastic</span>
+<span class="sd">.. autofunction:: pjimg.eases.in_out_expo</span>
 <span class="sd">.. autofunction:: pjimg.eases.in_out_perlin</span>
 <span class="sd">.. autofunction:: pjimg.eases.in_out_quad</span>
+<span class="sd">.. autofunction:: pjimg.eases.in_out_quart</span>
 <span class="sd">.. autofunction:: pjimg.eases.in_out_quint</span>
 <span class="sd">.. autofunction:: pjimg.eases.in_out_sin</span>
 
@@ -329,15 +334,14 @@
 <span class="c1"># Names available for import.</span>
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
     <span class="s1">&#39;in_back&#39;</span><span class="p">,</span> <span class="s1">&#39;in_bounce&#39;</span><span class="p">,</span> <span class="s1">&#39;in_circ&#39;</span><span class="p">,</span> <span class="s1">&#39;in_cubic&#39;</span><span class="p">,</span> <span class="s1">&#39;in_elastic&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;in_expo&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;in_out_back&#39;</span><span class="p">,</span> <span class="s1">&#39;in_out_circ&#39;</span><span class="p">,</span> <span class="s1">&#39;in_out_cos&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;in_out_cubic&#39;</span><span class="p">,</span> <span class="s1">&#39;in_out_elastic&#39;</span><span class="p">,</span> <span class="s1">&#39;in_out_perlin&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;in_out_quad&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;in_out_quint&#39;</span><span class="p">,</span> <span class="s1">&#39;in_out_sin&#39;</span><span class="p">,</span> <span class="s1">&#39;in_quad&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;in_quart&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;in_expo&#39;</span><span class="p">,</span> <span class="s1">&#39;in_out_back&#39;</span><span class="p">,</span> <span class="s1">&#39;in_out_bounce&#39;</span><span class="p">,</span> <span class="s1">&#39;in_out_circ&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;in_out_cos&#39;</span><span class="p">,</span> <span class="s1">&#39;in_out_cubic&#39;</span><span class="p">,</span> <span class="s1">&#39;in_out_elastic&#39;</span><span class="p">,</span> <span class="s1">&#39;in_out_expo&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;in_out_perlin&#39;</span><span class="p">,</span> <span class="s1">&#39;in_out_quad&#39;</span><span class="p">,</span> <span class="s1">&#39;in_out_quart&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;in_out_quint&#39;</span><span class="p">,</span> <span class="s1">&#39;in_out_sin&#39;</span><span class="p">,</span> <span class="s1">&#39;in_quad&#39;</span><span class="p">,</span> <span class="s1">&#39;in_quart&#39;</span><span class="p">,</span>
     <span class="s1">&#39;in_quint&#39;</span><span class="p">,</span> <span class="s1">&#39;in_sin&#39;</span><span class="p">,</span> <span class="s1">&#39;mid_bump_linear&#39;</span><span class="p">,</span>
     <span class="s1">&#39;mid_bump_sin&#39;</span><span class="p">,</span> <span class="s1">&#39;out_back&#39;</span><span class="p">,</span> <span class="s1">&#39;out_bounce&#39;</span><span class="p">,</span> <span class="s1">&#39;out_circ&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;out_cubic&#39;</span><span class="p">,</span> <span class="s1">&#39;out_elastic&#39;</span><span class="p">,</span> <span class="s1">&#39;out_quad&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;out_cubic&#39;</span><span class="p">,</span> <span class="s1">&#39;out_elastic&#39;</span><span class="p">,</span> <span class="s1">&#39;out_expo&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;out_quad&#39;</span><span class="p">,</span> <span class="s1">&#39;out_quart&#39;</span><span class="p">,</span>
     <span class="s1">&#39;out_quint&#39;</span><span class="p">,</span> <span class="s1">&#39;out_sin&#39;</span><span class="p">,</span>
 <span class="p">]</span>
 
@@ -808,6 +812,38 @@
 
 
 
+<div class="viewcode-block" id="out_expo">
+<a class="viewcode-back" href="../../../eases.html#pjimg.eases.out_expo">[docs]</a>
+<span class="nd">@register</span><span class="p">(</span><span class="n">eases</span><span class="p">)</span>
+<span class="nd">@will_scale</span>
+<span class="k">def</span> <span class="nf">out_expo</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ImgAry</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;An easing function that has an exponential curve.</span>
+<span class="sd">    </span>
+<span class="sd">    .. figure:: images/plot_out_expo.png</span>
+<span class="sd">       :alt: A chart showing the action of the easing function.</span>
+<span class="sd">       </span>
+<span class="sd">       The action of :func:`out_expo`.</span>
+<span class="sd">       </span>
+<span class="sd">    With image data, it extends the lighter areas and compresses the</span>
+<span class="sd">    darker ones. The bounce into values over one can be a little</span>
+<span class="sd">    awkward. It&#39;s left to the calling application to decide how to</span>
+<span class="sd">    handle it. In the following example, values are just truncated at</span>
+<span class="sd">    one.</span>
+<span class="sd">    </span>
+<span class="sd">    .. figure:: images/ex_out_expo.png</span>
+<span class="sd">       :alt: An example of the easing function affecting a gradient.</span>
+<span class="sd">       </span>
+<span class="sd">       An example of how :func:`out_expo` affects a simple gradient. </span>
+<span class="sd">    </span>
+<span class="sd">    :param a: An array of image data.</span>
+<span class="sd">    :return: The eased data as a :class:`numpy.ndarray`.</span>
+<span class="sd">    :rtype: numpy.ndarray</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">a</span><span class="p">[</span><span class="n">a</span> <span class="o">!=</span> <span class="mf">1.0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">**</span> <span class="p">(</span><span class="o">-</span><span class="mi">10</span> <span class="o">*</span> <span class="n">a</span><span class="p">[</span><span class="n">a</span> <span class="o">!=</span> <span class="mf">1.0</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">a</span></div>
+
+
+
 <div class="viewcode-block" id="out_quad">
 <a class="viewcode-back" href="../../../eases.html#pjimg.eases.out_quad">[docs]</a>
 <span class="nd">@register</span><span class="p">(</span><span class="n">eases</span><span class="p">)</span>
@@ -833,6 +869,34 @@
 <span class="sd">    :rtype: numpy.ndarray</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="mi">1</span> <span class="o">-</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">a</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span></div>
+
+
+
+<div class="viewcode-block" id="out_quart">
+<a class="viewcode-back" href="../../../eases.html#pjimg.eases.out_quart">[docs]</a>
+<span class="nd">@register</span><span class="p">(</span><span class="n">eases</span><span class="p">)</span>
+<span class="nd">@will_scale</span>
+<span class="k">def</span> <span class="nf">out_quart</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ImgAry</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;An easing function that has a quartic curve.</span>
+<span class="sd">    </span>
+<span class="sd">    .. figure:: images/plot_out_quart.png</span>
+<span class="sd">       :alt: A chart showing the action of the easing function.</span>
+<span class="sd">       </span>
+<span class="sd">       The action of :func:`out_quart`.</span>
+<span class="sd">       </span>
+<span class="sd">    With image data, it is a moderate extension of the lighter areas</span>
+<span class="sd">    and compression of the darker ones.</span>
+<span class="sd">    </span>
+<span class="sd">    .. figure:: images/ex_out_quart.png</span>
+<span class="sd">       :alt: An example of the easing function affecting a gradient.</span>
+<span class="sd">       </span>
+<span class="sd">       An example of how :func:`out_quart` affects a simple gradient. </span>
+<span class="sd">    </span>
+<span class="sd">    :param a: An array of image data.</span>
+<span class="sd">    :return: The eased data as a :class:`numpy.ndarray`.</span>
+<span class="sd">    :rtype: numpy.ndarray</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="mi">1</span> <span class="o">-</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">a</span><span class="p">)</span> <span class="o">**</span> <span class="mi">4</span></div>
 
 
 
@@ -925,6 +989,38 @@
     <span class="n">m</span><span class="p">[</span><span class="n">a</span> <span class="o">&lt;</span> <span class="mf">.5</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
     <span class="n">a</span><span class="p">[</span><span class="n">m</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">a</span><span class="p">[</span><span class="n">m</span><span class="p">])</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">*</span> <span class="p">((</span><span class="n">c2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">a</span><span class="p">[</span><span class="n">m</span><span class="p">]</span> <span class="o">-</span> <span class="n">c2</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
     <span class="n">a</span><span class="p">[</span><span class="o">~</span><span class="n">m</span><span class="p">]</span> <span class="o">=</span> <span class="p">((</span><span class="mi">2</span> <span class="o">*</span> <span class="n">a</span><span class="p">[</span><span class="o">~</span><span class="n">m</span><span class="p">]</span> <span class="o">-</span> <span class="mi">2</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">*</span> <span class="p">((</span><span class="n">c2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">a</span><span class="p">[</span><span class="o">~</span><span class="n">m</span><span class="p">]</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">-</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="n">c2</span><span class="p">)</span> <span class="o">+</span> <span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+    <span class="k">return</span> <span class="n">a</span></div>
+
+
+
+<div class="viewcode-block" id="in_out_bounce">
+<a class="viewcode-back" href="../../../eases.html#pjimg.eases.in_out_bounce">[docs]</a>
+<span class="nd">@register</span><span class="p">(</span><span class="n">eases</span><span class="p">)</span>
+<span class="nd">@will_scale</span>
+<span class="k">def</span> <span class="nf">in_out_bounce</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ImgAry</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;An easing function that has a bounce</span>
+<span class="sd">    </span>
+<span class="sd">    .. figure:: images/plot_in_out_bounce.png</span>
+<span class="sd">       :alt: A chart showing the action of the easing function.</span>
+<span class="sd">       </span>
+<span class="sd">       The action of :func:`in_out_bounce`.</span>
+<span class="sd">       </span>
+<span class="sd">    With image data, it extends the darker and lighter areas. The dip</span>
+<span class="sd">    into negative values and bounce over one can be a little awkward.</span>
+<span class="sd">    It&#39;s left to the calling application to decide how to handle it. In</span>
+<span class="sd">    the following example, values are just truncated at zero and one.</span>
+<span class="sd">    </span>
+<span class="sd">    .. figure:: images/ex_in_out_bounce.png</span>
+<span class="sd">       :alt: An example of the easing function affecting a gradient.</span>
+<span class="sd">       </span>
+<span class="sd">       An example of how :func:`in_out_bounce` affects a simple gradient. </span>
+<span class="sd">    </span>
+<span class="sd">    :param a: An array of image data.</span>
+<span class="sd">    :return: The eased data as a :class:`numpy.ndarray`.</span>
+<span class="sd">    :rtype: numpy.ndarray</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">a</span><span class="p">[</span><span class="n">a</span> <span class="o">&lt;</span> <span class="mf">0.5</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">out_bounce</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">a</span><span class="p">[</span><span class="n">a</span> <span class="o">&lt;</span> <span class="mf">0.5</span><span class="p">]))</span> <span class="o">/</span> <span class="mi">2</span>
+    <span class="n">a</span><span class="p">[</span><span class="n">a</span> <span class="o">&gt;=</span> <span class="mf">0.5</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">out_bounce</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">a</span><span class="p">[</span><span class="n">a</span> <span class="o">&gt;=</span> <span class="mf">0.5</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span> <span class="o">/</span> <span class="mi">2</span>
     <span class="k">return</span> <span class="n">a</span></div>
 
 
@@ -1071,6 +1167,41 @@
 
 
 
+<div class="viewcode-block" id="in_out_expo">
+<a class="viewcode-back" href="../../../eases.html#pjimg.eases.in_out_expo">[docs]</a>
+<span class="nd">@register</span><span class="p">(</span><span class="n">eases</span><span class="p">)</span>
+<span class="nd">@will_scale</span>
+<span class="k">def</span> <span class="nf">in_out_expo</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ImgAry</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;An easing function that uses a exponential curve to compress the</span>
+<span class="sd">    middle.</span>
+<span class="sd">    </span>
+<span class="sd">    .. figure:: images/plot_in_out_expo.png</span>
+<span class="sd">       :alt: A chart showing the action of the easing function.</span>
+<span class="sd">       </span>
+<span class="sd">       The action of :func:`in_out_expo`.</span>
+<span class="sd">       </span>
+<span class="sd">    With image data, it extends the darker and lighter areas. This</span>
+<span class="sd">    should not generate values outside of the original range.</span>
+<span class="sd">    </span>
+<span class="sd">    .. figure:: images/ex_in_out_expo.png</span>
+<span class="sd">       :alt: An example of the easing function affecting a gradient.</span>
+<span class="sd">       </span>
+<span class="sd">       An example of how :func:`in_out_expo` affects a simple gradient. </span>
+<span class="sd">    </span>
+<span class="sd">    :param a: An array of image data.</span>
+<span class="sd">    :return: The eased data as a :class:`numpy.ndarray`.</span>
+<span class="sd">    :rtype: numpy.ndarray</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">a</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">logical_and</span><span class="p">(</span><span class="n">a</span> <span class="o">&gt;</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">a</span> <span class="o">&lt;</span> <span class="mf">0.5</span><span class="p">)]</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="mi">2</span> <span class="o">**</span> <span class="p">(</span><span class="mi">20</span> <span class="o">*</span> <span class="n">a</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">logical_and</span><span class="p">(</span><span class="n">a</span> <span class="o">&gt;</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">a</span> <span class="o">&lt;</span> <span class="mf">0.5</span><span class="p">)]</span> <span class="o">-</span> <span class="mi">10</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+    <span class="p">)</span>
+    <span class="n">a</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">logical_and</span><span class="p">(</span><span class="n">a</span> <span class="o">&lt;</span> <span class="mf">1.0</span><span class="p">,</span> <span class="n">a</span> <span class="o">&gt;=</span> <span class="mf">0.5</span><span class="p">)]</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="p">(</span><span class="mi">2</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">**</span> <span class="p">(</span><span class="o">-</span><span class="mi">20</span> <span class="o">*</span> <span class="n">a</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">logical_and</span><span class="p">(</span><span class="n">a</span> <span class="o">&lt;</span> <span class="mf">1.0</span><span class="p">,</span> <span class="n">a</span> <span class="o">&gt;=</span> <span class="mf">0.5</span><span class="p">)]</span> <span class="o">+</span> <span class="mi">10</span><span class="p">))</span> <span class="o">/</span> <span class="mi">2</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">a</span></div>
+
+
+
 <div class="viewcode-block" id="in_out_perlin">
 <a class="viewcode-back" href="../../../eases.html#pjimg.eases.in_out_perlin">[docs]</a>
 <span class="nd">@register</span><span class="p">(</span><span class="n">eases</span><span class="p">)</span>
@@ -1130,6 +1261,38 @@
     <span class="n">m</span><span class="p">[</span><span class="n">a</span> <span class="o">&lt;</span> <span class="mf">.5</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
     <span class="n">a</span><span class="p">[</span><span class="n">m</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">a</span><span class="p">[</span><span class="n">m</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span>
     <span class="n">a</span><span class="p">[</span><span class="o">~</span><span class="n">m</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="p">(</span><span class="o">-</span><span class="mi">2</span> <span class="o">*</span> <span class="n">a</span><span class="p">[</span><span class="o">~</span><span class="n">m</span><span class="p">]</span> <span class="o">+</span> <span class="mi">2</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">/</span> <span class="mi">2</span>
+    <span class="k">return</span> <span class="n">a</span></div>
+
+
+
+<div class="viewcode-block" id="in_out_quart">
+<a class="viewcode-back" href="../../../eases.html#pjimg.eases.in_out_quart">[docs]</a>
+<span class="nd">@register</span><span class="p">(</span><span class="n">eases</span><span class="p">)</span>
+<span class="nd">@will_scale</span>
+<span class="k">def</span> <span class="nf">in_out_quart</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ImgAry</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;An easing function that uses a quartic curve to compress the</span>
+<span class="sd">    middle.</span>
+<span class="sd">    </span>
+<span class="sd">    .. figure:: images/plot_in_out_quart.png</span>
+<span class="sd">       :alt: A chart showing the action of the easing function.</span>
+<span class="sd">       </span>
+<span class="sd">       The action of :func:`in_out_quart`.</span>
+<span class="sd">       </span>
+<span class="sd">    With image data, it extends the darker and lighter areas. This</span>
+<span class="sd">    should not generate values outside of the original range.</span>
+<span class="sd">    </span>
+<span class="sd">    .. figure:: images/ex_in_out_quart.png</span>
+<span class="sd">       :alt: An example of the easing function affecting a gradient.</span>
+<span class="sd">       </span>
+<span class="sd">       An example of how :func:`in_out_quart` affects a simple</span>
+<span class="sd">       gradient. </span>
+<span class="sd">    </span>
+<span class="sd">    :param a: An array of image data.</span>
+<span class="sd">    :return: The eased data as a :class:`numpy.ndarray`.</span>
+<span class="sd">    :rtype: numpy.ndarray</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">a</span><span class="p">[</span><span class="n">a</span> <span class="o">&lt;</span> <span class="mf">.5</span><span class="p">]</span> <span class="o">=</span> <span class="mi">8</span> <span class="o">*</span> <span class="n">a</span><span class="p">[</span><span class="n">a</span> <span class="o">&lt;</span> <span class="mf">.5</span><span class="p">]</span> <span class="o">**</span> <span class="mi">4</span>
+    <span class="n">a</span><span class="p">[</span><span class="n">a</span> <span class="o">&gt;=</span> <span class="mf">.5</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="p">(</span><span class="o">-</span><span class="mi">2</span> <span class="o">*</span> <span class="n">a</span><span class="p">[</span><span class="n">a</span> <span class="o">&gt;=</span> <span class="mf">.5</span><span class="p">]</span> <span class="o">+</span> <span class="mi">2</span><span class="p">)</span> <span class="o">**</span> <span class="mi">4</span> <span class="o">/</span> <span class="mi">2</span>
     <span class="k">return</span> <span class="n">a</span></div>
 
 
@@ -1275,8 +1438,8 @@
             <span class="p">[</span><span class="mf">1.00</span><span class="p">,</span> <span class="mf">0.75</span><span class="p">,</span> <span class="mf">0.50</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">,</span> <span class="mf">0.00</span><span class="p">,</span> <span class="p">],</span>
         <span class="p">],</span>
     <span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
-    <span class="n">a</span> <span class="o">=</span> <span class="n">out_back</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
-    <span class="n">print_array</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="n">in_out_bounce</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+    <span class="n">print_array</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
 </pre></div>
         </article>
       </div>

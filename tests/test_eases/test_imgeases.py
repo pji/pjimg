@@ -218,6 +218,23 @@ def test_in_out_back(a):
     ], dtype=float)).all()
 
 
+def test_in_out_bounce(a):
+    """Given an array of image data, :func:`in_out_bounce` should
+    run the 'in out back' easing function on the data and return the
+    result.
+    """
+    result = ie.in_out_bounce(a)
+    assert (np.around(result, 4) == np.array([
+        [
+            [0.0000, 0.1172, 0.5000, 0.8828, 1.0000],
+            [0.1172, 0.5000, 0.8828, 1.0000, 0.8828],
+            [0.5000, 0.8828, 1.0000, 0.8828, 0.5000],
+            [0.8828, 1.0000, 0.8828, 0.5000, 0.1172],
+            [1.0000, 0.8828, 0.5000, 0.1172, 0.0000],
+        ],
+    ], dtype=float)).all()
+
+
 def test_in_out_circ(a):
     """Given an array of image data, :func:`in_out_circ` should
     run the 'in out circ' easing function on the data and return the
@@ -286,6 +303,23 @@ def test_in_out_elastic(a):
     ], dtype=float)).all()
 
 
+def test_in_out_expo(a):
+    """Given an array of image data, :func:`in_out_expo` should
+    run the 'in out expo' easing function on the data and return the
+    result.
+    """
+    result = ie.in_out_expo(a)
+    assert (np.around(result, 4) == np.array([
+        [
+            [0.0000, 0.0156, 0.5000, 0.9844, 1.0000],
+            [0.0156, 0.5000, 0.9844, 1.0000, 0.9844],
+            [0.5000, 0.9844, 1.0000, 0.9844, 0.5000],
+            [0.9844, 1.0000, 0.9844, 0.5000, 0.0156],
+            [1.0000, 0.9844, 0.5000, 0.0156, 0.0000],
+        ],
+    ], dtype=float)).all()
+
+
 def test_in_out_perlin(a):
     """Given an array of image data, :func:`in_out_perlin` should
     run the 'in out perlin' easing function on the data and return the
@@ -316,6 +350,23 @@ def test_in_out_quad(a):
             [0.5000, 0.8750, 1.0000, 0.8750, 0.5000],
             [0.8750, 1.0000, 0.8750, 0.5000, 0.1250],
             [1.0000, 0.8750, 0.5000, 0.1250, 0.0000],
+        ],
+    ], dtype=float)).all()
+
+
+def test_in_out_quart(a):
+    """Given an array of image data, :func:`in_out_quart` should
+    run the 'in out quart' easing function on the data and return the
+    result.
+    """
+    result = ie.in_out_quart(a)
+    assert (np.around(result, 4) == np.array([
+        [
+            [0.0000, 0.0312, 0.5000, 0.9688, 1.0000],
+            [0.0312, 0.5000, 0.9688, 1.0000, 0.9688],
+            [0.5000, 0.9688, 1.0000, 0.9688, 0.5000],
+            [0.9688, 1.0000, 0.9688, 0.5000, 0.0312],
+            [1.0000, 0.9688, 0.5000, 0.0312, 0.0000],
         ],
     ], dtype=float)).all()
 
@@ -475,6 +526,23 @@ def test_out_elastic(a):
     ], dtype=float)).all()
 
 
+def test_out_expo(a):
+    """Given an array of image data, :func:`out_expo` should
+    run the 'out expo' easing function on the data and return the
+    result.
+    """
+    result = ie.out_expo(a)
+    assert (np.around(result, 4) == np.array([
+        [
+            [0.0000, 0.8232, 0.9688, 0.9945, 1.0000],
+            [0.8232, 0.9688, 0.9945, 1.0000, 0.9945],
+            [0.9688, 0.9945, 1.0000, 0.9945, 0.9688],
+            [0.9945, 1.0000, 0.9945, 0.9688, 0.8232],
+            [1.0000, 0.9945, 0.9688, 0.8232, 0.0000],
+        ],
+    ], dtype=float)).all()
+
+
 def test_out_quad(a):
     """Given an array of image data, :func:`out_quad` should
     run the 'out quad' easing function on the data and return the
@@ -488,6 +556,23 @@ def test_out_quad(a):
             [0.7500, 0.9375, 1.0000, 0.9375, 0.7500],
             [0.9375, 1.0000, 0.9375, 0.7500, 0.4375],
             [1.0000, 0.9375, 0.7500, 0.4375, 0.0000],
+        ],
+    ], dtype=float)).all()
+
+
+def test_out_quart(a):
+    """Given an array of image data, :func:`out_quart` should
+    run the 'out quart' easing function on the data and return the
+    result.
+    """
+    result = ie.out_quart(a)
+    assert (np.around(result, 4) == np.array([
+        [
+            [0.0000, 0.6836, 0.9375, 0.9961, 1.0000],
+            [0.6836, 0.9375, 0.9961, 1.0000, 0.9961],
+            [0.9375, 0.9961, 1.0000, 0.9961, 0.9375],
+            [0.9961, 1.0000, 0.9961, 0.9375, 0.6836],
+            [1.0000, 0.9961, 0.9375, 0.6836, 0.0000],
         ],
     ], dtype=float)).all()
 

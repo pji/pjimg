@@ -752,21 +752,86 @@ one.</p>
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="pjimg.eases.out_expo">
+<span class="sig-prename descclassname"><span class="pre">pjimg.eases.</span></span><span class="sig-name descname"><span class="pre">out_expo</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><span class="pre">ndarray</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><span class="pre">Any</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v1.26)"><span class="pre">dtype</span></a><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><span class="pre">ndarray</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><span class="pre">Any</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v1.26)"><span class="pre">dtype</span></a><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/pjimg/eases/ops.html#out_expo"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pjimg.eases.out_expo" title="Link to this definition">#</a></dt>
+<dd><p>An easing function that has an exponential curve.</p>
+<figure class="align-default" id="id31">
+<img alt="A chart showing the action of the easing function." src="_images/plot_out_expo.png" />
+<figcaption>
+<p><span class="caption-text">The action of <a class="reference internal" href="#pjimg.eases.out_expo" title="pjimg.eases.out_expo"><code class="xref py py-func docutils literal notranslate"><span class="pre">out_expo()</span></code></a>.</span><a class="headerlink" href="#id31" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>With image data, it extends the lighter areas and compresses the
+darker ones. The bounce into values over one can be a little
+awkward. It’s left to the calling application to decide how to
+handle it. In the following example, values are just truncated at
+one.</p>
+<figure class="align-default" id="id32">
+<img alt="An example of the easing function affecting a gradient." src="_images/ex_out_expo.png" />
+<figcaption>
+<p><span class="caption-text">An example of how <a class="reference internal" href="#pjimg.eases.out_expo" title="pjimg.eases.out_expo"><code class="xref py py-func docutils literal notranslate"><span class="pre">out_expo()</span></code></a> affects a simple gradient.</span><a class="headerlink" href="#id32" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>a</strong> – An array of image data.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The eased data as a <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a>.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)">numpy.ndarray</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="pjimg.eases.out_quad">
 <span class="sig-prename descclassname"><span class="pre">pjimg.eases.</span></span><span class="sig-name descname"><span class="pre">out_quad</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><span class="pre">ndarray</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><span class="pre">Any</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v1.26)"><span class="pre">dtype</span></a><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><span class="pre">ndarray</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><span class="pre">Any</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v1.26)"><span class="pre">dtype</span></a><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/pjimg/eases/ops.html#out_quad"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pjimg.eases.out_quad" title="Link to this definition">#</a></dt>
 <dd><p>An easing function that has a quadratic curve.</p>
-<figure class="align-default" id="id31">
+<figure class="align-default" id="id33">
 <img alt="A chart showing the action of the easing function." src="_images/plot_out_quad.png" />
 <figcaption>
-<p><span class="caption-text">The action of <a class="reference internal" href="#pjimg.eases.out_quad" title="pjimg.eases.out_quad"><code class="xref py py-func docutils literal notranslate"><span class="pre">out_quad()</span></code></a>.</span><a class="headerlink" href="#id31" title="Link to this image">#</a></p>
+<p><span class="caption-text">The action of <a class="reference internal" href="#pjimg.eases.out_quad" title="pjimg.eases.out_quad"><code class="xref py py-func docutils literal notranslate"><span class="pre">out_quad()</span></code></a>.</span><a class="headerlink" href="#id33" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <p>With image data, it is a moderate extension of the lighter areas
 and compression of the darker ones.</p>
-<figure class="align-default" id="id32">
+<figure class="align-default" id="id34">
 <img alt="An example of the easing function affecting a gradient." src="_images/ex_out_quad.png" />
 <figcaption>
-<p><span class="caption-text">An example of how <a class="reference internal" href="#pjimg.eases.out_quad" title="pjimg.eases.out_quad"><code class="xref py py-func docutils literal notranslate"><span class="pre">out_quad()</span></code></a> affects a simple gradient.</span><a class="headerlink" href="#id32" title="Link to this image">#</a></p>
+<p><span class="caption-text">An example of how <a class="reference internal" href="#pjimg.eases.out_quad" title="pjimg.eases.out_quad"><code class="xref py py-func docutils literal notranslate"><span class="pre">out_quad()</span></code></a> affects a simple gradient.</span><a class="headerlink" href="#id34" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>a</strong> – An array of image data.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The eased data as a <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a>.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)">numpy.ndarray</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pjimg.eases.out_quart">
+<span class="sig-prename descclassname"><span class="pre">pjimg.eases.</span></span><span class="sig-name descname"><span class="pre">out_quart</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><span class="pre">ndarray</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><span class="pre">Any</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v1.26)"><span class="pre">dtype</span></a><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><span class="pre">ndarray</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><span class="pre">Any</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v1.26)"><span class="pre">dtype</span></a><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/pjimg/eases/ops.html#out_quart"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pjimg.eases.out_quart" title="Link to this definition">#</a></dt>
+<dd><p>An easing function that has a quartic curve.</p>
+<figure class="align-default" id="id35">
+<img alt="A chart showing the action of the easing function." src="_images/plot_out_quart.png" />
+<figcaption>
+<p><span class="caption-text">The action of <a class="reference internal" href="#pjimg.eases.out_quart" title="pjimg.eases.out_quart"><code class="xref py py-func docutils literal notranslate"><span class="pre">out_quart()</span></code></a>.</span><a class="headerlink" href="#id35" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>With image data, it is a moderate extension of the lighter areas
+and compression of the darker ones.</p>
+<figure class="align-default" id="id36">
+<img alt="An example of the easing function affecting a gradient." src="_images/ex_out_quart.png" />
+<figcaption>
+<p><span class="caption-text">An example of how <a class="reference internal" href="#pjimg.eases.out_quart" title="pjimg.eases.out_quart"><code class="xref py py-func docutils literal notranslate"><span class="pre">out_quart()</span></code></a> affects a simple gradient.</span><a class="headerlink" href="#id36" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <dl class="field-list simple">
@@ -786,18 +851,18 @@ and compression of the darker ones.</p>
 <dt class="sig sig-object py" id="pjimg.eases.out_quint">
 <span class="sig-prename descclassname"><span class="pre">pjimg.eases.</span></span><span class="sig-name descname"><span class="pre">out_quint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><span class="pre">ndarray</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><span class="pre">Any</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v1.26)"><span class="pre">dtype</span></a><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><span class="pre">ndarray</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><span class="pre">Any</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v1.26)"><span class="pre">dtype</span></a><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/pjimg/eases/ops.html#out_quint"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pjimg.eases.out_quint" title="Link to this definition">#</a></dt>
 <dd><p>An easing function that has a quintic curve.</p>
-<figure class="align-default" id="id33">
+<figure class="align-default" id="id37">
 <img alt="A chart showing the action of the easing function." src="_images/plot_out_quint.png" />
 <figcaption>
-<p><span class="caption-text">The action of <a class="reference internal" href="#pjimg.eases.out_quint" title="pjimg.eases.out_quint"><code class="xref py py-func docutils literal notranslate"><span class="pre">out_quint()</span></code></a>.</span><a class="headerlink" href="#id33" title="Link to this image">#</a></p>
+<p><span class="caption-text">The action of <a class="reference internal" href="#pjimg.eases.out_quint" title="pjimg.eases.out_quint"><code class="xref py py-func docutils literal notranslate"><span class="pre">out_quint()</span></code></a>.</span><a class="headerlink" href="#id37" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <p>With image data, it is a large extension of the lighter areas
 and compression of the darker ones.</p>
-<figure class="align-default" id="id34">
+<figure class="align-default" id="id38">
 <img alt="An example of the easing function affecting a gradient." src="_images/ex_out_quint.png" />
 <figcaption>
-<p><span class="caption-text">An example of how <a class="reference internal" href="#pjimg.eases.out_quint" title="pjimg.eases.out_quint"><code class="xref py py-func docutils literal notranslate"><span class="pre">out_quint()</span></code></a> affects a simple gradient.</span><a class="headerlink" href="#id34" title="Link to this image">#</a></p>
+<p><span class="caption-text">An example of how <a class="reference internal" href="#pjimg.eases.out_quint" title="pjimg.eases.out_quint"><code class="xref py py-func docutils literal notranslate"><span class="pre">out_quint()</span></code></a> affects a simple gradient.</span><a class="headerlink" href="#id38" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <dl class="field-list simple">
@@ -817,18 +882,18 @@ and compression of the darker ones.</p>
 <dt class="sig sig-object py" id="pjimg.eases.out_sin">
 <span class="sig-prename descclassname"><span class="pre">pjimg.eases.</span></span><span class="sig-name descname"><span class="pre">out_sin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><span class="pre">ndarray</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><span class="pre">Any</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v1.26)"><span class="pre">dtype</span></a><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><span class="pre">ndarray</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><span class="pre">Any</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v1.26)"><span class="pre">dtype</span></a><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/pjimg/eases/ops.html#out_sin"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pjimg.eases.out_sin" title="Link to this definition">#</a></dt>
 <dd><p>An easing function that has a sine curve.</p>
-<figure class="align-default" id="id35">
+<figure class="align-default" id="id39">
 <img alt="A chart showing the action of the easing function." src="_images/plot_out_sin.png" />
 <figcaption>
-<p><span class="caption-text">The action of <a class="reference internal" href="#pjimg.eases.out_sin" title="pjimg.eases.out_sin"><code class="xref py py-func docutils literal notranslate"><span class="pre">out_sin()</span></code></a>.</span><a class="headerlink" href="#id35" title="Link to this image">#</a></p>
+<p><span class="caption-text">The action of <a class="reference internal" href="#pjimg.eases.out_sin" title="pjimg.eases.out_sin"><code class="xref py py-func docutils literal notranslate"><span class="pre">out_sin()</span></code></a>.</span><a class="headerlink" href="#id39" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <p>With image data, it is a small extension of the lighter areas
 and compression of the darker ones.</p>
-<figure class="align-default" id="id36">
+<figure class="align-default" id="id40">
 <img alt="An example of the easing function affecting a gradient." src="_images/ex_out_sin.png" />
 <figcaption>
-<p><span class="caption-text">An example of how <a class="reference internal" href="#pjimg.eases.out_sin" title="pjimg.eases.out_sin"><code class="xref py py-func docutils literal notranslate"><span class="pre">out_sin()</span></code></a> affects a simple gradient.</span><a class="headerlink" href="#id36" title="Link to this image">#</a></p>
+<p><span class="caption-text">An example of how <a class="reference internal" href="#pjimg.eases.out_sin" title="pjimg.eases.out_sin"><code class="xref py py-func docutils literal notranslate"><span class="pre">out_sin()</span></code></a> affects a simple gradient.</span><a class="headerlink" href="#id40" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <dl class="field-list simple">
@@ -852,20 +917,53 @@ and compression of the darker ones.</p>
 <dt class="sig sig-object py" id="pjimg.eases.in_out_back">
 <span class="sig-prename descclassname"><span class="pre">pjimg.eases.</span></span><span class="sig-name descname"><span class="pre">in_out_back</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><span class="pre">ndarray</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><span class="pre">Any</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v1.26)"><span class="pre">dtype</span></a><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><span class="pre">ndarray</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><span class="pre">Any</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v1.26)"><span class="pre">dtype</span></a><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/pjimg/eases/ops.html#in_out_back"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pjimg.eases.in_out_back" title="Link to this definition">#</a></dt>
 <dd><p>An easing function that backs up then overshoots.</p>
-<figure class="align-default" id="id37">
+<figure class="align-default" id="id41">
 <img alt="A chart showing the action of the easing function." src="_images/plot_in_out_back.png" />
 <figcaption>
-<p><span class="caption-text">The action of <a class="reference internal" href="#pjimg.eases.in_out_back" title="pjimg.eases.in_out_back"><code class="xref py py-func docutils literal notranslate"><span class="pre">in_out_back()</span></code></a>.</span><a class="headerlink" href="#id37" title="Link to this image">#</a></p>
+<p><span class="caption-text">The action of <a class="reference internal" href="#pjimg.eases.in_out_back" title="pjimg.eases.in_out_back"><code class="xref py py-func docutils literal notranslate"><span class="pre">in_out_back()</span></code></a>.</span><a class="headerlink" href="#id41" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <p>With image data, it extends the darker and lighter areas. The dip
 into negative values and bounce over one can be a little awkward.
 It’s left to the calling application to decide how to handle it. In
 the following example, values are just truncated at zero and one.</p>
-<figure class="align-default" id="id38">
+<figure class="align-default" id="id42">
 <img alt="An example of the easing function affecting a gradient." src="_images/ex_in_out_back.png" />
 <figcaption>
-<p><span class="caption-text">An example of how <a class="reference internal" href="#pjimg.eases.in_out_back" title="pjimg.eases.in_out_back"><code class="xref py py-func docutils literal notranslate"><span class="pre">in_out_back()</span></code></a> affects a simple gradient.</span><a class="headerlink" href="#id38" title="Link to this image">#</a></p>
+<p><span class="caption-text">An example of how <a class="reference internal" href="#pjimg.eases.in_out_back" title="pjimg.eases.in_out_back"><code class="xref py py-func docutils literal notranslate"><span class="pre">in_out_back()</span></code></a> affects a simple gradient.</span><a class="headerlink" href="#id42" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>a</strong> – An array of image data.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The eased data as a <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a>.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)">numpy.ndarray</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pjimg.eases.in_out_bounce">
+<span class="sig-prename descclassname"><span class="pre">pjimg.eases.</span></span><span class="sig-name descname"><span class="pre">in_out_bounce</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><span class="pre">ndarray</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><span class="pre">Any</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v1.26)"><span class="pre">dtype</span></a><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><span class="pre">ndarray</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><span class="pre">Any</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v1.26)"><span class="pre">dtype</span></a><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/pjimg/eases/ops.html#in_out_bounce"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pjimg.eases.in_out_bounce" title="Link to this definition">#</a></dt>
+<dd><p>An easing function that has a bounce</p>
+<figure class="align-default" id="id43">
+<img alt="A chart showing the action of the easing function." src="_images/plot_in_out_bounce.png" />
+<figcaption>
+<p><span class="caption-text">The action of <a class="reference internal" href="#pjimg.eases.in_out_bounce" title="pjimg.eases.in_out_bounce"><code class="xref py py-func docutils literal notranslate"><span class="pre">in_out_bounce()</span></code></a>.</span><a class="headerlink" href="#id43" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>With image data, it extends the darker and lighter areas. The dip
+into negative values and bounce over one can be a little awkward.
+It’s left to the calling application to decide how to handle it. In
+the following example, values are just truncated at zero and one.</p>
+<figure class="align-default" id="id44">
+<img alt="An example of the easing function affecting a gradient." src="_images/ex_in_out_bounce.png" />
+<figcaption>
+<p><span class="caption-text">An example of how <a class="reference internal" href="#pjimg.eases.in_out_bounce" title="pjimg.eases.in_out_bounce"><code class="xref py py-func docutils literal notranslate"><span class="pre">in_out_bounce()</span></code></a> affects a simple gradient.</span><a class="headerlink" href="#id44" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <dl class="field-list simple">
@@ -886,18 +984,18 @@ the following example, values are just truncated at zero and one.</p>
 <span class="sig-prename descclassname"><span class="pre">pjimg.eases.</span></span><span class="sig-name descname"><span class="pre">in_out_circ</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><span class="pre">ndarray</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><span class="pre">Any</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v1.26)"><span class="pre">dtype</span></a><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><span class="pre">ndarray</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><span class="pre">Any</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v1.26)"><span class="pre">dtype</span></a><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/pjimg/eases/ops.html#in_out_circ"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pjimg.eases.in_out_circ" title="Link to this definition">#</a></dt>
 <dd><p>An easing function that uses a circular curve to compress the
 middle.</p>
-<figure class="align-default" id="id39">
+<figure class="align-default" id="id45">
 <img alt="A chart showing the action of the easing function." src="_images/plot_in_out_circ.png" />
 <figcaption>
-<p><span class="caption-text">The action of <a class="reference internal" href="#pjimg.eases.in_out_circ" title="pjimg.eases.in_out_circ"><code class="xref py py-func docutils literal notranslate"><span class="pre">in_out_circ()</span></code></a>.</span><a class="headerlink" href="#id39" title="Link to this image">#</a></p>
+<p><span class="caption-text">The action of <a class="reference internal" href="#pjimg.eases.in_out_circ" title="pjimg.eases.in_out_circ"><code class="xref py py-func docutils literal notranslate"><span class="pre">in_out_circ()</span></code></a>.</span><a class="headerlink" href="#id45" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <p>With image data, it extends the darker and lighter areas. This
 should not generate values outside of the original range.</p>
-<figure class="align-default" id="id40">
+<figure class="align-default" id="id46">
 <img alt="An example of the easing function affecting a gradient." src="_images/ex_in_out_circ.png" />
 <figcaption>
-<p><span class="caption-text">An example of how <a class="reference internal" href="#pjimg.eases.in_out_circ" title="pjimg.eases.in_out_circ"><code class="xref py py-func docutils literal notranslate"><span class="pre">in_out_circ()</span></code></a> affects a simple gradient.</span><a class="headerlink" href="#id40" title="Link to this image">#</a></p>
+<p><span class="caption-text">An example of how <a class="reference internal" href="#pjimg.eases.in_out_circ" title="pjimg.eases.in_out_circ"><code class="xref py py-func docutils literal notranslate"><span class="pre">in_out_circ()</span></code></a> affects a simple gradient.</span><a class="headerlink" href="#id46" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <dl class="field-list simple">
@@ -918,19 +1016,19 @@ should not generate values outside of the original range.</p>
 <span class="sig-prename descclassname"><span class="pre">pjimg.eases.</span></span><span class="sig-name descname"><span class="pre">in_out_cos</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><span class="pre">ndarray</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><span class="pre">Any</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v1.26)"><span class="pre">dtype</span></a><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><span class="pre">ndarray</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><span class="pre">Any</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v1.26)"><span class="pre">dtype</span></a><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/pjimg/eases/ops.html#in_out_cos"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pjimg.eases.in_out_cos" title="Link to this definition">#</a></dt>
 <dd><p>An easing function that uses a cosine curve to turn the make the
 middle low and the edges high.</p>
-<figure class="align-default" id="id41">
+<figure class="align-default" id="id47">
 <img alt="A chart showing the action of the easing function." src="_images/plot_in_out_cos.png" />
 <figcaption>
-<p><span class="caption-text">The action of <a class="reference internal" href="#pjimg.eases.in_out_cos" title="pjimg.eases.in_out_cos"><code class="xref py py-func docutils literal notranslate"><span class="pre">in_out_cos()</span></code></a>.</span><a class="headerlink" href="#id41" title="Link to this image">#</a></p>
+<p><span class="caption-text">The action of <a class="reference internal" href="#pjimg.eases.in_out_cos" title="pjimg.eases.in_out_cos"><code class="xref py py-func docutils literal notranslate"><span class="pre">in_out_cos()</span></code></a>.</span><a class="headerlink" href="#id47" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <p>With image data, it turns the midtones dark and the dark and light
 become midtones. This should not generate values outside of the
 original range.</p>
-<figure class="align-default" id="id42">
+<figure class="align-default" id="id48">
 <img alt="An example of the easing function affecting a gradient." src="_images/ex_in_out_cos.png" />
 <figcaption>
-<p><span class="caption-text">An example of how <a class="reference internal" href="#pjimg.eases.in_out_cos" title="pjimg.eases.in_out_cos"><code class="xref py py-func docutils literal notranslate"><span class="pre">in_out_cos()</span></code></a> affects a simple gradient.</span><a class="headerlink" href="#id42" title="Link to this image">#</a></p>
+<p><span class="caption-text">An example of how <a class="reference internal" href="#pjimg.eases.in_out_cos" title="pjimg.eases.in_out_cos"><code class="xref py py-func docutils literal notranslate"><span class="pre">in_out_cos()</span></code></a> affects a simple gradient.</span><a class="headerlink" href="#id48" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <dl class="field-list simple">
@@ -951,18 +1049,18 @@ original range.</p>
 <span class="sig-prename descclassname"><span class="pre">pjimg.eases.</span></span><span class="sig-name descname"><span class="pre">in_out_cubic</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><span class="pre">ndarray</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><span class="pre">Any</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v1.26)"><span class="pre">dtype</span></a><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><span class="pre">ndarray</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><span class="pre">Any</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v1.26)"><span class="pre">dtype</span></a><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/pjimg/eases/ops.html#in_out_cubic"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pjimg.eases.in_out_cubic" title="Link to this definition">#</a></dt>
 <dd><p>An easing function that uses a cubic curve to compress the
 middle.</p>
-<figure class="align-default" id="id43">
+<figure class="align-default" id="id49">
 <img alt="A chart showing the action of the easing function." src="_images/plot_in_out_cubic.png" />
 <figcaption>
-<p><span class="caption-text">The action of <a class="reference internal" href="#pjimg.eases.in_out_cubic" title="pjimg.eases.in_out_cubic"><code class="xref py py-func docutils literal notranslate"><span class="pre">in_out_cubic()</span></code></a>.</span><a class="headerlink" href="#id43" title="Link to this image">#</a></p>
+<p><span class="caption-text">The action of <a class="reference internal" href="#pjimg.eases.in_out_cubic" title="pjimg.eases.in_out_cubic"><code class="xref py py-func docutils literal notranslate"><span class="pre">in_out_cubic()</span></code></a>.</span><a class="headerlink" href="#id49" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <p>With image data, it extends the darker and lighter areas. This
 should not generate values outside of the original range.</p>
-<figure class="align-default" id="id44">
+<figure class="align-default" id="id50">
 <img alt="An example of the easing function affecting a gradient." src="_images/ex_in_out_cubic.png" />
 <figcaption>
-<p><span class="caption-text">An example of how <a class="reference internal" href="#pjimg.eases.in_out_cubic" title="pjimg.eases.in_out_cubic"><code class="xref py py-func docutils literal notranslate"><span class="pre">in_out_cubic()</span></code></a> affects a simple gradient.</span><a class="headerlink" href="#id44" title="Link to this image">#</a></p>
+<p><span class="caption-text">An example of how <a class="reference internal" href="#pjimg.eases.in_out_cubic" title="pjimg.eases.in_out_cubic"><code class="xref py py-func docutils literal notranslate"><span class="pre">in_out_cubic()</span></code></a> affects a simple gradient.</span><a class="headerlink" href="#id50" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <dl class="field-list simple">
@@ -983,10 +1081,10 @@ should not generate values outside of the original range.</p>
 <span class="sig-prename descclassname"><span class="pre">pjimg.eases.</span></span><span class="sig-name descname"><span class="pre">in_out_elastic</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><span class="pre">ndarray</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><span class="pre">Any</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v1.26)"><span class="pre">dtype</span></a><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><span class="pre">ndarray</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><span class="pre">Any</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v1.26)"><span class="pre">dtype</span></a><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/pjimg/eases/ops.html#in_out_elastic"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pjimg.eases.in_out_elastic" title="Link to this definition">#</a></dt>
 <dd><p>An easing function that uses a bouncy curve to compress the
 middle.</p>
-<figure class="align-default" id="id45">
+<figure class="align-default" id="id51">
 <img alt="A chart showing the action of the easing function." src="_images/plot_in_out_elastic.png" />
 <figcaption>
-<p><span class="caption-text">The action of <a class="reference internal" href="#pjimg.eases.in_out_elastic" title="pjimg.eases.in_out_elastic"><code class="xref py py-func docutils literal notranslate"><span class="pre">in_out_elastic()</span></code></a>.</span><a class="headerlink" href="#id45" title="Link to this image">#</a></p>
+<p><span class="caption-text">The action of <a class="reference internal" href="#pjimg.eases.in_out_elastic" title="pjimg.eases.in_out_elastic"><code class="xref py py-func docutils literal notranslate"><span class="pre">in_out_elastic()</span></code></a>.</span><a class="headerlink" href="#id51" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <p>With image data, it extends the darker and lighter areas. The 
@@ -994,11 +1092,43 @@ dip into values below zero or bounce into values over one can
 be a little awkward. It’s left to the calling application to
 decide how to handle it. In the following example, values are
 just truncated at one.</p>
-<figure class="align-default" id="id46">
+<figure class="align-default" id="id52">
 <img alt="An example of the easing function affecting a gradient." src="_images/ex_in_out_elastic.png" />
 <figcaption>
 <p><span class="caption-text">An example of how <a class="reference internal" href="#pjimg.eases.in_out_elastic" title="pjimg.eases.in_out_elastic"><code class="xref py py-func docutils literal notranslate"><span class="pre">in_out_elastic()</span></code></a> affects a simple
-gradient.</span><a class="headerlink" href="#id46" title="Link to this image">#</a></p>
+gradient.</span><a class="headerlink" href="#id52" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>a</strong> – An array of image data.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The eased data as a <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a>.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)">numpy.ndarray</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pjimg.eases.in_out_expo">
+<span class="sig-prename descclassname"><span class="pre">pjimg.eases.</span></span><span class="sig-name descname"><span class="pre">in_out_expo</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><span class="pre">ndarray</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><span class="pre">Any</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v1.26)"><span class="pre">dtype</span></a><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><span class="pre">ndarray</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><span class="pre">Any</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v1.26)"><span class="pre">dtype</span></a><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/pjimg/eases/ops.html#in_out_expo"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pjimg.eases.in_out_expo" title="Link to this definition">#</a></dt>
+<dd><p>An easing function that uses a exponential curve to compress the
+middle.</p>
+<figure class="align-default" id="id53">
+<img alt="A chart showing the action of the easing function." src="_images/plot_in_out_expo.png" />
+<figcaption>
+<p><span class="caption-text">The action of <a class="reference internal" href="#pjimg.eases.in_out_expo" title="pjimg.eases.in_out_expo"><code class="xref py py-func docutils literal notranslate"><span class="pre">in_out_expo()</span></code></a>.</span><a class="headerlink" href="#id53" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>With image data, it extends the darker and lighter areas. This
+should not generate values outside of the original range.</p>
+<figure class="align-default" id="id54">
+<img alt="An example of the easing function affecting a gradient." src="_images/ex_in_out_expo.png" />
+<figcaption>
+<p><span class="caption-text">An example of how <a class="reference internal" href="#pjimg.eases.in_out_expo" title="pjimg.eases.in_out_expo"><code class="xref py py-func docutils literal notranslate"><span class="pre">in_out_expo()</span></code></a> affects a simple gradient.</span><a class="headerlink" href="#id54" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <dl class="field-list simple">
@@ -1019,18 +1149,18 @@ gradient.</span><a class="headerlink" href="#id46" title="Link to this image">#<
 <span class="sig-prename descclassname"><span class="pre">pjimg.eases.</span></span><span class="sig-name descname"><span class="pre">in_out_perlin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><span class="pre">ndarray</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><span class="pre">Any</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v1.26)"><span class="pre">dtype</span></a><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><span class="pre">ndarray</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><span class="pre">Any</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v1.26)"><span class="pre">dtype</span></a><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/pjimg/eases/ops.html#in_out_perlin"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pjimg.eases.in_out_perlin" title="Link to this definition">#</a></dt>
 <dd><p>An easing function that uses the easing equation from Ken
 Perlin’s “Improved Perlin Noise” papaer.</p>
-<figure class="align-default" id="id47">
+<figure class="align-default" id="id55">
 <img alt="A chart showing the action of the easing function." src="_images/plot_in_out_perlin.png" />
 <figcaption>
-<p><span class="caption-text">The action of <a class="reference internal" href="#pjimg.eases.in_out_perlin" title="pjimg.eases.in_out_perlin"><code class="xref py py-func docutils literal notranslate"><span class="pre">in_out_perlin()</span></code></a>.</span><a class="headerlink" href="#id47" title="Link to this image">#</a></p>
+<p><span class="caption-text">The action of <a class="reference internal" href="#pjimg.eases.in_out_perlin" title="pjimg.eases.in_out_perlin"><code class="xref py py-func docutils literal notranslate"><span class="pre">in_out_perlin()</span></code></a>.</span><a class="headerlink" href="#id55" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <p>With image data, it slightly extends the darker and lighter areas.
 This should not generate values outside of the original range.</p>
-<figure class="align-default" id="id48">
+<figure class="align-default" id="id56">
 <img alt="An example of the easing function affecting a gradient." src="_images/ex_in_out_perlin.png" />
 <figcaption>
-<p><span class="caption-text">An example of how <a class="reference internal" href="#pjimg.eases.in_out_perlin" title="pjimg.eases.in_out_perlin"><code class="xref py py-func docutils literal notranslate"><span class="pre">in_out_perlin()</span></code></a> affects a simple gradient.</span><a class="headerlink" href="#id48" title="Link to this image">#</a></p>
+<p><span class="caption-text">An example of how <a class="reference internal" href="#pjimg.eases.in_out_perlin" title="pjimg.eases.in_out_perlin"><code class="xref py py-func docutils literal notranslate"><span class="pre">in_out_perlin()</span></code></a> affects a simple gradient.</span><a class="headerlink" href="#id56" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <dl class="field-list simple">
@@ -1051,19 +1181,52 @@ This should not generate values outside of the original range.</p>
 <span class="sig-prename descclassname"><span class="pre">pjimg.eases.</span></span><span class="sig-name descname"><span class="pre">in_out_quad</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><span class="pre">ndarray</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><span class="pre">Any</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v1.26)"><span class="pre">dtype</span></a><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><span class="pre">ndarray</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><span class="pre">Any</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v1.26)"><span class="pre">dtype</span></a><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/pjimg/eases/ops.html#in_out_quad"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pjimg.eases.in_out_quad" title="Link to this definition">#</a></dt>
 <dd><p>An easing function that uses a quadratic curve to compress the
 middle.</p>
-<figure class="align-default" id="id49">
+<figure class="align-default" id="id57">
 <img alt="A chart showing the action of the easing function." src="_images/plot_in_out_quad.png" />
 <figcaption>
-<p><span class="caption-text">The action of <a class="reference internal" href="#pjimg.eases.in_out_quad" title="pjimg.eases.in_out_quad"><code class="xref py py-func docutils literal notranslate"><span class="pre">in_out_quad()</span></code></a>.</span><a class="headerlink" href="#id49" title="Link to this image">#</a></p>
+<p><span class="caption-text">The action of <a class="reference internal" href="#pjimg.eases.in_out_quad" title="pjimg.eases.in_out_quad"><code class="xref py py-func docutils literal notranslate"><span class="pre">in_out_quad()</span></code></a>.</span><a class="headerlink" href="#id57" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <p>With image data, it extends the darker and lighter areas. This
 should not generate values outside of the original range.</p>
-<figure class="align-default" id="id50">
+<figure class="align-default" id="id58">
 <img alt="An example of the easing function affecting a gradient." src="_images/ex_in_out_quad.png" />
 <figcaption>
 <p><span class="caption-text">An example of how <a class="reference internal" href="#pjimg.eases.in_out_quad" title="pjimg.eases.in_out_quad"><code class="xref py py-func docutils literal notranslate"><span class="pre">in_out_quad()</span></code></a> affects a simple
-gradient.</span><a class="headerlink" href="#id50" title="Link to this image">#</a></p>
+gradient.</span><a class="headerlink" href="#id58" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>a</strong> – An array of image data.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The eased data as a <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a>.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)">numpy.ndarray</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pjimg.eases.in_out_quart">
+<span class="sig-prename descclassname"><span class="pre">pjimg.eases.</span></span><span class="sig-name descname"><span class="pre">in_out_quart</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><span class="pre">ndarray</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><span class="pre">Any</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v1.26)"><span class="pre">dtype</span></a><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><span class="pre">ndarray</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><span class="pre">Any</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v1.26)"><span class="pre">dtype</span></a><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/pjimg/eases/ops.html#in_out_quart"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pjimg.eases.in_out_quart" title="Link to this definition">#</a></dt>
+<dd><p>An easing function that uses a quartic curve to compress the
+middle.</p>
+<figure class="align-default" id="id59">
+<img alt="A chart showing the action of the easing function." src="_images/plot_in_out_quart.png" />
+<figcaption>
+<p><span class="caption-text">The action of <a class="reference internal" href="#pjimg.eases.in_out_quart" title="pjimg.eases.in_out_quart"><code class="xref py py-func docutils literal notranslate"><span class="pre">in_out_quart()</span></code></a>.</span><a class="headerlink" href="#id59" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>With image data, it extends the darker and lighter areas. This
+should not generate values outside of the original range.</p>
+<figure class="align-default" id="id60">
+<img alt="An example of the easing function affecting a gradient." src="_images/ex_in_out_quart.png" />
+<figcaption>
+<p><span class="caption-text">An example of how <a class="reference internal" href="#pjimg.eases.in_out_quart" title="pjimg.eases.in_out_quart"><code class="xref py py-func docutils literal notranslate"><span class="pre">in_out_quart()</span></code></a> affects a simple
+gradient.</span><a class="headerlink" href="#id60" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <dl class="field-list simple">
@@ -1084,19 +1247,19 @@ gradient.</span><a class="headerlink" href="#id50" title="Link to this image">#<
 <span class="sig-prename descclassname"><span class="pre">pjimg.eases.</span></span><span class="sig-name descname"><span class="pre">in_out_quint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><span class="pre">ndarray</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><span class="pre">Any</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v1.26)"><span class="pre">dtype</span></a><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><span class="pre">ndarray</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><span class="pre">Any</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v1.26)"><span class="pre">dtype</span></a><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/pjimg/eases/ops.html#in_out_quint"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pjimg.eases.in_out_quint" title="Link to this definition">#</a></dt>
 <dd><p>An easing function that uses a quintic curve to compress the
 middle.</p>
-<figure class="align-default" id="id51">
+<figure class="align-default" id="id61">
 <img alt="A chart showing the action of the easing function." src="_images/plot_in_out_quint.png" />
 <figcaption>
-<p><span class="caption-text">The action of <a class="reference internal" href="#pjimg.eases.in_out_quint" title="pjimg.eases.in_out_quint"><code class="xref py py-func docutils literal notranslate"><span class="pre">in_out_quint()</span></code></a>.</span><a class="headerlink" href="#id51" title="Link to this image">#</a></p>
+<p><span class="caption-text">The action of <a class="reference internal" href="#pjimg.eases.in_out_quint" title="pjimg.eases.in_out_quint"><code class="xref py py-func docutils literal notranslate"><span class="pre">in_out_quint()</span></code></a>.</span><a class="headerlink" href="#id61" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <p>With image data, it greatly extends the darker and lighter areas.
 This should not generate values outside of the original range.</p>
-<figure class="align-default" id="id52">
+<figure class="align-default" id="id62">
 <img alt="An example of the easing function affecting a gradient." src="_images/ex_in_out_quint.png" />
 <figcaption>
 <p><span class="caption-text">An example of how <a class="reference internal" href="#pjimg.eases.in_out_quint" title="pjimg.eases.in_out_quint"><code class="xref py py-func docutils literal notranslate"><span class="pre">in_out_quint()</span></code></a> affects a simple
-gradient.</span><a class="headerlink" href="#id52" title="Link to this image">#</a></p>
+gradient.</span><a class="headerlink" href="#id62" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <dl class="field-list simple">
@@ -1117,18 +1280,18 @@ gradient.</span><a class="headerlink" href="#id52" title="Link to this image">#<
 <span class="sig-prename descclassname"><span class="pre">pjimg.eases.</span></span><span class="sig-name descname"><span class="pre">in_out_sin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><span class="pre">ndarray</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><span class="pre">Any</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v1.26)"><span class="pre">dtype</span></a><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><span class="pre">ndarray</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><span class="pre">Any</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v1.26)"><span class="pre">dtype</span></a><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/pjimg/eases/ops.html#in_out_sin"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pjimg.eases.in_out_sin" title="Link to this definition">#</a></dt>
 <dd><p>An easing function that uses a sine curve to compress the
 middle.</p>
-<figure class="align-default" id="id53">
+<figure class="align-default" id="id63">
 <img alt="A chart showing the action of the easing function." src="_images/plot_in_out_sin.png" />
 <figcaption>
-<p><span class="caption-text">The action of <a class="reference internal" href="#pjimg.eases.in_out_sin" title="pjimg.eases.in_out_sin"><code class="xref py py-func docutils literal notranslate"><span class="pre">in_out_sin()</span></code></a>.</span><a class="headerlink" href="#id53" title="Link to this image">#</a></p>
+<p><span class="caption-text">The action of <a class="reference internal" href="#pjimg.eases.in_out_sin" title="pjimg.eases.in_out_sin"><code class="xref py py-func docutils literal notranslate"><span class="pre">in_out_sin()</span></code></a>.</span><a class="headerlink" href="#id63" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <p>With image data, it slightly extends the darker and lighter areas.
 This should not generate values outside of the original range.</p>
-<figure class="align-default" id="id54">
+<figure class="align-default" id="id64">
 <img alt="An example of the easing function affecting a gradient." src="_images/ex_in_out_sin.png" />
 <figcaption>
-<p><span class="caption-text">An example of how <a class="reference internal" href="#pjimg.eases.in_out_sin" title="pjimg.eases.in_out_sin"><code class="xref py py-func docutils literal notranslate"><span class="pre">in_out_sin()</span></code></a> affects a simple gradient.</span><a class="headerlink" href="#id54" title="Link to this image">#</a></p>
+<p><span class="caption-text">An example of how <a class="reference internal" href="#pjimg.eases.in_out_sin" title="pjimg.eases.in_out_sin"><code class="xref py py-func docutils literal notranslate"><span class="pre">in_out_sin()</span></code></a> affects a simple gradient.</span><a class="headerlink" href="#id64" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <dl class="field-list simple">
@@ -1154,18 +1317,18 @@ and the edges light.</p>
 <span class="sig-prename descclassname"><span class="pre">pjimg.eases.</span></span><span class="sig-name descname"><span class="pre">mid_bump_linear</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><span class="pre">ndarray</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><span class="pre">Any</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v1.26)"><span class="pre">dtype</span></a><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><span class="pre">ndarray</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><span class="pre">Any</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v1.26)"><span class="pre">dtype</span></a><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/pjimg/eases/ops.html#mid_bump_linear"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pjimg.eases.mid_bump_linear" title="Link to this definition">#</a></dt>
 <dd><p>An easing function that makes the middle of the range the peak
 of the values.</p>
-<figure class="align-default" id="id55">
+<figure class="align-default" id="id65">
 <img alt="A chart showing the action of the easing function." src="_images/plot_mid_bump_linear.png" />
 <figcaption>
-<p><span class="caption-text">The action of <a class="reference internal" href="#pjimg.eases.mid_bump_linear" title="pjimg.eases.mid_bump_linear"><code class="xref py py-func docutils literal notranslate"><span class="pre">mid_bump_linear()</span></code></a>.</span><a class="headerlink" href="#id55" title="Link to this image">#</a></p>
+<p><span class="caption-text">The action of <a class="reference internal" href="#pjimg.eases.mid_bump_linear" title="pjimg.eases.mid_bump_linear"><code class="xref py py-func docutils literal notranslate"><span class="pre">mid_bump_linear()</span></code></a>.</span><a class="headerlink" href="#id65" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <p>With image data, it makes the midtones light and the edges dark.</p>
-<figure class="align-default" id="id56">
+<figure class="align-default" id="id66">
 <img alt="An example of the easing function affecting a gradient." src="_images/ex_mid_bump_linear.png" />
 <figcaption>
 <p><span class="caption-text">An example of how <a class="reference internal" href="#pjimg.eases.mid_bump_linear" title="pjimg.eases.mid_bump_linear"><code class="xref py py-func docutils literal notranslate"><span class="pre">mid_bump_linear()</span></code></a> affects a simple
-gradient.</span><a class="headerlink" href="#id56" title="Link to this image">#</a></p>
+gradient.</span><a class="headerlink" href="#id66" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <dl class="field-list simple">
@@ -1186,18 +1349,18 @@ gradient.</span><a class="headerlink" href="#id56" title="Link to this image">#<
 <span class="sig-prename descclassname"><span class="pre">pjimg.eases.</span></span><span class="sig-name descname"><span class="pre">mid_bump_sin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><span class="pre">ndarray</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><span class="pre">Any</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v1.26)"><span class="pre">dtype</span></a><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><span class="pre">ndarray</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><span class="pre">Any</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v1.26)"><span class="pre">dtype</span></a><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/pjimg/eases/ops.html#mid_bump_sin"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pjimg.eases.mid_bump_sin" title="Link to this definition">#</a></dt>
 <dd><p>An easing function that makes the middle of the range the peak
 of the values.</p>
-<figure class="align-default" id="id57">
+<figure class="align-default" id="id67">
 <img alt="A chart showing the action of the easing function." src="_images/plot_mid_bump_sin.png" />
 <figcaption>
-<p><span class="caption-text">The action of <a class="reference internal" href="#pjimg.eases.mid_bump_sin" title="pjimg.eases.mid_bump_sin"><code class="xref py py-func docutils literal notranslate"><span class="pre">mid_bump_sin()</span></code></a>.</span><a class="headerlink" href="#id57" title="Link to this image">#</a></p>
+<p><span class="caption-text">The action of <a class="reference internal" href="#pjimg.eases.mid_bump_sin" title="pjimg.eases.mid_bump_sin"><code class="xref py py-func docutils literal notranslate"><span class="pre">mid_bump_sin()</span></code></a>.</span><a class="headerlink" href="#id67" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <p>With image data, it makes the midtones light and the edges dark.</p>
-<figure class="align-default" id="id58">
+<figure class="align-default" id="id68">
 <img alt="An example of the easing function affecting a gradient." src="_images/ex_mid_bump_sin.png" />
 <figcaption>
 <p><span class="caption-text">An example of how <a class="reference internal" href="#pjimg.eases.mid_bump_sin" title="pjimg.eases.mid_bump_sin"><code class="xref py py-func docutils literal notranslate"><span class="pre">mid_bump_sin()</span></code></a> affects a simple
-gradient.</span><a class="headerlink" href="#id58" title="Link to this image">#</a></p>
+gradient.</span><a class="headerlink" href="#id68" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <dl class="field-list simple">
@@ -1344,19 +1507,24 @@ values back up to the original range.</p>
 <li><a class="reference internal" href="#pjimg.eases.out_circ"><code class="docutils literal notranslate"><span class="pre">out_circ()</span></code></a></li>
 <li><a class="reference internal" href="#pjimg.eases.out_cubic"><code class="docutils literal notranslate"><span class="pre">out_cubic()</span></code></a></li>
 <li><a class="reference internal" href="#pjimg.eases.out_elastic"><code class="docutils literal notranslate"><span class="pre">out_elastic()</span></code></a></li>
+<li><a class="reference internal" href="#pjimg.eases.out_expo"><code class="docutils literal notranslate"><span class="pre">out_expo()</span></code></a></li>
 <li><a class="reference internal" href="#pjimg.eases.out_quad"><code class="docutils literal notranslate"><span class="pre">out_quad()</span></code></a></li>
+<li><a class="reference internal" href="#pjimg.eases.out_quart"><code class="docutils literal notranslate"><span class="pre">out_quart()</span></code></a></li>
 <li><a class="reference internal" href="#pjimg.eases.out_quint"><code class="docutils literal notranslate"><span class="pre">out_quint()</span></code></a></li>
 <li><a class="reference internal" href="#pjimg.eases.out_sin"><code class="docutils literal notranslate"><span class="pre">out_sin()</span></code></a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#ease-in-out">Ease In Out</a><ul>
 <li><a class="reference internal" href="#pjimg.eases.in_out_back"><code class="docutils literal notranslate"><span class="pre">in_out_back()</span></code></a></li>
+<li><a class="reference internal" href="#pjimg.eases.in_out_bounce"><code class="docutils literal notranslate"><span class="pre">in_out_bounce()</span></code></a></li>
 <li><a class="reference internal" href="#pjimg.eases.in_out_circ"><code class="docutils literal notranslate"><span class="pre">in_out_circ()</span></code></a></li>
 <li><a class="reference internal" href="#pjimg.eases.in_out_cos"><code class="docutils literal notranslate"><span class="pre">in_out_cos()</span></code></a></li>
 <li><a class="reference internal" href="#pjimg.eases.in_out_cubic"><code class="docutils literal notranslate"><span class="pre">in_out_cubic()</span></code></a></li>
 <li><a class="reference internal" href="#pjimg.eases.in_out_elastic"><code class="docutils literal notranslate"><span class="pre">in_out_elastic()</span></code></a></li>
+<li><a class="reference internal" href="#pjimg.eases.in_out_expo"><code class="docutils literal notranslate"><span class="pre">in_out_expo()</span></code></a></li>
 <li><a class="reference internal" href="#pjimg.eases.in_out_perlin"><code class="docutils literal notranslate"><span class="pre">in_out_perlin()</span></code></a></li>
 <li><a class="reference internal" href="#pjimg.eases.in_out_quad"><code class="docutils literal notranslate"><span class="pre">in_out_quad()</span></code></a></li>
+<li><a class="reference internal" href="#pjimg.eases.in_out_quart"><code class="docutils literal notranslate"><span class="pre">in_out_quart()</span></code></a></li>
 <li><a class="reference internal" href="#pjimg.eases.in_out_quint"><code class="docutils literal notranslate"><span class="pre">in_out_quint()</span></code></a></li>
 <li><a class="reference internal" href="#pjimg.eases.in_out_sin"><code class="docutils literal notranslate"><span class="pre">in_out_sin()</span></code></a></li>
 </ul>
