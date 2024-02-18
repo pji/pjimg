@@ -165,10 +165,10 @@ def n_dimensional_interpolation(
         raise ValueError(msg)
 
     # Recursively interpolate the points.
+    result = interpolator(a, b, x[-1])
     if len(x) > 1:
-        interpolated = interpolator(a, b, x[-1])
-        a = interpolated[::2]
-        b = interpolated[1::2]
+        a = result[::2]
+        b = result[1::2]
         return n_dimensional_interpolation(a, b, x[:-1], interpolator)
 
     # The extra dimension in the result is caused by the extra
@@ -176,7 +176,6 @@ def n_dimensional_interpolation(
     # interpolated. The only way to avoid it would be to iterate
     # through a, b, and x rather than just doing the math over all
     # of them at once, but that would be much slower.
-    result = interpolator(a, b, x[0])
     return result[0]
 
 

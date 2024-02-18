@@ -231,6 +231,34 @@ def test_resize_array_two_dimensions():
     ])).all()
 
 
+def test_resize_array_two_dimensions_not_square():
+    """Given a two-dimensional array and a new size,
+    :funct:`resize_array` should return an array of
+    the new size with the data resized through
+    bilinear interpolation. If the size of the X dimension
+    of the array does not equal the Y dimension of the
+    array, the resizing should still work as expected.
+    """
+    a = np.array([
+        [0.0, 1.0, 2.0, ],
+        [1.0, 2.0, 3.0, ],
+        [2.0, 3.0, 4.0, ],
+        [3.0, 4.0, 5.0, ]
+    ])
+    size = (7, 5)
+    exp = rs.resize_array(a, size)
+    assert exp.shape == size
+    assert (exp == np.array([
+        [0.0, 0.5, 1.0, 1.5, 2.0, ],
+        [0.5, 1.0, 1.5, 2.0, 2.5, ],
+        [1.0, 1.5, 2.0, 2.5, 3.0, ],
+        [1.5, 2.0, 2.5, 3.0, 3.5, ],
+        [2.0, 2.5, 3.0, 3.5, 4.0, ],
+        [2.5, 3.0, 3.5, 4.0, 4.5, ],
+        [3.0, 3.5, 4.0, 4.5, 5.0, ],
+    ])).all()
+
+
 def test_resize_array_shrink_array():
     """If the new size is smaller than the original size,
     :funct:`resize_array` should return a smaller array.

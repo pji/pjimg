@@ -17,6 +17,7 @@ import numpy as np
 
 from pjimg.util import lerps as lp
 from pjimg.util.constants import X, X_, Y, Y_, Z, Z_
+from pjimg.util.debug import print_array
 from pjimg.util.model import *
 
 
@@ -172,12 +173,13 @@ def build_resizing_matrices(
         pos_indices = src_indices.copy()
         for axis in axes:
             if pos[axis] == '1':
-                pos_indices[axis] += 1
+                working = pos_indices[axis]
+                working += 1
 
                 # Cap the values in the array to the highest index in
                 # the original array.
                 cap = src_shape[axis] - 1
-                pos_indices[pos_indices > cap] = cap
+                working[working > cap] = cap
 
         # Put the value in the correct side of the resizing matrices.
         if pos.endswith('0'):
@@ -496,3 +498,27 @@ def _replace_indices_with_values(
     # Return the values from the original array.
     result = np.take(raveled, raveled_indices.astype(int))
     return result
+
+
+if __name__ == '__main__':
+    from pjimg.util.debug import print_array
+    
+    a = np.array([
+        [0.0, 1.0, 2.0, ],
+        [1.0, 2.0, 3.0, ],
+        [2.0, 3.0, 4.0, ],
+        [3.0, 4.0, 5.0, ]
+    ])
+    size = (7, 5)
+    
+#     a = np.array([
+#         [0, 0, 0],
+#         [1, 1, 1],
+#         [2, 2, 2],
+#         [3, 3, 3],
+#         [4, 4, 4],
+#     ], dtype=float)
+#     size = (9, 5)
+    
+    result = resize_array(a, size)
+    print_array(result)
