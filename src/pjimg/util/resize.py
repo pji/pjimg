@@ -264,12 +264,13 @@ def resize_array(
     # to the array won't have unexpected side effects.
     if shape == src.shape:
         return src
-    src = src.copy()
+    # src = src.copy()
 
     # Map out the relationship between the old space and the
     # new space.
     a_index, b_index, x = build_resizing_matrices(src.shape, shape)
     a = _replace_indices_with_values(src, a_index)
+    del a_index
     b = _replace_indices_with_values(src, b_index)
 
     # Perform the interpolation using the mapped space and return.

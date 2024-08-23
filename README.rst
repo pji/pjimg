@@ -43,6 +43,18 @@ are written with the `pytest` module, so you can run the tests with::
     python -m pytest
 
 
+How do I get numpy to use the GPU on an Apple M-series processor?
+=================================================================
+Assuming you have homebrew installed, first install `cmake`::
+
+    brew install cmake
+
+Then force pip to compile numpy::
+
+    pip install numpy --force-reinstall --no-deps --no-cache
+    --no-binary :all: --compile
+
+
 How do I contribute?
 ====================
 At this time, this is code is really just me exploring and learning.

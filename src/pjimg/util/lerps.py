@@ -164,13 +164,17 @@ def n_dimensional_interpolation(
         msg = 'Not the correct number of points for the dimensions.'
         raise ValueError(msg)
 
-    # Recursively interpolate the points.
-    result = interpolator(a, b, x[-1])
-    if len(x) > 1:
-        a = result[::2]
-        b = result[1::2]
-        return n_dimensional_interpolation(a, b, x[:-1], interpolator)
-
+    # Interpolate the points.
+    # Doing this as a loop rather than recursively seems to be more
+    # memory efficient.
+    for i in range(len(x) - 1, -1, -1):
+        print(i)
+        result = interpolator(a, b, x[i])
+        if i != 0:
+            a = result[::2]
+            b = result[1::2]
+            del result
+    
     # The extra dimension in the result is caused by the extra
     # dimension in a, b, and x to hold the arrays that will be
     # interpolated. The only way to avoid it would be to iterate
