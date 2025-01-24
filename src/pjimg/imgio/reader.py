@@ -85,15 +85,15 @@ def read_image(
 
     # Read in the data from the image file. Don't change whether it's
     # color or grayscale. If it wasn't readable, puke.
-    a = cv2.imread(filepath, cv2.IMREAD_UNCHANGED)
-    if a is None:
+    raw = cv2.imread(filepath, cv2.IMREAD_UNCHANGED)
+    if raw is None:
         msg = f'The file at {filepath} cannot be read.'
         raise ValueError(msg)
 
     # If the data in the file was unsigned 8-bit integers, convert it
     # to floats in the range 0 <= x <= 1.
-    if a.dtype == np.uint8:
-        a = a.astype(float)
+    a = raw.astype(np.float64)
+    if raw.dtype == np.uint8:
         a /= 0xff
 
     # Opencv returns color data from RGB files as BGR. Transform it

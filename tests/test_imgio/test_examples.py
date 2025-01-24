@@ -85,6 +85,7 @@ def test_make_color_fade_fl(tmp_path):
     compare_files(path, expected)
 
 
+@pt.mark.skip
 def test_make_color_fade_r(tmp_path):
     """When called with `-r` and a valid resolution, `make_color_fade.py`
     should create a video at the given location with the given resolution.

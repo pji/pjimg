@@ -42,7 +42,8 @@ def box_blur(a: ImgAry, size: int) -> ImgAry:
     :rtype: numpy.ndarray
     """
     kernel = np.ones((size, size), float) / size ** 2
-    return cv2.filter2D(a, -1, kernel)
+    result = cv2.filter2D(a, -1, kernel)
+    return result.astype(np.float64)
 
 
 @register(filters)
@@ -64,7 +65,8 @@ def gaussian_blur(a: ImgAry, sigma: float) -> ImgAry:
     :returns: A :class:`numpy.ndarray` object.
     :rtype: numpy.ndarray
     """
-    return cv2.GaussianBlur(a, (0, 0), sigma, sigma, 0)
+    result = cv2.GaussianBlur(a, (0, 0), sigma)
+    return result.astype(np.float64)
 
 
 @register(filters)
@@ -135,7 +137,8 @@ def motion_blur(
             kernel[y][x] = 1 / amount
     else:
         raise ValueError('motion_blur can only affect the X or Y axis.')
-    return cv2.filter2D(a, -1, kernel)
+    result = cv2.filter2D(a, -1, kernel)
+    return result.astype(np.float64)
 
 
 @register(filters)
@@ -171,6 +174,6 @@ def unsharp_mask(
     :rtype: numpy.ndarray
     """
     blurred = gaussian_blur(a, sigma)
-    a = cv2.addWeighted(a, weight_a, blurred, weight_blurred, modifier)
-    a -= np.min(a)
+    weighted = cv2.addWeighted(a, weight_a, blurred, weight_blurred, modifier)
+    a -= np.min(weighted)
     return a / np.max(a)

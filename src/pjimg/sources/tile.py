@@ -386,7 +386,7 @@ class Tile(Noise):
         color = int(color * 0xff)
         
         if self._rng.random([1,])[0] > drop:
-            cv2.fillConvexPoly(a, vertices, color=color, lineType=line)
+            cv2.fillConvexPoly(a, vertices, color=(color,), lineType=line)
 
 
 # Utility functions.
@@ -396,7 +396,7 @@ def average_color_in_shape(
 ) -> float:
     a = np.squeeze(a)
     mask = np.zeros(a.shape, dtype=np.uint8)
-    cv2.fillConvexPoly(mask, vertices, color=0xff)
+    cv2.fillConvexPoly(mask, vertices, color=(0xff,))
     masked = a[mask == 0xff]
     
     if not np.isnan(masked).all():

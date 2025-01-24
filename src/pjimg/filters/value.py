@@ -139,8 +139,8 @@ def cut_highlight(a: ImgAry, threshold: float) -> ImgAry:
     :rtype: numpy.ndarray
     """
     a[a > threshold] = threshold
-    a = a / threshold
-    return a
+    result = a / threshold
+    return result.astype(np.float64)
 
 
 @register(filters)
@@ -161,8 +161,8 @@ def cut_shadow(a: ImgAry, threshold: float) -> ImgAry:
     a = 1.0 - a
     threshold = 1.0 - threshold
     a[a > threshold] = threshold
-    a = a / threshold
-    return 1.0 - a
+    result = a / threshold
+    return 1.0 - result
 
 
 @register(filters)
@@ -184,8 +184,8 @@ def distance(a: ImgAry, mask_size: int = 5) -> ImgAry:
     :rtype: numpy.ndarray
     """
     dist_type = cv2.DIST_L2
-    a = cv2.distanceTransform(a, dist_type, mask_size)
-    return (a / np.max(a)) * 0xff
+    result = cv2.distanceTransform(a, dist_type, mask_size)
+    return (result / np.max(result)) * 0xff
 
 
 @register(filters)

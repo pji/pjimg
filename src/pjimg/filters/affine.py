@@ -102,7 +102,8 @@ def rotate_2d(
         origin = find_center(a.shape)
     y, x = origin
     matrix = cv2.getRotationMatrix2D((x, y), angle, 1)
-    return cv2.warpAffine(a, matrix, (a.shape[X_], a.shape[Y_]))
+    result = cv2.warpAffine(a, matrix, (a.shape[X_], a.shape[Y_]))
+    return result.astype(np.float64)
 
 
 @register(filters)
@@ -162,6 +163,7 @@ def skew(a: ImgAry, slope: float) -> ImgAry:
     # the image, telling OpenCV to wrap pixels that are pushed off
     # the edge of the image.
     matrix = cv2.getAffineTransform(original, new)
-    return cv2.warpAffine(
+    result = cv2.warpAffine(
         a, matrix, (a.shape[X_], a.shape[Y_]), borderMode=cv2.BORDER_WRAP
     )
+    return result.astype(np.float64)

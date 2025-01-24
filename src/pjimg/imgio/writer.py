@@ -159,7 +159,7 @@ def write_video(
     # cv2.VideoWriter requires a string rather than a Path.
     filepath = str(filepath)
 
-    fourcc = cv2.VideoWriter_fourcc(*codec)
+    fourcc = cv2.VideoWriter.fourcc(*codec)
     framesize = (a.shape[X], a.shape[Y])
     iscolor = False
     if len(a.shape) == 4:

@@ -18,12 +18,12 @@ __all__ = [
 
 
 # Basic types.
-ImgAry = NDArray[np.float_]
+ImgAry = NDArray[np.float64]
 IntAry = NDArray[np.uint8]
 IntAry64 = NDArray[np.int64]
 Loc = Sequence[int]
 Numeric = Union[np.bool_, np.integer, np.inexact]
-RatioAry = NDArray[np.float_]
+RatioAry = NDArray[np.float64]
 Size = Sequence[int]
 
 # Compound types.

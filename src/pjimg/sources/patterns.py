@@ -373,7 +373,7 @@ class Lines(Source):
         values = values % period
         values[values > period / 2] = period - values[values > period / 2]
         values = (values / (period / 2))
-        return values
+        return values.astype(np.float64)
 
 
 class Radials(Source):
@@ -605,7 +605,7 @@ class Regular(Source):
         line_type = cv2.LINE_8
         if self.antialias:
             line_type = cv2.LINE_AA
-        cv2.fillConvexPoly(a, vertices, color=color, lineType=line_type)
+        cv2.fillConvexPoly(a, vertices, color=(color,), lineType=line_type)
         a = a[np.newaxis, :, :]
         a = np.tile(a, (size[Z], 1, 1))
         return a.astype(float) / 255

@@ -46,7 +46,8 @@ def linear_to_polar(a: ImgAry) -> ImgAry:
     center = tuple(n / 2 for n in a.shape)
     max_radius = np.sqrt(sum(n ** 2 for n in center))
     flags = cv2.WARP_POLAR_LINEAR + cv2.WARP_INVERSE_MAP
-    return cv2.warpPolar(a, a.shape, center, max_radius, flags)
+    result = cv2.warpPolar(a, a.shape, center, max_radius, flags)
+    return result.astype(np.float64)
 
 
 @register(filters)
@@ -121,7 +122,8 @@ def pinch(
     flex_y[~pmask] = 1.0 * delta_y[~pmask] / scale[Y_] + center[Y_]
 
     # Perform the pinch using the maps and return.
-    return cv2.remap(a, flex_x, flex_y, cv2.INTER_LINEAR)
+    result = cv2.remap(a, flex_x, flex_y, cv2.INTER_LINEAR)
+    return result.astype(np.float64)
 
 
 @register(filters)
@@ -142,7 +144,8 @@ def polar_to_linear(a: ImgAry) -> ImgAry:
     """
     center = tuple(n / 2 for n in a.shape)
     max_radius = np.sqrt(sum(n ** 2 for n in center))
-    return cv2.linearPolar(a, center, max_radius, cv2.WARP_FILL_OUTLIERS)
+    result = cv2.linearPolar(a, center, max_radius, cv2.WARP_FILL_OUTLIERS)
+    return result.astype(np.float64)
 
 
 @register(filters)
@@ -200,7 +203,8 @@ def ripple(
 
     # Remap the color values in the original image using the
     # rippled flex map.
-    return cv2.remap(a, flex_x, flex_y, cv2.INTER_LINEAR)
+    result = cv2.remap(a, flex_x, flex_y, cv2.INTER_LINEAR)
+    return result.astype(np.float64)
 
 
 @register(filters)
