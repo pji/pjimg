@@ -91,6 +91,7 @@ def make_image(
 def make_images(path: Path, size: Size, ext: str = 'jpg') -> None:
     """Make the example images."""
     filters = [
+        (ift.autocontrast, {}, False),
         (ift.box_blur, {'size': size[X] // 32,}, False),
         (ift.colorize, {'colorkey': 'g',}, True),
         (ift.contrast, {}, False),

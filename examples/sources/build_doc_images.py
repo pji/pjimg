@@ -83,6 +83,26 @@ def make_random(size: Size, path: Path) -> None:
             unit=unit,
             seed='spam'
         ),
+        ig.CosineNoise(
+            unit=unit,
+            seed='spam'
+        ),
+        ig.BorktaveUnitNoise(
+            unit=unit,
+            octaves=3,
+            persistence=-4,
+            amplitude=24,
+            frequency=4,
+            seed='spam'
+        ),
+        ig.BorktaveCosineNoise(
+            unit=unit,
+            octaves=3,
+            persistence=-4,
+            amplitude=24,
+            frequency=4,
+            seed='spam'
+        ),
         ig.BorktaveCosineCurtains(
             unit=unit,
             octaves=3,

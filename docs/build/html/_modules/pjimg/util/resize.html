@@ -4,11 +4,11 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
-    <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
+    <!-- Generated with Sphinx 8.1.3 and Furo 2024.08.06 -->
         <title>pjimg.util.resize - pjimg 0.0.1 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=a746c00c" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=135e06be" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?v=36a5483c" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=354aac6f" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?v=302659d7" />
     
     
 
@@ -67,7 +67,7 @@
   <symbol id="svg-sun" viewBox="0 0 24 24">
     <title>Light mode</title>
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
       <circle cx="12" cy="12" r="5"></circle>
       <line x1="12" y1="1" x2="12" y2="3"></line>
       <line x1="12" y1="21" x2="12" y2="23"></line>
@@ -82,22 +82,63 @@
   <symbol id="svg-moon" viewBox="0 0 24 24">
     <title>Dark mode</title>
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
       <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
     </svg>
   </symbol>
-  <symbol id="svg-sun-half" viewBox="0 0 24 24">
-    <title>Auto light/dark mode</title>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
-      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-      <circle cx="12" cy="12" r="9" />
-      <path d="M13 12h5" />
-      <path d="M13 15h4" />
-      <path d="M13 18h1" />
-      <path d="M13 9h4" />
-      <path d="M13 6h1" />
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
     </svg>
   </symbol>
 </svg>
@@ -110,6 +151,8 @@
 <label class="overlay toc-overlay" for="__toc">
   <div class="visually-hidden">Hide table of contents sidebar</div>
 </label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
 
 
 
@@ -128,7 +171,8 @@
       <div class="theme-toggle-container theme-toggle-header">
         <button class="theme-toggle">
           <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
-          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
           <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
           <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
         </button>
@@ -185,7 +229,8 @@
           <div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
-              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
               <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
               <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
             </button>
@@ -195,7 +240,7 @@
             <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
           </label>
         </div>
-        <article role="main">
+        <article role="main" id="furo-main-content">
           <h1>Source code for pjimg.util.resize</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">resize</span>
@@ -209,14 +254,15 @@
 <span class="sd">.. autofunction:: pjimg.util.pad_array</span>
 <span class="sd">.. autofunction:: pjimg.util.resize_array</span>
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">prod</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">math</span><span class="w"> </span><span class="kn">import</span> <span class="n">prod</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
 
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
-<span class="kn">from</span> <span class="nn">pjimg.util</span> <span class="kn">import</span> <span class="n">lerps</span> <span class="k">as</span> <span class="n">lp</span>
-<span class="kn">from</span> <span class="nn">pjimg.util.constants</span> <span class="kn">import</span> <span class="n">X</span><span class="p">,</span> <span class="n">X_</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">Y_</span><span class="p">,</span> <span class="n">Z</span><span class="p">,</span> <span class="n">Z_</span>
-<span class="kn">from</span> <span class="nn">pjimg.util.model</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pjimg.util</span><span class="w"> </span><span class="kn">import</span> <span class="n">lerps</span> <span class="k">as</span> <span class="n">lp</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pjimg.util.constants</span><span class="w"> </span><span class="kn">import</span> <span class="n">X</span><span class="p">,</span> <span class="n">X_</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">Y_</span><span class="p">,</span> <span class="n">Z</span><span class="p">,</span> <span class="n">Z_</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pjimg.util.debug</span><span class="w"> </span><span class="kn">import</span> <span class="n">print_array</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pjimg.util.model</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
 
 
 <span class="c1"># Names available for import.</span>
@@ -228,7 +274,7 @@
 
 
 <span class="c1"># Public functions.</span>
-<span class="k">def</span> <span class="nf">bilinear_interpolation</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">,</span> <span class="n">factor</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ImgAry</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">bilinear_interpolation</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">,</span> <span class="n">factor</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ImgAry</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Resize an two dimensional array using trilinear</span>
 <span class="sd">    interpolation.</span>
 
@@ -334,7 +380,7 @@
 
 <div class="viewcode-block" id="build_resizing_matrices">
 <a class="viewcode-back" href="../../../util.html#pjimg.util.build_resizing_matrices">[docs]</a>
-<span class="k">def</span> <span class="nf">build_resizing_matrices</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">build_resizing_matrices</span><span class="p">(</span>
     <span class="n">src_shape</span><span class="p">:</span> <span class="n">Size</span><span class="p">,</span>
     <span class="n">dst_shape</span><span class="p">:</span> <span class="n">Size</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">IntAry</span><span class="p">,</span> <span class="n">IntAry</span><span class="p">,</span> <span class="n">RatioAry</span><span class="p">]:</span>
@@ -373,12 +419,13 @@
         <span class="n">pos_indices</span> <span class="o">=</span> <span class="n">src_indices</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">axis</span> <span class="ow">in</span> <span class="n">axes</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">pos</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;1&#39;</span><span class="p">:</span>
-                <span class="n">pos_indices</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="n">working</span> <span class="o">=</span> <span class="n">pos_indices</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span>
+                <span class="n">working</span> <span class="o">+=</span> <span class="mi">1</span>
 
                 <span class="c1"># Cap the values in the array to the highest index in</span>
                 <span class="c1"># the original array.</span>
                 <span class="n">cap</span> <span class="o">=</span> <span class="n">src_shape</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span>
-                <span class="n">pos_indices</span><span class="p">[</span><span class="n">pos_indices</span> <span class="o">&gt;</span> <span class="n">cap</span><span class="p">]</span> <span class="o">=</span> <span class="n">cap</span>
+                <span class="n">working</span><span class="p">[</span><span class="n">working</span> <span class="o">&gt;</span> <span class="n">cap</span><span class="p">]</span> <span class="o">=</span> <span class="n">cap</span>
 
         <span class="c1"># Put the value in the correct side of the resizing matrices.</span>
         <span class="k">if</span> <span class="n">pos</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;0&#39;</span><span class="p">):</span>
@@ -393,7 +440,7 @@
 
 <div class="viewcode-block" id="crop_array">
 <a class="viewcode-back" href="../../../util.html#pjimg.util.crop_array">[docs]</a>
-<span class="k">def</span> <span class="nf">crop_array</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">NumAry</span><span class="p">,</span> <span class="n">new_size</span><span class="p">:</span> <span class="n">Size</span><span class="p">,</span> <span class="n">loc</span><span class="p">:</span> <span class="n">Loc</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span> <span class="o">-&gt;</span> <span class="n">NumAry</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">crop_array</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">NumAry</span><span class="p">,</span> <span class="n">new_size</span><span class="p">:</span> <span class="n">Size</span><span class="p">,</span> <span class="n">loc</span><span class="p">:</span> <span class="n">Loc</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span> <span class="o">-&gt;</span> <span class="n">NumAry</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Crop an array to a smaller size.</span>
 <span class="sd">    </span>
 <span class="sd">    :param a: The array to crop.</span>
@@ -413,7 +460,7 @@
 
 <div class="viewcode-block" id="magnify_size">
 <a class="viewcode-back" href="../../../util.html#pjimg.util.magnify_size">[docs]</a>
-<span class="k">def</span> <span class="nf">magnify_size</span><span class="p">(</span><span class="n">shape</span><span class="p">:</span> <span class="n">Size</span><span class="p">,</span> <span class="n">factor</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Size</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">magnify_size</span><span class="p">(</span><span class="n">shape</span><span class="p">:</span> <span class="n">Size</span><span class="p">,</span> <span class="n">factor</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Size</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Magnify the shape of an array.</span>
 
 <span class="sd">    :param shape: The original shape of the array.</span>
@@ -426,7 +473,7 @@
 
 <div class="viewcode-block" id="pad_array">
 <a class="viewcode-back" href="../../../util.html#pjimg.util.pad_array">[docs]</a>
-<span class="k">def</span> <span class="nf">pad_array</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">pad_array</span><span class="p">(</span>
         <span class="n">a</span><span class="p">:</span> <span class="n">NumAry</span><span class="p">,</span>
         <span class="n">size</span><span class="p">:</span> <span class="n">Size</span><span class="p">,</span>
         <span class="n">fill</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span>
@@ -456,7 +503,7 @@
 
 <div class="viewcode-block" id="resize_array">
 <a class="viewcode-back" href="../../../util.html#pjimg.util.resize_array">[docs]</a>
-<span class="k">def</span> <span class="nf">resize_array</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">resize_array</span><span class="p">(</span>
     <span class="n">src</span><span class="p">:</span> <span class="n">NumAry</span><span class="p">,</span>
     <span class="n">shape</span><span class="p">:</span> <span class="n">Size</span><span class="p">,</span>
     <span class="n">interpolator</span><span class="p">:</span> <span class="n">Interpolator</span> <span class="o">=</span> <span class="n">lp</span><span class="o">.</span><span class="n">ndlerp</span>
@@ -475,12 +522,13 @@
     <span class="c1"># to the array won&#39;t have unexpected side effects.</span>
     <span class="k">if</span> <span class="n">shape</span> <span class="o">==</span> <span class="n">src</span><span class="o">.</span><span class="n">shape</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">src</span>
-    <span class="n">src</span> <span class="o">=</span> <span class="n">src</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="c1"># src = src.copy()</span>
 
     <span class="c1"># Map out the relationship between the old space and the</span>
     <span class="c1"># new space.</span>
     <span class="n">a_index</span><span class="p">,</span> <span class="n">b_index</span><span class="p">,</span> <span class="n">x</span> <span class="o">=</span> <span class="n">build_resizing_matrices</span><span class="p">(</span><span class="n">src</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">shape</span><span class="p">)</span>
     <span class="n">a</span> <span class="o">=</span> <span class="n">_replace_indices_with_values</span><span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="n">a_index</span><span class="p">)</span>
+    <span class="k">del</span> <span class="n">a_index</span>
     <span class="n">b</span> <span class="o">=</span> <span class="n">_replace_indices_with_values</span><span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="n">b_index</span><span class="p">)</span>
 
     <span class="c1"># Perform the interpolation using the mapped space and return.</span>
@@ -488,7 +536,7 @@
 
 
 
-<span class="k">def</span> <span class="nf">trilinear_interpolation</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">,</span> <span class="n">factor</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ImgAry</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">trilinear_interpolation</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">,</span> <span class="n">factor</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ImgAry</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Resize an three dimensional array using trilinear</span>
 <span class="sd">    interpolation.</span>
 
@@ -636,7 +684,7 @@
 
 
 <span class="c1"># Private functions.</span>
-<span class="k">def</span> <span class="nf">_build_relative_position_masks</span><span class="p">(</span><span class="n">dimensions</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_build_relative_position_masks</span><span class="p">(</span><span class="n">dimensions</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Create the masks for identifying the different points used in</span>
 <span class="sd">    an n-dimensional interpolation.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -646,7 +694,7 @@
     <span class="k">return</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">mask</span><span class="p">)</span>
 
 
-<span class="k">def</span> <span class="nf">_calc_raveled_indices</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_calc_raveled_indices</span><span class="p">(</span>
     <span class="n">indices</span><span class="p">:</span> <span class="n">IntAry</span><span class="p">,</span>
     <span class="n">src_shape</span><span class="p">:</span> <span class="n">Size</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">IntAry</span><span class="p">:</span>
@@ -663,7 +711,7 @@
     <span class="k">return</span> <span class="n">raveled_indices</span>
 
 
-<span class="k">def</span> <span class="nf">_get_resizing_factors</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_get_resizing_factors</span><span class="p">(</span>
     <span class="n">src_shape</span><span class="p">:</span> <span class="n">Size</span><span class="p">,</span>
     <span class="n">dst_shape</span><span class="p">:</span> <span class="n">Size</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="o">...</span><span class="p">]:</span>
@@ -677,7 +725,7 @@
     <span class="k">return</span> <span class="n">factors</span>
 
 
-<span class="k">def</span> <span class="nf">_map_indices_and_distances</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_map_indices_and_distances</span><span class="p">(</span>
     <span class="n">shape</span><span class="p">:</span> <span class="n">Size</span><span class="p">,</span>
     <span class="n">factors</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">RatioAry</span><span class="p">,</span> <span class="n">RatioAry</span><span class="p">]:</span>
@@ -693,7 +741,7 @@
     <span class="k">return</span> <span class="n">src_indices</span><span class="p">,</span> <span class="n">distances</span>
 
 
-<span class="k">def</span> <span class="nf">_replace_indices_with_values</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_replace_indices_with_values</span><span class="p">(</span>
     <span class="n">src</span><span class="p">:</span> <span class="n">NumAry</span><span class="p">,</span>
     <span class="n">indices</span><span class="p">:</span> <span class="n">IntAry</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NumAry</span><span class="p">:</span>
@@ -710,6 +758,30 @@
     <span class="c1"># Return the values from the original array.</span>
     <span class="n">result</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">take</span><span class="p">(</span><span class="n">raveled</span><span class="p">,</span> <span class="n">raveled_indices</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">))</span>
     <span class="k">return</span> <span class="n">result</span>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">pjimg.util.debug</span><span class="w"> </span><span class="kn">import</span> <span class="n">print_array</span>
+    
+    <span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span>
+        <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="p">],</span>
+        <span class="p">[</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">,</span> <span class="p">],</span>
+        <span class="p">[</span><span class="mf">2.0</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">,</span> <span class="mf">4.0</span><span class="p">,</span> <span class="p">],</span>
+        <span class="p">[</span><span class="mf">3.0</span><span class="p">,</span> <span class="mf">4.0</span><span class="p">,</span> <span class="mf">5.0</span><span class="p">,</span> <span class="p">]</span>
+    <span class="p">])</span>
+    <span class="n">size</span> <span class="o">=</span> <span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+    
+<span class="c1">#     a = np.array([</span>
+<span class="c1">#         [0, 0, 0],</span>
+<span class="c1">#         [1, 1, 1],</span>
+<span class="c1">#         [2, 2, 2],</span>
+<span class="c1">#         [3, 3, 3],</span>
+<span class="c1">#         [4, 4, 4],</span>
+<span class="c1">#     ], dtype=float)</span>
+<span class="c1">#     size = (9, 5)</span>
+    
+    <span class="n">result</span> <span class="o">=</span> <span class="n">resize_array</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">size</span><span class="p">)</span>
+    <span class="n">print_array</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
 </pre></div>
         </article>
       </div>
@@ -743,8 +815,8 @@
     </aside>
   </div>
 </div><script src="../../../_static/documentation_options.js?v=d45e8c67"></script>
-    <script src="../../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
-    <script src="../../../_static/scripts/furo.js?v=32e29ea5"></script>
+    <script src="../../../_static/scripts/furo.js?v=5fa4622c"></script>
     </body>
 </html>

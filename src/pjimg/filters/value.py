@@ -5,6 +5,7 @@ Value filters operate on the values of the image data without any
 geometrical transformations or blurs. They are somewhat similar to
 the easing functions found in :mod:``
 
+.. autofunction:: pjimg.filters.autocontrast
 .. autofunction:: pjimg.filters.colorize
 .. autofunction:: pjimg.filters.contrast
 .. autofunction:: pjimg.filters.cut_highlight
@@ -29,8 +30,8 @@ from pjimg.util import find_center, ImgAry, Loc, Size, X, Y, Z, X_, Y_, Z_
 
 # Names available for import.
 __all__ = [
-    'colorize', 'contrast', 'cut_highlight', 'cut_shadow', 'distance',
-    'filters', 'inverse', 'posterize',
+    'autocontrast', 'colorize', 'contrast', 'cut_highlight', 'cut_shadow',
+    'distance', 'filters', 'inverse', 'posterize',
 ]
 
 
@@ -226,6 +227,28 @@ def posterize(a: ImgAry, levels: int = 2):
     return a.astype(float)
 
 
+# Older image filters.
+@register(filters)
+@processes_by_grayscale_frame
+@uses_uint8
+def autocontrast(a: ImgAry) -> ImgAry:
+    """Adjust the image to fill the full dynamic range frame by frame.
+
+    .. figure:: images/autocontrast.jpg
+       :alt: An example of the filter affecting an image.
+       
+       An example of :func:`autocontrast` affecting an image.
+    
+    :param a: The image data to alter.
+    :returns: A :class:`np.ndarray` object.
+    :rtype: numpy.ndarray
+    """
+    img = Image.fromarray(a, mode='L')
+    img = ImageOps.autocontrast(img)
+    return np.array(img)
+
+
+# Mainline
 if __name__ == '__main__':
     from pjimg.util.debug import print_array
     

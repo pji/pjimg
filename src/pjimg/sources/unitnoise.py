@@ -8,6 +8,7 @@ generated using an easing function that provides values for the pixels
 between the positions on the grid.
 
 .. autoclass:: pjimg.sources.UnitNoise
+.. autoclass:: pjimg.sources.CosineNoise
 
 
 Curtains
@@ -26,6 +27,8 @@ layers of unit noise.
 .. autoclass:: pjimg.sources.OctaveUnitNoise
 .. autoclass:: pjimg.sources.OctaveCosineCurtains
 .. autoclass:: pjimg.sources.OctaveCurtains
+.. autoclass:: pjimg.sources.BorktaveUnitNoise
+.. autoclass:: pjimg.sources.BorktaveCosineNoise
 .. autoclass:: pjimg.sources.BorktaveCosineCurtains
 
 """
@@ -42,9 +45,9 @@ from pjimg.util.model import *
 
 # Names available for import.
 __all__ = [
-    'BorktaveCosineCurtains', 'CosineCurtains', 'Curtains',
-    'OctaveCosineCurtains', 'OctaveCurtains', 'OctaveUnitNoise',
-    'UnitNoise',
+    'BorktaveCosineCurtains', 'BorktaveCosineNoise', 'BorktaveUnitNoise',
+    'CosineCurtains', 'CosineNoise', 'Curtains', 'OctaveCosineCurtains',
+    'OctaveCurtains', 'OctaveUnitNoise', 'UnitNoise',
 ]
 
 
@@ -245,6 +248,62 @@ class UnitNoise(Noise):
             return self._interp(new_grids, parts)
 
         return lerp(grids['0'], grids['1'], parts[Z])
+
+
+class CosineNoise(UnitNoise):
+    """Create image noise that is based on a unit grid and smoothed
+    with a cosine ease.
+    
+    :param unit: The number of pixels between vertices along an
+        axis on the unit grid. The vertices are the locations where
+        colors for the gradient are set. This is involved in setting
+        the maximum size of noise that can be generated from
+        the object.
+    :param min: (Optional.) The minimum value of a vertex of the unit
+        grid. This is involved in setting the maximum size of noise
+        that can be generated from the object.
+    :param max: (Optional.) The maximum value of a vertex of the unit
+        grid. This is involved in setting the maximum size of noise
+        that can be generated from the object.
+    :param repeats: (Optional.) The number of times each value can
+        appear on the unit grid. This is involved in setting the
+        maximum size of noise that can be generated from the object.
+    :param seed: (Optional.) An int, bytes, or string used to seed
+        the random number generator used to generate the image data.
+        If no value is passed, the RNG will not be seeded, so
+        serialized versions of this source will not produce the
+        same values. Note: strings that are passed to seed will
+        be converted to UTF-8 bytes before being converted to
+        integers for seeding.
+    :param table: (Optional.) A table of values to use when generating
+        the image data. If no value is passed, the table will be generated
+        randomly. Default is `None`.
+    :return: An instance of :class:`UnitNoise`.
+    :rtype: sources.unitnoise.UnitNoise
+    
+    Usage::
+    
+        >>> # Create unit noise in a 1280x720 image.
+        >>> size = (1, 720, 1280)
+        >>> unit = (1, size[Y] // 5, size[Y] // 5)
+        >>> source = CosineNoise(unit=unit, seed='spam')
+        >>> img = source.fill(size)
+
+    .. figure:: images/cosinenoise.jpg
+       :alt: Unit noise in a 1280x720 image.
+       
+       The image data created by the usage example.
+    
+    """
+    # Private methods.
+    def _map_unit_grid(
+        self, size: Size,
+        location: Loc
+    ) -> tuple[IntAry64, RatioAry]:
+        """Map the image data to the unit grid."""
+        whole, parts = super()._map_unit_grid(size, location)
+        parts = (1 - np.cos(parts * np.pi)) / 2
+        return whole, parts
 
 
 class Curtains(UnitNoise):
@@ -532,3 +591,5 @@ OctaveCosineCurtains = octave_noise_factory(CosineCurtains, defaults)
 OctaveCurtains = octave_noise_factory(Curtains, defaults)
 OctaveUnitNoise = octave_noise_factory(UnitNoise, defaults)
 BorktaveCosineCurtains = octave_noise_factory(CosineCurtains, defaults, True)
+BorktaveCosineNoise = octave_noise_factory(CosineNoise, defaults, True)
+BorktaveUnitNoise = octave_noise_factory(UnitNoise, defaults, True)
