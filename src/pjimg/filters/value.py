@@ -3,7 +3,7 @@ Value Filters
 =============
 Value filters operate on the values of the image data without any
 geometrical transformations or blurs. They are somewhat similar to
-the easing functions found in :mod:``
+the easing functions found in :mod:`pjimg.eases`
 
 .. autofunction:: pjimg.filters.autocontrast
 .. autofunction:: pjimg.filters.colorize

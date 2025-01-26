@@ -247,7 +247,7 @@
 <span class="sd">=============</span>
 <span class="sd">Value filters operate on the values of the image data without any</span>
 <span class="sd">geometrical transformations or blurs. They are somewhat similar to</span>
-<span class="sd">the easing functions found in :mod:``</span>
+<span class="sd">the easing functions found in :mod:`pjimg.eases`</span>
 
 <span class="sd">.. autofunction:: pjimg.filters.autocontrast</span>
 <span class="sd">.. autofunction:: pjimg.filters.colorize</span>
@@ -269,9 +269,7 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">pjimg.filters.decorators</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pjimg.filters.model</span><span class="w"> </span><span class="kn">import</span> <span class="n">Filter</span><span class="p">,</span> <span class="n">filters</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pjimg.filters.util</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_color_for_key</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">pjimg.util</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
-    <span class="n">find_center</span><span class="p">,</span> <span class="n">ImgAry</span><span class="p">,</span> <span class="n">IntAry</span><span class="p">,</span> <span class="n">Loc</span><span class="p">,</span> <span class="n">Size</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">Z</span><span class="p">,</span> <span class="n">X_</span><span class="p">,</span> <span class="n">Y_</span><span class="p">,</span> <span class="n">Z_</span>
-<span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pjimg.util</span><span class="w"> </span><span class="kn">import</span> <span class="n">find_center</span><span class="p">,</span> <span class="n">ImgAry</span><span class="p">,</span> <span class="n">Loc</span><span class="p">,</span> <span class="n">Size</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">Z</span><span class="p">,</span> <span class="n">X_</span><span class="p">,</span> <span class="n">Y_</span><span class="p">,</span> <span class="n">Z_</span>
 
 
 <span class="c1"># Names available for import.</span>
@@ -500,7 +498,7 @@
 <span class="nd">@register</span><span class="p">(</span><span class="n">filters</span><span class="p">)</span>
 <span class="nd">@processes_by_grayscale_frame</span>
 <span class="nd">@uses_uint8</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">autocontrast</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">IntAry</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">IntAry</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">autocontrast</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ImgAry</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Adjust the image to fill the full dynamic range frame by frame.</span>
 
 <span class="sd">    .. figure:: images/autocontrast.jpg</span>
