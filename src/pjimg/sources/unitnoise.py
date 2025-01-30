@@ -278,8 +278,8 @@ class CosineNoise(UnitNoise):
     :param table: (Optional.) A table of values to use when generating
         the image data. If no value is passed, the table will be generated
         randomly. Default is `None`.
-    :return: An instance of :class:`UnitNoise`.
-    :rtype: sources.unitnoise.UnitNoise
+    :return: An instance of :class:`CosineNoise`.
+    :rtype: sources.unitnoise.CosineNoise
     
     Usage::
     
@@ -330,8 +330,8 @@ class Curtains(UnitNoise):
         same values. Note: strings that are passed to seed will
         be converted to UTF-8 bytes before being converted to
         integers for seeding.
-    :return: An instance of :class:`UnitNoise`.
-    :rtype: sources.unitnoise.UnitNoise
+    :return: An instance of :class:`Curtains`.
+    :rtype: sources.unitnoise.Curtains
 
     Usage::
     
@@ -388,8 +388,8 @@ class CosineCurtains(Curtains):
         same values. Note: strings that are passed to seed will
         be converted to UTF-8 bytes before being converted to
         integers for seeding.
-    :return: An instance of :class:`UnitNoise`.
-    :rtype: sources.unitnoise.UnitNoise
+    :return: An instance of :class:`CosineCurtains`.
+    :rtype: sources.unitnoise.CosineCurtains
     
     Usage::
     

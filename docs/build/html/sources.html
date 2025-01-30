@@ -1081,10 +1081,10 @@ randomly. Default is <cite>None</cite>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>An instance of <a class="reference internal" href="#pjimg.sources.UnitNoise" title="pjimg.sources.UnitNoise"><code class="xref py py-class docutils literal notranslate"><span class="pre">UnitNoise</span></code></a>.</p>
+<dd class="field-even"><p>An instance of <a class="reference internal" href="#pjimg.sources.CosineNoise" title="pjimg.sources.CosineNoise"><code class="xref py py-class docutils literal notranslate"><span class="pre">CosineNoise</span></code></a>.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference internal" href="#pjimg.sources.UnitNoise" title="pjimg.sources.unitnoise.UnitNoise">sources.unitnoise.UnitNoise</a></p>
+<dd class="field-odd"><p><a class="reference internal" href="#pjimg.sources.CosineNoise" title="pjimg.sources.unitnoise.CosineNoise">sources.unitnoise.CosineNoise</a></p>
 </dd>
 </dl>
 <p>Usage:</p>
@@ -1139,10 +1139,10 @@ integers for seeding.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>An instance of <a class="reference internal" href="#pjimg.sources.UnitNoise" title="pjimg.sources.UnitNoise"><code class="xref py py-class docutils literal notranslate"><span class="pre">UnitNoise</span></code></a>.</p>
+<dd class="field-even"><p>An instance of <a class="reference internal" href="#pjimg.sources.CosineCurtains" title="pjimg.sources.CosineCurtains"><code class="xref py py-class docutils literal notranslate"><span class="pre">CosineCurtains</span></code></a>.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference internal" href="#pjimg.sources.UnitNoise" title="pjimg.sources.unitnoise.UnitNoise">sources.unitnoise.UnitNoise</a></p>
+<dd class="field-odd"><p><a class="reference internal" href="#pjimg.sources.CosineCurtains" title="pjimg.sources.unitnoise.CosineCurtains">sources.unitnoise.CosineCurtains</a></p>
 </dd>
 </dl>
 <p>Usage:</p>
@@ -1192,10 +1192,10 @@ integers for seeding.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>An instance of <a class="reference internal" href="#pjimg.sources.UnitNoise" title="pjimg.sources.UnitNoise"><code class="xref py py-class docutils literal notranslate"><span class="pre">UnitNoise</span></code></a>.</p>
+<dd class="field-even"><p>An instance of <a class="reference internal" href="#pjimg.sources.Curtains" title="pjimg.sources.Curtains"><code class="xref py py-class docutils literal notranslate"><span class="pre">Curtains</span></code></a>.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference internal" href="#pjimg.sources.UnitNoise" title="pjimg.sources.unitnoise.UnitNoise">sources.unitnoise.UnitNoise</a></p>
+<dd class="field-odd"><p><a class="reference internal" href="#pjimg.sources.Curtains" title="pjimg.sources.unitnoise.Curtains">sources.unitnoise.Curtains</a></p>
 </dd>
 </dl>
 <p>Usage:</p>
@@ -1806,6 +1806,62 @@ integers for seeding.</p></li>
 </dd></dl>
 
 <dl class="py class">
+<dt class="sig sig-object py" id="pjimg.sources.WorleyCell">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pjimg.sources.</span></span><span class="sig-name descname"><span class="pre">WorleyCell</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">points</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><span class="pre">int</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">volume</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Sequence" title="(in Python v3.13)"><span class="pre">Sequence</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.13)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">origin</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Sequence" title="(in Python v3.13)"><span class="pre">Sequence</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">(0,</span> <span class="pre">0,</span> <span class="pre">0)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.13)"><span class="pre">None</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.13)"><span class="pre">bytes</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pjimg/sources/worley.html#WorleyCell"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pjimg.sources.WorleyCell" title="Link to this definition">¶</a></dt>
+<dd><p>Fill a space with Worley noise that fills each cell with a
+solid color.</p>
+<p>Worley noise is a type of cellular noise. The color value of each
+pixel within the space is determined by the distance from the pixel
+to the nearest of a set of randomly located points within the
+image. This creates structures within the noise that look like
+cells or pits.</p>
+<p>This implementation is heavily optimized from code found here:
+<a class="reference external" href="https://code.activestate.com/recipes/578459-worley-noise-generator/">https://code.activestate.com/recipes/578459-worley-noise-generator/</a></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>points</strong> – The number of cells in the image. A cell is a
+randomly placed point and the range of pixels that are
+closer to it than any other point.</p></li>
+<li><p><strong>volume</strong> – (Optional.) The size of the volume that the points
+will be placed in. The default is for them to be evenly spread
+through the space generated during the fill.</p></li>
+<li><p><strong>origin</strong> – (Optional.) The location of the upper-top-left
+corner of the volume that contains the points. This defaults
+to the upper-top-left corner of the space generated during the
+fill.</p></li>
+<li><p><strong>seed</strong> – (Optional.) An int, bytes, or string used to seed
+therandom number generator used to generate the image data.
+If no value is passed, the RNG will not be seeded, so
+serialized versions of this source will not product the
+same values. Note: strings that are passed to seed will
+be converted to UTF-8 bytes before being converted to
+integers for seeding.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#pjimg.sources.WorleyCell" title="pjimg.sources.WorleyCell"><code class="xref py py-class docutils literal notranslate"><span class="pre">WorleyCell</span></code></a> object.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#pjimg.sources.WorleyCell" title="pjimg.sources.worley.WorleyCell">sources.worley.WorleyCell</a></p>
+</dd>
+</dl>
+<p>Usage:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Create Worley noise in a 1280x720 image.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">size</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">720</span><span class="p">,</span> <span class="mi">1280</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">source</span> <span class="o">=</span> <span class="n">WorleyCell</span><span class="p">(</span><span class="n">points</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="s1">&#39;spam&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">img</span> <span class="o">=</span> <span class="n">source</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="n">size</span><span class="p">)</span>
+</pre></div>
+</div>
+<figure class="align-default" id="id33">
+<img alt="WorleyCell noise in a 1280x720 image." src="_images/worleycell.jpg" />
+<figcaption>
+<p><span class="caption-text">The image data created by the usage example.</span><a class="headerlink" href="#id33" title="Link to this image">¶</a></p>
+</figcaption>
+</figure>
+</dd></dl>
+
+<dl class="py class">
 <dt class="sig sig-object py" id="pjimg.sources.OctaveWorley">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pjimg.sources.</span></span><span class="sig-name descname"><span class="pre">OctaveWorley</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">octaves</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">persistence</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">8</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">amplitude</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">8</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frequency</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">points</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">volume</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Sequence" title="(in Python v3.13)"><span class="pre">Sequence</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.13)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">origin</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Sequence" title="(in Python v3.13)"><span class="pre">Sequence</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">(0,</span> <span class="pre">0,</span> <span class="pre">0)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.13)"><span class="pre">None</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.13)"><span class="pre">bytes</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pjimg/sources/worley.html#OctaveWorley"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pjimg.sources.OctaveWorley" title="Link to this definition">¶</a></dt>
 <dd><p>Fill a space with octaves of Worley noise.</p>
@@ -1865,10 +1921,10 @@ integers for seeding.</p></li>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">img</span> <span class="o">=</span> <span class="n">source</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="n">size</span><span class="p">)</span>
 </pre></div>
 </div>
-<figure class="align-default" id="id33">
+<figure class="align-default" id="id34">
 <img alt="Octave Worley noise in a 1280x720 image." src="_images/octaveworley.jpg" />
 <figcaption>
-<p><span class="caption-text">The image data created by the usage example.</span><a class="headerlink" href="#id33" title="Link to this image">¶</a></p>
+<p><span class="caption-text">The image data created by the usage example.</span><a class="headerlink" href="#id34" title="Link to this image">¶</a></p>
 </figcaption>
 </figure>
 </dd></dl>
@@ -2019,6 +2075,7 @@ registry.</p>
 </li>
 <li><a class="reference internal" href="#worley-noise">Worley Noise</a><ul>
 <li><a class="reference internal" href="#pjimg.sources.Worley"><code class="docutils literal notranslate"><span class="pre">Worley</span></code></a></li>
+<li><a class="reference internal" href="#pjimg.sources.WorleyCell"><code class="docutils literal notranslate"><span class="pre">WorleyCell</span></code></a></li>
 <li><a class="reference internal" href="#pjimg.sources.OctaveWorley"><code class="docutils literal notranslate"><span class="pre">OctaveWorley</span></code></a></li>
 </ul>
 </li>

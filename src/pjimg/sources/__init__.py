@@ -51,4 +51,4 @@ from pjimg.sources.noise import Embers, Noise
 from pjimg.sources.perlin import BorktavePerlin, OctavePerlin, Perlin
 from pjimg.sources.tile import Tile, tile_patterns
 from pjimg.sources.unitnoise import *
-from pjimg.sources.worley import OctaveWorley, Worley
+from pjimg.sources.worley import OctaveWorley, Worley, WorleyCell

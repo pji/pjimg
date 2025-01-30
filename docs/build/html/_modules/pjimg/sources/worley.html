@@ -250,6 +250,7 @@
 <span class="sd">data is generated based on the distance from a pixel to the nearest point.</span>
 
 <span class="sd">.. autoclass:: pjimg.sources.Worley</span>
+<span class="sd">.. autoclass:: pjimg.sources.WorleyCell</span>
 <span class="sd">.. autoclass:: pjimg.sources.OctaveWorley</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
@@ -261,10 +262,11 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">pjimg.util</span><span class="w"> </span><span class="kn">import</span> <span class="n">ImgAry</span><span class="p">,</span> <span class="n">IntAry64</span><span class="p">,</span> <span class="n">Loc</span><span class="p">,</span> <span class="n">Size</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pjimg.sources.model</span><span class="w"> </span><span class="kn">import</span> <span class="n">Seed</span><span class="p">,</span> <span class="n">Source</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pjimg.sources.noise</span><span class="w"> </span><span class="kn">import</span> <span class="n">Noise</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pjimg.util</span><span class="w"> </span><span class="kn">import</span> <span class="n">lerp</span>
 
 
 <span class="c1"># Names available for import.</span>
-<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;OctaveWorley&#39;</span><span class="p">,</span> <span class="s1">&#39;Worley&#39;</span><span class="p">,]</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;OctaveWorley&#39;</span><span class="p">,</span> <span class="s1">&#39;Worley&#39;</span><span class="p">,</span> <span class="s1">&#39;WorleyCell&#39;</span><span class="p">,]</span>
 
 
 <span class="c1"># Public classes.</span>
@@ -367,6 +369,112 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">_hypot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">:</span> <span class="n">Loc</span><span class="p">,</span> <span class="n">indices</span><span class="p">:</span> <span class="n">IntAry64</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ImgAry</span><span class="p">:</span>
         <span class="n">axis_dist</span> <span class="o">=</span> <span class="p">[</span><span class="n">p</span> <span class="o">-</span> <span class="n">i</span> <span class="k">for</span> <span class="n">p</span><span class="p">,</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">indices</span><span class="p">)]</span>
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">d</span> <span class="o">**</span> <span class="mi">2</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">axis_dist</span><span class="p">))</span></div>
+
+
+
+<div class="viewcode-block" id="WorleyCell">
+<a class="viewcode-back" href="../../../sources.html#pjimg.sources.WorleyCell">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">WorleyCell</span><span class="p">(</span><span class="n">Worley</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Fill a space with Worley noise that fills each cell with a</span>
+<span class="sd">    solid color.</span>
+
+<span class="sd">    Worley noise is a type of cellular noise. The color value of each</span>
+<span class="sd">    pixel within the space is determined by the distance from the pixel</span>
+<span class="sd">    to the nearest of a set of randomly located points within the</span>
+<span class="sd">    image. This creates structures within the noise that look like</span>
+<span class="sd">    cells or pits.</span>
+
+<span class="sd">    This implementation is heavily optimized from code found here:</span>
+<span class="sd">    https://code.activestate.com/recipes/578459-worley-noise-generator/</span>
+
+<span class="sd">    :param points: The number of cells in the image. A cell is a</span>
+<span class="sd">        randomly placed point and the range of pixels that are</span>
+<span class="sd">        closer to it than any other point.</span>
+<span class="sd">    :param volume: (Optional.) The size of the volume that the points</span>
+<span class="sd">        will be placed in. The default is for them to be evenly spread</span>
+<span class="sd">        through the space generated during the fill.</span>
+<span class="sd">    :param origin: (Optional.) The location of the upper-top-left</span>
+<span class="sd">        corner of the volume that contains the points. This defaults</span>
+<span class="sd">        to the upper-top-left corner of the space generated during the</span>
+<span class="sd">        fill.</span>
+<span class="sd">    :param seed: (Optional.) An int, bytes, or string used to seed</span>
+<span class="sd">        therandom number generator used to generate the image data.</span>
+<span class="sd">        If no value is passed, the RNG will not be seeded, so</span>
+<span class="sd">        serialized versions of this source will not product the</span>
+<span class="sd">        same values. Note: strings that are passed to seed will</span>
+<span class="sd">        be converted to UTF-8 bytes before being converted to</span>
+<span class="sd">        integers for seeding.</span>
+<span class="sd">    :return: :class:`WorleyCell` object.</span>
+<span class="sd">    :rtype: sources.worley.WorleyCell</span>
+<span class="sd">    </span>
+<span class="sd">    Usage::</span>
+<span class="sd">    </span>
+<span class="sd">        &gt;&gt;&gt; # Create Worley noise in a 1280x720 image.</span>
+<span class="sd">        &gt;&gt;&gt; size = (1, 720, 1280)</span>
+<span class="sd">        &gt;&gt;&gt; source = WorleyCell(points=20, seed=&#39;spam&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; img = source.fill(size)</span>
+
+<span class="sd">    .. figure:: images/worleycell.jpg</span>
+<span class="sd">       :alt: WorleyCell noise in a 1280x720 image.</span>
+<span class="sd">       </span>
+<span class="sd">       The image data created by the usage example.</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">fill</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="p">:</span> <span class="n">Size</span><span class="p">,</span>
+        <span class="n">loc</span><span class="p">:</span> <span class="n">Loc</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ImgAry</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Fill a volume with image data.</span>
+
+<span class="sd">        :param size: The size of the volume of image data to generate.</span>
+<span class="sd">        :param loc: (Optional.) How much to shift the starting point</span>
+<span class="sd">            for the noise generation along each axis.</span>
+<span class="sd">        :return: An :class:`numpy.ndarray` with image data.</span>
+<span class="sd">        :rtype: numpy.ndarray</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+        <span class="n">volume_size</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">volume</span>
+        <span class="k">if</span> <span class="n">volume_size</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">volume_size</span> <span class="o">=</span> <span class="n">size</span>
+        <span class="n">volume</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">volume_size</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+
+        <span class="c1"># Place the seeds in the overall volume of noise.</span>
+        <span class="n">seeds</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rng</span><span class="o">.</span><span class="n">random</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">points</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+        <span class="n">seeds</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">around</span><span class="p">(</span><span class="n">seeds</span> <span class="o">*</span> <span class="p">(</span><span class="n">volume</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
+        <span class="n">seeds</span> <span class="o">+=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">origin</span><span class="p">)</span>
+
+        <span class="c1"># Assign a color for each seed.</span>
+        <span class="n">colors</span> <span class="o">=</span> <span class="p">[</span><span class="n">n</span> <span class="o">/</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">points</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">points</span><span class="p">)]</span>
+
+        <span class="c1"># Map the distances to the points.</span>
+        <span class="n">indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">indices</span><span class="p">(</span><span class="n">size</span><span class="p">)</span>
+        <span class="n">indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">indices</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+        <span class="n">dist</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">points</span><span class="p">,</span> <span class="o">*</span><span class="n">size</span><span class="p">),</span>
+                        <span class="n">dtype</span><span class="o">=</span><span class="p">[(</span><span class="s1">&#39;d&#39;</span><span class="p">,</span> <span class="nb">float</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;i&#39;</span><span class="p">,</span> <span class="nb">float</span><span class="p">)])</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">points</span><span class="p">):</span>
+            <span class="n">dist</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_hypot</span><span class="p">(</span><span class="n">seeds</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">indices</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+        <span class="n">dist</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">dist</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+        <span class="n">dist</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="s1">&#39;d&#39;</span><span class="p">)</span>
+        <span class="nb">map</span> <span class="o">=</span> <span class="n">dist</span><span class="p">[:,</span> <span class="p">:,</span> <span class="p">:,</span> <span class="mi">0</span><span class="p">][</span><span class="s1">&#39;i&#39;</span><span class="p">]</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">take</span><span class="p">(</span><span class="n">colors</span><span class="p">,</span> <span class="nb">map</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">))</span>
+        
+        <span class="c1"># Antialias edges.</span>
+        <span class="n">nmap</span> <span class="o">=</span> <span class="n">dist</span><span class="p">[:,</span> <span class="p">:,</span> <span class="p">:,</span> <span class="mi">1</span><span class="p">][</span><span class="s1">&#39;i&#39;</span><span class="p">]</span>
+        <span class="n">m</span> <span class="o">=</span> <span class="n">dist</span><span class="p">[:,</span> <span class="p">:,</span> <span class="p">:,</span> <span class="mi">1</span><span class="p">][</span><span class="s1">&#39;d&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">dist</span><span class="p">[:,</span> <span class="p">:,</span> <span class="p">:,</span> <span class="mi">0</span><span class="p">][</span><span class="s1">&#39;d&#39;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">1</span>
+        <span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">take</span><span class="p">(</span><span class="n">colors</span><span class="p">,</span> <span class="n">nmap</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">))</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">dist</span><span class="p">[:,</span> <span class="p">:,</span> <span class="p">:,</span> <span class="mi">1</span><span class="p">][</span><span class="s1">&#39;d&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">dist</span><span class="p">[:,</span> <span class="p">:,</span> <span class="p">:,</span> <span class="mi">0</span><span class="p">][</span><span class="s1">&#39;d&#39;</span><span class="p">]</span>
+        <span class="n">x</span><span class="p">[</span><span class="n">m</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">m</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="mf">.5</span><span class="p">)</span>
+        <span class="n">a</span><span class="p">[</span><span class="n">m</span><span class="p">]</span> <span class="o">=</span> <span class="n">lerp</span><span class="p">(</span><span class="n">a</span><span class="p">[</span><span class="n">m</span><span class="p">],</span> <span class="n">b</span><span class="p">[</span><span class="n">m</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="n">m</span><span class="p">])</span>
+        
+        <span class="k">return</span> <span class="n">a</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_hypot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">indices</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span>
+        <span class="n">diffs</span> <span class="o">=</span> <span class="p">(</span><span class="n">indices</span> <span class="o">-</span> <span class="n">point</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span>
+        <span class="n">diffs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">diffs</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">))</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">diffs</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="p">[(</span><span class="s1">&#39;d&#39;</span><span class="p">,</span> <span class="nb">float</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;i&#39;</span><span class="p">,</span> <span class="nb">float</span><span class="p">)])</span>
+        <span class="n">result</span><span class="p">[</span><span class="s1">&#39;d&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">diffs</span>
+        <span class="n">result</span><span class="p">[</span><span class="s1">&#39;i&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">result</span></div>
 
 
 

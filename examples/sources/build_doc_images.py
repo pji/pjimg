@@ -173,6 +173,10 @@ def make_random(size: Size, path: Path) -> None:
             points=20,
             seed='spam'
         ),
+        ig.WorleyCell(
+            points=20,
+            seed='spam'
+        ),
         ig.OctaveWorley(
             octaves=3,
             persistence=6,
