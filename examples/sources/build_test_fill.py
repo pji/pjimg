@@ -12,8 +12,16 @@ import pjimg.sources as srcs
 
 
 seed = 'spam'
-size = (3, 12, 8)
-src = srcs.WorleyCell(points=5, volume=None, seed=seed)
+size = (1, 20, 10)
+src = srcs.OctaveMaze(
+    octaves=4,
+    persistence=2,
+    amplitude=2,
+    frequency=3,
+    unit=(1, 10, 10),
+    width=0.34,
+    seed=seed
+)
 
 result = (src.fill(size) * 0xff).astype(np.uint8)
 print_array(result)

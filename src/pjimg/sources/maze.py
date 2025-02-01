@@ -6,6 +6,7 @@ A pseudorandomly generated maze.
 
 .. autoclass:: pjimg.sources.Maze
 .. autoclass:: pjimg.sources.AnimatedMaze
+.. autoclass:: pjimg.sources.OctaveMaze
 .. autoclass:: pjimg.sources.SolvedMaze
 
 """
@@ -16,6 +17,7 @@ import numpy as np
 from numpy.typing import NDArray
 
 from pjimg.sources import unitnoise as un
+from pjimg.sources.model import Source
 from pjimg.util import ImgAry, IntAry, IntAry64, Loc, Size, X, Y, Z
 
 
@@ -99,10 +101,11 @@ class Maze(un.UnitNoise):
         min: int = 0x00,
         max: int = 0xff,
         repeats: int = 1,
-        seed: un.Seed = None
+        seed: un.Seed = None,
+        table: Optional[Sequence[int]] = None
     ) -> None:
         """Initialize an instance of Maze."""
-        super().__init__(unit, min, max, repeats, seed)
+        super().__init__(unit, min, max, repeats, seed, table)
         self.width = width
         self.inset = inset
         self.origin = origin
@@ -722,3 +725,106 @@ class SolvedMaze(Maze):
 
         # Return the solution.
         return solution
+
+
+class OctaveMaze(Source):
+    """Fill a space with octaves of Maze noise.
+    
+    Maze noise generates a maze-like path within the space.
+    
+    :param octaves: The number of octaves of noise in the image. An
+        octave is a layer of the noise with a different number of
+        points added on top of other layers of noise.
+    :param persistence: How the weight of each octave changes.
+    :param amplitude: The weight of the first octave.
+    :param frequency: How the number of points in each octave changes.
+    :param seed: (Optional.) An int, bytes, or string used to seed
+        therandom number generator used to generate the image data.
+        If no value is passed, the RNG will not be seeded, so
+        serialized versions of this source will not product the
+        same values. Note: strings that are passed to seed will
+        be converted to UTF-8 bytes before being converted to
+        integers for seeding.
+    :return: :class:`OctaveMaze` object.
+    :rtype: sources.maze.OctaveMaze
+    
+    Usage::
+    
+        >>> # Create octave Maze noise in a 1280x720 image.
+        >>> size = (1, 720, 1280)
+        >>> source = OctaveMaze(
+        ...     octaves=3,
+        ...     persistence=6,
+        ...     amplitude=5,
+        ...     frequency=3,
+        ...     points=8,
+        ...     seed='spam'
+        ... )
+        >>> img = source.fill(size)
+
+    .. figure:: images/octavemaze.jpg
+       :alt: Octave maze noise in a 1280x720 image.
+       
+       The image data created by the usage example.
+    
+    """
+    def __init__(
+        self, octaves: int = 4,
+        persistence: float = 8,
+        amplitude: float = 8,
+        frequency: float = 2,
+        unit: Sequence[int] = (1, 20, 20),
+        width: float = .2,
+        inset: Sequence[int] = (0, 1, 1),
+        origin: Union[str, Sequence[int]] = 'tl',
+        min: int = 0x00,
+        max: int = 0xff,
+        repeats: int = 1,
+        seed: un.Seed = None,
+        table: Optional[Sequence[int]] = None
+    ) -> None:
+        self.octaves = octaves
+        self.persistence = persistence
+        self.amplitude = amplitude
+        self.frequency = frequency
+        self.unit = unit
+        self.width = width
+        self.inset = inset
+        self.origin = origin
+        self.min = min
+        self.max = max
+        self.repeats = repeats
+        self.seed = seed
+        self.table = table
+    
+    def fill(
+        self, size: Sequence[int],
+        loc: Sequence[int] = (0, 0, 0)
+    ) -> ImgAry:
+            a = np.zeros(tuple(size), dtype=float)
+            max_value = 0.0
+            for i in range(self.octaves):
+                amp = self.amplitude + (self.persistence * i)
+                freq = self.frequency * 2 ** i
+                unit = [
+                    self._round_unit(s, n // freq)
+                    for s, n in zip(size, self.unit)
+                ]
+                octave = Maze(
+                    unit=unit,
+                    min=self.min,
+                    max=self.max,
+                    repeats=self.repeats,
+                    seed=self.seed,
+                    table=self.table
+                )
+                a += octave.fill(size, loc) * amp
+                max_value += amp
+            a /= max_value
+            return a
+
+    def _round_unit(self, size_dim: int, unit_dim: int) -> int:
+        unit_dim = unit_dim if unit_dim else 1
+        while size_dim % unit_dim:
+            unit_dim += 1
+        return unit_dim

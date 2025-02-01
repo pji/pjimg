@@ -743,8 +743,23 @@
 <span class="sd">        :param persistence: How the weight of each octave changes.</span>
 <span class="sd">        :param amplitude: The weight of the first octave.</span>
 <span class="sd">        :param frequency: How the number of points in each octave changes.</span>
-<span class="sd">        :return: An octave version of the base class.</span>
-<span class="sd">        :rtype: sources.sources.Source</span>
+<span class="sd">        :return: An :class:`pjimg.sources.{name}` object.</span>
+<span class="sd">        :rtype: pjimg.sources.{name}</span>
+<span class="sd">        </span>
+<span class="sd">        Usage::</span>
+<span class="sd">        </span>
+<span class="sd">        &gt;&gt;&gt; # Create {name} noise in a 1280x720 image.</span>
+<span class="sd">        &gt;&gt;&gt; size = (1, 720, 1280)</span>
+<span class="sd">        &gt;&gt;&gt; unit = (1, size[Y] // 5, size[Y] // 5)</span>
+<span class="sd">        &gt;&gt;&gt; source = {name}(</span>
+<span class="sd">        &gt;&gt;&gt;     unit=unit,</span>
+<span class="sd">        &gt;&gt;&gt;     octaves={octaves},</span>
+<span class="sd">        &gt;&gt;&gt;     persistence={persistence},</span>
+<span class="sd">        &gt;&gt;&gt;     amplitude={amplitude},</span>
+<span class="sd">        &gt;&gt;&gt;     frequency={frequency},</span>
+<span class="sd">        &gt;&gt;&gt;     seed=&#39;spam&#39;</span>
+<span class="sd">        &gt;&gt;&gt; )</span>
+<span class="sd">        &gt;&gt;&gt; img = source.fill(size)</span>
 
 <span class="sd">        .. figure:: images/{lname}.jpg</span>
 <span class="sd">           :alt: A picture of an image created from the output of</span>
@@ -817,7 +832,11 @@
         <span class="k">if</span> <span class="bp">cls</span><span class="o">.</span><span class="vm">__doc__</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">cls</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="vm">__doc__</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
                 <span class="n">lname</span><span class="o">=</span><span class="s1">&#39;octave&#39;</span> <span class="o">+</span> <span class="n">source</span><span class="o">.</span><span class="vm">__name__</span><span class="o">.</span><span class="n">lower</span><span class="p">(),</span>
-                <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Octave&#39;</span> <span class="o">+</span> <span class="n">source</span><span class="o">.</span><span class="vm">__name__</span>
+                <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Octave&#39;</span> <span class="o">+</span> <span class="n">source</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span>
+                <span class="n">octaves</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+                <span class="n">persistence</span><span class="o">=-</span><span class="mi">4</span><span class="p">,</span>
+                <span class="n">amplitude</span><span class="o">=</span><span class="mi">24</span><span class="p">,</span>
+                <span class="n">frequency</span><span class="o">=</span><span class="mi">4</span>
             <span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="bp">cls</span><span class="o">.</span><span class="n">unit_op</span> <span class="o">=</span> <span class="n">mul</span>
@@ -825,7 +844,11 @@
         <span class="k">if</span> <span class="bp">cls</span><span class="o">.</span><span class="vm">__doc__</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">cls</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="vm">__doc__</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
                 <span class="n">lname</span><span class="o">=</span><span class="s1">&#39;borktave&#39;</span> <span class="o">+</span> <span class="n">source</span><span class="o">.</span><span class="vm">__name__</span><span class="o">.</span><span class="n">lower</span><span class="p">(),</span>
-                <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Borktave&#39;</span> <span class="o">+</span> <span class="n">source</span><span class="o">.</span><span class="vm">__name__</span>
+                <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Borktave&#39;</span> <span class="o">+</span> <span class="n">source</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span>
+                <span class="n">octaves</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+                <span class="n">persistence</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span>
+                <span class="n">amplitude</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span>
+                <span class="n">frequency</span><span class="o">=-</span><span class="mf">1.5</span>
             <span class="p">)</span>
             <span class="bp">cls</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">+=</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">((</span>
                 <span class="s1">&#39;&#39;</span><span class="p">,</span>

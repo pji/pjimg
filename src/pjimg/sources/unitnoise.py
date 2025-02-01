@@ -487,8 +487,23 @@ def octave_noise_factory(
         :param persistence: How the weight of each octave changes.
         :param amplitude: The weight of the first octave.
         :param frequency: How the number of points in each octave changes.
-        :return: An octave version of the base class.
-        :rtype: sources.sources.Source
+        :return: An :class:`pjimg.sources.{name}` object.
+        :rtype: pjimg.sources.{name}
+        
+        Usage::
+        
+        >>> # Create {name} noise in a 1280x720 image.
+        >>> size = (1, 720, 1280)
+        >>> unit = (1, size[Y] // 5, size[Y] // 5)
+        >>> source = {name}(
+        >>>     unit=unit,
+        >>>     octaves={octaves},
+        >>>     persistence={persistence},
+        >>>     amplitude={amplitude},
+        >>>     frequency={frequency},
+        >>>     seed='spam'
+        >>> )
+        >>> img = source.fill(size)
 
         .. figure:: images/{lname}.jpg
            :alt: A picture of an image created from the output of
@@ -561,7 +576,11 @@ def octave_noise_factory(
         if cls.__doc__ is not None:
             cls.__doc__ = cls.__doc__.format(
                 lname='octave' + source.__name__.lower(),
-                name='Octave' + source.__name__
+                name='Octave' + source.__name__,
+                octaves=3,
+                persistence=-4,
+                amplitude=24,
+                frequency=4
             )
     else:
         cls.unit_op = mul
@@ -569,7 +588,11 @@ def octave_noise_factory(
         if cls.__doc__ is not None:
             cls.__doc__ = cls.__doc__.format(
                 lname='borktave' + source.__name__.lower(),
-                name='Borktave' + source.__name__
+                name='Borktave' + source.__name__,
+                octaves=4,
+                persistence=8,
+                amplitude=8,
+                frequency=-1.5
             )
             cls.__doc__ += '\n'.join((
                 '',

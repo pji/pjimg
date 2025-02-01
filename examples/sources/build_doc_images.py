@@ -89,26 +89,26 @@ def make_random(size: Size, path: Path) -> None:
         ),
         ig.BorktaveUnitNoise(
             unit=unit,
-            octaves=3,
-            persistence=-4,
-            amplitude=24,
-            frequency=4,
+            octaves=4,
+            persistence=8,
+            amplitude=8,
+            frequency=-1.5,
             seed='spam'
         ),
         ig.BorktaveCosineNoise(
             unit=unit,
-            octaves=3,
-            persistence=-4,
-            amplitude=24,
-            frequency=4,
+            octaves=4,
+            persistence=8,
+            amplitude=8,
+            frequency=-1.5,
             seed='spam'
         ),
         ig.BorktaveCosineCurtains(
             unit=unit,
-            octaves=3,
-            persistence=-4,
-            amplitude=24,
-            frequency=4,
+            octaves=4,
+            persistence=8,
+            amplitude=8,
+            frequency=-1.5,
             seed='spam'
         ),        
         ig.Curtains(
@@ -120,10 +120,10 @@ def make_random(size: Size, path: Path) -> None:
             seed='spam'
         ),
         ig.OctaveUnitNoise(
-            unit=(1, size[Y] * 9 // 2, size[Y] * 9 // 2),
-            octaves=6,
+            unit=unit,
+            octaves=3,
             persistence=-4,
-            amplitude=48,
+            amplitude=24,
             frequency=4,
             seed='spam'
         ),
@@ -150,8 +150,8 @@ def make_random(size: Size, path: Path) -> None:
             seed='spam'
         ),
         ig.OctavePerlin(
-            unit=(1, size[Y] * 9 // 2, size[Y] * 9 // 2),
-            octaves=6,
+            unit=unit,
+            octaves=3,
             persistence=-4,
             amplitude=24,
             frequency=4,
@@ -161,6 +161,10 @@ def make_random(size: Size, path: Path) -> None:
         # sources.maze
         ig.Maze(
             unit=(1, size[Y] // 18, size[Y] // 18),
+            seed='spam'
+        ),
+        ig.OctaveMaze(
+            unit=(1, size[Y] // 4, size[Y] // 4),
             seed='spam'
         ),
         ig.SolvedMaze(
@@ -178,6 +182,14 @@ def make_random(size: Size, path: Path) -> None:
             seed='spam'
         ),
         ig.OctaveWorley(
+            octaves=3,
+            persistence=6,
+            amplitude=5,
+            frequency=3,
+            points=8,
+            seed='spam'
+        ),
+        ig.OctaveWorleyCell(
             octaves=3,
             persistence=6,
             amplitude=5,

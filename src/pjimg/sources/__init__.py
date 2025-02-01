@@ -46,9 +46,9 @@ from pjimg.sources.constants import DOWN, LEFT, P, RIGHT, UP
 from pjimg.sources.decorators import register
 from pjimg.sources.model import Seed, Source
 from pjimg.sources.patterns import *
-from pjimg.sources.maze import Maze, AnimatedMaze, SolvedMaze
+from pjimg.sources.maze import Maze, AnimatedMaze, OctaveMaze, SolvedMaze
 from pjimg.sources.noise import Embers, Noise
 from pjimg.sources.perlin import BorktavePerlin, OctavePerlin, Perlin
 from pjimg.sources.tile import Tile, tile_patterns
 from pjimg.sources.unitnoise import *
-from pjimg.sources.worley import OctaveWorley, Worley, WorleyCell
+from pjimg.sources.worley import *
