@@ -2,13 +2,36 @@
 requires = ["setuptools", "wheel"]
 build-backend = "setuptools.build_meta"
 
+
 [tool.rstcheck]
 report_level = "WARNING"
 ignore_directives = ["autoclass", "autofunction"]
 
+
 [tool.pytest.ini_options]
 addopts = ["--import-mode=importlib",]
 markers = ['codec', 'ext', 'path',]
+
+
+[tool.poetry.requires-plugins]
+poetry-plugin-export = ">=1.8"
+
+
+[tool.poetry.group.dev.dependencies]
+sphinx = "^8.2.3"
+furo = "^2024.8.6"
+rstcheck = "^6.2.4"
+pycodestyle = "^2.13.0"
+pytest = "^8.3.5"
+isort = "^6.0.1"
+tox = "^4.25.0"
+wheel = "^0.45.1"
+build = "^1.2.2.post1"
+twine = "^6.1.0"
+matplotlib = "^3.10.1"
+types-pillow = "^10.2.0.20240822"
+mypy = "^1.15.0"
+
 
 [project]
 name = "pjimg"
@@ -18,18 +41,20 @@ authors = [
 ]
 description = "Procedural pattern and noise generation."
 readme = "README.rst"
-requires-python = ">=3.9"
+requires-python = ">=3.11"
 classifiers = [
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
 ]
-dependencies = []
+dependencies = ["opencv-python (>=4.11.0.86,<5.0.0.0)", "scikit-image (>=0.25.2,<0.26.0)"]
+
 
 [project.urls]
 # "Homepage" = "https://pjimg.readthedocs.io/en/latest/index.html#"
 # "Documentation" = "https://pjimg.readthedocs.io/en/latest/index.html#"
 "Source" = "https://github.com/pji/pjimg"
+
 
 # [project.scripts]
 # filereader = "{SCRIPT_FILE}:{FUNCTION_NAME}"

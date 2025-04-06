@@ -1,11 +1,10 @@
--i https://pypi.org/simple
-imageio==2.37.0; python_version >= '3.9'
-lazy-loader==0.4; python_version >= '3.7'
-networkx==3.4.2; python_version >= '3.10'
-numpy==2.2.2; python_version >= '3.10'
-opencv-python==4.11.0.86; python_version >= '3.6'
-packaging==24.2; python_version >= '3.8'
-pillow==11.1.0; python_version >= '3.9'
-scikit-image==0.25.0; python_version >= '3.10'
-scipy==1.15.1; python_version >= '3.10'
-tifffile==2025.1.10; python_version >= '3.10'
+imageio==2.37.0 ; python_version >= "3.11"
+lazy-loader==0.4 ; python_version >= "3.11"
+networkx==3.4.2 ; python_version >= "3.11"
+numpy==2.2.4 ; python_version >= "3.11"
+opencv-python==4.11.0.86 ; python_version >= "3.11"
+packaging==24.2 ; python_version >= "3.11"
+pillow==11.1.0 ; python_version >= "3.11"
+scikit-image==0.25.2 ; python_version >= "3.11"
+scipy==1.15.2 ; python_version >= "3.11"
+tifffile==2025.3.30 ; python_version >= "3.11"
