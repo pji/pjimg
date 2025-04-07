@@ -16,7 +16,7 @@ import numpy as np
 
 from pjimg.filters.decorators import *
 from pjimg.filters.model import filters
-from pjimg.util import ImgAry, X, X_, Y, Y_, Z, Z_
+from pjimg.util import X_, Y_, Z_, ImgAry, X, Y, Z
 
 
 # Names available for import.
@@ -33,9 +33,9 @@ def box_blur(a: ImgAry, size: int) -> ImgAry:
 
     .. figure:: images/box_blur.jpg
        :alt: An example of the filter affecting an image.
-       
+
        An example of :func:`box_blur` affecting an image.
-    
+
     :param a: The image data to alter.
     :param size: The size of the blox used in the blur.
     :returns: A :class:`np.ndarray` object.
@@ -53,9 +53,9 @@ def gaussian_blur(a: ImgAry, sigma: float) -> ImgAry:
 
     .. figure:: images/gaussian_blur.jpg
        :alt: An example of the filter affecting an image.
-       
+
        An example of :func:`gaussian_blur` affecting an image.
-    
+
     :param a: The image data to alter.
     :param sigma: The sigma value of the blur. A gaussian blur uses a
         gaussian function to determine how much the other pixels in
@@ -76,9 +76,9 @@ def glow(a: ImgAry, sigma: int) -> ImgAry:
 
     .. figure:: images/glow.jpg
        :alt: An example of the filter affecting an image.
-       
+
        An example of :func:`glow` affecting an image.
-    
+
     :param a: The image data to alter.
     :param sigma: The sigma value of the blur. A gaussian blur uses a
         gaussian function to determine how much the other pixels in
@@ -115,9 +115,9 @@ def motion_blur(
 
     .. figure:: images/motion_blur.jpg
        :alt: An example of the filter affecting an image.
-       
+
        An example of :func:`motion_blur` affecting an image.
-    
+
     :param a: The image data to alter.
     :param size: The size of the blur to apply.
     :param direction: The axis that the blur should be performed along.
@@ -152,12 +152,12 @@ def unsharp_mask(
     """Use a gaussian blur to increase the difference between big
     differences of value in the image, which gives the appearance
     of sharpening the image.
-    
+
     .. figure:: images/unsharp_mask.jpg
        :alt: An example of the filter affecting an image.
-       
+
        An example of :func:`unsharp_mask` affecting an image.
-    
+
     :param a: The image data to alter.
     :param sigma: The sigma value of the blur. A gaussian blur uses a
         gaussian function to determine how much the other pixels in

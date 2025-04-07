@@ -16,7 +16,7 @@ from typing import Optional, Union
 import numpy as np
 
 from pjimg.util import lerps as lp
-from pjimg.util.constants import X, X_, Y, Y_, Z, Z_
+from pjimg.util.constants import X_, Y_, Z_, X, Y, Z
 from pjimg.util.debug import print_array
 from pjimg.util.model import *
 
@@ -193,7 +193,7 @@ def build_resizing_matrices(
 
 def crop_array(a: NumAry, new_size: Size, loc: Loc = (0, 0, 0)) -> NumAry:
     """Crop an array to a smaller size.
-    
+
     :param a: The array to crop.
     :param new_size: The size of the cropped array.
     :param loc: (Optional.) How far to offset the crop from the center
@@ -219,12 +219,12 @@ def magnify_size(shape: Size, factor: int) -> Size:
 
 
 def pad_array(
-        a: NumAry,
-        size: Size,
-        fill: float = 0.0
-    ) -> NumAry:
+    a: NumAry,
+    size: Size,
+    fill: float = 0.0
+) -> NumAry:
     """Pad an array to a larger size.
-    
+
     :param a: The array to pad.
     :param size: The shape of the size.
     :param fill: The color of the padded area.
@@ -503,7 +503,7 @@ def _replace_indices_with_values(
 
 if __name__ == '__main__':
     from pjimg.util.debug import print_array
-    
+
     a = np.array([
         [0.0, 1.0, 2.0, ],
         [1.0, 2.0, 3.0, ],
@@ -511,7 +511,7 @@ if __name__ == '__main__':
         [3.0, 4.0, 5.0, ]
     ])
     size = (7, 5)
-    
+
 #     a = np.array([
 #         [0, 0, 0],
 #         [1, 1, 1],
@@ -520,6 +520,6 @@ if __name__ == '__main__':
 #         [4, 4, 4],
 #     ], dtype=float)
 #     size = (9, 5)
-    
+
     result = resize_array(a, size)
     print_array(result)

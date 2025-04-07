@@ -54,7 +54,7 @@ __all__ = [
 # Public classes.
 class UnitNoise(Noise):
     """Create image noise that is based on a unit grid.
-    
+
     :param unit: The number of pixels between vertices along an
         axis on the unit grid. The vertices are the locations where
         colors for the gradient are set. This is involved in setting
@@ -81,9 +81,9 @@ class UnitNoise(Noise):
         randomly. Default is `None`.
     :return: An instance of :class:`UnitNoise`.
     :rtype: sources.unitnoise.UnitNoise
-    
+
     Usage::
-    
+
         >>> # Create unit noise in a 1280x720 image.
         >>> size = (1, 720, 1280)
         >>> unit = (1, size[Y] // 5, size[Y] // 5)
@@ -92,9 +92,9 @@ class UnitNoise(Noise):
 
     .. figure:: images/unitnoise.jpg
        :alt: Unit noise in a 1280x720 image.
-       
+
        The image data created by the usage example.
-    
+
     """
     # The number of dimensions the noise occurs in.
     _axes: int = 3
@@ -153,7 +153,7 @@ class UnitNoise(Noise):
         the pixels.
         """
         grids = {}
-        
+
         # The _hashes here are identifiers for each of the eight vertices
         # that surround any given point. It's a binary number with one
         # digit per dimension in the noise being generated. The digit
@@ -162,7 +162,7 @@ class UnitNoise(Noise):
         # generating the grid based on the vertices before the point on
         # the Z and X axes but after the point on the Y axis.
         for key in self._hashes:
-            
+
             # Identify the multidimensional indices of the vertex for
             # each point.
             grid_whole = whole.copy()
@@ -253,7 +253,7 @@ class UnitNoise(Noise):
 class CosineNoise(UnitNoise):
     """Create image noise that is based on a unit grid and smoothed
     with a cosine ease.
-    
+
     :param unit: The number of pixels between vertices along an
         axis on the unit grid. The vertices are the locations where
         colors for the gradient are set. This is involved in setting
@@ -280,9 +280,9 @@ class CosineNoise(UnitNoise):
         randomly. Default is `None`.
     :return: An instance of :class:`CosineNoise`.
     :rtype: sources.unitnoise.CosineNoise
-    
+
     Usage::
-    
+
         >>> # Create unit noise in a 1280x720 image.
         >>> size = (1, 720, 1280)
         >>> unit = (1, size[Y] // 5, size[Y] // 5)
@@ -291,9 +291,9 @@ class CosineNoise(UnitNoise):
 
     .. figure:: images/cosinenoise.jpg
        :alt: Unit noise in a 1280x720 image.
-       
+
        The image data created by the usage example.
-    
+
     """
     # Private methods.
     def _map_unit_grid(
@@ -308,7 +308,7 @@ class CosineNoise(UnitNoise):
 
 class Curtains(UnitNoise):
     """Unit noise that creates vertical lines, like curtains.
-    
+
     :param unit: The number of pixels between vertices along an
         axis on the unit grid. The vertices are the locations where
         colors for the gradient are set. This is involved in setting
@@ -334,7 +334,7 @@ class Curtains(UnitNoise):
     :rtype: sources.unitnoise.Curtains
 
     Usage::
-    
+
         >>> # Create sharp curtains in a 1280x720 image.
         >>> size = (1, 720, 1280)
         >>> unit = (1, size[Y] // 5, size[Y] // 5)
@@ -343,7 +343,7 @@ class Curtains(UnitNoise):
 
     .. figure:: images/curtains.jpg
        :alt: Sharp curtains in a 1280x720 image.
-       
+
        The image data created by the usage example.
 
     """
@@ -366,7 +366,7 @@ class CosineCurtains(Curtains):
     """Unit noise that creates vertical lines with a cosine-based ease
     on the color change between grid points, making them appear to
     flow more like curtains.
-    
+
     :param unit: The number of pixels between vertices along an
         axis on the unit grid. The vertices are the locations where
         colors for the gradient are set. This is involved in setting
@@ -390,9 +390,9 @@ class CosineCurtains(Curtains):
         integers for seeding.
     :return: An instance of :class:`CosineCurtains`.
     :rtype: sources.unitnoise.CosineCurtains
-    
+
     Usage::
-    
+
         >>> # Create rounded curtains in a 1280x720 image.
         >>> size = (1, 720, 1280)
         >>> unit = (1, size[Y] // 5, size[Y] // 5)
@@ -401,7 +401,7 @@ class CosineCurtains(Curtains):
 
     .. figure:: images/cosinecurtains.jpg
        :alt: Rounded curtains in a 1280x720 image.
-       
+
        The image data created by the usage example.
 
     """
@@ -420,7 +420,7 @@ class CosineCurtains(Curtains):
 class OctaveNoiseDefaults(NamedTuple):
     """The default values for a new octave noise class created by
     :func:`sources.unitnoise.octave_noise_factory`.
-    
+
     :param octaves: (Optional.) The default value of octaves.
     :param persistence: (Optional.) The default value of persistence.
     :param amplitude: (Optional.) The default value of amplitude.
@@ -451,20 +451,20 @@ def octave_noise_factory(
 ) -> type:
     """A class factory that generates octave versions of the subclasses
     of :class:`UnitNoise`.
-    
+
     Octave noise contains multiple layers, called "octaves," of the
     noise being generated and added together. The size of the units
     within each octave changes based on the frequency. The amount
     each octave affects the final image is based on the amplitude
     and persistence.
-    
+
     .. warning:
         This factory only works with subclasses of :class:`UnitNoise`.
         This is because the octave algorithm uses the unit size of the
         source to affect the size of the variations within the noise.
         Other types of noise may be able to be octaved, but they will
         need a different algorithm than the one used by this factory.
-    
+
     :param source: The type of :class:`UnitNoise` to use when generating
         the octave noise.
     :param defaults: The default values for the parameters of the class
@@ -480,7 +480,7 @@ def octave_noise_factory(
     class OctaveNoise(Source):
         """A source for octave noise. Parameters are similar to the
         :class:`UnitNoise` being octaved, with the following additions.
-        
+
         :param octaves: The number of octaves of noise in the image. An
             octave is a layer of the noise with a different number of
             points added on top of other layers of noise.
@@ -489,9 +489,9 @@ def octave_noise_factory(
         :param frequency: How the number of points in each octave changes.
         :return: An :class:`pjimg.sources.{name}` object.
         :rtype: pjimg.sources.{name}
-        
+
         Usage::
-        
+
         >>> # Create {name} noise in a 1280x720 image.
         >>> size = (1, 720, 1280)
         >>> unit = (1, size[Y] // 5, size[Y] // 5)
@@ -508,9 +508,9 @@ def octave_noise_factory(
         .. figure:: images/{lname}.jpg
            :alt: A picture of an image created from the output of
                 :class:`{name}`.
-       
+
            Output of :class:`{name}`.
-    
+
         """
         source: type[UnitNoise]
         unit_op: Callable[[float, float], float] = truediv

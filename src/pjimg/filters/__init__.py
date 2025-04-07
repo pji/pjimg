@@ -49,7 +49,7 @@ import pjimg.filters.distort as distort
 import pjimg.filters.value as value
 from pjimg.filters.affine import *
 from pjimg.filters.blurs import *
-from pjimg.filters.distort import *
 from pjimg.filters.decorators import *
+from pjimg.filters.distort import *
 from pjimg.filters.model import filters
 from pjimg.filters.value import *

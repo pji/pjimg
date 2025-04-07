@@ -14,7 +14,7 @@ from pjimg.util.model import NumAry
 # Functions.
 def print_array(a: NumAry, depth: int = 0) -> None:
     """Write the values of the given array to stdout.
-    
+
     :param a: The array to print.
     :param depth: (Optional.) How far to indent the printed lines.
     :return: None.

@@ -58,9 +58,9 @@ class Worley(Noise):
         integers for seeding.
     :return: :class:`Worley` object.
     :rtype: sources.worley.Worley
-    
+
     Usage::
-    
+
         >>> # Create Worley noise in a 1280x720 image.
         >>> size = (1, 720, 1280)
         >>> source = Worley(points=20, seed='spam')
@@ -68,9 +68,9 @@ class Worley(Noise):
 
     .. figure:: images/worley.jpg
        :alt: Worley noise in a 1280x720 image.
-       
+
        The image data created by the usage example.
-    
+
     """
     def __init__(
         self, points: int,
@@ -116,7 +116,7 @@ class Worley(Noise):
 
         act_max_dist = np.max(dist)
         return dist / act_max_dist
-    
+
     def _place_seeds(self, size: Size) -> NDArray[np.int32]:
         """Place the seeds within the overall volume of noise."""
         volume_size = self.volume if self.volume else size
@@ -165,9 +165,9 @@ class WorleyCell(Worley):
         Defaults to false.
     :return: :class:`WorleyCell` object.
     :rtype: sources.worley.WorleyCell
-    
+
     Usage::
-    
+
         >>> # Create Worley cell noise in a 1280x720 image.
         >>> size = (1, 720, 1280)
         >>> source = WorleyCell(points=20, seed='spam')
@@ -175,9 +175,9 @@ class WorleyCell(Worley):
 
     .. figure:: images/worleycell.jpg
        :alt: WorleyCell noise in a 1280x720 image.
-       
+
        The image data created by the usage example.
-    
+
     """
     def __init__(
         self, points: int,
@@ -188,18 +188,17 @@ class WorleyCell(Worley):
     ) -> None:
         self.antialias = antialias
         super().__init__(points, volume, origin, seed)
-        
-    
+
     def _map_fill(self, seeds: NDArray[np.int32], size: Size) -> ImgAry:
         """Map the value for each pixel in the noise."""
         # Assign a color for each seed.
         colors = [n / (self.points - 1) for n in range(self.points)]
-        
+
         # Map all the distances to each point.
         indices = np.indices(size)
         max_dist = np.sqrt(sum(n ** 2 for n in size))
         dists = np.zeros((*size, self.points), dtype=float)
-        
+
         # This line is a kludge to address a typing concern from Mypy.
         # It seems like Mypy doesn't recognize that NDArray[np.int32]
         # is multidimensional, which, fair enough, it isn't always.
@@ -208,14 +207,14 @@ class WorleyCell(Worley):
         # NDArray go into the for loop. Should try to fix this when I
         # get more time.
         seed_list: Sequence[Loc] = [seed for seed in seeds]
-        
+
         for i, seed in enumerate(seed_list):
             dists[:, :, :, i] = self._hypot(seed, indices)
-        
+
         # Get the closest color and then antialias the edges.
         colormap = np.argmin(dists, -1)
         a = np.take(colors, colormap.astype(int))
-        
+
         if self.antialias:
 
             # To antialias, we need the second lowest distance. To do that,
@@ -230,16 +229,16 @@ class WorleyCell(Worley):
             ndists = raveled.reshape(ndists.shape)
             ncolormap = np.argmin(ndists, -1)
             b = np.take(colors, ncolormap.astype(int))
-            
+
             # Now we need to figure out where there is a small difference
             # between the distances.
             x = np.min(ndists, -1) - np.min(dists, -1)
             m = x < 1
-            
+
             # Interpolate the values of those edges.
             x[m] = 1 - (x[m] / 2 + .5)
             a[m] = lerp(a[m], b[m], x[m])
-        
+
         # Return the noise.
         return a
 
@@ -281,9 +280,9 @@ class OctaveWorley(Source):
         integers for seeding.
     :return: :class:`OctaveWorley` object.
     :rtype: sources.worley.OctaveWorley
-    
+
     Usage::
-    
+
         >>> # Create octave Worley noise in a 1280x720 image.
         >>> size = (1, 720, 1280)
         >>> source = OctaveWorley(
@@ -298,9 +297,9 @@ class OctaveWorley(Source):
 
     .. figure:: images/octaveworley.jpg
        :alt: Octave Worley noise in a 1280x720 image.
-       
+
        The image data created by the usage example.
-    
+
     """
     def __init__(
         self, octaves: int = 4,
@@ -320,7 +319,7 @@ class OctaveWorley(Source):
         self.volume = volume
         self.origin = origin
         self.seed = seed
-    
+
     def fill(
         self, size: Sequence[int],
         loc: Sequence[int] = (0, 0, 0)
@@ -386,9 +385,9 @@ class OctaveWorleyCell(Source):
         Defaults to false.
     :return: :class:`OctaveWorleyCell` object.
     :rtype: sources.worley.OctaveWorleyCell
-    
+
     Usage::
-    
+
         >>> # Create octave Worley cell noise in a 1280x720 image.
         >>> size = (1, 720, 1280)
         >>> source = OctaveWorleyCell(
@@ -403,9 +402,9 @@ class OctaveWorleyCell(Source):
 
     .. figure:: images/octaveworleycell.jpg
        :alt: Octave Worley noise in a 1280x720 image.
-       
+
        The image data created by the usage example.
-    
+
     """
     def __init__(
         self, octaves: int = 4,
@@ -427,7 +426,7 @@ class OctaveWorleyCell(Source):
         self.origin = origin
         self.seed = seed
         self.antialias = antialias
-    
+
     def fill(
         self, size: Sequence[int],
         loc: Sequence[int] = (0, 0, 0)
@@ -449,4 +448,3 @@ class OctaveWorleyCell(Source):
             max_value += amp
         a /= max_value
         return a
-

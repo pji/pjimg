@@ -25,7 +25,7 @@ from PIL import Image, ImageOps
 from pjimg.filters.decorators import *
 from pjimg.filters.model import Filter, filters
 from pjimg.filters.util import get_color_for_key
-from pjimg.util import find_center, ImgAry, Loc, Size, X, Y, Z, X_, Y_, Z_
+from pjimg.util import X_, Y_, Z_, ImgAry, Loc, Size, X, Y, Z, find_center
 
 
 # Names available for import.
@@ -49,7 +49,7 @@ def colorize(
 
     .. figure:: images/colorize.jpg
        :alt: An example of the filter affecting an image.
-   
+
        An example of :func:`colorize` affecting an image.
 
     :param a: The image data to alter.
@@ -69,7 +69,7 @@ def colorize(
         The output of this filter is in RGB color rather than
         grayscale. This will impact the ability to use the
         output with other features of :mod:`pjimg`.
-    
+
     """
     src_space = 'L'
     dst_space = 'RGB'
@@ -97,9 +97,9 @@ def contrast(
 
     .. figure:: images/contrast.jpg
        :alt: An example of the filter affecting an image.
-       
+
        An example of :func:`contrast` affecting an image.
-    
+
     :param a: The image data to alter.
     :param black: (Optional.) The minimum value in the output.
     :param white: (Optional.) The maximum value in the output.
@@ -115,7 +115,7 @@ def contrast(
         a = a / scale
     else:
         a.fill(0.5)
-    
+
     # Scale to the destination range.
     dest_scale = white - black
     if dest_scale != 1.0:
@@ -128,12 +128,12 @@ def contrast(
 def cut_highlight(a: ImgAry, threshold: float) -> ImgAry:
     """Set the white point of the image to the given threshold, removing
     detail from and increasing the size of the highlights.
-    
+
     .. figure:: images/cut_highlight.jpg
        :alt: An example of the filter affecting an image.
-       
+
        An example of :func:`cut_highlight` affecting an image.
-    
+
     :param a: The image data to alter.
     :param threshold: The threshold value for the new white point.
     :returns: A :class:`np.ndarray` object.
@@ -148,12 +148,12 @@ def cut_highlight(a: ImgAry, threshold: float) -> ImgAry:
 def cut_shadow(a: ImgAry, threshold: float) -> ImgAry:
     """Set the black point of the image to the given threshold, removing
     detail from and increasing the size of the shadows.
-    
+
     .. figure:: images/cut_shadow.jpg
        :alt: An example of the filter affecting an image.
-       
+
        An example of :func:`cut_shadow` affecting an image.
-    
+
     :param a: The image data to alter.
     :param threshold: The threshold value for the new black point.
     :returns: A :class:`np.ndarray` object.
@@ -172,12 +172,12 @@ def cut_shadow(a: ImgAry, threshold: float) -> ImgAry:
 def distance(a: ImgAry, mask_size: int = 5) -> ImgAry:
     """Make each pixel the distance to the nearest black pixel in the
     original image.
-    
+
     .. figure:: images/distance.jpg
        :alt: An example of the filter affecting an image.
-       
+
        An example of :func:`distance` affecting an image.
-    
+
     :param a: The image data to alter.
     :param mask_size: (Optional.) The size of the mask used to determine
         the distance to a black pixel.
@@ -195,9 +195,9 @@ def inverse(a: ImgAry) -> ImgAry:
 
     .. figure:: images/inverse.jpg
        :alt: An example of the filter affecting an image.
-       
+
        An example of :func:`inverse` affecting an image.
-    
+
     :param a: The image data to alter.
     :returns: A :class:`np.ndarray` object.
     :rtype: numpy.ndarray
@@ -208,12 +208,12 @@ def inverse(a: ImgAry) -> ImgAry:
 @register(filters)
 def posterize(a: ImgAry, levels: int = 2):
     """Reduce the number of colors in the image data.
-    
+
     .. figure:: images/posterize.jpg
        :alt: An example of the filter affecting an image.
-       
+
        An example of :func:`posterize` affecting an image.
-    
+
     :param a: The image data to alter.
     :param levels: (Optional.) The number of colors in the resulting data.
         Default is 2.
@@ -236,9 +236,9 @@ def autocontrast(a: ImgAry) -> ImgAry:
 
     .. figure:: images/autocontrast.jpg
        :alt: An example of the filter affecting an image.
-       
+
        An example of :func:`autocontrast` affecting an image.
-    
+
     :param a: The image data to alter.
     :returns: A :class:`np.ndarray` object.
     :rtype: numpy.ndarray
@@ -251,7 +251,7 @@ def autocontrast(a: ImgAry) -> ImgAry:
 # Mainline
 if __name__ == '__main__':
     from pjimg.util.debug import print_array
-    
+
     a = np.array([
         [0.00, 0.25, 0.50, 0.75, 1.00,],
         [0.25, 0.50, 0.75, 1.00, 0.75,],

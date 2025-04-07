@@ -174,7 +174,7 @@ def n_dimensional_interpolation(
             a = result[::2]
             b = result[1::2]
             del result
-    
+
     # The extra dimension in the result is caused by the extra
     # dimension in a, b, and x to hold the arrays that will be
     # interpolated. The only way to avoid it would be to iterate
@@ -229,4 +229,3 @@ lerp = linear_interpolation
 nderp = n_dimensional_interpolation
 ndcerp = n_dimensional_cubic_interpolation
 ndlerp = n_dimensional_linear_interpolation
-

@@ -35,7 +35,7 @@ class Noise(Source):
     :rtype: sources.noise.Noise
 
     Usage::
-    
+
         >>> # Create static to fill a 1280x720 image.
         >>> size = (1, 720, 1280)
         >>> source = Noise(seed='spam')
@@ -43,9 +43,9 @@ class Noise(Source):
 
     .. figure:: images/noise.jpg
        :alt: Static filling a 1280x720 image.
-       
+
        The image data created by the usage example.
-    
+
     """
     def __init__(self, seed: Seed = None) -> None:
         """Initialize an instance of Noise."""
@@ -126,9 +126,9 @@ class Embers(Noise):
         generated noise.
     :return: :class:`Embers` object.
     :rtype: sources.noise.Embers
-    
+
     Usage::
-    
+
         >>> # Create embers in a 1280x720 image.
         >>> size = (1, 720, 1280)
         >>> source = Embers(depth=6, seed='spam')
@@ -136,9 +136,9 @@ class Embers(Noise):
 
     .. figure:: images/Embers.jpg
        :alt: Embers in a 1280x720 image.
-       
+
        The image data created by the usage example.
-    
+
     """
     def __init__(
         self, depth: int = 1,

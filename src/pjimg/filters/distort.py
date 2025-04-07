@@ -20,11 +20,12 @@ import skimage.transform as sktf  # type: ignore
 
 from pjimg.filters.decorators import *
 from pjimg.filters.model import filters
-from pjimg.util import ImgAry, Loc, X, X_, Y, Y_, Z, Z_
+from pjimg.util import X_, Y_, Z_, ImgAry, Loc, X, Y, Z
 
 
 # Names available for import.
 __all__ = ['linear_to_polar', 'pinch', 'polar_to_linear', 'ripple', 'twirl',]
+
 
 # Functions.
 @register(filters)
@@ -36,9 +37,9 @@ def linear_to_polar(a: ImgAry) -> ImgAry:
 
     .. figure:: images/linear_to_polar.jpg
        :alt: An example of the filter affecting an image.
-       
+
        An example of :func:`linear_to_polar` affecting an image.
-    
+
     :param a: The image data to alter.
     :returns: A :class:`np.ndarray` object.
     :rtype: numpy.ndarray
@@ -64,9 +65,9 @@ def pinch(
 
     .. figure:: images/pinch.jpg
        :alt: An example of the filter affecting an image.
-       
+
        An example of :func:`pinch` affecting an image.
-    
+
     :param a: The image data to alter.
     :param amount: How much the image should be distorted. Best results
         seem to be with numbers in the range of -1 <= x <= 1.
@@ -80,12 +81,12 @@ def pinch(
         distortion should be offset from the center of the image.
     :returns: A :class:`np.ndarray` object.
     :rtype: numpy.ndarray
-    
+
     .. warning::
         If done too close to the edge of the image data, you will get
         artifacts due to the lack of data. To calculate the minimum
         safe distance from the edge:
-        
+
             radius * (1 + amount)
     """
     # Set up for creating the maps.
@@ -135,9 +136,9 @@ def polar_to_linear(a: ImgAry) -> ImgAry:
 
     .. figure:: images/polar_to_linear.jpg
        :alt: An example of the filter affecting an image.
-       
+
        An example of :func:`polar_to_linear` affecting an image.
-    
+
     :param a: The image data to alter.
     :returns: A :class:`np.ndarray` object.
     :rtype: numpy.ndarray
@@ -161,9 +162,9 @@ def ripple(
 
     .. figure:: images/ripple.jpg
        :alt: An example of the filter affecting an image.
-       
+
        An example of :func:`ripple` affecting an image.
-    
+
     :param a: The image data to alter.
     :param wave: The distance between peaks in the distortion.
         There needs to be one value in the sequence per dimension
@@ -219,9 +220,9 @@ def twirl(
 
     .. figure:: images/twirl.jpg
        :alt: An example of the filter affecting an image.
-       
+
        An example of :func:`twirl` affecting an image.
-    
+
     :param a: The image data to alter.
     :param radius: The location of the edge of the distortion. This
         is measured from the center of the distortion.

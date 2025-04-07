@@ -4,7 +4,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
-    <!-- Generated with Sphinx 8.1.3 and Furo 2024.08.06 -->
+    <!-- Generated with Sphinx 8.2.3 and Furo 2024.08.06 -->
         <title>pjimg.filters.value - pjimg 0.0.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=354aac6f" />
@@ -269,7 +269,7 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">pjimg.filters.decorators</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pjimg.filters.model</span><span class="w"> </span><span class="kn">import</span> <span class="n">Filter</span><span class="p">,</span> <span class="n">filters</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pjimg.filters.util</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_color_for_key</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">pjimg.util</span><span class="w"> </span><span class="kn">import</span> <span class="n">find_center</span><span class="p">,</span> <span class="n">ImgAry</span><span class="p">,</span> <span class="n">Loc</span><span class="p">,</span> <span class="n">Size</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">Z</span><span class="p">,</span> <span class="n">X_</span><span class="p">,</span> <span class="n">Y_</span><span class="p">,</span> <span class="n">Z_</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pjimg.util</span><span class="w"> </span><span class="kn">import</span> <span class="n">X_</span><span class="p">,</span> <span class="n">Y_</span><span class="p">,</span> <span class="n">Z_</span><span class="p">,</span> <span class="n">ImgAry</span><span class="p">,</span> <span class="n">Loc</span><span class="p">,</span> <span class="n">Size</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">Z</span><span class="p">,</span> <span class="n">find_center</span>
 
 
 <span class="c1"># Names available for import.</span>
@@ -295,7 +295,7 @@
 
 <span class="sd">    .. figure:: images/colorize.jpg</span>
 <span class="sd">       :alt: An example of the filter affecting an image.</span>
-<span class="sd">   </span>
+
 <span class="sd">       An example of :func:`colorize` affecting an image.</span>
 
 <span class="sd">    :param a: The image data to alter.</span>
@@ -315,7 +315,7 @@
 <span class="sd">        The output of this filter is in RGB color rather than</span>
 <span class="sd">        grayscale. This will impact the ability to use the</span>
 <span class="sd">        output with other features of :mod:`pjimg`.</span>
-<span class="sd">    </span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">src_space</span> <span class="o">=</span> <span class="s1">&#39;L&#39;</span>
     <span class="n">dst_space</span> <span class="o">=</span> <span class="s1">&#39;RGB&#39;</span>
@@ -346,9 +346,9 @@
 
 <span class="sd">    .. figure:: images/contrast.jpg</span>
 <span class="sd">       :alt: An example of the filter affecting an image.</span>
-<span class="sd">       </span>
+
 <span class="sd">       An example of :func:`contrast` affecting an image.</span>
-<span class="sd">    </span>
+
 <span class="sd">    :param a: The image data to alter.</span>
 <span class="sd">    :param black: (Optional.) The minimum value in the output.</span>
 <span class="sd">    :param white: (Optional.) The maximum value in the output.</span>
@@ -364,7 +364,7 @@
         <span class="n">a</span> <span class="o">=</span> <span class="n">a</span> <span class="o">/</span> <span class="n">scale</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">a</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span>
-    
+
     <span class="c1"># Scale to the destination range.</span>
     <span class="n">dest_scale</span> <span class="o">=</span> <span class="n">white</span> <span class="o">-</span> <span class="n">black</span>
     <span class="k">if</span> <span class="n">dest_scale</span> <span class="o">!=</span> <span class="mf">1.0</span><span class="p">:</span>
@@ -380,12 +380,12 @@
 <span class="k">def</span><span class="w"> </span><span class="nf">cut_highlight</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">,</span> <span class="n">threshold</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ImgAry</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Set the white point of the image to the given threshold, removing</span>
 <span class="sd">    detail from and increasing the size of the highlights.</span>
-<span class="sd">    </span>
+
 <span class="sd">    .. figure:: images/cut_highlight.jpg</span>
 <span class="sd">       :alt: An example of the filter affecting an image.</span>
-<span class="sd">       </span>
+
 <span class="sd">       An example of :func:`cut_highlight` affecting an image.</span>
-<span class="sd">    </span>
+
 <span class="sd">    :param a: The image data to alter.</span>
 <span class="sd">    :param threshold: The threshold value for the new white point.</span>
 <span class="sd">    :returns: A :class:`np.ndarray` object.</span>
@@ -403,12 +403,12 @@
 <span class="k">def</span><span class="w"> </span><span class="nf">cut_shadow</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">,</span> <span class="n">threshold</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ImgAry</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Set the black point of the image to the given threshold, removing</span>
 <span class="sd">    detail from and increasing the size of the shadows.</span>
-<span class="sd">    </span>
+
 <span class="sd">    .. figure:: images/cut_shadow.jpg</span>
 <span class="sd">       :alt: An example of the filter affecting an image.</span>
-<span class="sd">       </span>
+
 <span class="sd">       An example of :func:`cut_shadow` affecting an image.</span>
-<span class="sd">    </span>
+
 <span class="sd">    :param a: The image data to alter.</span>
 <span class="sd">    :param threshold: The threshold value for the new black point.</span>
 <span class="sd">    :returns: A :class:`np.ndarray` object.</span>
@@ -430,12 +430,12 @@
 <span class="k">def</span><span class="w"> </span><span class="nf">distance</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">,</span> <span class="n">mask_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">5</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ImgAry</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Make each pixel the distance to the nearest black pixel in the</span>
 <span class="sd">    original image.</span>
-<span class="sd">    </span>
+
 <span class="sd">    .. figure:: images/distance.jpg</span>
 <span class="sd">       :alt: An example of the filter affecting an image.</span>
-<span class="sd">       </span>
+
 <span class="sd">       An example of :func:`distance` affecting an image.</span>
-<span class="sd">    </span>
+
 <span class="sd">    :param a: The image data to alter.</span>
 <span class="sd">    :param mask_size: (Optional.) The size of the mask used to determine</span>
 <span class="sd">        the distance to a black pixel.</span>
@@ -456,9 +456,9 @@
 
 <span class="sd">    .. figure:: images/inverse.jpg</span>
 <span class="sd">       :alt: An example of the filter affecting an image.</span>
-<span class="sd">       </span>
+
 <span class="sd">       An example of :func:`inverse` affecting an image.</span>
-<span class="sd">    </span>
+
 <span class="sd">    :param a: The image data to alter.</span>
 <span class="sd">    :returns: A :class:`np.ndarray` object.</span>
 <span class="sd">    :rtype: numpy.ndarray</span>
@@ -472,12 +472,12 @@
 <span class="nd">@register</span><span class="p">(</span><span class="n">filters</span><span class="p">)</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">posterize</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">,</span> <span class="n">levels</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Reduce the number of colors in the image data.</span>
-<span class="sd">    </span>
+
 <span class="sd">    .. figure:: images/posterize.jpg</span>
 <span class="sd">       :alt: An example of the filter affecting an image.</span>
-<span class="sd">       </span>
+
 <span class="sd">       An example of :func:`posterize` affecting an image.</span>
-<span class="sd">    </span>
+
 <span class="sd">    :param a: The image data to alter.</span>
 <span class="sd">    :param levels: (Optional.) The number of colors in the resulting data.</span>
 <span class="sd">        Default is 2.</span>
@@ -503,9 +503,9 @@
 
 <span class="sd">    .. figure:: images/autocontrast.jpg</span>
 <span class="sd">       :alt: An example of the filter affecting an image.</span>
-<span class="sd">       </span>
+
 <span class="sd">       An example of :func:`autocontrast` affecting an image.</span>
-<span class="sd">    </span>
+
 <span class="sd">    :param a: The image data to alter.</span>
 <span class="sd">    :returns: A :class:`np.ndarray` object.</span>
 <span class="sd">    :rtype: numpy.ndarray</span>
@@ -519,7 +519,7 @@
 <span class="c1"># Mainline</span>
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">pjimg.util.debug</span><span class="w"> </span><span class="kn">import</span> <span class="n">print_array</span>
-    
+
     <span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span>
         <span class="p">[</span><span class="mf">0.00</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">,</span> <span class="mf">0.50</span><span class="p">,</span> <span class="mf">0.75</span><span class="p">,</span> <span class="mf">1.00</span><span class="p">,],</span>
         <span class="p">[</span><span class="mf">0.25</span><span class="p">,</span> <span class="mf">0.50</span><span class="p">,</span> <span class="mf">0.75</span><span class="p">,</span> <span class="mf">1.00</span><span class="p">,</span> <span class="mf">0.75</span><span class="p">,],</span>

@@ -34,7 +34,7 @@ class Hexagon(TilePattern):
     """Tile with hexagons."""
     sides: int = 6
     mod_next_o: float = 2
-    
+
     def __init__(
         self, size: Size,
         vp: float,
@@ -43,26 +43,26 @@ class Hexagon(TilePattern):
         loc: Loc = (0, 0, 0)
     ) -> None:
         super().__init__(size, vp, gap, rotation, loc)
-    
+
     @property
     def h_row(self) -> float:
         h = 2 * self.vp
         h_side = 2 * (self.vp * np.sin(np.pi / self.sides))
-        return h + 3 * self.vgap / 2 + h_side        
-    
+        return h + 3 * self.vgap / 2 + h_side
+
     @property
     def x_start(self) -> float:
         w_col = 2 * self.sp + self.gap
         cols = self.home[X] // w_col + 2
         return self.home[X] - w_col * cols
-    
+
 
 @register(tile_patterns)
 class Octagon(TilePattern):
     """Tile with octagons."""
     sides: int = 8
     mod_next_o: float = 2
-    
+
     def __init__(
         self, size: Size,
         vp: float,
@@ -76,7 +76,7 @@ class Octagon(TilePattern):
     def h_row(self) -> float:
         h_side = 2 * (self.vp * np.sin(np.pi / self.sides))
         return 2 * self.sp + h_side + 3 * self.gap / 2
-    
+
     @property
     def next_p(self) -> float:
         try:
@@ -84,7 +84,7 @@ class Octagon(TilePattern):
         except AttributeError:
             self._next_p = 2 * self.sp + self.gap
             return self._next_p
-    
+
     @property
     def x_start(self) -> float:
         w_col = (2 * self.next_p) * np.cos(2 * self.vso)
@@ -96,7 +96,7 @@ class Octagon(TilePattern):
     def y_start(self) -> float:
         return self.home[Y] - self.h_row * self.rows
 
-    # Public methods.            
+    # Public methods.
     def get_vertices(
         self, center: tuple[float, float],
         o: float,
@@ -106,14 +106,14 @@ class Octagon(TilePattern):
     ) -> list[NDArray[np.int32]]:
         o -= self.vso
         return super().get_vertices(center, o, vp, sides, vso)
-    
+
 
 @register(tile_patterns)
 class OctagonWithSquares(TilePattern):
     """Tile with octagons."""
     sides: int = 8
     mod_next_o: float = 2
-    
+
     def __init__(
         self, size: Size,
         vp: float,
@@ -126,11 +126,11 @@ class OctagonWithSquares(TilePattern):
     @property
     def h_row(self) -> float:
         return 2 * self.sp + self.h_side + 3 * self.gap / 2
-    
+
     @property
     def h_side(self) -> float:
         return 2 * (self.vp * np.sin(np.pi / self.sides))
-    
+
     @property
     def next_p(self) -> float:
         try:
@@ -138,7 +138,7 @@ class OctagonWithSquares(TilePattern):
         except AttributeError:
             self._next_p = 2 * self.sp + self.gap
             return self._next_p
-    
+
     @property
     def x_start(self) -> float:
         w_col = (2 * self.next_p) * np.cos(2 * self.vso)
@@ -150,7 +150,7 @@ class OctagonWithSquares(TilePattern):
     def y_start(self) -> float:
         return self.home[Y] - self.h_row * self.rows
 
-    # Public methods.            
+    # Public methods.
     def get_vertices(
         self, center: tuple[float, float],
         o: float,
@@ -162,7 +162,7 @@ class OctagonWithSquares(TilePattern):
         o -= self.vso
         oct_center = center[:]
         tiles = super().get_vertices(oct_center, o, vp, sides, vso)
-        
+
         # Create the square.
         o += self.vso
         s1_center_o = 0
@@ -177,16 +177,16 @@ class OctagonWithSquares(TilePattern):
         s1_vso = np.pi / 4
         s1 = super().get_vertices(s1_center, s1_o, s1_p, 4, s1_vso)
         tiles.extend(s1)
-        
+
         # Return the shapes.
         return tiles
-    
+
 
 @register(tile_patterns)
 class Square(TilePattern):
     """Tile with squares."""
     sides: int = 4
-    
+
     def __init__(
         self, size: Size,
         vp: float,
@@ -202,7 +202,7 @@ class Triangle(TilePattern):
     """Tile with triangles."""
     sides: int = 3
     mod_next_o: float = 1 / 2
-    
+
     def __init__(
         self, size: Size,
         vp: float,
@@ -211,11 +211,11 @@ class Triangle(TilePattern):
         loc: Loc = (0, 0, 0)
     ) -> None:
         super().__init__(size, vp, gap, rotation, loc)
-    
+
     @property
     def cols(self) -> int:
         return int(self.home[X] // self.w_col + 2)
-    
+
     @property
     def orient_start(self) -> float:
         if self.rows % 2 == self.cols % 2:
@@ -230,11 +230,11 @@ class Triangle(TilePattern):
     @property
     def w_col(self) -> float:
         return self.next_p * np.cos(np.pi / (self.sides * 2))
-    
+
     @property
     def x_start(self) -> float:
         return self.home[X] - self.w_col * self.cols
-    
+
     @property
     def y_start(self) -> float:
         orient = self.orient_start
@@ -242,7 +242,7 @@ class Triangle(TilePattern):
         h = self.vp + self.sp
         y_home = self.home[Y] + y_mod * (self.vp - h / 2 + self.gap / 4)
         return y_home - self.h_row * self.rows
-    
+
     # Public methods.
     def get_next_row_start(
         self, last_row: tuple[float, float],
@@ -256,7 +256,7 @@ class Triangle(TilePattern):
 # Source classes.
 class Tile(Noise):
     """Tile a space with polygons.
-    
+
     :param pattern: The tiling pattern to use when tiling the space.
         Valid values are available as the keys of the `sources.tile_patterns`
         registry.
@@ -290,9 +290,9 @@ class Tile(Noise):
         generator running without a seed.
     :return: :class:Tile object.
     :rtype: sources.tile.Tile
-    
+
     Usage::
-    
+
         >>> # Create a tiled pattern in a 1280x720 image.
         >>> size = (1, 720, 1280)
         >>> pattern = 'triangle'
@@ -303,7 +303,7 @@ class Tile(Noise):
 
     .. figure:: images/tile.jpg
        :alt: Tile pattern in a 1280x720 image.
-       
+
        The image data created by the usage example.
     """
     def __init__(
@@ -326,7 +326,7 @@ class Tile(Noise):
         self.drop = drop
         self.drop_img = drop_img
         super().__init__(seed)
-    
+
     def fill(self, size: Size, loc: Loc = (0, 0, 0)) -> ImgAry:
         pattern_type = tile_patterns[self.pattern]
         pattern = pattern_type(                     # type: ignore
@@ -334,7 +334,7 @@ class Tile(Noise):
         )
         color = int(self.color * 0xff)
         line = cv2.LINE_AA
-        
+
         # Configure the tiling.
         row_start = (pattern.y_start, pattern.x_start)
         row_orient = pattern.orient_start
@@ -354,10 +354,10 @@ class Tile(Noise):
                         self._draw_polygon(a, polygon, line)
                 else:
                     self._draw_polygon(a, vertices, line)
-        
+
                 # Find next polygon.
                 center, orient = pattern.get_next_center(center, orient)
-            
+
             # Find the next row.
             row_start, row_orient = pattern.get_next_row_start(
                 row_start, row_orient
@@ -369,7 +369,7 @@ class Tile(Noise):
         a = a[np.newaxis, :, :]
         a = np.tile(a, (size[Z], 1, 1))
         return a.astype(float) / 255
-    
+
     # Private methods.
     def _draw_polygon(
         self, a: IntAry,
@@ -379,12 +379,12 @@ class Tile(Noise):
         drop = self.drop
         if self.drop_img is not None:
             drop = 1 - average_color_in_shape(self.drop_img, vertices)
-        
+
         color = self.color
         if self.color_img is not None:
             color = average_color_in_shape(self.color_img, vertices)
         color = int(color * 0xff)
-        
+
         if self._rng.random([1,])[0] > drop:
             cv2.fillConvexPoly(a, vertices, color=(color,), lineType=line)
 
@@ -398,7 +398,7 @@ def average_color_in_shape(
     mask = np.zeros(a.shape, dtype=np.uint8)
     cv2.fillConvexPoly(mask, vertices, color=(0xff,))
     masked = a[mask == 0xff]
-    
+
     if not np.isnan(masked).all():
         return np.nanmean(masked)
     return 0.0
@@ -406,7 +406,7 @@ def average_color_in_shape(
 
 if __name__ == '__main__':
     from pjimg.util.debug import print_array
-    
+
     size = (1, 8, 8)
     pattern = 'triangle'
     radius = 2
@@ -422,10 +422,10 @@ if __name__ == '__main__':
         [0.9, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3, 0.2],
     ],], dtype=float)
     seed = 'spam'
-    
+
     tile = Tile(pattern, radius, gap, color_img=seed_img)
     a = tile.fill(size)
-    
+
     a *= 0xff
     a = a.astype(np.uint8)
     print_array(a, depth=2)

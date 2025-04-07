@@ -18,6 +18,6 @@ def test_preserves_type():
     @d.preserves_type
     def change_type(a):
         return a.astype(int)
-    
+
     a = np.array([0.0, 0.5, 1.0,], dtype=float)
     assert change_type(a).dtype is np.dtype('float')

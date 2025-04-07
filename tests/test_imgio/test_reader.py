@@ -57,7 +57,6 @@ class TestRead:
             [0., .5, 1.,],
         ])).all()
 
-
     @pt.mark.path('__test_save_grayscale_image.png')
     def test_read_image_grayscale_png(self, image):
         """Given the path to a grayscale PNG file, :func:`read_image`
@@ -68,7 +67,6 @@ class TestRead:
             [0., .5, 1.,],
             [0., .5, 1.,],
         ])).all()
-
 
     @pt.mark.path('__test_save_grayscale_image.tiff')
     def test_read_image_grayscale_tiff(self, image):
@@ -81,7 +79,6 @@ class TestRead:
             [0., .5, 1.,],
         ])).all()
 
-
     @pt.mark.path('__test_save_grayscale_image.jpg')
     def test_read_image_grayscale_jpg_as_vid(self, image_as_vid):
         """Given the path to a grayscale JPG file, :func:`read_image`
@@ -92,7 +89,6 @@ class TestRead:
             [0., .5, 1.,],
             [0., .5, 1.,],
         ]])).all()
-
 
     @pt.mark.path('__test_save_rgb_image.jpg')
     def test_read_image_rgb_jpg(self, image):
@@ -119,7 +115,6 @@ class TestRead:
             ],
         ])).all()
 
-
     @pt.mark.path('__test_save_rgb_image.png')
     def test_read_image_rgb_png(self, image):
         """Given the path to a RGB PNG file, :func:`read_image`
@@ -143,7 +138,6 @@ class TestRead:
             ],
         ])).all()
 
-
     @pt.mark.path('__test_save_rgb_image.tiff')
     def test_read_image_rgb_tiff(self, image):
         """Given the path to a TIFF PNG file, :func:`read_image`
@@ -166,7 +160,6 @@ class TestRead:
                 [0., 1., .5,],
             ],
         ])).all()
-
 
     def test_read_color_mp4(self, video_data):
         """Given a path to an MP4 file, :func:`read_video` should return the
@@ -209,7 +202,6 @@ class TestReadImage:
             ],
         ]])).all()
 
-
     def test_read_image_file_does_not_exist(self):
         """If given the path of a file that doesn't exist, :func:`save_image`
         should raise a :class:`FileNotFoundError`.
@@ -220,7 +212,6 @@ class TestReadImage:
             match=f'There is no file at {path}.'
         ):
             _ = pjio.read_image(path)
-
 
     def test_read_image_file_not_readablet(self):
         """If given the path of a file that isn't a readable image,

@@ -31,7 +31,7 @@ __all__ = [
 # Decorators.
 def can_fade(fn: Blend) -> Blend:
     """Adjust how much the blend affects the base array.
-    
+
     :param fn: The blend :class:`function` to wrap.
     :return: The wrapped blend :class:`function`.
     :rtype: function
@@ -59,7 +59,7 @@ def can_fade(fn: Blend) -> Blend:
 
 def can_mask(fn: Blend) -> Blend:
     """Apply a blending mask to the image.
-    
+
     :param fn: The blend :class:`function` to wrap.
     :return: The wrapped blend :class:`function`.
     :rtype: function
@@ -88,7 +88,7 @@ def can_mask(fn: Blend) -> Blend:
 def register(registry: dict[str, Blend]) -> Callable[[Blend,], Blend]:
     """Registers the decorated function under the function's name
     in the given registry dictionary.
-    
+
     :param registry: The registry to register the given function in.
     :return: The registration :mod:`function` pointed to the given
         registry.
@@ -175,4 +175,3 @@ def will_match_size(fn: Blend) -> Blend:
         ab = fn(a, b, *args, **kwargs)
         return ab
     return wrapper
-

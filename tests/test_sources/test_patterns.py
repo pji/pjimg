@@ -847,7 +847,7 @@ class TestWaves:
         """
         def warp(a):
             return a + 0.25
-        
+
         obj = p.Waves(unit=7, warp=warp)
         result = obj.fill((1, 8, 8))
         assert (mkhex(result) == np.array([

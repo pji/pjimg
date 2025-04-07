@@ -10,5 +10,5 @@ Easing functions for image and video data.
 """
 import pjimg.eases.ops as ops
 from pjimg.eases.decorators import register, will_scale
-from pjimg.eases.ops import *
 from pjimg.eases.model import Ease, eases
+from pjimg.eases.ops import *

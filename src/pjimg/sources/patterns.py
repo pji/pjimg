@@ -42,7 +42,7 @@ __all__ = [
 # Public classes.
 class Box(Source):
     """Draw a box.
-    
+
     :param origin: The location of the upper left corner of the box.
     :param dimensions: The size of the box in three dimensions.
     :param color: The color of the box. This is a float within the
@@ -51,7 +51,7 @@ class Box(Source):
     :rtype: sources.patterns.Box
 
     Usage::
-    
+
         >>> # Create an image of a gray rectangle in the middle of a
         >>> # 1280x720 image.
         >>> size = (1, 720, 1280)
@@ -59,10 +59,10 @@ class Box(Source):
         >>> dimensions = (1, *(n // 2 for n in size[Y:]))
         >>> source = Box(origin=origin, dimensions=dimensions, color=0.5)
         >>> img = source.fill(size)
-    
+
     .. figure:: images/box.jpg
        :alt: An image of a gray rectangle in the middle of a 1280x720 image.
-       
+
        The image data created by the usage example.
 
     """
@@ -110,7 +110,7 @@ class Gradient(Source):
     :rtype: sources.patterns.Gradient
 
     Usage::
-    
+
         >>> # Create a horizontal gradient with multiple stops in a
         >>> # 1280x720 image.
         >>> size = (1, 720, 1280)
@@ -123,10 +123,10 @@ class Gradient(Source):
         ... ]
         >>> source = Gradient(direction='h', stops=stops)
         >>> img = source.fill(size)
-    
+
     .. figure:: images/gradient.jpg
        :alt: A horizontal gradient with multiple stops in a 1280x720 image.
-       
+
        The image data created by the usage example.
 
     """
@@ -228,7 +228,7 @@ class Gradient(Source):
 
 class Hexes(Source):
     """Fill a space with hexagonal cells.
-    
+
     :param radius: The distance from the center of a cell to the center
         of each of the sides of the cell.
     :param cells: (Optional.) Whether the color of a pixel is based
@@ -243,16 +243,16 @@ class Hexes(Source):
     :rtype: sources.patterns.Hexes
 
     Usage::
-    
+
         >>> # Create a hexagonal grid of cells in a 1280x720 image.
         >>> size = (1, 720, 1280)
         >>> radius = size[Y] // 8
         >>> source = Hexes(radius=radius)
         >>> img = source.fill(size)
-    
+
     .. figure:: images/hexes.jpg
        :alt: A hexagonal grid of cells in a 1280x720 image.
-       
+
        The image data created by the usage example.
 
     """
@@ -264,7 +264,7 @@ class Hexes(Source):
         self.cells = cells
         self.radius = radius
         self.round = round
-    
+
     # Public methods.
     def fill(
         self, size: Sequence[int],
@@ -292,7 +292,7 @@ class Hexes(Source):
             x = 0
             if row % 2:
                 x += xstep / 2
-        
+
         # Map the distances to the points.
         indices = np.indices(size[1:])
         max_dist = np.sqrt(sum(n ** 2 for n in size))
@@ -328,7 +328,7 @@ class Lines(Source):
     :rtype: sources.patterns.Lines
 
     Usage::
-    
+
         >>> # Create a series of vertical lines in a 1280x720 image.
         >>> size = (1, 720, 1280)
         >>> length = (size[X] / 8) - (size[Y] / 64)
@@ -338,7 +338,7 @@ class Lines(Source):
     .. figure:: images/lines.jpg
        :alt: A picture of an image created from the output of
             :class:`Lines`.
-       
+
        The image data created by the usage example.
     """
     def __init__(
@@ -388,17 +388,17 @@ class Radials(Source):
     :rtype: sources.patterns.Radials
 
     Usage::
-    
+
         >>> # Create a series of concentric radial gradients in a
         >>> # 1280x720 images.
         >>> size = (1, 720, 1280)
         >>> length = size[Y] / 16
         >>> source = Radials(length=length, growth='g')
         >>> img = source.fill(size)
-    
+
     .. figure:: images/radials.jpg
        :alt: A series of concentric radial gradients in a 1280x720 image.
-       
+
        The image data created by the usage example.
 
     """
@@ -464,16 +464,16 @@ class Rays(Source):
     :rtype: sources.patterns.Rays
 
     Usage::
-    
+
         >>> # Create seven rays emanating from the center of a 1280x720
         >>> # image.
-        >>> size = (1, 720, 1280) 
+        >>> size = (1, 720, 1280)
         >>> source = Rays(count=7, offset=0.178)
         >>> img = source.fill(size)
-    
+
     .. figure:: images/rays.jpg
        :alt: Seven rays emanating from the center of a 1280x720 image.
-       
+
        The image data created by the usage example.
 
     """
@@ -498,7 +498,7 @@ class Rays(Source):
         :rtype: numpy.ndarray
         """
         # Determine the angle from center for every point
-        # in the array.        
+        # in the array.
         indices = np.indices(size, dtype=float)
         indices = center_index_origin(indices)
         indices = shift_index_origin(indices, loc)
@@ -521,13 +521,13 @@ class Rays(Source):
         rays = (angle + offset) % ray_angle
         rays /= ray_angle
         rays = abs(rays - .5) * 2
-        
+
         # Fill in the center if needed.
         center = [(n - 1) / 2 + o for n, o in zip(size, loc)]
         if center[X] % 1 == 0 and center[Y] % 1 == 0:
             center = [int(n) for n in center]
             rays[(center[Y], center[X])] = 1
-        
+
         # Fill out the Z axis and return.
         rays = np.tile(rays, (size[Z], 1, 1))
         return rays
@@ -535,7 +535,7 @@ class Rays(Source):
 
 class Regular(Source):
     """Create a regular polygon.
-    
+
     :param sides: The number of sides of the polygon.
     :param rho: The distance from the center of the polygon to
         a vertex of the polygon.
@@ -547,15 +547,15 @@ class Regular(Source):
         of the polygon. Default is `True`.
 
     Usage::
-    
+
         >>> # Create a pentagon in a 1280x720 image.
-        >>> size = (1, 720, 1280) 
+        >>> size = (1, 720, 1280)
         >>> source = Regular(5, size[1] / 2)
         >>> img = source.fill(size)
-    
+
     .. figure:: images/regular.jpg
        :alt: A pentagon in the center of a 1280x720 image.
-       
+
        The image data created by the usage example.
 
     """
@@ -573,7 +573,7 @@ class Regular(Source):
         self.color = color
         self.bg_color = bg_color
         self.antialias = antialias
-    
+
     def fill(
         self, size: Size,
         loc: Loc = (0, 0, 0)
@@ -597,7 +597,7 @@ class Regular(Source):
             )
             for i in range(self.sides)
         ]], dtype=np.int32)
-        
+
         a = np.zeros(size[1:], dtype=np.uint8)
         bg_color = int(self.bg_color * 255)
         a.fill(bg_color)
@@ -632,7 +632,7 @@ class Rings(Source):
     :rtype: sources.patterns.Rings
 
     Usage::
-    
+
         >>> # Create a series of concentric rings in a 1280x720 image.
         >>> size = (1, 720, 1280)
         >>> radius = size[X] / 6
@@ -641,10 +641,10 @@ class Rings(Source):
         >>> count = 6
         >>> source = Rings(radius=radius, width=width, gap=gap, count=count)
         >>> img = source.fill(size)
-    
+
     .. figure:: images/rings.jpg
        :alt: A series of concentric rings in a 1280.720 image.
-       
+
        The image data created by the usage example.
 
     """
@@ -706,15 +706,15 @@ class Solid(Source):
     :rtype: pjinoise.sources.Solid
 
     Usage::
-    
+
         >>> # Create a solid gray 1280x720 image.
         >>> size = (1, 1280, 720)
         >>> source = Solid(color=0.25)
         >>> img = source.fill(size)
-    
+
     .. figure:: images/solid.jpg
        :alt: A solid gray 1280x720 image.
-       
+
        The image data created by the usage example.
 
     """
@@ -759,7 +759,7 @@ class Spheres(Source):
     :rtype: sources.patterns.Spheres
 
     Usage::
-    
+
         >>> # Create a square grid of cells in a 1280x720 image.
         >>> size = (1, 720, 1280)
         >>> radius = size[Y] / 16
@@ -768,7 +768,7 @@ class Spheres(Source):
 
     .. figure:: images/spheres.jpg
        :alt: A square grid of cells in a 1280x720 image.
-       
+
        The image data created by the usage example.
 
     """
@@ -859,9 +859,9 @@ class Spot(Source):
     :param radius: The radius of the spot.
     :return: :class:`Spot` object.
     :rtype: sources.patterns.Spot
-    
+
     Usage::
-    
+
         >>> # Create a radial gradient centered in a 1280x720 image.
         >>> size = (1, 720, 1280)
         >>> radius = size[Y] * 2 / 3
@@ -870,7 +870,7 @@ class Spot(Source):
 
     .. figure:: images/spot.jpg
        :alt: A radial gradient centered in a 1280x720 image.
-       
+
        The image data created by the usage example.
 
     """
@@ -894,7 +894,7 @@ class Spot(Source):
         a = np.indices(size, dtype=float)
         a = center_index_origin(a)
         a = shift_index_origin(a, loc)
-        
+
         # Perform a spherical interpolation on the points in the
         # volume and run the easing function on the results.
         a = index_to_distance_from_origin(a)
@@ -906,7 +906,7 @@ class Spot(Source):
 
 class Text(Source):
     """Place text within the image.
-    
+
     :param text: The text to add.
     :param font: (Optional.) The font for the text. It uses the fonts
         available to your system.
@@ -934,9 +934,9 @@ class Text(Source):
     :param stroke_color: (Optional.) The color to use for the stroke.
     :return: A :class:`Text` object.
     :rtype: sources.patterns.Text
-    
+
     Usage::
-    
+
         >>> # Create the word "SPAM" in a 1280x720 image.
         >>> size = (1, 720, 1280)
         >>> origin = (size[X] / 2 - 107, size[Y] / 2 - 52)
@@ -957,7 +957,7 @@ class Text(Source):
 
     .. figure:: images/text.jpg
        :alt: The word "SPAM" in a 1280x720 image.
-       
+
        The image data created by the usage example.
 
     """
@@ -1063,7 +1063,7 @@ class Text(Source):
 
 class Waves(Source):
     """Generates wave patterns using a cosine function.
-    
+
     :param unit: (Optional.) The number of pixels in a unit of distance
         of the wave. It defaults to 1279 pixels.
     :param angle: (Optional.) The angle in degrees of the wave. An
@@ -1080,9 +1080,9 @@ class Waves(Source):
         a central point in a circular pattern. Defaults to `False`.
     :return: :class:`Waves` object.
     :rtype: sources.patterns.Waves
-    
+
     Usage::
-    
+
         >>> # Create a wave pattern in a 1280x720 image.
         >>> size = (1, 720, 1280)
         >>> unit = 1279
@@ -1090,10 +1090,10 @@ class Waves(Source):
         >>> wavelength = 5.0
         >>> source = Waves(unit, angle=angle, wavelength=wavelength)
         >>> img = source.fill(size)
-        
+
     .. figure:: images/waves.jpg
        :alt: Create a wave pattern in a 1280x720 image.
-       
+
        The image data created by the usage example.
 
     """
@@ -1109,34 +1109,34 @@ class Waves(Source):
         self.wavelength = wavelength
         self.warp = warp
         self.radial = radial
-    
+
     def fill(self, size: Size, loc: Loc = (0, 0, 0)) -> ImgAry:
         x = self.angle / 90
         indices = np.indices(size, dtype=float)
         indices = shift_index_origin(indices, loc)
         f = (2 * np.pi) / self.wavelength
-        
+
         # Set the angle of the wave.
         if not self.radial:
             a = indices[X] * (1 - x) + indices[Y] * x
-            
+
             # Factors in the Z axis for video. The pace of change
             # over the Z axis should probably be something that can
             # be set.
             if size[Z] > 1:
                 a += indices[Z] * (self.unit / 48)
-        
+
         else:
             indices = center_index_origin(indices)
             a = index_to_distance_from_origin(indices)
-        
+
         # Break the grid into units.
         a /= self.unit
-        
+
         # Modify how the wave evolves using the acceleration function.
         if self.warp:
             a = self.warp(a)
-        
+
         # Return the wave.
         a = (np.cos(f * a) + 1) / 2
         return a
@@ -1168,7 +1168,7 @@ def shift_index_origin(indices: ImgAry, shifts: Sequence[int]) -> ImgAry:
 
 if __name__ == '__main__':
     from pjimg.util.debug import print_array
-    
+
     def warp(a):
         return a + 0.25
 

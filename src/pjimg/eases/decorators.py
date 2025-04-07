@@ -20,7 +20,7 @@ from pjimg.util import NumAry
 def register(registry: dict[str, Ease]) -> Callable[[Ease,], Ease]:
     """Registers the decorated function under the function's name
     in the given registry dictionary.
-    
+
     :param registry: The registry to register the given function in.
     :return: The registration :mod:`function` pointed to the given
         registry.
@@ -38,7 +38,7 @@ def will_scale(fn: Ease) -> Ease:
     given values outside of that range, it will scale the values
     down to that range, run the easing function, then scale the
     values back up to the original range.
-    
+
     :param fn: The decorated easing functions.
     :return: The now wrapped :mod:`function`.
     :rtype: function

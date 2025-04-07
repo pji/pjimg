@@ -4,7 +4,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
-    <!-- Generated with Sphinx 8.1.3 and Furo 2024.08.06 -->
+    <!-- Generated with Sphinx 8.2.3 and Furo 2024.08.06 -->
         <title>pjimg.filters.blurs - pjimg 0.0.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=354aac6f" />
@@ -260,7 +260,7 @@
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">pjimg.filters.decorators</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pjimg.filters.model</span><span class="w"> </span><span class="kn">import</span> <span class="n">filters</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">pjimg.util</span><span class="w"> </span><span class="kn">import</span> <span class="n">ImgAry</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">X_</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">Y_</span><span class="p">,</span> <span class="n">Z</span><span class="p">,</span> <span class="n">Z_</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pjimg.util</span><span class="w"> </span><span class="kn">import</span> <span class="n">X_</span><span class="p">,</span> <span class="n">Y_</span><span class="p">,</span> <span class="n">Z_</span><span class="p">,</span> <span class="n">ImgAry</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">Z</span>
 
 
 <span class="c1"># Names available for import.</span>
@@ -279,9 +279,9 @@
 
 <span class="sd">    .. figure:: images/box_blur.jpg</span>
 <span class="sd">       :alt: An example of the filter affecting an image.</span>
-<span class="sd">       </span>
+
 <span class="sd">       An example of :func:`box_blur` affecting an image.</span>
-<span class="sd">    </span>
+
 <span class="sd">    :param a: The image data to alter.</span>
 <span class="sd">    :param size: The size of the blox used in the blur.</span>
 <span class="sd">    :returns: A :class:`np.ndarray` object.</span>
@@ -302,9 +302,9 @@
 
 <span class="sd">    .. figure:: images/gaussian_blur.jpg</span>
 <span class="sd">       :alt: An example of the filter affecting an image.</span>
-<span class="sd">       </span>
+
 <span class="sd">       An example of :func:`gaussian_blur` affecting an image.</span>
-<span class="sd">    </span>
+
 <span class="sd">    :param a: The image data to alter.</span>
 <span class="sd">    :param sigma: The sigma value of the blur. A gaussian blur uses a</span>
 <span class="sd">        gaussian function to determine how much the other pixels in</span>
@@ -328,9 +328,9 @@
 
 <span class="sd">    .. figure:: images/glow.jpg</span>
 <span class="sd">       :alt: An example of the filter affecting an image.</span>
-<span class="sd">       </span>
+
 <span class="sd">       An example of :func:`glow` affecting an image.</span>
-<span class="sd">    </span>
+
 <span class="sd">    :param a: The image data to alter.</span>
 <span class="sd">    :param sigma: The sigma value of the blur. A gaussian blur uses a</span>
 <span class="sd">        gaussian function to determine how much the other pixels in</span>
@@ -370,9 +370,9 @@
 
 <span class="sd">    .. figure:: images/motion_blur.jpg</span>
 <span class="sd">       :alt: An example of the filter affecting an image.</span>
-<span class="sd">       </span>
+
 <span class="sd">       An example of :func:`motion_blur` affecting an image.</span>
-<span class="sd">    </span>
+
 <span class="sd">    :param a: The image data to alter.</span>
 <span class="sd">    :param size: The size of the blur to apply.</span>
 <span class="sd">    :param direction: The axis that the blur should be performed along.</span>
@@ -408,12 +408,12 @@
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Use a gaussian blur to increase the difference between big</span>
 <span class="sd">    differences of value in the image, which gives the appearance</span>
 <span class="sd">    of sharpening the image.</span>
-<span class="sd">    </span>
+
 <span class="sd">    .. figure:: images/unsharp_mask.jpg</span>
 <span class="sd">       :alt: An example of the filter affecting an image.</span>
-<span class="sd">       </span>
+
 <span class="sd">       An example of :func:`unsharp_mask` affecting an image.</span>
-<span class="sd">    </span>
+
 <span class="sd">    :param a: The image data to alter.</span>
 <span class="sd">    :param sigma: The sigma value of the blur. A gaussian blur uses a</span>
 <span class="sd">        gaussian function to determine how much the other pixels in</span>

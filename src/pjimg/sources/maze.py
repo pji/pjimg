@@ -61,9 +61,9 @@ class Maze(un.UnitNoise):
         integers for seeding.
     :return: :class:`Maze` object.
     :rtype: sources.maze.Maze
-    
+
     Usage::
-    
+
         >>> # Create a maze in a 1280x720 image.
         >>> size = (1, 720, 1280)
         >>> unit = (1, size[Y] // 18, size[Y] // 18)
@@ -72,9 +72,9 @@ class Maze(un.UnitNoise):
 
     .. figure:: images/maze.jpg
        :alt: A maze in a 1280x720 image.
-       
+
        The image data created by the usage example.
-    
+
     Descriptive Origins
     -------------------
     The origin parameter can accept a description of the location
@@ -495,9 +495,9 @@ class SolvedMaze(Maze):
         integers for seeding.
     :return: :class:`SolvedMaze` object.
     :rtype: sources.maze.SolvedPath
-    
+
     Usage::
-    
+
         >>> # Create the line showing a solution for a maze in a
         >>> # 1280x720 image.
         >>> size = (1, 720, 1280)
@@ -507,9 +507,9 @@ class SolvedMaze(Maze):
 
     .. figure:: images/solvedmaze.jpg
        :alt: A line showing a solution for a maze in a 1280x720 image.
-       
+
        The image data created by the usage example.
-    
+
     Descriptive Origins
     -------------------
     The origin parameter can accept a description of the location
@@ -729,9 +729,9 @@ class SolvedMaze(Maze):
 
 class OctaveMaze(Source):
     """Fill a space with octaves of Maze noise.
-    
+
     Maze noise generates a maze-like path within the space.
-    
+
     :param octaves: The number of octaves of noise in the image. An
         octave is a layer of the noise with a different number of
         points added on top of other layers of noise.
@@ -747,9 +747,9 @@ class OctaveMaze(Source):
         integers for seeding.
     :return: :class:`OctaveMaze` object.
     :rtype: sources.maze.OctaveMaze
-    
+
     Usage::
-    
+
         >>> # Create octave Maze noise in a 1280x720 image.
         >>> size = (1, 720, 1280)
         >>> source = OctaveMaze(
@@ -764,9 +764,9 @@ class OctaveMaze(Source):
 
     .. figure:: images/octavemaze.jpg
        :alt: Octave maze noise in a 1280x720 image.
-       
+
        The image data created by the usage example.
-    
+
     """
     def __init__(
         self, octaves: int = 4,
@@ -796,32 +796,32 @@ class OctaveMaze(Source):
         self.repeats = repeats
         self.seed = seed
         self.table = table
-    
+
     def fill(
         self, size: Sequence[int],
         loc: Sequence[int] = (0, 0, 0)
     ) -> ImgAry:
-            a = np.zeros(tuple(size), dtype=float)
-            max_value = 0.0
-            for i in range(self.octaves):
-                amp = self.amplitude + (self.persistence * i)
-                freq = self.frequency * 2 ** i
-                unit = [
-                    self._round_unit(s, n // freq)
-                    for s, n in zip(size, self.unit)
-                ]
-                octave = Maze(
-                    unit=unit,
-                    min=self.min,
-                    max=self.max,
-                    repeats=self.repeats,
-                    seed=self.seed,
-                    table=self.table
-                )
-                a += octave.fill(size, loc) * amp
-                max_value += amp
-            a /= max_value
-            return a
+        a = np.zeros(tuple(size), dtype=float)
+        max_value = 0.0
+        for i in range(self.octaves):
+            amp = self.amplitude + (self.persistence * i)
+            freq = self.frequency * 2 ** i
+            unit = [
+                self._round_unit(s, n // freq)
+                for s, n in zip(size, self.unit)
+            ]
+            octave = Maze(
+                unit=unit,
+                min=self.min,
+                max=self.max,
+                repeats=self.repeats,
+                seed=self.seed,
+                table=self.table
+            )
+            a += octave.fill(size, loc) * amp
+            max_value += amp
+        a /= max_value
+        return a
 
     def _round_unit(self, size_dim: int, unit_dim: int) -> int:
         unit_dim = unit_dim if unit_dim else 1

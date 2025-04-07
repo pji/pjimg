@@ -19,7 +19,11 @@ import numpy as np
 
 from pjimg.imgio.constants import VALID_FORMATS
 from pjimg.imgio.model import (
-    Image, Video, UnsupportedFileType, Saver, WrappedSaver
+    Image,
+    Saver,
+    UnsupportedFileType,
+    Video,
+    WrappedSaver
 )
 from pjimg.util import ArrayLike, IntAry, X, Y, Z, float_to_uint8
 
@@ -171,4 +175,3 @@ def write_video(
     for i in range(a.shape[Z]):
         vwriter.write(a[i])
     vwriter.release()
-

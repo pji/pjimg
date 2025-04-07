@@ -35,7 +35,7 @@ class TestTile:
             assert getattr(obj, attr) == required[attr]
         for attr in optional:
             assert getattr(obj, attr) == optional[attr]
-    
+
     def test_init_all_optional(self):
         """Given optional parameters, :class:`Tile` should
         initialize those attributes with the given values.
@@ -94,7 +94,7 @@ class TestTile:
             [0xe5, 0x13, 0x91, 0x91, 0x91, 0x91, 0x19, 0x33],
             [0x2e, 0xc8, 0x84, 0x91, 0x91, 0x5b, 0x4c, 0x24],
         ]], dtype=np.uint8)).all()
-    
+
     def test_fill_drop(self):
         """Given a size for image data, :meth:`Tile.fill` should
         return a volume of image data filled with the tile pattern
@@ -119,7 +119,7 @@ class TestTile:
             [0x00, 0x1b, 0xff, 0xff, 0xff, 0xff, 0x2f, 0x23],
             [0x36, 0xff, 0xe4, 0xff, 0xff, 0xbb, 0xff, 0x40],
         ]], dtype=np.uint8)).all()
-    
+
     def test_fill_drop_img(self):
         """Given a size for image data, :meth:`Tile.fill` should
         return a volume of image data filled with the tile pattern
@@ -153,7 +153,7 @@ class TestTile:
             [0xff, 0x1b, 0xff, 0xff, 0xff, 0xff, 0x28, 0x00],
             [0x3a, 0xff, 0xe4, 0xff, 0xff, 0xbb, 0xff, 0x40],
         ]], dtype=np.uint8)).all()
-    
+
     def test_fill_hexagon(self):
         """Given a size for image data, :meth:`Tile.fill` should
         return a volume of image data filled with the tile pattern

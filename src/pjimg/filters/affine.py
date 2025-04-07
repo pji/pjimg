@@ -20,7 +20,7 @@ import numpy as np
 import pjimg.util.resize as rsz
 from pjimg.filters.decorators import *
 from pjimg.filters.model import filters
-from pjimg.util import find_center, ImgAry, Loc, X, X_, Y, Y_, Z, Z_
+from pjimg.util import X_, Y_, Z_, ImgAry, Loc, X, Y, Z, find_center
 
 
 # Names available for import.
@@ -36,9 +36,9 @@ def flip(a: ImgAry, axis: int) -> ImgAry:
 
     .. figure:: images/flip.jpg
        :alt: An example of the filter affecting an image.
-       
+
        An example of :func:`flip` affecting an image.
-    
+
     :param a: The image data to alter.
     :param axis: The axis to flip the image data around.
     :returns: A :class:`np.ndarray` object.
@@ -53,9 +53,9 @@ def grow(a: ImgAry, factor: float, yx_only: bool = False) -> ImgAry:
 
     .. figure:: images/grow.jpg
        :alt: An example of the filter affecting an image.
-       
+
        An example of :func:`grow` affecting an image.
-    
+
     :param a: The image data to alter.
     :param factor: The scaling factor to use when increasing the
         size of the image.
@@ -67,7 +67,7 @@ def grow(a: ImgAry, factor: float, yx_only: bool = False) -> ImgAry:
     if yx_only and len(a.shape) > 2:
         frames = [grow(frame, factor) for frame in a]
         return np.array(frames)
-    
+
     if len(a.shape) == 2:
         return rsz.bilinear_interpolation(a, factor)
     return rsz.trilinear_interpolation(a, factor)
@@ -79,12 +79,12 @@ def rotate_2d(
     a: ImgAry, angle: float, origin: Optional[Loc] = None, safe: bool = True
 ) -> ImgAry:
     """Rotate the image by an arbitrary angle around the Z axis.
-    
+
     .. figure:: images/rotate_2d.jpg
        :alt: An example of the filter affecting an image.
-       
+
        An example of :func:`rotate_2d` affecting an image.
-    
+
     :param a: The image data to alter.
     :param angle: The angle to rotate the image in degrees.
     :param origin: (Optional.) The point of rotation. Defaults to
@@ -112,9 +112,9 @@ def rotate_90(a: ImgAry, direction: str = 'cw') -> ImgAry:
 
     .. figure:: images/rotate_90.jpg
        :alt: An example of the filter affecting an image.
-       
+
        An example of :func:`rotate_90` affecting an image.
-    
+
     :param a: The image data to alter.
     :param direction: (Optional.) Whether to rotate the data
         clockwise or counter clockwise.
@@ -134,9 +134,9 @@ def skew(a: ImgAry, slope: float) -> ImgAry:
 
     .. figure:: images/skew.jpg
        :alt: An example of the filter affecting an image.
-       
+
        An example of :func:`skew` affecting an image.
-    
+
     :param a: The image data to alter.
     :param slope: The slope of the Y axis of the image after the skew.
     :returns: A :class:`np.ndarray` object.

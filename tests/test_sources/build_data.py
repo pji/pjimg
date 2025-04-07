@@ -5,7 +5,6 @@ build_data
 Build the expected data files for the example tests.
 """
 import pjimg.imgio as iw
-
 import pjimg.sources as ig
 
 

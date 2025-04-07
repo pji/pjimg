@@ -16,7 +16,7 @@ from typing import Callable
 import numpy as np
 
 from pjimg.filters.model import Filter
-from pjimg.util import ImgAry, X, X_, Y, Y_, Z, Z_
+from pjimg.util import X_, Y_, Z_, ImgAry, X, Y, Z
 
 
 # Names available for import.
@@ -29,11 +29,11 @@ __all__ = [
 docstrings = {
     'process': """
     .. warning::
-       This filter uses a third-party library that cannot handle 
-       color or three-dimensional arrays. The filter itself will 
-       be able to handle three-dimensional arrays, but the filter 
+       This filter uses a third-party library that cannot handle
+       color or three-dimensional arrays. The filter itself will
+       be able to handle three-dimensional arrays, but the filter
        will affect each two-dimensional slice individually.
-    
+
     """,
     'square': """
     .. warning::
@@ -42,7 +42,7 @@ docstrings = {
        and Y axes, it will square them itself for processing then
        trim them back to the original shape after. This may
        introduce unwanted artifacts into the image.
-    
+
     """,
 }
 
@@ -51,7 +51,7 @@ docstrings = {
 def register(registry: dict[str, Filter]) -> Callable[[Filter,], Filter]:
     """Registers the decorated function under the function's name
     in the given registry dictionary.
-    
+
     :param registry: The registry to register the given function in.
     :return: The registration :mod:`function` pointed to the given
         registry.
@@ -71,7 +71,7 @@ def processes_by_grayscale_frame(fn: Filter) -> Filter:
     """
     if fn.__doc__:
         fn.__doc__ += docstrings['process']
-    
+
     @wraps(fn)
     def wrapper(a: ImgAry, *args, **kwargs) -> ImgAry:
         if len(a.shape) > 2:
@@ -110,7 +110,7 @@ def will_square(fn: Filter) -> Filter:
     """
     if fn.__doc__:
         fn.__doc__ += docstrings['square']
-    
+
     @wraps(fn)
     def wrapper(a: ImgAry, *args, **kwargs) -> ImgAry:
         # Determine if the Y and X axes aren't square.

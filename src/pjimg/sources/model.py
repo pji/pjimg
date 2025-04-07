@@ -78,7 +78,7 @@ class Source(Serializable):
 
 class TilePattern(ABC):
     """Base class for tiling patterns.
-    
+
     :param size: The size of the image data to be tiled.
     :param vp: The distance in pixels from the center of a tile to each
         of its vertices.
@@ -105,19 +105,19 @@ class TilePattern(ABC):
         self.vp = vp
         self.gap = gap
         self.rotation = rotation
-        
+
         self.vso = np.pi / self.sides
         self.sp = np.cos(self.vso) * self.vp
         self.vgap = gap / np.cos(self.vso)
-    
+
     @property
     def h_row(self) -> float:
         return 2 * self.vp + self.vgap
-    
+
     @property
     def home(self) -> Loc:
         return self._home
-    
+
     @property
     def next_p(self) -> float:
         try:
@@ -125,24 +125,24 @@ class TilePattern(ABC):
         except AttributeError:
             self._next_p: float = 2 * self.sp + self.gap
             return self._next_p
-    
+
     @property
     def orient_start(self) -> float:
         return DOWN
-    
+
     @property
     def rows(self) -> int:
         return int(self.home[Y] // self.h_row + 2)
-    
+
     @property
     def size(self) -> Size:
         return self._size
-    
+
     @size.setter
     def size(self, size: Size) -> None:
         self._size = size
         self._home = find_center(self.size, self.loc)
-    
+
     @property
     def x_start(self) -> float:
         w_col = self.h_row
@@ -158,7 +158,7 @@ class TilePattern(ABC):
         self, center: tuple[float, float], orient: float
     ) -> tuple[tuple[float, float], float]:
         """Get the linear coordinates of the next tile.
-        
+
         :param center: The linear coordinates of the current tile.
         :param orient: The orientation in the pattern of the current tile.
         :return: A :class:`tuple` containing the linear coordinates of
@@ -174,13 +174,13 @@ class TilePattern(ABC):
             orient = UP
         center = translate_by_polar_coords(center, self.next_p, o)
         return center, orient
-            
+
     def get_next_row_start(
         self, last_row: tuple[float, float],
         last_orient: float
     ) -> tuple[tuple[float, float], float]:
         """Get the linear coordinates of the first tile of the next row.
-        
+
         :param center: The linear coordinates of the first tile of the
             current row.
         :param orient: The orientation in the pattern of the first tile
@@ -194,7 +194,7 @@ class TilePattern(ABC):
             last_row[y] + self.h_row,
             last_row[x]
         ), last_orient)
-        
+
     def get_vertices(
         self, center: tuple[float, float],
         o: float,
@@ -203,7 +203,7 @@ class TilePattern(ABC):
         vso: Optional[float] = None
     ) -> list[NDArray[np.int32]]:
         """Get the vertices of the tile.
-        
+
         :param center: The linear coordinates of the tile.
         :param o: The theta polar coordinate of the first vertex.
         :param vp: (Optional.) The rho polar coordinate of vertices.
@@ -228,7 +228,7 @@ class TilePattern(ABC):
             sides = self.sides
         if vso is None:
             vso = self.vso
-        
+
         vvo = 2 * vso
         return [np.array([[
             (

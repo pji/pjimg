@@ -4,7 +4,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
-    <!-- Generated with Sphinx 8.1.3 and Furo 2024.08.06 -->
+    <!-- Generated with Sphinx 8.2.3 and Furo 2024.08.06 -->
         <title>pjimg.sources.noise - pjimg 0.0.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=354aac6f" />
@@ -281,7 +281,7 @@
 <span class="sd">    :rtype: sources.noise.Noise</span>
 
 <span class="sd">    Usage::</span>
-<span class="sd">    </span>
+
 <span class="sd">        &gt;&gt;&gt; # Create static to fill a 1280x720 image.</span>
 <span class="sd">        &gt;&gt;&gt; size = (1, 720, 1280)</span>
 <span class="sd">        &gt;&gt;&gt; source = Noise(seed=&#39;spam&#39;)</span>
@@ -289,9 +289,9 @@
 
 <span class="sd">    .. figure:: images/noise.jpg</span>
 <span class="sd">       :alt: Static filling a 1280x720 image.</span>
-<span class="sd">       </span>
+
 <span class="sd">       The image data created by the usage example.</span>
-<span class="sd">    </span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">seed</span><span class="p">:</span> <span class="n">Seed</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize an instance of Noise.&quot;&quot;&quot;</span>
@@ -375,9 +375,9 @@
 <span class="sd">        generated noise.</span>
 <span class="sd">    :return: :class:`Embers` object.</span>
 <span class="sd">    :rtype: sources.noise.Embers</span>
-<span class="sd">    </span>
+
 <span class="sd">    Usage::</span>
-<span class="sd">    </span>
+
 <span class="sd">        &gt;&gt;&gt; # Create embers in a 1280x720 image.</span>
 <span class="sd">        &gt;&gt;&gt; size = (1, 720, 1280)</span>
 <span class="sd">        &gt;&gt;&gt; source = Embers(depth=6, seed=&#39;spam&#39;)</span>
@@ -385,9 +385,9 @@
 
 <span class="sd">    .. figure:: images/Embers.jpg</span>
 <span class="sd">       :alt: Embers in a 1280x720 image.</span>
-<span class="sd">       </span>
+
 <span class="sd">       The image data created by the usage example.</span>
-<span class="sd">    </span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">depth</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>

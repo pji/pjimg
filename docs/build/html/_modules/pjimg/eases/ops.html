@@ -4,7 +4,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
-    <!-- Generated with Sphinx 8.1.3 and Furo 2024.08.06 -->
+    <!-- Generated with Sphinx 8.2.3 and Furo 2024.08.06 -->
         <title>pjimg.eases.ops - pjimg 0.0.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=354aac6f" />
@@ -422,23 +422,23 @@
 <span class="nd">@will_scale</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">in_back</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ImgAry</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;An easing function that backs up a little before starting.</span>
-<span class="sd">    </span>
+
 <span class="sd">    .. figure:: images/plot_in_back.png</span>
 <span class="sd">       :alt: A chart showing the action of the easing function.</span>
-<span class="sd">       </span>
+
 <span class="sd">       The action of :func:`in_back`.</span>
-<span class="sd">       </span>
+
 <span class="sd">    With image data, it extends the darker areas and compresses the</span>
 <span class="sd">    lighter ones. The dip into negative values can be a little</span>
 <span class="sd">    awkward. It&#39;s left to the calling application to decide how to</span>
 <span class="sd">    handle it. In the following example, values are just truncated at</span>
 <span class="sd">    zero.</span>
-<span class="sd">    </span>
+
 <span class="sd">    .. figure:: images/ex_in_back.png</span>
 <span class="sd">       :alt: An example of the easing function affecting a gradient.</span>
-<span class="sd">       </span>
-<span class="sd">       An example of how :func:`in_back` affects a simple gradient. </span>
-<span class="sd">    </span>
+
+<span class="sd">       An example of how :func:`in_back` affects a simple gradient.</span>
+
 <span class="sd">    :param a: An array of image data.</span>
 <span class="sd">    :return: The eased data as a :class:`numpy.ndarray`.</span>
 <span class="sd">    :rtype: numpy.ndarray</span>
@@ -455,20 +455,20 @@
 <span class="nd">@will_scale</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">in_bounce</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ImgAry</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;An easing function that has a bounce.</span>
-<span class="sd">    </span>
+
 <span class="sd">    .. figure:: images/plot_in_bounce.png</span>
 <span class="sd">       :alt: A chart showing the action of the easing function.</span>
-<span class="sd">       </span>
+
 <span class="sd">       The action of :func:`in_bounce`.</span>
-<span class="sd">       </span>
+
 <span class="sd">    With image data, it is a large extension of the lighter areas</span>
 <span class="sd">    with multiple peaks and compression of the darker ones.</span>
-<span class="sd">    </span>
+
 <span class="sd">    .. figure:: images/ex_in_bounce.png</span>
 <span class="sd">       :alt: An example of the easing function affecting a gradient.</span>
-<span class="sd">       </span>
-<span class="sd">       An example of how :func:`in_bounce` affects a simple gradient. </span>
-<span class="sd">    </span>
+
+<span class="sd">       An example of how :func:`in_bounce` affects a simple gradient.</span>
+
 <span class="sd">    :param a: An array of image data.</span>
 <span class="sd">    :return: The eased data as a :class:`numpy.ndarray`.</span>
 <span class="sd">    :rtype: numpy.ndarray</span>
@@ -483,21 +483,21 @@
 <span class="nd">@will_scale</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">in_circ</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ImgAry</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;An easing function that has a circular curve.</span>
-<span class="sd">    </span>
+
 <span class="sd">    .. figure:: images/plot_in_circ.png</span>
 <span class="sd">       :alt: A chart showing the action of the easing function.</span>
-<span class="sd">       </span>
+
 <span class="sd">       The action of :func:`in_circ`.</span>
-<span class="sd">       </span>
+
 <span class="sd">    With image data, it is a moderate extension of the darker areas</span>
 <span class="sd">    and compression of the lighter ones. This should not generate</span>
 <span class="sd">    values outside of the original range.</span>
-<span class="sd">    </span>
+
 <span class="sd">    .. figure:: images/ex_in_circ.png</span>
 <span class="sd">       :alt: An example of the easing function affecting a gradient.</span>
-<span class="sd">       </span>
-<span class="sd">       An example of how :func:`in_circ` affects a simple gradient. </span>
-<span class="sd">    </span>
+
+<span class="sd">       An example of how :func:`in_circ` affects a simple gradient.</span>
+
 <span class="sd">    :param a: An array of image data.</span>
 <span class="sd">    :return: The eased data as a :class:`numpy.ndarray`.</span>
 <span class="sd">    :rtype: numpy.ndarray</span>
@@ -512,21 +512,21 @@
 <span class="nd">@will_scale</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">in_cubic</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ImgAry</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;An easing function that has a cubic curve.</span>
-<span class="sd">    </span>
+
 <span class="sd">    .. figure:: images/plot_in_cubic.png</span>
 <span class="sd">       :alt: A chart showing the action of the easing function.</span>
-<span class="sd">       </span>
+
 <span class="sd">       The action of :func:`in_cubic`.</span>
-<span class="sd">       </span>
+
 <span class="sd">    With image data, it is a moderate extension of the darker areas</span>
 <span class="sd">    and compression of the lighter ones. This should not generate</span>
 <span class="sd">    values outside of the original range.</span>
-<span class="sd">    </span>
+
 <span class="sd">    .. figure:: images/ex_in_cubic.png</span>
 <span class="sd">       :alt: An example of the easing function affecting a gradient.</span>
-<span class="sd">       </span>
-<span class="sd">       An example of how :func:`in_cubic` affects a simple gradient. </span>
-<span class="sd">    </span>
+
+<span class="sd">       An example of how :func:`in_cubic` affects a simple gradient.</span>
+
 <span class="sd">    :param a: An array of image data.</span>
 <span class="sd">    :return: The eased data as a :class:`numpy.ndarray`.</span>
 <span class="sd">    :rtype: numpy.ndarray</span>
@@ -541,23 +541,23 @@
 <span class="nd">@will_scale</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">in_elastic</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ImgAry</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;An easing function that bounces.</span>
-<span class="sd">    </span>
+
 <span class="sd">    .. figure:: images/plot_in_elastic.png</span>
 <span class="sd">       :alt: A chart showing the action of the easing function.</span>
-<span class="sd">       </span>
+
 <span class="sd">       The action of :func:`in_elastic`.</span>
-<span class="sd">       </span>
+
 <span class="sd">    With image data, it extends the darker areas and compresses the</span>
 <span class="sd">    lighter ones. The dip into negative values can be a little</span>
 <span class="sd">    awkward. It&#39;s left to the calling application to decide how to</span>
 <span class="sd">    handle it. In the following example, values are just truncated at</span>
 <span class="sd">    zero.</span>
-<span class="sd">    </span>
+
 <span class="sd">    .. figure:: images/ex_in_elastic.png</span>
 <span class="sd">       :alt: An example of the easing function affecting a gradient.</span>
-<span class="sd">       </span>
-<span class="sd">       An example of how :func:`in_elastic` affects a simple gradient. </span>
-<span class="sd">    </span>
+
+<span class="sd">       An example of how :func:`in_elastic` affects a simple gradient.</span>
+
 <span class="sd">    :param a: An array of image data.</span>
 <span class="sd">    :return: The eased data as a :class:`numpy.ndarray`.</span>
 <span class="sd">    :rtype: numpy.ndarray</span>
@@ -577,26 +577,26 @@
 <span class="nd">@will_scale</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">in_expo</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ImgAry</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;An easing function that has an exponential curve.</span>
-<span class="sd">    </span>
+
 <span class="sd">    .. figure:: images/plot_in_expo.png</span>
 <span class="sd">       :alt: A chart showing the action of the easing function.</span>
-<span class="sd">       </span>
+
 <span class="sd">       The action of :func:`in_expo`.</span>
-<span class="sd">       </span>
+
 <span class="sd">    With image data, it is a moderate extension of the darker areas</span>
 <span class="sd">    and compression of the lighter ones. This should not generate</span>
 <span class="sd">    values outside of the original range.</span>
-<span class="sd">    </span>
+
 <span class="sd">    .. figure:: images/ex_in_expo.png</span>
 <span class="sd">       :alt: An example of the easing function affecting a gradient.</span>
-<span class="sd">       </span>
-<span class="sd">       An example of how :func:`in_expo` affects a simple gradient. </span>
-<span class="sd">    </span>
+
+<span class="sd">       An example of how :func:`in_expo` affects a simple gradient.</span>
+
 <span class="sd">    :param a: An array of image data.</span>
 <span class="sd">    :return: The eased data as a :class:`numpy.ndarray`.</span>
 <span class="sd">    :rtype: numpy.ndarray</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">a</span><span class="p">[</span><span class="n">a</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">**</span> <span class="p">(</span><span class="mi">10</span> <span class="o">*</span> <span class="n">a</span><span class="p">[</span><span class="n">a</span> <span class="o">!=</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mi">10</span><span class="p">)</span>
+    <span class="n">a</span><span class="p">[</span><span class="n">a</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">**</span> <span class="p">(</span><span class="mi">10</span> <span class="o">*</span> <span class="n">a</span><span class="p">[</span><span class="n">a</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mi">10</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">a</span></div>
 
 
@@ -607,21 +607,21 @@
 <span class="nd">@will_scale</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">in_quad</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ImgAry</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;An easing function that has a quadratic curve.</span>
-<span class="sd">    </span>
+
 <span class="sd">    .. figure:: images/plot_in_quad.png</span>
 <span class="sd">       :alt: A chart showing the action of the easing function.</span>
-<span class="sd">       </span>
+
 <span class="sd">       The action of :func:`in_quad`.</span>
-<span class="sd">       </span>
+
 <span class="sd">    With image data, it is a moderate extension of the darker areas</span>
 <span class="sd">    and compression of the lighter ones. This should not generate</span>
 <span class="sd">    values outside of the original range.</span>
-<span class="sd">    </span>
+
 <span class="sd">    .. figure:: images/ex_in_quad.png</span>
 <span class="sd">       :alt: An example of the easing function affecting a gradient.</span>
-<span class="sd">       </span>
-<span class="sd">       An example of how :func:`in_quad` affects a simple gradient. </span>
-<span class="sd">    </span>
+
+<span class="sd">       An example of how :func:`in_quad` affects a simple gradient.</span>
+
 <span class="sd">    :param a: An array of image data.</span>
 <span class="sd">    :return: The eased data as a :class:`numpy.ndarray`.</span>
 <span class="sd">    :rtype: numpy.ndarray</span>
@@ -636,21 +636,21 @@
 <span class="nd">@will_scale</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">in_quart</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ImgAry</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;An easing function that has a quadric curve.</span>
-<span class="sd">    </span>
+
 <span class="sd">    .. figure:: images/plot_in_quart.png</span>
 <span class="sd">       :alt: A chart showing the action of the easing function.</span>
-<span class="sd">       </span>
+
 <span class="sd">       The action of :func:`in_quart`.</span>
-<span class="sd">       </span>
+
 <span class="sd">    With image data, it is a moderate extension of the darker areas</span>
 <span class="sd">    and compression of the lighter ones. This should not generate</span>
 <span class="sd">    values outside of the original range.</span>
-<span class="sd">    </span>
+
 <span class="sd">    .. figure:: images/ex_in_quart.png</span>
 <span class="sd">       :alt: An example of the easing function affecting a gradient.</span>
-<span class="sd">       </span>
-<span class="sd">       An example of how :func:`in_quart` affects a simple gradient. </span>
-<span class="sd">    </span>
+
+<span class="sd">       An example of how :func:`in_quart` affects a simple gradient.</span>
+
 <span class="sd">    :param a: An array of image data.</span>
 <span class="sd">    :return: The eased data as a :class:`numpy.ndarray`.</span>
 <span class="sd">    :rtype: numpy.ndarray</span>
@@ -665,21 +665,21 @@
 <span class="nd">@will_scale</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">in_quint</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ImgAry</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;An easing function that has a quintic curve.</span>
-<span class="sd">    </span>
+
 <span class="sd">    .. figure:: images/plot_in_quint.png</span>
 <span class="sd">       :alt: A chart showing the action of the easing function.</span>
-<span class="sd">       </span>
+
 <span class="sd">       The action of :func:`in_quint`.</span>
-<span class="sd">       </span>
+
 <span class="sd">    With image data, it is a large extension of the darker areas</span>
 <span class="sd">    and compression of the lighter ones. This should not generate</span>
 <span class="sd">    values outside of the original range.</span>
-<span class="sd">    </span>
+
 <span class="sd">    .. figure:: images/ex_in_quint.png</span>
 <span class="sd">       :alt: An example of the easing function affecting a gradient.</span>
-<span class="sd">       </span>
-<span class="sd">       An example of how :func:`in_quint` affects a simple gradient. </span>
-<span class="sd">    </span>
+
+<span class="sd">       An example of how :func:`in_quint` affects a simple gradient.</span>
+
 <span class="sd">    :param a: An array of image data.</span>
 <span class="sd">    :return: The eased data as a :class:`numpy.ndarray`.</span>
 <span class="sd">    :rtype: numpy.ndarray</span>
@@ -694,21 +694,21 @@
 <span class="nd">@will_scale</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">in_sin</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ImgAry</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;An easing function that has a sine curve.</span>
-<span class="sd">    </span>
+
 <span class="sd">    .. figure:: images/plot_in_sin.png</span>
 <span class="sd">       :alt: A chart showing the action of the easing function.</span>
-<span class="sd">       </span>
+
 <span class="sd">       The action of :func:`in_sin`.</span>
-<span class="sd">       </span>
+
 <span class="sd">    With image data, it is a small extension of the darker areas</span>
 <span class="sd">    and compression of the lighter ones. This should not generate</span>
 <span class="sd">    values outside of the original range.</span>
-<span class="sd">    </span>
+
 <span class="sd">    .. figure:: images/ex_in_sin.png</span>
 <span class="sd">       :alt: An example of the easing function affecting a gradient.</span>
-<span class="sd">       </span>
-<span class="sd">       An example of how :func:`in_sin` affects a simple gradient. </span>
-<span class="sd">    </span>
+
+<span class="sd">       An example of how :func:`in_sin` affects a simple gradient.</span>
+
 <span class="sd">    :param a: An array of image data.</span>
 <span class="sd">    :return: The eased data as a :class:`numpy.ndarray`.</span>
 <span class="sd">    :rtype: numpy.ndarray</span>
@@ -724,23 +724,23 @@
 <span class="nd">@will_scale</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">out_back</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ImgAry</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;An easing function that backs up a little before ending.</span>
-<span class="sd">    </span>
+
 <span class="sd">    .. figure:: images/plot_out_back.png</span>
 <span class="sd">       :alt: A chart showing the action of the easing function.</span>
-<span class="sd">       </span>
+
 <span class="sd">       The action of :func:`out_back`.</span>
-<span class="sd">       </span>
+
 <span class="sd">    With image data, it extends the lighter areas and compresses the</span>
 <span class="sd">    darker ones. The dip into negative values can be a little</span>
 <span class="sd">    awkward. It&#39;s left to the calling application to decide how to</span>
 <span class="sd">    handle it. In the following example, values are just truncated at</span>
 <span class="sd">    zero.</span>
-<span class="sd">    </span>
+
 <span class="sd">    .. figure:: images/ex_out_back.png</span>
 <span class="sd">       :alt: An example of the easing function affecting a gradient.</span>
-<span class="sd">       </span>
-<span class="sd">       An example of how :func:`out_back` affects a simple gradient. </span>
-<span class="sd">    </span>
+
+<span class="sd">       An example of how :func:`out_back` affects a simple gradient.</span>
+
 <span class="sd">    :param a: An array of image data.</span>
 <span class="sd">    :return: The eased data as a :class:`numpy.ndarray`.</span>
 <span class="sd">    :rtype: numpy.ndarray</span>
@@ -757,27 +757,27 @@
 <span class="nd">@will_scale</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">out_bounce</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ImgAry</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;An easing function that has a bounce.</span>
-<span class="sd">    </span>
+
 <span class="sd">    .. figure:: images/plot_out_bounce.png</span>
 <span class="sd">       :alt: A chart showing the action of the easing function.</span>
-<span class="sd">       </span>
+
 <span class="sd">       The action of :func:`out_bounce`.</span>
-<span class="sd">       </span>
+
 <span class="sd">    With image data, it is a large extension of the lighter areas</span>
 <span class="sd">    with multiple peaks and compression of the darker ones.</span>
-<span class="sd">    </span>
+
 <span class="sd">    .. figure:: images/ex_out_bounce.png</span>
 <span class="sd">       :alt: An example of the easing function affecting a gradient.</span>
-<span class="sd">       </span>
-<span class="sd">       An example of how :func:`out_bounce` affects a simple gradient. </span>
-<span class="sd">    </span>
+
+<span class="sd">       An example of how :func:`out_bounce` affects a simple gradient.</span>
+
 <span class="sd">    :param a: An array of image data.</span>
 <span class="sd">    :return: The eased data as a :class:`numpy.ndarray`.</span>
 <span class="sd">    :rtype: numpy.ndarray</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">n1</span> <span class="o">=</span> <span class="mf">7.5625</span>
     <span class="n">d1</span> <span class="o">=</span> <span class="mf">2.75</span>
-    
+
     <span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">a</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
 
     <span class="n">b</span><span class="p">[</span><span class="n">a</span> <span class="o">&gt;=</span> <span class="mf">2.5</span> <span class="o">/</span> <span class="n">d1</span><span class="p">]</span> <span class="o">=</span> <span class="n">n1</span> <span class="o">*</span> <span class="p">(</span><span class="n">a</span><span class="p">[</span><span class="n">a</span> <span class="o">&gt;=</span> <span class="mf">2.5</span> <span class="o">/</span> <span class="n">d1</span><span class="p">]</span> <span class="o">-</span> <span class="mf">2.625</span> <span class="o">/</span> <span class="n">d1</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="mf">.984375</span>
@@ -795,20 +795,20 @@
 <span class="nd">@will_scale</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">out_circ</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ImgAry</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;An easing function that has a circular curve.</span>
-<span class="sd">    </span>
+
 <span class="sd">    .. figure:: images/plot_out_circ.png</span>
 <span class="sd">       :alt: A chart showing the action of the easing function.</span>
-<span class="sd">       </span>
+
 <span class="sd">       The action of :func:`out_circ`.</span>
-<span class="sd">       </span>
+
 <span class="sd">    With image data, it is a moderate extension of the lighter areas</span>
 <span class="sd">    and compression of the darker ones.</span>
-<span class="sd">    </span>
+
 <span class="sd">    .. figure:: images/ex_out_circ.png</span>
 <span class="sd">       :alt: An example of the easing function affecting a gradient.</span>
-<span class="sd">       </span>
-<span class="sd">       An example of how :func:`out_circ` affects a simple gradient. </span>
-<span class="sd">    </span>
+
+<span class="sd">       An example of how :func:`out_circ` affects a simple gradient.</span>
+
 <span class="sd">    :param a: An array of image data.</span>
 <span class="sd">    :return: The eased data as a :class:`numpy.ndarray`.</span>
 <span class="sd">    :rtype: numpy.ndarray</span>
@@ -823,20 +823,20 @@
 <span class="nd">@will_scale</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">out_cubic</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ImgAry</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;An easing function that has a cubic curve.</span>
-<span class="sd">    </span>
+
 <span class="sd">    .. figure:: images/plot_out_cubic.png</span>
 <span class="sd">       :alt: A chart showing the action of the easing function.</span>
-<span class="sd">       </span>
+
 <span class="sd">       The action of :func:`out_cubic`.</span>
-<span class="sd">       </span>
+
 <span class="sd">    With image data, it is a moderate extension of the lighter areas</span>
 <span class="sd">    and compression of the darker ones.</span>
-<span class="sd">    </span>
+
 <span class="sd">    .. figure:: images/ex_out_cubic.png</span>
 <span class="sd">       :alt: An example of the easing function affecting a gradient.</span>
-<span class="sd">       </span>
-<span class="sd">       An example of how :func:`out_cubic` affects a simple gradient. </span>
-<span class="sd">    </span>
+
+<span class="sd">       An example of how :func:`out_cubic` affects a simple gradient.</span>
+
 <span class="sd">    :param a: An array of image data.</span>
 <span class="sd">    :return: The eased data as a :class:`numpy.ndarray`.</span>
 <span class="sd">    :rtype: numpy.ndarray</span>
@@ -851,23 +851,23 @@
 <span class="nd">@will_scale</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">out_elastic</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ImgAry</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;An easing function that bounces.</span>
-<span class="sd">    </span>
+
 <span class="sd">    .. figure:: images/plot_out_elastic.png</span>
 <span class="sd">       :alt: A chart showing the action of the easing function.</span>
-<span class="sd">       </span>
+
 <span class="sd">       The action of :func:`out_elastic`.</span>
-<span class="sd">       </span>
+
 <span class="sd">    With image data, it extends the lighter areas and compresses the</span>
 <span class="sd">    darker ones. The bounce into values over one can be a little</span>
 <span class="sd">    awkward. It&#39;s left to the calling application to decide how to</span>
 <span class="sd">    handle it. In the following example, values are just truncated at</span>
 <span class="sd">    one.</span>
-<span class="sd">    </span>
+
 <span class="sd">    .. figure:: images/ex_out_elastic.png</span>
 <span class="sd">       :alt: An example of the easing function affecting a gradient.</span>
-<span class="sd">       </span>
-<span class="sd">       An example of how :func:`out_elastic` affects a simple gradient. </span>
-<span class="sd">    </span>
+
+<span class="sd">       An example of how :func:`out_elastic` affects a simple gradient.</span>
+
 <span class="sd">    :param a: An array of image data.</span>
 <span class="sd">    :return: The eased data as a :class:`numpy.ndarray`.</span>
 <span class="sd">    :rtype: numpy.ndarray</span>
@@ -887,23 +887,23 @@
 <span class="nd">@will_scale</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">out_expo</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ImgAry</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;An easing function that has an exponential curve.</span>
-<span class="sd">    </span>
+
 <span class="sd">    .. figure:: images/plot_out_expo.png</span>
 <span class="sd">       :alt: A chart showing the action of the easing function.</span>
-<span class="sd">       </span>
+
 <span class="sd">       The action of :func:`out_expo`.</span>
-<span class="sd">       </span>
+
 <span class="sd">    With image data, it extends the lighter areas and compresses the</span>
 <span class="sd">    darker ones. The bounce into values over one can be a little</span>
 <span class="sd">    awkward. It&#39;s left to the calling application to decide how to</span>
 <span class="sd">    handle it. In the following example, values are just truncated at</span>
 <span class="sd">    one.</span>
-<span class="sd">    </span>
+
 <span class="sd">    .. figure:: images/ex_out_expo.png</span>
 <span class="sd">       :alt: An example of the easing function affecting a gradient.</span>
-<span class="sd">       </span>
-<span class="sd">       An example of how :func:`out_expo` affects a simple gradient. </span>
-<span class="sd">    </span>
+
+<span class="sd">       An example of how :func:`out_expo` affects a simple gradient.</span>
+
 <span class="sd">    :param a: An array of image data.</span>
 <span class="sd">    :return: The eased data as a :class:`numpy.ndarray`.</span>
 <span class="sd">    :rtype: numpy.ndarray</span>
@@ -919,20 +919,20 @@
 <span class="nd">@will_scale</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">out_quad</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ImgAry</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;An easing function that has a quadratic curve.</span>
-<span class="sd">    </span>
+
 <span class="sd">    .. figure:: images/plot_out_quad.png</span>
 <span class="sd">       :alt: A chart showing the action of the easing function.</span>
-<span class="sd">       </span>
+
 <span class="sd">       The action of :func:`out_quad`.</span>
-<span class="sd">       </span>
+
 <span class="sd">    With image data, it is a moderate extension of the lighter areas</span>
 <span class="sd">    and compression of the darker ones.</span>
-<span class="sd">    </span>
+
 <span class="sd">    .. figure:: images/ex_out_quad.png</span>
 <span class="sd">       :alt: An example of the easing function affecting a gradient.</span>
-<span class="sd">       </span>
-<span class="sd">       An example of how :func:`out_quad` affects a simple gradient. </span>
-<span class="sd">    </span>
+
+<span class="sd">       An example of how :func:`out_quad` affects a simple gradient.</span>
+
 <span class="sd">    :param a: An array of image data.</span>
 <span class="sd">    :return: The eased data as a :class:`numpy.ndarray`.</span>
 <span class="sd">    :rtype: numpy.ndarray</span>
@@ -947,20 +947,20 @@
 <span class="nd">@will_scale</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">out_quart</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ImgAry</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;An easing function that has a quartic curve.</span>
-<span class="sd">    </span>
+
 <span class="sd">    .. figure:: images/plot_out_quart.png</span>
 <span class="sd">       :alt: A chart showing the action of the easing function.</span>
-<span class="sd">       </span>
+
 <span class="sd">       The action of :func:`out_quart`.</span>
-<span class="sd">       </span>
+
 <span class="sd">    With image data, it is a moderate extension of the lighter areas</span>
 <span class="sd">    and compression of the darker ones.</span>
-<span class="sd">    </span>
+
 <span class="sd">    .. figure:: images/ex_out_quart.png</span>
 <span class="sd">       :alt: An example of the easing function affecting a gradient.</span>
-<span class="sd">       </span>
-<span class="sd">       An example of how :func:`out_quart` affects a simple gradient. </span>
-<span class="sd">    </span>
+
+<span class="sd">       An example of how :func:`out_quart` affects a simple gradient.</span>
+
 <span class="sd">    :param a: An array of image data.</span>
 <span class="sd">    :return: The eased data as a :class:`numpy.ndarray`.</span>
 <span class="sd">    :rtype: numpy.ndarray</span>
@@ -975,20 +975,20 @@
 <span class="nd">@will_scale</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">out_quint</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ImgAry</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;An easing function that has a quintic curve.</span>
-<span class="sd">    </span>
+
 <span class="sd">    .. figure:: images/plot_out_quint.png</span>
 <span class="sd">       :alt: A chart showing the action of the easing function.</span>
-<span class="sd">       </span>
+
 <span class="sd">       The action of :func:`out_quint`.</span>
-<span class="sd">       </span>
+
 <span class="sd">    With image data, it is a large extension of the lighter areas</span>
 <span class="sd">    and compression of the darker ones.</span>
-<span class="sd">    </span>
+
 <span class="sd">    .. figure:: images/ex_out_quint.png</span>
 <span class="sd">       :alt: An example of the easing function affecting a gradient.</span>
-<span class="sd">       </span>
-<span class="sd">       An example of how :func:`out_quint` affects a simple gradient. </span>
-<span class="sd">    </span>
+
+<span class="sd">       An example of how :func:`out_quint` affects a simple gradient.</span>
+
 <span class="sd">    :param a: An array of image data.</span>
 <span class="sd">    :return: The eased data as a :class:`numpy.ndarray`.</span>
 <span class="sd">    :rtype: numpy.ndarray</span>
@@ -1003,20 +1003,20 @@
 <span class="nd">@will_scale</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">out_sin</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ImgAry</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;An easing function that has a sine curve.</span>
-<span class="sd">    </span>
+
 <span class="sd">    .. figure:: images/plot_out_sin.png</span>
 <span class="sd">       :alt: A chart showing the action of the easing function.</span>
-<span class="sd">       </span>
+
 <span class="sd">       The action of :func:`out_sin`.</span>
-<span class="sd">       </span>
+
 <span class="sd">    With image data, it is a small extension of the lighter areas</span>
 <span class="sd">    and compression of the darker ones.</span>
-<span class="sd">    </span>
+
 <span class="sd">    .. figure:: images/ex_out_sin.png</span>
 <span class="sd">       :alt: An example of the easing function affecting a gradient.</span>
-<span class="sd">       </span>
-<span class="sd">       An example of how :func:`out_sin` affects a simple gradient. </span>
-<span class="sd">    </span>
+
+<span class="sd">       An example of how :func:`out_sin` affects a simple gradient.</span>
+
 <span class="sd">    :param a: An array of image data.</span>
 <span class="sd">    :return: The eased data as a :class:`numpy.ndarray`.</span>
 <span class="sd">    :rtype: numpy.ndarray</span>
@@ -1032,22 +1032,22 @@
 <span class="nd">@will_scale</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">in_out_back</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ImgAry</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;An easing function that backs up then overshoots.</span>
-<span class="sd">    </span>
+
 <span class="sd">    .. figure:: images/plot_in_out_back.png</span>
 <span class="sd">       :alt: A chart showing the action of the easing function.</span>
-<span class="sd">       </span>
+
 <span class="sd">       The action of :func:`in_out_back`.</span>
-<span class="sd">       </span>
+
 <span class="sd">    With image data, it extends the darker and lighter areas. The dip</span>
 <span class="sd">    into negative values and bounce over one can be a little awkward.</span>
 <span class="sd">    It&#39;s left to the calling application to decide how to handle it. In</span>
 <span class="sd">    the following example, values are just truncated at zero and one.</span>
-<span class="sd">    </span>
+
 <span class="sd">    .. figure:: images/ex_in_out_back.png</span>
 <span class="sd">       :alt: An example of the easing function affecting a gradient.</span>
-<span class="sd">       </span>
-<span class="sd">       An example of how :func:`in_out_back` affects a simple gradient. </span>
-<span class="sd">    </span>
+
+<span class="sd">       An example of how :func:`in_out_back` affects a simple gradient.</span>
+
 <span class="sd">    :param a: An array of image data.</span>
 <span class="sd">    :return: The eased data as a :class:`numpy.ndarray`.</span>
 <span class="sd">    :rtype: numpy.ndarray</span>
@@ -1068,22 +1068,22 @@
 <span class="nd">@will_scale</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">in_out_bounce</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ImgAry</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;An easing function that has a bounce</span>
-<span class="sd">    </span>
+
 <span class="sd">    .. figure:: images/plot_in_out_bounce.png</span>
 <span class="sd">       :alt: A chart showing the action of the easing function.</span>
-<span class="sd">       </span>
+
 <span class="sd">       The action of :func:`in_out_bounce`.</span>
-<span class="sd">       </span>
+
 <span class="sd">    With image data, it extends the darker and lighter areas. The dip</span>
 <span class="sd">    into negative values and bounce over one can be a little awkward.</span>
 <span class="sd">    It&#39;s left to the calling application to decide how to handle it. In</span>
 <span class="sd">    the following example, values are just truncated at zero and one.</span>
-<span class="sd">    </span>
+
 <span class="sd">    .. figure:: images/ex_in_out_bounce.png</span>
 <span class="sd">       :alt: An example of the easing function affecting a gradient.</span>
-<span class="sd">       </span>
-<span class="sd">       An example of how :func:`in_out_bounce` affects a simple gradient. </span>
-<span class="sd">    </span>
+
+<span class="sd">       An example of how :func:`in_out_bounce` affects a simple gradient.</span>
+
 <span class="sd">    :param a: An array of image data.</span>
 <span class="sd">    :return: The eased data as a :class:`numpy.ndarray`.</span>
 <span class="sd">    :rtype: numpy.ndarray</span>
@@ -1101,20 +1101,20 @@
 <span class="k">def</span><span class="w"> </span><span class="nf">in_out_circ</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ImgAry</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;An easing function that uses a circular curve to compress the</span>
 <span class="sd">    middle.</span>
-<span class="sd">    </span>
+
 <span class="sd">    .. figure:: images/plot_in_out_circ.png</span>
 <span class="sd">       :alt: A chart showing the action of the easing function.</span>
-<span class="sd">       </span>
+
 <span class="sd">       The action of :func:`in_out_circ`.</span>
-<span class="sd">       </span>
+
 <span class="sd">    With image data, it extends the darker and lighter areas. This</span>
 <span class="sd">    should not generate values outside of the original range.</span>
-<span class="sd">    </span>
+
 <span class="sd">    .. figure:: images/ex_in_out_circ.png</span>
 <span class="sd">       :alt: An example of the easing function affecting a gradient.</span>
-<span class="sd">       </span>
-<span class="sd">       An example of how :func:`in_out_circ` affects a simple gradient. </span>
-<span class="sd">    </span>
+
+<span class="sd">       An example of how :func:`in_out_circ` affects a simple gradient.</span>
+
 <span class="sd">    :param a: An array of image data.</span>
 <span class="sd">    :return: The eased data as a :class:`numpy.ndarray`.</span>
 <span class="sd">    :rtype: numpy.ndarray</span>
@@ -1134,21 +1134,21 @@
 <span class="k">def</span><span class="w"> </span><span class="nf">in_out_cos</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ImgAry</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;An easing function that uses a cosine curve to turn the make the</span>
 <span class="sd">    middle low and the edges high.</span>
-<span class="sd">    </span>
+
 <span class="sd">    .. figure:: images/plot_in_out_cos.png</span>
 <span class="sd">       :alt: A chart showing the action of the easing function.</span>
-<span class="sd">       </span>
+
 <span class="sd">       The action of :func:`in_out_cos`.</span>
-<span class="sd">       </span>
+
 <span class="sd">    With image data, it turns the midtones dark and the dark and light</span>
 <span class="sd">    become midtones. This should not generate values outside of the</span>
 <span class="sd">    original range.</span>
-<span class="sd">    </span>
+
 <span class="sd">    .. figure:: images/ex_in_out_cos.png</span>
 <span class="sd">       :alt: An example of the easing function affecting a gradient.</span>
-<span class="sd">       </span>
-<span class="sd">       An example of how :func:`in_out_cos` affects a simple gradient. </span>
-<span class="sd">    </span>
+
+<span class="sd">       An example of how :func:`in_out_cos` affects a simple gradient.</span>
+
 <span class="sd">    :param a: An array of image data.</span>
 <span class="sd">    :return: The eased data as a :class:`numpy.ndarray`.</span>
 <span class="sd">    :rtype: numpy.ndarray</span>
@@ -1164,20 +1164,20 @@
 <span class="k">def</span><span class="w"> </span><span class="nf">in_out_cubic</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ImgAry</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;An easing function that uses a cubic curve to compress the</span>
 <span class="sd">    middle.</span>
-<span class="sd">    </span>
+
 <span class="sd">    .. figure:: images/plot_in_out_cubic.png</span>
 <span class="sd">       :alt: A chart showing the action of the easing function.</span>
-<span class="sd">       </span>
+
 <span class="sd">       The action of :func:`in_out_cubic`.</span>
-<span class="sd">       </span>
+
 <span class="sd">    With image data, it extends the darker and lighter areas. This</span>
 <span class="sd">    should not generate values outside of the original range.</span>
-<span class="sd">    </span>
+
 <span class="sd">    .. figure:: images/ex_in_out_cubic.png</span>
 <span class="sd">       :alt: An example of the easing function affecting a gradient.</span>
-<span class="sd">       </span>
-<span class="sd">       An example of how :func:`in_out_cubic` affects a simple gradient. </span>
-<span class="sd">    </span>
+
+<span class="sd">       An example of how :func:`in_out_cubic` affects a simple gradient.</span>
+
 <span class="sd">    :param a: An array of image data.</span>
 <span class="sd">    :return: The eased data as a :class:`numpy.ndarray`.</span>
 <span class="sd">    :rtype: numpy.ndarray</span>
@@ -1195,24 +1195,24 @@
 <span class="k">def</span><span class="w"> </span><span class="nf">in_out_elastic</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ImgAry</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;An easing function that uses a bouncy curve to compress the</span>
 <span class="sd">    middle.</span>
-<span class="sd">    </span>
+
 <span class="sd">    .. figure:: images/plot_in_out_elastic.png</span>
 <span class="sd">       :alt: A chart showing the action of the easing function.</span>
-<span class="sd">       </span>
+
 <span class="sd">       The action of :func:`in_out_elastic`.</span>
-<span class="sd">       </span>
-<span class="sd">    With image data, it extends the darker and lighter areas. The </span>
+
+<span class="sd">    With image data, it extends the darker and lighter areas. The</span>
 <span class="sd">    dip into values below zero or bounce into values over one can</span>
 <span class="sd">    be a little awkward. It&#39;s left to the calling application to</span>
 <span class="sd">    decide how to handle it. In the following example, values are</span>
 <span class="sd">    just truncated at one.</span>
-<span class="sd">    </span>
+
 <span class="sd">    .. figure:: images/ex_in_out_elastic.png</span>
 <span class="sd">       :alt: An example of the easing function affecting a gradient.</span>
-<span class="sd">       </span>
+
 <span class="sd">       An example of how :func:`in_out_elastic` affects a simple</span>
-<span class="sd">       gradient. </span>
-<span class="sd">    </span>
+<span class="sd">       gradient.</span>
+
 <span class="sd">    :param a: An array of image data.</span>
 <span class="sd">    :return: The eased data as a :class:`numpy.ndarray`.</span>
 <span class="sd">    :rtype: numpy.ndarray</span>
@@ -1243,20 +1243,20 @@
 <span class="k">def</span><span class="w"> </span><span class="nf">in_out_expo</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ImgAry</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;An easing function that uses a exponential curve to compress the</span>
 <span class="sd">    middle.</span>
-<span class="sd">    </span>
+
 <span class="sd">    .. figure:: images/plot_in_out_expo.png</span>
 <span class="sd">       :alt: A chart showing the action of the easing function.</span>
-<span class="sd">       </span>
+
 <span class="sd">       The action of :func:`in_out_expo`.</span>
-<span class="sd">       </span>
+
 <span class="sd">    With image data, it extends the darker and lighter areas. This</span>
 <span class="sd">    should not generate values outside of the original range.</span>
-<span class="sd">    </span>
+
 <span class="sd">    .. figure:: images/ex_in_out_expo.png</span>
 <span class="sd">       :alt: An example of the easing function affecting a gradient.</span>
-<span class="sd">       </span>
-<span class="sd">       An example of how :func:`in_out_expo` affects a simple gradient. </span>
-<span class="sd">    </span>
+
+<span class="sd">       An example of how :func:`in_out_expo` affects a simple gradient.</span>
+
 <span class="sd">    :param a: An array of image data.</span>
 <span class="sd">    :return: The eased data as a :class:`numpy.ndarray`.</span>
 <span class="sd">    :rtype: numpy.ndarray</span>
@@ -1278,20 +1278,20 @@
 <span class="k">def</span><span class="w"> </span><span class="nf">in_out_perlin</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ImgAry</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;An easing function that uses the easing equation from Ken</span>
 <span class="sd">    Perlin&#39;s &quot;Improved Perlin Noise&quot; papaer.</span>
-<span class="sd">    </span>
+
 <span class="sd">    .. figure:: images/plot_in_out_perlin.png</span>
 <span class="sd">       :alt: A chart showing the action of the easing function.</span>
-<span class="sd">       </span>
+
 <span class="sd">       The action of :func:`in_out_perlin`.</span>
-<span class="sd">       </span>
+
 <span class="sd">    With image data, it slightly extends the darker and lighter areas.</span>
 <span class="sd">    This should not generate values outside of the original range.</span>
-<span class="sd">    </span>
+
 <span class="sd">    .. figure:: images/ex_in_out_perlin.png</span>
 <span class="sd">       :alt: An example of the easing function affecting a gradient.</span>
-<span class="sd">       </span>
-<span class="sd">       An example of how :func:`in_out_perlin` affects a simple gradient. </span>
-<span class="sd">    </span>
+
+<span class="sd">       An example of how :func:`in_out_perlin` affects a simple gradient.</span>
+
 <span class="sd">    :param a: An array of image data.</span>
 <span class="sd">    :return: The eased data as a :class:`numpy.ndarray`.</span>
 <span class="sd">    :rtype: numpy.ndarray</span>
@@ -1307,21 +1307,21 @@
 <span class="k">def</span><span class="w"> </span><span class="nf">in_out_quad</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ImgAry</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;An easing function that uses a quadratic curve to compress the</span>
 <span class="sd">    middle.</span>
-<span class="sd">    </span>
+
 <span class="sd">    .. figure:: images/plot_in_out_quad.png</span>
 <span class="sd">       :alt: A chart showing the action of the easing function.</span>
-<span class="sd">       </span>
+
 <span class="sd">       The action of :func:`in_out_quad`.</span>
-<span class="sd">       </span>
+
 <span class="sd">    With image data, it extends the darker and lighter areas. This</span>
 <span class="sd">    should not generate values outside of the original range.</span>
-<span class="sd">    </span>
+
 <span class="sd">    .. figure:: images/ex_in_out_quad.png</span>
 <span class="sd">       :alt: An example of the easing function affecting a gradient.</span>
-<span class="sd">       </span>
+
 <span class="sd">       An example of how :func:`in_out_quad` affects a simple</span>
-<span class="sd">       gradient. </span>
-<span class="sd">    </span>
+<span class="sd">       gradient.</span>
+
 <span class="sd">    :param a: An array of image data.</span>
 <span class="sd">    :return: The eased data as a :class:`numpy.ndarray`.</span>
 <span class="sd">    :rtype: numpy.ndarray</span>
@@ -1341,21 +1341,21 @@
 <span class="k">def</span><span class="w"> </span><span class="nf">in_out_quart</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ImgAry</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;An easing function that uses a quartic curve to compress the</span>
 <span class="sd">    middle.</span>
-<span class="sd">    </span>
+
 <span class="sd">    .. figure:: images/plot_in_out_quart.png</span>
 <span class="sd">       :alt: A chart showing the action of the easing function.</span>
-<span class="sd">       </span>
+
 <span class="sd">       The action of :func:`in_out_quart`.</span>
-<span class="sd">       </span>
+
 <span class="sd">    With image data, it extends the darker and lighter areas. This</span>
 <span class="sd">    should not generate values outside of the original range.</span>
-<span class="sd">    </span>
+
 <span class="sd">    .. figure:: images/ex_in_out_quart.png</span>
 <span class="sd">       :alt: An example of the easing function affecting a gradient.</span>
-<span class="sd">       </span>
+
 <span class="sd">       An example of how :func:`in_out_quart` affects a simple</span>
-<span class="sd">       gradient. </span>
-<span class="sd">    </span>
+<span class="sd">       gradient.</span>
+
 <span class="sd">    :param a: An array of image data.</span>
 <span class="sd">    :return: The eased data as a :class:`numpy.ndarray`.</span>
 <span class="sd">    :rtype: numpy.ndarray</span>
@@ -1373,21 +1373,21 @@
 <span class="k">def</span><span class="w"> </span><span class="nf">in_out_quint</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ImgAry</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;An easing function that uses a quintic curve to compress the</span>
 <span class="sd">    middle.</span>
-<span class="sd">    </span>
+
 <span class="sd">    .. figure:: images/plot_in_out_quint.png</span>
 <span class="sd">       :alt: A chart showing the action of the easing function.</span>
-<span class="sd">       </span>
+
 <span class="sd">       The action of :func:`in_out_quint`.</span>
-<span class="sd">       </span>
+
 <span class="sd">    With image data, it greatly extends the darker and lighter areas.</span>
 <span class="sd">    This should not generate values outside of the original range.</span>
-<span class="sd">    </span>
+
 <span class="sd">    .. figure:: images/ex_in_out_quint.png</span>
 <span class="sd">       :alt: An example of the easing function affecting a gradient.</span>
-<span class="sd">       </span>
+
 <span class="sd">       An example of how :func:`in_out_quint` affects a simple</span>
-<span class="sd">       gradient. </span>
-<span class="sd">    </span>
+<span class="sd">       gradient.</span>
+
 <span class="sd">    :param a: An array of image data.</span>
 <span class="sd">    :return: The eased data as a :class:`numpy.ndarray`.</span>
 <span class="sd">    :rtype: numpy.ndarray</span>
@@ -1405,20 +1405,20 @@
 <span class="k">def</span><span class="w"> </span><span class="nf">in_out_sin</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ImgAry</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;An easing function that uses a sine curve to compress the</span>
 <span class="sd">    middle.</span>
-<span class="sd">    </span>
+
 <span class="sd">    .. figure:: images/plot_in_out_sin.png</span>
 <span class="sd">       :alt: A chart showing the action of the easing function.</span>
-<span class="sd">       </span>
+
 <span class="sd">       The action of :func:`in_out_sin`.</span>
-<span class="sd">       </span>
+
 <span class="sd">    With image data, it slightly extends the darker and lighter areas.</span>
 <span class="sd">    This should not generate values outside of the original range.</span>
-<span class="sd">    </span>
+
 <span class="sd">    .. figure:: images/ex_in_out_sin.png</span>
 <span class="sd">       :alt: An example of the easing function affecting a gradient.</span>
-<span class="sd">       </span>
-<span class="sd">       An example of how :func:`in_out_sin` affects a simple gradient. </span>
-<span class="sd">    </span>
+
+<span class="sd">       An example of how :func:`in_out_sin` affects a simple gradient.</span>
+
 <span class="sd">    :param a: An array of image data.</span>
 <span class="sd">    :return: The eased data as a :class:`numpy.ndarray`.</span>
 <span class="sd">    :rtype: numpy.ndarray</span>
@@ -1435,20 +1435,20 @@
 <span class="k">def</span><span class="w"> </span><span class="nf">mid_bump_linear</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ImgAry</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;An easing function that makes the middle of the range the peak</span>
 <span class="sd">    of the values.</span>
-<span class="sd">    </span>
+
 <span class="sd">    .. figure:: images/plot_mid_bump_linear.png</span>
 <span class="sd">       :alt: A chart showing the action of the easing function.</span>
-<span class="sd">       </span>
+
 <span class="sd">       The action of :func:`mid_bump_linear`.</span>
-<span class="sd">       </span>
+
 <span class="sd">    With image data, it makes the midtones light and the edges dark.</span>
-<span class="sd">    </span>
+
 <span class="sd">    .. figure:: images/ex_mid_bump_linear.png</span>
 <span class="sd">       :alt: An example of the easing function affecting a gradient.</span>
-<span class="sd">       </span>
+
 <span class="sd">       An example of how :func:`mid_bump_linear` affects a simple</span>
-<span class="sd">       gradient. </span>
-<span class="sd">    </span>
+<span class="sd">       gradient.</span>
+
 <span class="sd">    :param a: An array of image data.</span>
 <span class="sd">    :return: The eased data as a :class:`numpy.ndarray`.</span>
 <span class="sd">    :rtype: numpy.ndarray</span>
@@ -1469,20 +1469,20 @@
 <span class="k">def</span><span class="w"> </span><span class="nf">mid_bump_sin</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ImgAry</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;An easing function that makes the middle of the range the peak</span>
 <span class="sd">    of the values.</span>
-<span class="sd">    </span>
+
 <span class="sd">    .. figure:: images/plot_mid_bump_sin.png</span>
 <span class="sd">       :alt: A chart showing the action of the easing function.</span>
-<span class="sd">       </span>
+
 <span class="sd">       The action of :func:`mid_bump_sin`.</span>
-<span class="sd">       </span>
+
 <span class="sd">    With image data, it makes the midtones light and the edges dark.</span>
-<span class="sd">    </span>
+
 <span class="sd">    .. figure:: images/ex_mid_bump_sin.png</span>
 <span class="sd">       :alt: An example of the easing function affecting a gradient.</span>
-<span class="sd">       </span>
+
 <span class="sd">       An example of how :func:`mid_bump_sin` affects a simple</span>
-<span class="sd">       gradient. </span>
-<span class="sd">    </span>
+<span class="sd">       gradient.</span>
+
 <span class="sd">    :param a: An array of image data.</span>
 <span class="sd">    :return: The eased data as a :class:`numpy.ndarray`.</span>
 <span class="sd">    :rtype: numpy.ndarray</span>

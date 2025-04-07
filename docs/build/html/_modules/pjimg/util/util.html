@@ -4,7 +4,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
-    <!-- Generated with Sphinx 8.1.3 and Furo 2024.08.06 -->
+    <!-- Generated with Sphinx 8.2.3 and Furo 2024.08.06 -->
         <title>pjimg.util.util - pjimg 0.0.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=354aac6f" />
@@ -260,7 +260,7 @@
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">pjimg.util.constants</span><span class="w"> </span><span class="kn">import</span> <span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">Z</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">pjimg.util.model</span><span class="w"> </span><span class="kn">import</span> <span class="n">Size</span><span class="p">,</span> <span class="n">Loc</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pjimg.util.model</span><span class="w"> </span><span class="kn">import</span> <span class="n">Loc</span><span class="p">,</span> <span class="n">Size</span>
 
 
 <span class="c1"># Exported names.</span>
@@ -274,7 +274,7 @@
 <a class="viewcode-back" href="../../../util.html#pjimg.util.find_center">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">find_center</span><span class="p">(</span><span class="n">size</span><span class="p">:</span> <span class="n">Size</span><span class="p">,</span> <span class="n">loc</span><span class="p">:</span> <span class="n">Loc</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span> <span class="o">-&gt;</span> <span class="n">Size</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Find the center pixel of an image of the given size.</span>
-<span class="sd">    </span>
+
 <span class="sd">    :param size: The shape of the image data.</span>
 <span class="sd">    :param loc: (Optional.) How much to offset the center in each</span>
 <span class="sd">        dimension. Defaults to no offset.</span>
@@ -295,10 +295,10 @@
 <span class="sd">    data you need to create in order to rotate the final image within</span>
 <span class="sd">    the image data freely around the Z axis without the corners of</span>
 <span class="sd">    the final image going outside of the bounds of the image data.</span>
-<span class="sd">    </span>
+
 <span class="sd">    Basically, it says how big the image data needs to be so the</span>
 <span class="sd">    corners of the final image won&#39;t be black if you rotate the image.</span>
-<span class="sd">    </span>
+
 <span class="sd">    :param size: The size of the final image.</span>
 <span class="sd">    :return: A :class:`tuple` containing the shape of the needed image</span>
 <span class="sd">        data.</span>
@@ -321,7 +321,7 @@
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Given a two-dimensional location in linear coordinates and</span>
 <span class="sd">    a distance in polar coordinates, return the linear coordinates</span>
 <span class="sd">    of the location that distance away from the original location.</span>
-<span class="sd">    </span>
+
 <span class="sd">    :param start: The starting location.</span>
 <span class="sd">    :param p: The rho (distance) of the polar coordinates.</span>
 <span class="sd">    :param o: The theta (angle) of the polar coordinates in radians.</span>
@@ -340,7 +340,7 @@
 <span class="k">def</span><span class="w"> </span><span class="nf">get_prefixed_functions</span><span class="p">(</span><span class="n">prefix</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">obj</span><span class="p">:</span> <span class="nb">object</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Callable</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Return the functions within the given object that start with</span>
 <span class="sd">    the prefix.</span>
-<span class="sd">    </span>
+
 <span class="sd">    :param prefix: The prefix of the functions to gather.</span>
 <span class="sd">    :param obj: The module to gather from.</span>
 <span class="sd">    :return: A :class:`dict` of the gathered functions.</span>

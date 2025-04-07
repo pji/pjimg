@@ -4,7 +4,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
-    <!-- Generated with Sphinx 8.1.3 and Furo 2024.08.06 -->
+    <!-- Generated with Sphinx 8.2.3 and Furo 2024.08.06 -->
         <title>pjimg.filters.affine - pjimg 0.0.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=354aac6f" />
@@ -264,7 +264,7 @@
 <span class="kn">import</span><span class="w"> </span><span class="nn">pjimg.util.resize</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">rsz</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pjimg.filters.decorators</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pjimg.filters.model</span><span class="w"> </span><span class="kn">import</span> <span class="n">filters</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">pjimg.util</span><span class="w"> </span><span class="kn">import</span> <span class="n">find_center</span><span class="p">,</span> <span class="n">ImgAry</span><span class="p">,</span> <span class="n">Loc</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">X_</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">Y_</span><span class="p">,</span> <span class="n">Z</span><span class="p">,</span> <span class="n">Z_</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pjimg.util</span><span class="w"> </span><span class="kn">import</span> <span class="n">X_</span><span class="p">,</span> <span class="n">Y_</span><span class="p">,</span> <span class="n">Z_</span><span class="p">,</span> <span class="n">ImgAry</span><span class="p">,</span> <span class="n">Loc</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">Z</span><span class="p">,</span> <span class="n">find_center</span>
 
 
 <span class="c1"># Names available for import.</span>
@@ -282,9 +282,9 @@
 
 <span class="sd">    .. figure:: images/flip.jpg</span>
 <span class="sd">       :alt: An example of the filter affecting an image.</span>
-<span class="sd">       </span>
+
 <span class="sd">       An example of :func:`flip` affecting an image.</span>
-<span class="sd">    </span>
+
 <span class="sd">    :param a: The image data to alter.</span>
 <span class="sd">    :param axis: The axis to flip the image data around.</span>
 <span class="sd">    :returns: A :class:`np.ndarray` object.</span>
@@ -302,9 +302,9 @@
 
 <span class="sd">    .. figure:: images/grow.jpg</span>
 <span class="sd">       :alt: An example of the filter affecting an image.</span>
-<span class="sd">       </span>
+
 <span class="sd">       An example of :func:`grow` affecting an image.</span>
-<span class="sd">    </span>
+
 <span class="sd">    :param a: The image data to alter.</span>
 <span class="sd">    :param factor: The scaling factor to use when increasing the</span>
 <span class="sd">        size of the image.</span>
@@ -316,7 +316,7 @@
     <span class="k">if</span> <span class="n">yx_only</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">:</span>
         <span class="n">frames</span> <span class="o">=</span> <span class="p">[</span><span class="n">grow</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="n">factor</span><span class="p">)</span> <span class="k">for</span> <span class="n">frame</span> <span class="ow">in</span> <span class="n">a</span><span class="p">]</span>
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">frames</span><span class="p">)</span>
-    
+
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">rsz</span><span class="o">.</span><span class="n">bilinear_interpolation</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">factor</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">rsz</span><span class="o">.</span><span class="n">trilinear_interpolation</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">factor</span><span class="p">)</span></div>
@@ -331,12 +331,12 @@
     <span class="n">a</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">,</span> <span class="n">angle</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">origin</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Loc</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">safe</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ImgAry</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Rotate the image by an arbitrary angle around the Z axis.</span>
-<span class="sd">    </span>
+
 <span class="sd">    .. figure:: images/rotate_2d.jpg</span>
 <span class="sd">       :alt: An example of the filter affecting an image.</span>
-<span class="sd">       </span>
+
 <span class="sd">       An example of :func:`rotate_2d` affecting an image.</span>
-<span class="sd">    </span>
+
 <span class="sd">    :param a: The image data to alter.</span>
 <span class="sd">    :param angle: The angle to rotate the image in degrees.</span>
 <span class="sd">    :param origin: (Optional.) The point of rotation. Defaults to</span>
@@ -367,9 +367,9 @@
 
 <span class="sd">    .. figure:: images/rotate_90.jpg</span>
 <span class="sd">       :alt: An example of the filter affecting an image.</span>
-<span class="sd">       </span>
+
 <span class="sd">       An example of :func:`rotate_90` affecting an image.</span>
-<span class="sd">    </span>
+
 <span class="sd">    :param a: The image data to alter.</span>
 <span class="sd">    :param direction: (Optional.) Whether to rotate the data</span>
 <span class="sd">        clockwise or counter clockwise.</span>
@@ -392,9 +392,9 @@
 
 <span class="sd">    .. figure:: images/skew.jpg</span>
 <span class="sd">       :alt: An example of the filter affecting an image.</span>
-<span class="sd">       </span>
+
 <span class="sd">       An example of :func:`skew` affecting an image.</span>
-<span class="sd">    </span>
+
 <span class="sd">    :param a: The image data to alter.</span>
 <span class="sd">    :param slope: The slope of the Y axis of the image after the skew.</span>
 <span class="sd">    :returns: A :class:`np.ndarray` object.</span>

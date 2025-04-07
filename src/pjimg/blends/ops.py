@@ -122,16 +122,16 @@ horizontal gradient::
 
 .. figure:: images/a.jpg
    :alt: The simple horizontal gradient `a`.
-   
+
    The simple horizontal gradient `a`.
 
 is blended with a simple vertical gradient::
 
     >>> b = Gradient('v').fill((1, 720, 1280))
-    
+
 .. figure:: images/b.jpg
    :alt: The simple horizontal gradient `b`.
-   
+
    The simple horizontal gradient `b`.
 
 
@@ -222,9 +222,9 @@ def replace(a: ImgAry, b: ImgAry) -> ImgAry:
     :return: An :class:`numpy.ndarray` that contains the values of the
         blended arrays.
     :rtype: numpy.ndarray
-    
+
     Usage::
-    
+
         >>> from pjimg.sources import Gradient
         >>> a = Gradient('h').fill((1, 720, 1280))
         >>> b = Gradient('v').fill((1, 720, 1280))
@@ -232,7 +232,7 @@ def replace(a: ImgAry, b: ImgAry) -> ImgAry:
 
     .. figure:: images/replace.jpg
        :alt: The result of :func:`replace`.
-       
+
        The result of :func:`replace`.
 
     """
@@ -268,9 +268,9 @@ def darker(a: ImgAry, b: ImgAry) -> ImgAry:
     :return: An :class:`numpy.ndarray` that contains the values of the
         blended arrays.
     :rtype: numpy.ndarray
-    
+
     Usage::
-    
+
         >>> from pjimg.sources import Gradient
         >>> a = Gradient('h').fill((1, 720, 1280))
         >>> b = Gradient('v').fill((1, 720, 1280))
@@ -278,7 +278,7 @@ def darker(a: ImgAry, b: ImgAry) -> ImgAry:
 
     .. figure:: images/darker.jpg
        :alt: The result of :func:`darker`.
-       
+
        The result of :func:`darker`.
 
     """
@@ -315,9 +315,9 @@ def multiply(a: ImgAry, b: ImgAry) -> ImgAry:
     :return: An :class:`numpy.ndarray` that contains the values of the
         blended arrays.
     :rtype: numpy.ndarray
-    
+
     Usage::
-    
+
         >>> from pjimg.sources import Gradient
         >>> a = Gradient('h').fill((1, 720, 1280))
         >>> b = Gradient('v').fill((1, 720, 1280))
@@ -325,7 +325,7 @@ def multiply(a: ImgAry, b: ImgAry) -> ImgAry:
 
     .. figure:: images/multiply.jpg
        :alt: The result of :func:`multiply`.
-       
+
        The result of :func:`multiply`.
 
     """
@@ -360,9 +360,9 @@ def color_burn(a: ImgAry, b: ImgAry) -> ImgAry:
     :return: An :class:`numpy.ndarray` that contains the values of the
         blended arrays.
     :rtype: numpy.ndarray
-    
+
     Usage::
-    
+
         >>> from pjimg.sources import Gradient
         >>> a = Gradient('h').fill((1, 720, 1280))
         >>> b = Gradient('v').fill((1, 720, 1280))
@@ -370,7 +370,7 @@ def color_burn(a: ImgAry, b: ImgAry) -> ImgAry:
 
     .. figure:: images/color_burn.jpg
        :alt: The result of :func:`color_burn`.
-       
+
        The result of :func:`color_burn`.
 
     """
@@ -409,9 +409,9 @@ def linear_burn(a: ImgAry, b: ImgAry) -> ImgAry:
     :return: An :class:`numpy.ndarray` that contains the values of the
         blended arrays.
     :rtype: numpy.ndarray
-    
+
     Usage::
-    
+
         >>> from pjimg.sources import Gradient
         >>> a = Gradient('h').fill((1, 720, 1280))
         >>> b = Gradient('v').fill((1, 720, 1280))
@@ -419,7 +419,7 @@ def linear_burn(a: ImgAry, b: ImgAry) -> ImgAry:
 
     .. figure:: images/linear_burn.jpg
        :alt: The result of :func:`linear_burn`.
-       
+
        The result of :func:`linear_burn`.
 
     """
@@ -455,9 +455,9 @@ def lighter(a: ImgAry, b: ImgAry) -> ImgAry:
     :return: An :class:`numpy.ndarray` that contains the values of the
         blended arrays.
     :rtype: numpy.ndarray
-    
+
     Usage::
-    
+
         >>> from pjimg.sources import Gradient
         >>> a = Gradient('h').fill((1, 720, 1280))
         >>> b = Gradient('v').fill((1, 720, 1280))
@@ -465,7 +465,7 @@ def lighter(a: ImgAry, b: ImgAry) -> ImgAry:
 
     .. figure:: images/lighter.jpg
        :alt: The result of :func:`lighter`.
-       
+
        The result of :func:`lighter`.
 
     """
@@ -503,9 +503,9 @@ def screen(a: ImgAry, b: ImgAry) -> ImgAry:
     :return: An :class:`numpy.ndarray` that contains the values of the
         blended arrays.
     :rtype: numpy.ndarray
-    
+
     Usage::
-    
+
         >>> from pjimg.sources import Gradient
         >>> a = Gradient('h').fill((1, 720, 1280))
         >>> b = Gradient('v').fill((1, 720, 1280))
@@ -513,7 +513,7 @@ def screen(a: ImgAry, b: ImgAry) -> ImgAry:
 
     .. figure:: images/screen.jpg
        :alt: The result of :func:`screen`.
-       
+
        The result of :func:`screen`.
 
     """
@@ -550,9 +550,9 @@ def color_dodge(a: ImgAry, b: ImgAry) -> ImgAry:
     :return: An :class:`numpy.ndarray` that contains the values of the
         blended arrays.
     :rtype: numpy.ndarray
-    
+
     Usage::
-    
+
         >>> from pjimg.sources import Gradient
         >>> a = Gradient('h').fill((1, 720, 1280))
         >>> b = Gradient('v').fill((1, 720, 1280))
@@ -560,7 +560,7 @@ def color_dodge(a: ImgAry, b: ImgAry) -> ImgAry:
 
     .. figure:: images/color_dodge.jpg
        :alt: The result of :func:`color_dodge`.
-       
+
        The result of :func:`color_dodge`.
 
     """
@@ -596,9 +596,9 @@ def linear_dodge(a: ImgAry, b: ImgAry) -> ImgAry:
     :return: An :class:`numpy.ndarray` that contains the values of the
         blended arrays.
     :rtype: numpy.ndarray
-    
+
     Usage::
-    
+
         >>> from pjimg.sources import Gradient
         >>> a = Gradient('h').fill((1, 720, 1280))
         >>> b = Gradient('v').fill((1, 720, 1280))
@@ -606,7 +606,7 @@ def linear_dodge(a: ImgAry, b: ImgAry) -> ImgAry:
 
     .. figure:: images/linear_dodge.jpg
        :alt: The result of :func:`linear_dodge`.
-       
+
        The result of :func:`linear_dodge`.
 
     """
@@ -643,9 +643,9 @@ def difference(a: ImgAry, b: ImgAry) -> ImgAry:
     :return: An :class:`numpy.ndarray` that contains the values of the
         blended arrays.
     :rtype: numpy.ndarray
-    
+
     Usage::
-    
+
         >>> from pjimg.sources import Gradient
         >>> a = Gradient('h').fill((1, 720, 1280))
         >>> b = Gradient('v').fill((1, 720, 1280))
@@ -653,7 +653,7 @@ def difference(a: ImgAry, b: ImgAry) -> ImgAry:
 
     .. figure:: images/difference.jpg
        :alt: The result of :func:`difference`.
-       
+
        The result of :func:`difference`.
 
     """
@@ -688,9 +688,9 @@ def exclusion(a: ImgAry, b: ImgAry) -> ImgAry:
     :return: An :class:`numpy.ndarray` that contains the values of the
         blended arrays.
     :rtype: numpy.ndarray
-    
+
     Usage::
-    
+
         >>> from pjimg.sources import Gradient
         >>> a = Gradient('h').fill((1, 720, 1280))
         >>> b = Gradient('v').fill((1, 720, 1280))
@@ -698,7 +698,7 @@ def exclusion(a: ImgAry, b: ImgAry) -> ImgAry:
 
     .. figure:: images/exclusion.jpg
        :alt: The result of :func:`exclusion`.
-       
+
        The result of :func:`exclusion`.
 
     """
@@ -735,9 +735,9 @@ def hard_light(a: ImgAry, b: ImgAry) -> ImgAry:
     :return: An :class:`numpy.ndarray` that contains the values of the
         blended arrays.
     :rtype: numpy.ndarray
-    
+
     Usage::
-    
+
         >>> from pjimg.sources import Gradient
         >>> a = Gradient('h').fill((1, 720, 1280))
         >>> b = Gradient('v').fill((1, 720, 1280))
@@ -745,7 +745,7 @@ def hard_light(a: ImgAry, b: ImgAry) -> ImgAry:
 
     .. figure:: images/hard_light.jpg
        :alt: The result of :func:`hard_light`.
-       
+
        The result of :func:`hard_light`.
 
     """
@@ -783,9 +783,9 @@ def hard_mix(a: ImgAry, b: ImgAry) -> ImgAry:
     :return: An :class:`numpy.ndarray` that contains the values of the
         blended arrays.
     :rtype: numpy.ndarray
-    
+
     Usage::
-    
+
         >>> from pjimg.sources import Gradient
         >>> a = Gradient('h').fill((1, 720, 1280))
         >>> b = Gradient('v').fill((1, 720, 1280))
@@ -793,7 +793,7 @@ def hard_mix(a: ImgAry, b: ImgAry) -> ImgAry:
 
     .. figure:: images/hard_mix.jpg
        :alt: The result of :func:`hard_mix`.
-       
+
        The result of :func:`hard_mix`.
 
     """
@@ -830,9 +830,9 @@ def linear_light(a: ImgAry, b: ImgAry) -> ImgAry:
     :return: An :class:`numpy.ndarray` that contains the values of the
         blended arrays.
     :rtype: numpy.ndarray
-    
+
     Usage::
-    
+
         >>> from pjimg.sources import Gradient
         >>> a = Gradient('h').fill((1, 720, 1280))
         >>> b = Gradient('v').fill((1, 720, 1280))
@@ -840,7 +840,7 @@ def linear_light(a: ImgAry, b: ImgAry) -> ImgAry:
 
     .. figure:: images/linear_light.jpg
        :alt: The result of :func:`linear_light`.
-       
+
        The result of :func:`linear_light`.
 
     """
@@ -875,9 +875,9 @@ def overlay(a: ImgAry, b: ImgAry) -> ImgAry:
     :return: An :class:`numpy.ndarray` that contains the values of the
         blended arrays.
     :rtype: numpy.ndarray
-    
+
     Usage::
-    
+
         >>> from pjimg.sources import Gradient
         >>> a = Gradient('h').fill((1, 720, 1280))
         >>> b = Gradient('v').fill((1, 720, 1280))
@@ -885,7 +885,7 @@ def overlay(a: ImgAry, b: ImgAry) -> ImgAry:
 
     .. figure:: images/overlay.jpg
        :alt: The result of :func:`overlay`.
-       
+
        The result of :func:`overlay`.
 
     """
@@ -923,9 +923,9 @@ def pin_light(a: ImgAry, b: ImgAry) -> ImgAry:
     :return: An :class:`numpy.ndarray` that contains the values of the
         blended arrays.
     :rtype: numpy.ndarray
-    
+
     Usage::
-    
+
         >>> from pjimg.sources import Gradient
         >>> a = Gradient('h').fill((1, 720, 1280))
         >>> b = Gradient('v').fill((1, 720, 1280))
@@ -933,7 +933,7 @@ def pin_light(a: ImgAry, b: ImgAry) -> ImgAry:
 
     .. figure:: images/pin_light.jpg
        :alt: The result of :func:`pin_light`.
-       
+
        The result of :func:`pin_light`.
 
     """
@@ -982,9 +982,9 @@ def soft_light(a: ImgAry, b: ImgAry) -> ImgAry:
     :return: An :class:`numpy.ndarray` that contains the values of the
         blended arrays.
     :rtype: numpy.ndarray
-    
+
     Usage::
-    
+
         >>> from pjimg.sources import Gradient
         >>> a = Gradient('h').fill((1, 720, 1280))
         >>> b = Gradient('v').fill((1, 720, 1280))
@@ -992,7 +992,7 @@ def soft_light(a: ImgAry, b: ImgAry) -> ImgAry:
 
     .. figure:: images/soft_light.jpg
        :alt: The result of :func:`soft_light`.
-       
+
        The result of :func:`soft_light`.
 
     """
@@ -1031,9 +1031,9 @@ def vivid_light(a: ImgAry, b: ImgAry) -> ImgAry:
     :return: An :class:`numpy.ndarray` that contains the values of the
         blended arrays.
     :rtype: numpy.ndarray
-    
+
     Usage::
-    
+
         >>> from pjimg.sources import Gradient
         >>> a = Gradient('h').fill((1, 720, 1280))
         >>> b = Gradient('v').fill((1, 720, 1280))
@@ -1041,7 +1041,7 @@ def vivid_light(a: ImgAry, b: ImgAry) -> ImgAry:
 
     .. figure:: images/vivid_light.jpg
        :alt: The result of :func:`vivid_light`.
-       
+
        The result of :func:`vivid_light`.
 
     """

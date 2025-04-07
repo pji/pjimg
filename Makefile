@@ -28,11 +28,12 @@ docs:
 	python examples/eases/build_doc_images.py
 	python examples/filters/build_doc_images.py
 	python examples/sources/build_doc_images.py
+	sphinx-build -b doctest docs/source/ docs/build/html
 	sphinx-build -b html docs/source/ docs/build/html
 
 .PHONY: pre
 pre:
-	python precommit.py
+	tox
 	git status
 
 .PHONY: test

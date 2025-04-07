@@ -37,7 +37,7 @@ def float_to_uint8(a: ArrayLike) -> IntAry:
 
 def grayscale_to_rgb(a: ImgAry) -> ImgAry:
     """Convert single channel image data to three channel.
-    
+
     :param a: The array of grayscale image data to convert.
     :return: A :class:`numpy.ndarray` object.
     :rtype: numpy.ndarray

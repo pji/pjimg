@@ -61,4 +61,3 @@ def test_Serializable_repr(serial):
     assert repr(serial) == "Serial(spam='0123...9', eggs=2)"
     serial.spam = b'3'
     assert repr(serial) == "Serial(spam=b'3', eggs=2)"
-

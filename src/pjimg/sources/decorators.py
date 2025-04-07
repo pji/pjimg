@@ -19,7 +19,7 @@ def register(
 ) -> Callable[[type[TilePattern],], type[TilePattern]]:
     """Registers the decorated function under the function's name
     in the given registry dictionary.
-    
+
     :param registry: The registry to register the given class in.
     :return: The registration :mod:`class` pointed to the given
         registry.

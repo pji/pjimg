@@ -50,9 +50,9 @@ class Perlin(un.UnitNoise):
         integers for seeding.
     :return: :class:Perlin object.
     :rtype: sources.perlin.Perlin
-    
+
     Usage::
-    
+
         >>> # Create Perlin noise in a 1280x720 image.
         >>> size = (1, 720, 1280)
         >>> unit = (1, size[Y] // 5, size[Y] // 5)
@@ -61,7 +61,7 @@ class Perlin(un.UnitNoise):
 
     .. figure:: images/perlin.jpg
        :alt: Perlin noise in a 1280x720 image.
-       
+
        The image data created by the usage example.
 
     """
@@ -123,14 +123,14 @@ class Perlin(un.UnitNoise):
     def _grad(self, loc_mask, grid, parts):
         """Calculate the dot product of the randomized gradient vector
         and the eight location vectors.
-        
+
         This uses the optimization of the gradient function that was
         developed by Riven. At time of writing, that optimization can
         be found here::
-        
+
             http://riven8192.blogspot.com/2010/08/
             calculate-perlinnoise-twice-as-fast.html
-        
+
         :param loc_mask: The identifier for the vertex being worked on.
         :param grid: The vector for the vertex being worked on.
         :param parts: The relative distance from the vertex before the
@@ -147,7 +147,7 @@ class Perlin(un.UnitNoise):
             y -= 1
         if loc_mask[2] == '1':
             x -= 1
-        
+
         # Calculate the dot products and return the result.
         m = grid & 0xf
         out = np.zeros_like(x)
