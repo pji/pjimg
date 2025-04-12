@@ -12,9 +12,10 @@ Interpolation functions.
 """
 from functools import partial
 from math import prod
-from typing import Callable, Optional
+from typing import Callable, Optional, overload
 
 import numpy as np
+import torch
 
 from pjimg.util.decorators import preserves_type
 from pjimg.util.model import Interpolator, NumAry, RatioAry
@@ -33,7 +34,7 @@ __all__ = [
 def cubic_interpolation(
     a: NumAry,
     b: NumAry,
-    x: RatioAry,
+    x: RatioAry | torch.Tensor,
     a_: Optional[NumAry] = None,
     b_: Optional[NumAry] = None
 ) -> NumAry:
@@ -96,6 +97,17 @@ def cubic_interpolation(
     part1 = (3 * (a - b) + b_ - a_)
     part2 = (2 * a_ - 5 * a + 4 * b - b_ + x * part1)
     return a + 0.5 * x * (b - a_ + x * part2)
+
+
+def lerp_torch(
+    a: torch.Tensor,
+    b: torch.Tensor,
+    x: torch.Tensor,
+) -> torch.Tensor:
+    """A lerp because I don't understand why mypy is complaining and I
+    just want it to go away right now.
+    """
+    return a * (1 - x) + b * x
 
 
 @preserves_type

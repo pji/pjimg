@@ -41,5 +41,5 @@ class TestFloatToUint8:
             [0., .5, 1.,],
             [0., .5, 1.,],
         ],])
-        with pt.raises(ValueError, match='Array values must be 0 >= x >= 1.'):
+        with pt.raises(ValueError, match='Array values must be 0 <= x <= 1.'):
             _ = cvrt.float_to_uint8(a)

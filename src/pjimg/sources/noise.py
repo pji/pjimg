@@ -8,10 +8,11 @@ Sources that generate psuedorandom noise.
 .. autoclass:: pjimg.sources.Embers
 
 """
-from typing import Sequence, Union
+from typing import Sequence, Union, overload
 
 import cv2
 import numpy as np
+import torch
 from numpy.random import default_rng
 
 from pjimg.sources.model import Seed, Source
@@ -56,7 +57,7 @@ class Noise(Source):
         # maybe a bit opaque. Think about changing it in the future.
         self._rng = self._get_rng(seed)
 
-    # Properties.
+    # Private methods.
     def _get_rng(self, seed: Seed) -> np.random._generator.Generator:
         # The seed value for numpy.default_rng cannot be a string.
         # You can't convert directly from string to integer, so
@@ -103,6 +104,110 @@ class Noise(Source):
         slices = tuple(slice(n, None) for n in new_loc)
         a = a[slices]
         return a
+
+
+class NoiseTorch(Source):
+    """Create continuous-uniformly distributed random noise with a
+    seed value to allow the noise to be regenerated in a predictable
+    way. This is just a version of :class:`pji.sources.Noise` is
+    accelerated by :mod:`torch`.
+
+    :param seed: (Optional.) An int, bytes, or string used to seed
+        therandom number generator used to generate the image data.
+        If no value is passed, the RNG will not be seeded, so
+        serialized versions of this source will not product the
+        same values. Note: strings that are passed to seed will
+        be converted to UTF-8 bytes before being converted to
+        integers for seeding.
+    :param device: (Optional.) The string for a torch accelerator
+        for running the object on the system's GPU. Defaults to
+        `cpu`, which runs the object on the system's CPU.
+    :return: :class:`pjimg.sources.NoiseTorch` object.
+    :rtype: pjimg.sources.Noise
+
+    Usage::
+
+        >>> # Create static to fill a 1280x720 image.
+        >>> size = (1, 720, 1280)
+        >>> source = NoiseTorch(seed='spam')
+        >>> img = source.fill(size)
+
+    .. figure:: images/noisetorch.jpg
+       :alt: Static filling a 1280x720 image.
+
+       The image data created by the usage example.
+
+    """
+    def __init__(
+        self, seed: Seed = None,
+        device: str = 'cpu'
+    ) -> None:
+        """Initialize an instance of Noise."""
+        # Store the seed for potential serialization.
+        self.seed = seed
+        self.device = device
+        self._rng = self._get_rng(self.seed)
+
+    # Private methods.
+    def _get_rng(self, seed: Seed) -> torch.Generator:
+        # The seed value for numpy.default_rng cannot be a string.
+        # You can't convert directly from string to integer, so
+        # convert the string to bytes.
+        if isinstance(seed, str):
+            seed = bytes(seed, 'utf_8')
+
+        # The seed value for numpy.default_rng needs to be an integer.
+        if isinstance(seed, bytes):
+            seed = int.from_bytes(seed, 'little')
+
+        rng = torch.Generator(device=self.device)
+        if seed:
+            rng.manual_seed(seed)
+        return rng
+
+    # Public methods.
+    def fill(self, size: Size, loc: Loc = (0, 0, 0)) -> ImgAry:
+        """Fill a volume with image data.
+
+        :param size: The size of the volume of image data to generate.
+        :param loc: (Optional.) How much to shift the starting point
+            for the noise generation along each axis.
+        :return: An :class:`numpy.ndarray` with image data.
+        :rtype: numpy.ndarray
+        """
+        t = self.fill_tensor(size, loc)
+        return t.cpu().numpy()
+
+    def fill_tensor(self, size: Size, loc: Loc = (0, 0, 0)) -> torch.Tensor:
+        """Fill a tensor with image data.
+
+        :param size: The size of the volume of image data to generate.
+        :param loc: (Optional.) How much to shift the starting point
+            for the noise generation along each axis.
+        :return: An :class:`torch.Tensor` with image data.
+        :rtype: torch.Tensor
+        """
+        # Random number generation is linear and unidirectional. In
+        # order to give the illusion of their being a space to move
+        # in, we define the location of the first number generated
+        # as the origin of the space (so: [0, 0, 0]). We then will
+        # make the negative locations in the space the reflection of
+        # the positive spaces.
+        new_loc = [abs(n) for n in loc]
+
+        # To simulate positioning within a space, we need to burn
+        # random numbers from the generator. This would be easy if
+        # we were just generating single dimensional noise. Then
+        # we'd only need to burn the first numbers from the generator.
+        # Instead, we need to burn until with get to the first row,
+        # then accept. Then we need to burn again until we get to
+        # the second row, and so on. This implementation isn't very
+        # memory efficient, but it should do the trick.
+        new_size = [s + l for s, l in zip(size, new_loc)]
+        t = torch.rand(new_size, generator=self._rng, device=self.device)
+        slices = tuple(slice(n, None) for n in new_loc)
+        t = t[slices]
+        return t
 
 
 class Embers(Noise):

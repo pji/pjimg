@@ -7,6 +7,8 @@ General purpose decorators.
 from functools import wraps
 from typing import Callable
 
+import numpy as np
+
 from pjimg.util.model import Interpolator, NumAry
 
 
@@ -17,7 +19,10 @@ def preserves_type(fn: Interpolator) -> Interpolator:
     """
     @wraps(fn)
     def wrapper(a: NumAry, *args, **kwargs) -> NumAry:
-        a_dtype = a.dtype
+        if isinstance(a, np.ndarray):
+            a_dtype = a.dtype
         result = fn(a, *args, **kwargs)
-        return result.astype(a_dtype)
+        if isinstance(a, np.ndarray):
+            return result.astype(a_dtype)
+        return result
     return wrapper
