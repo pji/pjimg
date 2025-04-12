@@ -93,6 +93,95 @@ class TestNoise:
         assert not (a.fill(shape) == b.fill(shape)).all()
 
 
+class TestNoiseTorch:
+    # Test for initialization.
+    def test_init_required(self):
+        """When given no parameters, :class:`Noise` should initialize a new
+        object with default attribute values.
+        """
+        optionals = {
+            'seed': None,
+            'device': 'cpu',
+        }
+        obj = n.NoiseTorch()
+        for attr in optionals:
+            assert getattr(obj, attr) == optionals[attr]
+
+    def test_init_optional(self):
+        """When given parameters, :class:`Noise` should initialize a new
+        object setting attributes to the given values.
+        """
+        optionals = {'seed': 'spam', 'device': 'mps',}
+        obj = n.NoiseTorch(**optionals)
+        for attr in optionals:
+            assert getattr(obj, attr) == optionals[attr]
+
+    # Tests for fill.
+    def test_fill(self):
+        """When given the size of an array, :meth:`Noise.fill` should return
+        an array that contains randomly generated noise.
+        """
+        noise = n.NoiseTorch(seed='spam')
+        result = noise.fill((2, 8, 8))
+        assert ((result * 0xff).astype(np.uint8) == np.array([
+            [
+                [
+                    [0x85, 0x96, 0x29, 0xcc, 0xc9, 0xf0, 0x74, 0x21],
+                    [0xf4, 0x0d, 0xfe, 0x4d, 0x06, 0x67, 0x6d, 0xd2],
+                    [0xde, 0x12, 0x02, 0x91, 0x27, 0x2a, 0x78, 0x53],
+                    [0x2a, 0x88, 0x57, 0xbd, 0x3a, 0xea, 0x52, 0xde],
+                    [0xf2, 0xb4, 0x84, 0x6f, 0x47, 0x29, 0xbc, 0xf2],
+                    [0x1f, 0x03, 0x4b, 0x02, 0xa2, 0xc6, 0x62, 0x0e],
+                    [0x6a, 0xd8, 0x6e, 0x39, 0xa1, 0xe0, 0x44, 0x02],
+                    [0xbc, 0xf4, 0x5a, 0x03, 0xf9, 0xc4, 0x4c, 0xfe],
+                ],
+                [
+                    [0x4c, 0x74, 0xfc, 0xc3, 0x70, 0xe7, 0x94, 0x0f],
+                    [0x8d, 0x4e, 0x23, 0x2d, 0x75, 0x69, 0xd5, 0x15],
+                    [0x10, 0xa7, 0x5f, 0xd5, 0xa7, 0x5c, 0x50, 0x03],
+                    [0x3d, 0x5d, 0x5c, 0x3e, 0x52, 0xd5, 0xc9, 0x6b],
+                    [0x07, 0xba, 0xce, 0xbc, 0xa3, 0x26, 0xc0, 0x67],
+                    [0x22, 0x96, 0x62, 0xac, 0xa7, 0x4b, 0x14, 0x44],
+                    [0xfa, 0xe7, 0x28, 0x32, 0x4f, 0x49, 0xd2, 0x65],
+                    [0x9b, 0x25, 0x31, 0xfc, 0x1d, 0xcd, 0xd9, 0xe0],
+                ],
+            ],
+        ], dtype=np.uint8)).all()
+
+    def test_fill_different_seed_different_noise(self):
+        """When given different seeds, two instances of :class:`Noise`
+        should return different noise.
+        """
+        a = n.NoiseTorch('spam')
+        b = n.NoiseTorch('eggs')
+        shape = (2, 8, 8)
+        assert not (a.fill(shape) == b.fill(shape)).all()
+
+    def test_fill_same_seed_same_noise(self):
+        """When given the same seeds, two instances of :class:`Noise`
+        should return the same noise.
+        """
+        a = n.NoiseTorch('spam')
+        b = n.NoiseTorch('spam')
+        shape = (2, 8, 8)
+        assert (a.fill(shape) == b.fill(shape)).all()
+
+    def test_fill_no_seed_different_noise(self):
+        """When given no seeds, two instances of :class:`Noise`
+        should return different noise.
+
+        .. note:
+            This test is not deterministic. It's theoretically possible
+            for this test to fail because the output of the unseeded
+            random number generator is not predictable. This should be
+            extremely unlikely.
+        """
+        a = n.NoiseTorch()
+        b = n.NoiseTorch()
+        shape = (2, 8, 8)
+        assert not (a.fill(shape) == b.fill(shape)).all()
+
+
 class TestEmbers:
     # Test for initialization.
     def test_init_required(self):

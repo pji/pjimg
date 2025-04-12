@@ -163,6 +163,8 @@ class NoiseTorch(Source):
         rng = torch.Generator(device=self.device)
         if seed:
             rng.manual_seed(seed)
+        else:
+            rng.seed()
         return rng
 
     # Public methods.

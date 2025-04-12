@@ -12,14 +12,8 @@ import pjimg.sources as srcs
 
 
 seed = 'spam'
-size = (1, 20, 10)
-src = srcs.OctaveMaze(
-    octaves=4,
-    persistence=2,
-    amplitude=2,
-    frequency=3,
-    unit=(1, 10, 10),
-    width=0.34,
+size = (2, 8, 8)
+src = srcs.NoiseTorch(
     seed=seed
 )
 
