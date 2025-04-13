@@ -11,11 +11,13 @@ from pjimg.util.debug import print_array
 import pjimg.sources as srcs
 
 
+depth = 2
 seed = 'spam'
-size = (2, 8, 8)
-src = srcs.NoiseTorch(
+size = (3, 8, 8)
+src = srcs.UnitNoiseTorch(
+    unit=(4, 4, 4),
     seed=seed
 )
 
 result = (src.fill(size) * 0xff).astype(np.uint8)
-print_array(result)
+print_array(result, depth=depth)

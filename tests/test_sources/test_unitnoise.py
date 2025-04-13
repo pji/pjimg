@@ -8,6 +8,7 @@ import operator as op
 
 import numpy as np
 import pytest as pt
+import torch
 
 from pjimg.sources import unitnoise as un
 from tests.common import mkhex
@@ -106,6 +107,107 @@ class TestUnitNoise:
                 [0x9a, 0x8d, 0x80, 0x74, 0x67, 0x6d, 0x74, 0x7a],
                 [0x91, 0x83, 0x76, 0x69, 0x5c, 0x66, 0x71, 0x7b],
                 [0x87, 0x79, 0x6b, 0x5e, 0x51, 0x5f, 0x6d, 0x7b],
+            ],
+        ], dtype=np.uint8)).all()
+
+
+class TestUnitNoiseTorch:
+    def test_init_all_default(self):
+        """Given only required parameters, :class:`UnitNoiseTorch` should
+        initialize the required attributes with the given values. It
+        should then initialize the optional attributes with default
+        values.
+        """
+        required = {'unit': (4, 4, 4),}
+        optional = {
+            'min': 0x00,
+            'max': 0xff,
+            'repeats': 0,
+            'seed': None,
+            'device': 'cpu',
+        }
+        obj = un.UnitNoiseTorch(**required)
+        for attr in required:
+            assert getattr(obj, attr) == required[attr]
+        for attr in optional:
+            assert getattr(obj, attr) == optional[attr]
+
+    def test_init_all_optional(self):
+        """Given optional parameters, :class:`UnitNoiseTorch` should
+        initialize the given attributes with the given values.
+        """
+        required = {'unit': (4, 4, 4),}
+        optional = {
+            'min': 0x70,
+            'max': 0x8f,
+            'repeats': 3,
+            'seed': 'spam',
+            'device': 'mps',
+        }
+        obj = un.UnitNoiseTorch(**required, **optional)
+        for attr in required:
+            assert getattr(obj, attr) == required[attr]
+        for attr in optional:
+            assert getattr(obj, attr) == optional[attr]
+
+    def test_init_given_table(self):
+        """Given a table value, :class:`UnitNoise` should use that table
+        value to initialize its table instead of randomly generated values.
+        """
+        table = [0, 1, 2, 3, 4, 5, 6, 7, 0, 1, 2, 3, 4, 5, 6, 7]
+        noise = un.UnitNoiseTorch(
+            unit=(4, 4, 4), table=table
+        )
+        assert (noise._table == torch.tensor(table)).all()
+
+    def test_init_seeded_table(self):
+        """Given a seed value, :class:`UnitNoise` should use that seed
+        value to initialize its table with randomly generated values.
+        """
+        noise = un.UnitNoiseTorch(
+            unit=(4, 4, 4), min=0, max=6, repeats=1, seed='spam'
+        )
+        assert (noise._table == torch.tensor(
+            [1, 2, 5, 0, 3, 4, 3, 1, 5, 0, 2, 4]
+        )).all()
+
+    def test_fill(self):
+        """Given the size of each dimension of the noise,
+        :meth:`UnitNoise.fill` should return an array that
+        contains the expected noise.
+        """
+        noise = un.UnitNoiseTorch((4, 4, 4), seed='spam')
+        result = noise.fill((3, 8, 8))
+        assert (mkhex(result) == np.array([
+            [
+                [0xa9, 0x9c, 0x90, 0x84, 0x79, 0x6f, 0x66, 0x5d],
+                [0x93, 0x8c, 0x85, 0x7d, 0x78, 0x75, 0x72, 0x6f],
+                [0x7d, 0x7b, 0x79, 0x77, 0x78, 0x7b, 0x7e, 0x81],
+                [0x67, 0x6b, 0x6e, 0x71, 0x77, 0x81, 0x8a, 0x93],
+                [0x66, 0x6d, 0x74, 0x7b, 0x84, 0x8f, 0x9a, 0xa5],
+                [0x78, 0x82, 0x8b, 0x95, 0x9e, 0xa6, 0xae, 0xb7],
+                [0x8a, 0x97, 0xa3, 0xb0, 0xb8, 0xbe, 0xc3, 0xc8],
+                [0x9d, 0xac, 0xbb, 0xca, 0xd3, 0xd5, 0xd7, 0xda],
+            ],
+            [
+                [0xa4, 0xa2, 0xa0, 0x9e, 0x9a, 0x95, 0x90, 0x8b],
+                [0x9d, 0x9c, 0x9a, 0x99, 0x95, 0x8f, 0x89, 0x84],
+                [0x96, 0x95, 0x94, 0x94, 0x90, 0x89, 0x83, 0x7c],
+                [0x8f, 0x8f, 0x8f, 0x8e, 0x8b, 0x83, 0x7c, 0x74],
+                [0x88, 0x8a, 0x8d, 0x90, 0x8d, 0x86, 0x7f, 0x77],
+                [0x80, 0x88, 0x90, 0x98, 0x98, 0x92, 0x8c, 0x86],
+                [0x78, 0x85, 0x92, 0x9f, 0xa4, 0x9e, 0x99, 0x94],
+                [0x70, 0x83, 0x95, 0xa7, 0xaf, 0xab, 0xa7, 0xa3],
+            ],
+            [
+                [0xa0, 0xa8, 0xb0, 0xb8, 0xbc, 0xbc, 0xbb, 0xba],
+                [0xa7, 0xac, 0xb0, 0xb4, 0xb2, 0xaa, 0xa1, 0x98],
+                [0xaf, 0xaf, 0xb0, 0xb0, 0xa8, 0x98, 0x87, 0x77],
+                [0xb6, 0xb3, 0xaf, 0xac, 0x9e, 0x86, 0x6d, 0x55],
+                [0xa9, 0xa8, 0xa6, 0xa5, 0x97, 0x7d, 0x63, 0x4a],
+                [0x88, 0x8e, 0x94, 0x9a, 0x93, 0x7e, 0x6a, 0x55],
+                [0x66, 0x74, 0x82, 0x8f, 0x8f, 0x7f, 0x70, 0x61],
+                [0x44, 0x5a, 0x6f, 0x85, 0x8a, 0x80, 0x76, 0x6c],
             ],
         ], dtype=np.uint8)).all()
 

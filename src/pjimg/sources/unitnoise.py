@@ -330,7 +330,9 @@ class UnitNoiseTorch(NoiseTorch):
         # Initialize the randomized table.
         if table is None:
             table = self._init_table()
-        self._table = torch.tensor(table, device=self.device)
+        if not isinstance(table, torch.Tensor):
+            table = torch.tensor(table, device=self.device)
+        self._table = table
 
         # Prime the names of the grids used for interpolation.
         tmp = '{:>0' + str(self._axes) + 'b}'
@@ -413,7 +415,17 @@ class UnitNoiseTorch(NoiseTorch):
 
     def _init_table(self) -> torch.Tensor:
         """Create the table of randomized values for the unit grid."""
-        t = torch.randperm(self.max - self.min, device=self.device)
+        # While you can pass a seeded RNG to torch.randperm, it
+        # seems to ignore that it was seeded. The only work around
+        # I could find was to seed all of torch. It seems to work
+        # well enough for the unit tests, but I'm worried about the
+        # thread safety of this approach.
+        if self._seed:
+            torch.manual_seed(self._seed)
+        t = torch.randperm(
+            self.max - self.min,
+            device=self.device
+        )
         if self.repeats:
             for repeat in range(self.repeats):
                 new = torch.randperm(self.max - self.min, device=self.device)

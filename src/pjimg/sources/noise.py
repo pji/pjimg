@@ -146,23 +146,37 @@ class NoiseTorch(Source):
         # Store the seed for potential serialization.
         self.seed = seed
         self.device = device
-        self._rng = self._get_rng(self.seed)
+        self._rng = self._get_rng(self._seed)
+
+    #Properties.
+    @property
+    def seed(self) -> Seed:
+        return self.__seed
+
+    @seed.setter
+    def seed(self, value: Seed) -> None:
+        # Protect the given value of seed so it can be used if
+        # we ever need to know the exact value passed.
+        self.__seed = value
+
+        # However, RNGs need the seed to be an int. You can't convert
+        # directly from string to int, so convert the string to bytes.
+        if isinstance(value, str):
+            value = bytes(value, 'utf_8')
+
+        # If the passed value is bytes, convert it to an int for use
+        # in seeding the RNG.
+        if isinstance(value, bytes):
+            value = int.from_bytes(value, 'little')
+
+        # Store the seed normalized to int for use in seeding the RNG.
+        self._seed = value
 
     # Private methods.
-    def _get_rng(self, seed: Seed) -> torch.Generator:
-        # The seed value for numpy.default_rng cannot be a string.
-        # You can't convert directly from string to integer, so
-        # convert the string to bytes.
-        if isinstance(seed, str):
-            seed = bytes(seed, 'utf_8')
-
-        # The seed value for numpy.default_rng needs to be an integer.
-        if isinstance(seed, bytes):
-            seed = int.from_bytes(seed, 'little')
-
+    def _get_rng(self, seed: int | None) -> torch.Generator:
         rng = torch.Generator(device=self.device)
         if seed:
-            rng.manual_seed(seed)
+            rng = rng.manual_seed(seed)
         else:
             rng.seed()
         return rng
