@@ -232,7 +232,7 @@ class PerlinTorch(un.UnitNoiseTorch):
         repeats: int = 1,
         seed: Seed = None,
         table: Optional[Sequence[int]] = None,
-        device: str = 'mps'
+        device: str = 'cpu'
     ) -> None:
         """Initialize an instance of UnitNoise."""
         super().__init__(

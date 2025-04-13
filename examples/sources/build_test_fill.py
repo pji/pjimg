@@ -11,11 +11,10 @@ from pjimg.util.debug import print_array
 import pjimg.sources as srcs
 
 
-depth = 2
+depth = 1
 seed = 'spam'
-size = (3, 8, 8)
-src = srcs.UnitNoiseTorch(
-    unit=(4, 4, 4),
+size = (3, 12, 10)
+src = srcs.OctavePerlinTorch(
     seed=seed
 )
 
