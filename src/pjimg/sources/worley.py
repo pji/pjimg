@@ -121,6 +121,12 @@ class Worley(Noise):
         """Place the seeds within the overall volume of noise."""
         volume_size = self.volume if self.volume else size
         volume = np.array(volume_size, dtype=float)
+
+        # Catch weird mixed state where we are trying to use tensors
+        # and arrays at the same time.
+        if not isinstance(self._rng, np.random._generator.Generator):
+            raise TypeError('Need to use numpy RNG.')
+
         seeds = self._rng.random((self.points, 3), dtype=float)
         seeds = np.around(seeds * (volume - 1))
         seeds += np.array(self.origin)

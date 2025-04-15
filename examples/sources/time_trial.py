@@ -37,46 +37,50 @@ if __name__ == '__main__':
     unit = (SIZE[-1] // 8, SIZE[-1] // 8, SIZE[-1] // 8)
     to_try = [
         # Noises.
-        [srcs.Noise(seed=seed), 'noise.jpg'],
-        [srcs.NoiseTorch(seed=seed), 'noisetorch.jpg'],
-        [srcs.NoiseTorch(seed=seed, device='mps'), 'noisetorchmps.jpg'],
+#         [srcs.Noise(seed=seed), 'noise.jpg'],
+#         [srcs.Noise(seed=seed, device='cpu'), 'noisecpu.jpg'],
+#         [srcs.Noise(seed=seed, device='mps'), 'noisemps.jpg'],
+        
+        # Embers.
+#         [srcs.Embers(depth=8, seed=seed), 'embers.jpg'],
+#         [srcs.Embers(depth=8, seed=seed, device='cpu'), 'emberscpu.jpg'],
+#         [srcs.Embers(depth=8, seed=seed, device='mps'), 'embersmps.jpg'],
+        
+        # CosineNoise
+#         [srcs.CosineNoise(unit, seed=seed), 'cosinenoise.jpg'],
+#         [srcs.CosineNoise(unit, seed=seed, device='cpu'), 'cosinenoisecpu.jpg'],
+#         [srcs.CosineNoise(unit, seed=seed, device='mps'), 'cosinenoisemps.jpg'],
         
         # UnitNoises.
         [srcs.UnitNoise(unit, seed=seed), 'unitnoise.jpg'],
-        [
-            srcs.UnitNoiseTorch(unit, seed=seed, device='cpu'),
-            'unitnoisetorch.jpg'
-        ],
-        [
-            srcs.UnitNoiseTorch(unit, seed=seed, device='mps'),
-            'unitnoisetorchmps.jpg'
-        ],
+        [srcs.UnitNoise(unit, seed=seed, device='cpu'), 'unitnoisecpu.jpg'],
+        [srcs.UnitNoise(unit, seed=seed, device='mps'), 'unitnoisemps.jpg'],
         
         # Perlins.
-        [srcs.Perlin(unit, seed=seed), 'perlin.jpg'],
-        [srcs.PerlinTorch(unit, seed=seed), 'perlintorch.jpg'],
-        [srcs.PerlinTorch(unit, seed=seed, device='mps'), 'perlintorchmps.jpg'],
+#         [srcs.Perlin(unit, seed=seed), 'perlin.jpg'],
+#         [srcs.Perlin(unit, seed=seed, device='cpu), 'perlincpu.jpg'],
+#         [srcs.Perlin(unit, seed=seed, device='mps'), 'perlinmps.jpg'],
         
         # OctaveUnitNoises.
-        [srcs.OctaveUnitNoise(unit=unit, seed=seed), 'octaveunitnoise.jpg'],
-        [
-            srcs.OctaveUnitNoiseTorch(unit=unit, seed=seed, device='cpu'),
-            'octaveunitnoisetorch.jpg'
-        ],
-        [
-            srcs.OctaveUnitNoiseTorch(unit=unit, seed=seed, device='mps'),
-            'octaveunitnoisetorchmps.jpg'
-        ],
+#         [srcs.OctaveUnitNoise(unit=unit, seed=seed), 'octaveunitnoise.jpg'],
+#         [
+#             srcs.OctaveUnitNoise(unit=unit, seed=seed, device='cpu'),
+#             'octaveunitnoisecpu.jpg'
+#         ],
+#         [
+#             srcs.OctaveUnitNoise(unit=unit, seed=seed, device='mps'),
+#             'octaveunitnoisemps.jpg'
+#         ],
         
         # OctavePerlins.
-        [srcs.OctavePerlin(unit=unit, seed=seed), 'octaveperlin.jpg'],
-        [
-            srcs.OctavePerlinTorch(unit=unit, seed=seed),
-            'octaveperlintorch.jpg'],
-        [
-            srcs.OctavePerlinTorch(unit=unit, seed=seed, device='mps'),
-            'octaveperlintorchmps.jpg'
-        ],
+#         [srcs.OctavePerlin(unit=unit, seed=seed), 'octaveperlin.jpg'],
+#         [
+#             srcs.OctavePerlin(unit=unit, seed=seed, device='cpu'),
+#             'octaveperlincpu.jpg'],
+#         [
+#             srcs.OctavePerlin(unit=unit, seed=seed, device='mps'),
+#             'octaveperlinmps.jpg'
+#         ],
     ]
     for args in to_try:
         trial(*args)

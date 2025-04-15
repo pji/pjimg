@@ -15,7 +15,7 @@ class TestNoise:
         """When given no parameters, :class:`Noise` should initialize a new
         object with default attribute values.
         """
-        optionals = {'seed': None,}
+        optionals = {'seed': None, 'device': '',}
         obj = n.Noise()
         for attr in optionals:
             assert getattr(obj, attr) == optionals[attr]
@@ -24,7 +24,7 @@ class TestNoise:
         """When given parameters, :class:`Noise` should initialize a new
         object setting attributes to the given values.
         """
-        optionals = {'seed': 'spam',}
+        optionals = {'seed': 'spam', 'device': 'cpu',}
         obj = n.Noise(**optionals)
         for attr in optionals:
             assert getattr(obj, attr) == optionals[attr]
@@ -94,34 +94,12 @@ class TestNoise:
 
 
 class TestNoiseTorch:
-    # Test for initialization.
-    def test_init_required(self):
-        """When given no parameters, :class:`Noise` should initialize a new
-        object with default attribute values.
-        """
-        optionals = {
-            'seed': None,
-            'device': 'cpu',
-        }
-        obj = n.NoiseTorch()
-        for attr in optionals:
-            assert getattr(obj, attr) == optionals[attr]
-
-    def test_init_optional(self):
-        """When given parameters, :class:`Noise` should initialize a new
-        object setting attributes to the given values.
-        """
-        optionals = {'seed': 'spam', 'device': 'mps',}
-        obj = n.NoiseTorch(**optionals)
-        for attr in optionals:
-            assert getattr(obj, attr) == optionals[attr]
-
     # Tests for fill.
     def test_fill(self):
         """When given the size of an array, :meth:`Noise.fill` should return
         an array that contains randomly generated noise.
         """
-        noise = n.NoiseTorch(seed='spam')
+        noise = n.Noise(seed='spam', device='cpu')
         result = noise.fill((2, 8, 8))
         assert ((result * 0xff).astype(np.uint8) == np.array([
             [
@@ -152,8 +130,8 @@ class TestNoiseTorch:
         """When given different seeds, two instances of :class:`Noise`
         should return different noise.
         """
-        a = n.NoiseTorch('spam')
-        b = n.NoiseTorch('eggs')
+        a = n.Noise('spam', device='cpu')
+        b = n.Noise('eggs', device='cpu')
         shape = (2, 8, 8)
         assert not (a.fill(shape) == b.fill(shape)).all()
 
@@ -161,8 +139,8 @@ class TestNoiseTorch:
         """When given the same seeds, two instances of :class:`Noise`
         should return the same noise.
         """
-        a = n.NoiseTorch('spam')
-        b = n.NoiseTorch('spam')
+        a = n.Noise('spam', device='cpu')
+        b = n.Noise('spam', device='cpu')
         shape = (2, 8, 8)
         assert (a.fill(shape) == b.fill(shape)).all()
 
@@ -176,8 +154,8 @@ class TestNoiseTorch:
             random number generator is not predictable. This should be
             extremely unlikely.
         """
-        a = n.NoiseTorch()
-        b = n.NoiseTorch()
+        a = n.Noise(device='cpu')
+        b = n.Noise(device='cpu')
         shape = (2, 8, 8)
         assert not (a.fill(shape) == b.fill(shape)).all()
 
@@ -190,8 +168,9 @@ class TestEmbers:
         """
         optionals = {
             'depth': 1,
-            'threshhold': 0.9998,
+            'threshold': 0.9998,
             'seed': None,
+            'device': '',
         }
         obj = n.Embers()
         for attr in optionals:
@@ -203,8 +182,9 @@ class TestEmbers:
         """
         optionals = {
             'depth': 4,
-            'threshhold': 0.5,
+            'threshold': 0.5,
             'seed': 'spam',
+            'device': 'cpu',
         }
         obj = n.Embers(**optionals)
         for attr in optionals:
@@ -215,7 +195,7 @@ class TestEmbers:
         """When given the size of an array, :meth:`Noise.fill` should return
         an array that contains randomly generated noise.
         """
-        noise = n.Embers(threshhold=0.5, seed='bacon')
+        noise = n.Embers(threshold=0.5, seed='bacon')
         result = noise.fill((2, 8, 8))
         assert ((result * 0xff).astype(np.uint8) == np.array([
             [
@@ -237,5 +217,37 @@ class TestEmbers:
                 [0x00, 0x00, 0xce, 0x00, 0xd9, 0xd8, 0xd3, 0xd8],
                 [0xc8, 0xc5, 0xd3, 0xcd, 0xcb, 0xce, 0xc7, 0x00],
                 [0xc1, 0xcc, 0xcb, 0x00, 0xd2, 0x00, 0xbf, 0x00],
+            ],
+        ], dtype=np.uint8)).all()
+
+
+class TestEmbersTorch:
+    # Tests for fill.
+    def test_fill(self):
+        """When given the size of an array, :meth:`Noise.fill` should return
+        an array that contains randomly generated noise.
+        """
+        noise = n.Embers(threshold=0.5, seed='spam', device='cpu')
+        result = noise.fill((2, 8, 8))
+        assert ((result * 0xff).astype(np.uint8) == np.array([
+            [
+                [0xc0, 0xc5, 0x00, 0xd2, 0xd1, 0xdb, 0x00, 0x00],
+                [0xdc, 0x00, 0xde, 0x00, 0x00, 0x00, 0x00, 0xd4],
+                [0xd7, 0x00, 0x00, 0xc3, 0x00, 0x00, 0x00, 0x00],
+                [0x00, 0xc1, 0x00, 0xce, 0x00, 0xd9, 0x00, 0xd7],
+                [0xdb, 0xcc, 0xc0, 0x00, 0x00, 0x00, 0xce, 0xdb],
+                [0x00, 0x00, 0x00, 0x00, 0xc7, 0xd1, 0x00, 0x00],
+                [0x00, 0xd5, 0x00, 0x00, 0xc7, 0xd7, 0x00, 0x00],
+                [0xce, 0xdc, 0x00, 0x00, 0xdd, 0xd0, 0x00, 0xde],
+            ],
+            [
+                [0x00, 0x00, 0xde, 0xd0, 0x00, 0xd9, 0xc4, 0x00],
+                [0xc2, 0x00, 0x00, 0x00, 0x00, 0x00, 0xd4, 0x00],
+                [0x00, 0xc9, 0x00, 0xd4, 0xc9, 0x00, 0x00, 0x00],
+                [0x00, 0x00, 0x00, 0x00, 0x00, 0xd4, 0xd1, 0x00],
+                [0x00, 0xce, 0xd2, 0xce, 0xc8, 0x00, 0xcf, 0x00],
+                [0x00, 0xc4, 0x00, 0xca, 0xc9, 0x00, 0x00, 0x00],
+                [0xdd, 0xd9, 0x00, 0x00, 0x00, 0x00, 0xd4, 0x00],
+                [0xc6, 0x00, 0x00, 0xde, 0x00, 0xd2, 0xd5, 0xd7],
             ],
         ], dtype=np.uint8)).all()

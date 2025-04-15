@@ -14,8 +14,10 @@ import pjimg.sources as srcs
 depth = 1
 seed = 'spam'
 size = (3, 12, 10)
-src = srcs.OctavePerlinTorch(
-    seed=seed
+src = srcs.OctavePerlin(
+    unit=(4, 4, 4),
+    seed=seed,
+    device='cpu'
 )
 
 result = (src.fill(size) * 0xff).astype(np.uint8)

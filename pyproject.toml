@@ -3,6 +3,10 @@ requires = ["setuptools", "wheel"]
 build-backend = "setuptools.build_meta"
 
 
+[tool.mypy]
+disable_error_code = ["import-untyped",]
+
+
 [tool.rstcheck]
 report_level = "WARNING"
 ignore_directives = ["autoclass", "autofunction", "automodule",]
@@ -51,6 +55,7 @@ dependencies = [
     "opencv-python (>=4.11.0.86,<5.0.0.0)",
     "scikit-image (>=0.25.2,<0.26.0)",
     "torch (>=2.6.0,<3.0.0)",
+    "torchvision (>=0.21.0,<0.22.0)",
 ]
 
 

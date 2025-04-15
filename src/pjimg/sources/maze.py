@@ -105,7 +105,7 @@ class Maze(un.UnitNoise):
         table: Optional[Sequence[int]] = None
     ) -> None:
         """Initialize an instance of Maze."""
-        super().__init__(unit, min, max, repeats, seed, table)
+        super().__init__(unit, min, max, repeats, table, seed)
         self.width = width
         self.inset = inset
         self.origin = origin
@@ -147,11 +147,16 @@ class Maze(un.UnitNoise):
         for axis in X, Y:
             unit_indices[axis] += loc[axis]
         unit_indices[Z].fill(loc[Z])
-        values = np.take(self._table, unit_indices[X])
+
+        # Catch weird array/tensor mixed states.
+        if not isinstance(self.table, Sequence):
+            raise TypeError('Table must be an NDArray.')
+
+        values = np.take(self.table, unit_indices[X])
         values += unit_indices[Y]
-        values = np.take(self._table, values % len(self._table))
+        values = np.take(self.table, values % len(self.table))
         values += unit_indices[Z]
-        values = np.take(self._table, values & len(self._table))
+        values = np.take(self.table, values & len(self.table))
         return values, unit_dim
 
     def _build_path(
