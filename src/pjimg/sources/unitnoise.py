@@ -79,6 +79,9 @@ class UnitNoise(Noise):
     :param repeats: (Optional.) The number of times each value can
         appear on the unit grid. This is involved in setting the
         maximum size of noise that can be generated from the object.
+    :param table: (Optional.) A table of values to use when generating
+        the image data. If no value is passed, the table will be generated
+        randomly. Default is `None`.
     :param seed: (Optional.) An int, bytes, or string used to seed
         the random number generator used to generate the image data.
         If no value is passed, the RNG will not be seeded, so
@@ -86,9 +89,11 @@ class UnitNoise(Noise):
         same values. Note: strings that are passed to seed will
         be converted to UTF-8 bytes before being converted to
         integers for seeding.
-    :param table: (Optional.) A table of values to use when generating
-        the image data. If no value is passed, the table will be generated
-        randomly. Default is `None`.
+    :param device: (Optional.) Determines the library and device
+        used to generate the noise. An empty string will use
+        :mod:`numpy`. Anything else will switch to :mod:`torch`
+        and be used as the `device` value. Defaults to an
+        empty string.
     :return: An instance of :class:`UnitNoise`.
     :rtype: sources.unitnoise.UnitNoise
 
@@ -124,7 +129,7 @@ class UnitNoise(Noise):
         self.min = min
         self.max = max
         self.repeats = repeats
-        super().__init__(seed, device)
+        super().__init__(seed=seed, device=device)
 
         # Initialize the randomized table.
         if table is None:
@@ -254,7 +259,12 @@ class UnitNoise(Noise):
 
             # Get the value of the vertex for each point and store it in
             # a dictionary by the identifier for the vertex.
+            # torch.take is not written for mps (Apple silicon) GPUs,
+            # so even if you bypass the error in torch, this will slow
+            # down the generation on those processors. It's probably
+            # better to stick with the CPU in those cases.
             t_grid = torch.take(self.table_tensor, t_grid)
+
             grids[key] = t_grid
 
         return grids
@@ -489,15 +499,19 @@ class Curtains(UnitNoise):
     _axes: int = 2
 
     # Public methods.
-    def fill(
-        self, size: Size,
-        loc: Loc = (0, 0, 0)
-    ) -> ImgAry:
+    def fill_array(self, size: Size, loc: Loc = (0, 0, 0)) -> ImgAry:
         """Return a space filled with noise."""
         noise_size = (size[Z], size[X])
         noise_loc = (loc[Z], loc[X])
-        a = super().fill(noise_size, noise_loc)
+        a = super().fill_array(noise_size, noise_loc)
         return np.tile(a[:, np.newaxis, ...], (1, size[Y], 1))
+
+    def fill_tensor(self, size: Size, loc: Loc = (0, 0, 0)) -> torch.Tensor:
+        """Return a space filled with noise."""
+        noise_size = (size[Z], size[X])
+        noise_loc = (loc[Z], loc[X])
+        t = super().fill_tensor(noise_size, noise_loc)
+        return torch.tile(t[:, torch.newaxis, ...], (1, size[Y], 1))
 
 
 class CosineCurtains(Curtains):
@@ -551,6 +565,18 @@ class CosineCurtains(Curtains):
         """Map the image data to the unit grid."""
         whole, parts = super()._map_unit_grid(size, location)
         parts = (1 - np.cos(parts * np.pi)) / 2
+        return whole, parts
+
+    def _map_unit_grid_tensor(
+        self, size: Size,
+        location: Loc
+    ) -> tuple[list[torch.Tensor], list[torch.Tensor]]:
+        """Map the image data to the unit grid."""
+        whole, parts = super()._map_unit_grid_tensor(size, location)
+        parts = [
+            (1 - torch.cos(mesh * torch.pi)) / 2
+            for mesh in parts
+        ]
         return whole, parts
 
 

@@ -20,12 +20,14 @@ The following were the updates in :mod:`pjimg` v0.1.0:
 
         *   Created time_trail.py example script for comparing
             performance of different source objects.
-        *   Created sources.NoiseTensor.
+        *   (Started.) Added tensor-based generation to all sources.
         
-        *   (Not started.) Create sources.UnitNoissTorch.
-        *   (Started.) Create sources.PerlinTorch.
-        *   (Not started.) Create relevant unit tests.
-        *   (Not started.) Figure out when GPU targeting
-            is most valuable.
-        *   (Not started.) Convert use case by use case to
-            confirm the benefits of the change.
+            *   (Started.) Added to Noises.
+            *   (Started.) Added to UnitNoises.
+            *   Added to Perlins.
+            *   (Not started.) Added to Worleys.
+            *   Added to Mazes.
+            *   (Not started.) Added to Tiles.
+            *   (Not started.) Added to Patterns.
+        
+        *   (Started.) Create relevant unit tests.
