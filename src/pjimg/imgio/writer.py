@@ -16,6 +16,7 @@ from typing import Union
 
 import cv2
 import numpy as np
+import torch
 
 from pjimg.imgio.constants import VALID_FORMATS
 from pjimg.imgio.model import (
@@ -35,33 +36,65 @@ def uses_opencv(fn: Saver) -> WrappedSaver:
     def wrapper(
         filepath: Union[str, Path], a: ArrayLike, *args, **kwargs
     ) -> None:
-        # Convert the image data to an array just in case we were passed
-        # something else.
-        a = np.array(deepcopy(a))
-
-        # While TIFFs can handle 32-bit floats, JPGs and PNGs can't, so
-        # rather than having TIFFs as an exception, just convert all floats
-        # to unsigned 8-bit integers.
-        if a.dtype in [float, np.float32]:
-            a = float_to_uint8(a)
-
-        # If the data isn't a float but not a unsigned 8-bit integer,
-        # we assume it's in the right scale. So, just convert to a
-        # unsigned 8-bit integer.
-        elif a.dtype != np.uint8:
-            a = a.astype(np.uint8)
-
-        # opencv saves color data in BGR order, so RGB data needs to be
-        # flipped to BGR.
-        if len(a.shape) == 4:
-            a = np.flip(a, -1)
-        elif (len(a.shape) == 3
-                and 'as_series' in kwargs
-                and not kwargs['as_series']):
-            a = np.flip(a, -1)
-
+        if isinstance(a, torch.Tensor):
+            a = normalize_tensor(a, **kwargs)
+        else:
+            a = normalize_array(a, **kwargs)
         return fn(filepath, a, *args, **kwargs)
     return wrapper
+
+
+# Utility functions.
+def normalize_array(a: ArrayLike, **kwargs) -> IntAry:
+    """Normalize image data arrays for saving."""
+    # Convert the image data to an array just in case we were passed
+    # something else.
+    a = np.array(a)
+
+    # While TIFFs can handle 32-bit floats, JPGs and PNGs can't, so
+    # rather than having TIFFs as an exception, just convert all floats
+    # to unsigned 8-bit integers.
+    if a.dtype in [float, np.float32]:
+        a = float_to_uint8(a)
+
+    # If the data isn't a float but not a unsigned 8-bit integer,
+    # we assume it's in the right scale. So, just convert to a
+    # unsigned 8-bit integer.
+    elif a.dtype != np.uint8:
+        a = a.astype(np.uint8)
+
+    # opencv saves color data in BGR order, so RGB data needs to be
+    # flipped to BGR.
+    if len(a.shape) == 4:
+        a = np.flip(a, -1)
+    elif (len(a.shape) == 3
+            and 'as_series' in kwargs
+            and not kwargs['as_series']):
+        a = np.flip(a, -1)
+    return a
+
+
+def normalize_tensor(t: torch.Tensor, **kwargs) -> IntAry:
+    """Normalize image data tensors for saving."""
+    if t.dtype in [torch.float32, torch.float64]:
+        if torch.min(t) < 0:
+            raise ValueError('Minimum value of image data is 0.')
+        if torch.max(t) > 1:
+            raise ValueError('Maximum value of image data is 1.')
+        t = (t * 255).to(torch.uint8)
+    elif t.dtype != torch.uint8:
+        t = t.to(torch.uint8)
+    if len(t.shape) == 4:
+        t = torch.flip(t, (-1,))
+    elif (
+        len(t.shape) == 3
+        and 'as_series' in kwargs
+        and not kwargs['as_series']
+    ):
+        t = torch.flip(t, (-1,))
+    if t.device != 'cpu':
+        t = t.cpu()
+    return t.numpy()
 
 
 # Image output functions.

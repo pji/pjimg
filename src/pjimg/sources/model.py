@@ -5,10 +5,13 @@ model
 Types used for :mod:`pjimg.sources`.
 """
 from abc import ABC, abstractmethod
+from collections.abc import Sequence
 from inspect import signature
 from typing import Any, Optional, Union
+from warnings import warn
 
 import numpy as np
+import torch
 from numpy.typing import NDArray
 
 from pjimg.sources.constants import DOWN, LEFT, RIGHT, UP
@@ -60,12 +63,41 @@ class Serializable(ABC):
 
 
 class Source(Serializable):
-    """A source of image data."""
-    @abstractmethod
-    def fill(
-        self, size: Size,
-        loc: Loc = (0, 0, 0)
-    ) -> ImgAry:
+    """A source of image data.
+
+    :param device: (Optional.) Determines the library and device
+        used to generate the noise. An empty string will use
+        :mod:`numpy`. Anything else will switch to :mod:`torch`
+        and be used as the `device` value. Defaults to an
+        empty string.
+    :param force_device: (Optional.) Whether to override the
+        `disallowed_devices` setting and forces tensors to the
+        given device. This is intended for use only when
+        maintaining :mod:`pjimg`, and will usually lead to
+        either poor performance or an error. Defaults to `False`.
+    :returns: A :class:`pjimg.sources.Source` object.
+    :rtype: pjimg.sources.Source
+    """
+    def __init__(
+        self, device: str = '',
+        force_device: bool = False
+    ) -> None:
+        try:
+            disallowed = self._disallowed_devices       # type: ignore
+        except AttributeError:
+            disallowed = list()
+        if (
+            disallowed
+            and device in disallowed
+            and not force_device
+        ):
+            cls_name = self.__class__.__name__
+            warn(f'{cls_name} cannot use {device} device. Switched to CPU.')
+            device = 'cpu'
+        self.device = device
+        self.force_device = force_device
+
+    def fill(self, size: Size, loc: Loc = (0, 0, 0)) -> ImgAry:
         """Fill a volume with image data.
 
         :param size: The size of the volume of image data to generate.
@@ -74,6 +106,15 @@ class Source(Serializable):
         :return: An :class:`numpy.ndarray` with image data.
         :rtype: numpy.ndarray
         """
+        if self.device:
+            return self.fill_tensor(size, loc).cpu().numpy()
+        return self.fill_array(size, loc)
+
+    def fill_array(self, size: Size, loc: Loc = (0, 0, 0)) -> ImgAry:
+        return np.zeros(size, dtype=np.float32)
+
+    def fill_tensor(self, size: Size, loc: Loc = (0, 0, 0)) -> ImgTnsr:
+        return torch.zeros(size, dtype=torch.float32, device=self.device)
 
 
 class TilePattern(ABC):
@@ -98,13 +139,21 @@ class TilePattern(ABC):
         vp: float,
         gap: float,
         rotation: float,
-        loc: Loc = (0, 0, 0)
+        loc: Loc = (0, 0, 0),
+        device: str = ''
     ) -> None:
         self.loc = loc
         self.size = size
         self.vp = vp
         self.gap = gap
         self.rotation = rotation
+
+        # Tile patterns use OpenCV, which requires numpy.ndarrays.
+        # These cannot be run on Apple GPUs, so we need to keep
+        # any torch.Tensors on the CPU.
+        if device.startswith('mps'):
+            device = 'cpu'
+        self.device = device
 
         self.vso = np.pi / self.sides
         self.sp = np.cos(self.vso) * self.vp
@@ -237,3 +286,44 @@ class TilePattern(ABC):
             )
             for i in range(sides)
         ]], dtype=np.int32),]
+
+    def get_vertices_tensor(
+        self, center: tuple[float, float],
+        o: float,
+        vp: Optional[float] = None,
+        sides: Optional[int] = None,
+        vso: Optional[float] = None
+    ) -> list[torch.Tensor]:
+        """Get the vertices of the tile.
+
+        :param center: The linear coordinates of the tile.
+        :param o: The theta polar coordinate of the first vertex.
+        :param vp: (Optional.) The rho polar coordinate of vertices.
+            Defaults to a value based on the values given when the
+            :class:`TilePattern` was initialized.
+        :param sides: (Optional.) The number of sides for the tile.
+            Defaults to the number of sides given to the
+            :class:`TilePattern`.
+        :param vso: (Optional.) The theta polar coordinate for the
+            angle between a line from the center to a vertex of the
+            tile and a line from the center to the center of the
+            nearest side to that vertex. Defaults to a value based
+            on the values given when the :class:`TilePattern` was
+            initialized.
+        :return: A :class:`torch.Tensor` of the linear coordinates
+            of the vertices of the tile.
+        :rtype: torch.Tensor
+        """
+        if vp is None:
+            vp = self.vp
+        if sides is None:
+            sides = self.sides
+        if vso is None:
+            vso = self.vso
+
+        vvo = 2 * vso
+        t = torch.arange(sides, dtype=torch.float64, device=self.device)
+        t = torch.tile(t.unsqueeze(-1), (1, 2))
+        t[..., 0] = vp * torch.cos(o + t[..., 0] * vvo) + center[x]
+        t[..., 1] = vp * torch.sin(o + t[..., 1] * vvo) + center[y]
+        return [t.int(),]

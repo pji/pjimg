@@ -6,6 +6,7 @@ Unit tests for :mod:`pjimg.imgio.writer`.
 """
 import numpy as np
 import pytest as pt
+import torch
 
 from pjimg import imgio as pjio
 
@@ -81,7 +82,7 @@ def test_save_8_bit_rgb_image(tmp_path):
         key for key in pjio.VALID_FORMATS
         if isinstance(pjio.VALID_FORMATS[key], pjio.Image)
     ]
-    a = [
+    a = np.array([
         [
             [
                 [0xff, 0x7f, 0x00,],
@@ -99,10 +100,12 @@ def test_save_8_bit_rgb_image(tmp_path):
                 [0x00, 0xff, 0x7f,],
             ],
         ],
-    ]
+    ], dtype=np.uint8)
+    t = torch.tensor(a, device='cpu')
     exp_name = '__test_save_rgb_image'
     for ext in exts:
         write_test(a, exp_name, ext, tmp_path)
+        write_test(t, exp_name, ext, tmp_path)
 
 
 def test_save_float_rgb_image(tmp_path):
@@ -114,7 +117,7 @@ def test_save_float_rgb_image(tmp_path):
         key for key in pjio.VALID_FORMATS
         if isinstance(pjio.VALID_FORMATS[key], pjio.Image)
     ]
-    a = [[
+    a = np.array([[
         [
             [1., .5, 0.,],
             [1., .5, 0.,],
@@ -130,10 +133,12 @@ def test_save_float_rgb_image(tmp_path):
             [0., 1., .5,],
             [0., 1., .5,],
         ],
-    ],]
+    ],], dtype=np.float64)
+    t = torch.tensor(a, dtype=torch.float32, device='cpu')
     exp_name = '__test_save_rgb_image'
     for ext in exts:
         write_test(a, exp_name, ext, tmp_path)
+        write_test(t, exp_name, ext, tmp_path)
 
 
 def test_save_float_grayscale_image(tmp_path):
@@ -146,14 +151,16 @@ def test_save_float_grayscale_image(tmp_path):
         key for key in pjio.VALID_FORMATS
         if isinstance(pjio.VALID_FORMATS[key], pjio.Image)
     ]
-    a = [[
+    a = np.array([[
         [0., .5, 1.,],
         [0., .5, 1.,],
         [0., .5, 1.,],
-    ],]
+    ],], dtype=np.float64)
+    t = torch.tensor(a, dtype=torch.float32, device='cpu')
     exp_name = '__test_save_grayscale_image'
     for ext in exts:
         write_test(a, exp_name, ext, tmp_path)
+        write_test(t, exp_name, ext, tmp_path)
 
 
 def test_save_8_bit_grayscale_image(tmp_path):
@@ -166,14 +173,16 @@ def test_save_8_bit_grayscale_image(tmp_path):
         key for key in pjio.VALID_FORMATS
         if isinstance(pjio.VALID_FORMATS[key], pjio.Image)
     ]
-    a = [[
+    a = np.array([[
         [0x00, 0x7f, 0xff],
         [0x00, 0x7f, 0xff],
         [0x00, 0x7f, 0xff],
-    ],]
+    ],], dtype=np.uint8)
+    t = torch.tensor(a, device='cpu')
     exp_name = '__test_save_grayscale_image'
     for ext in exts:
         write_test(a, exp_name, ext, tmp_path)
+        write_test(t, exp_name, ext, tmp_path)
 
 
 def test_save_float_as_jpeg_not_series(tmp_path):
@@ -368,11 +377,13 @@ def test_save_video_float_grayscale(tmp_path):
     a = np.zeros((3, 480, 720), dtype=float)
     a[1, :, :] = 0.5
     a[2, :, :] = 1.0
+    t = torch.tensor(a, device='cpu')
     vids = [vid for vid in pjio.VALID_FORMATS if isinstance(vid, pjio.Video)]
     for vid in vids:
         for codec in vid.codecs:
             exp_name = f'__test_save_grayscale_video_{codec}.{vid.ext}'
             save_video_test(a, vid.ext, codec, exp_name, tmp_path)
+            save_video_test(t, vid.ext, codec, exp_name, tmp_path)
 
 
 def test_save_video_8_bit_grayscale(tmp_path):
@@ -384,11 +395,13 @@ def test_save_video_8_bit_grayscale(tmp_path):
     a = np.zeros((3, 480, 720), dtype=np.uint8)
     a[1, :, :] = 0x7f
     a[2, :, :] = 0xff
+    t = torch.tensor(a, device='cpu')
     vids = [vid for vid in pjio.VALID_FORMATS if isinstance(vid, pjio.Video)]
     for vid in vids:
         for codec in vid.codecs:
             exp_name = f'__test_save_grayscale_video_{codec}.{vid.ext}'
             save_video_test(a, vid.ext, codec, exp_name, tmp_path)
+            save_video_test(t, vid.ext, codec, exp_name, tmp_path)
 
 
 def test_save_video_float_rgb(tmp_path):
@@ -401,11 +414,13 @@ def test_save_video_float_rgb(tmp_path):
     a[0, :, :, 0] = 1.0
     a[1, :, :, 1] = 1.0
     a[2, :, :, 2] = 1.0
+    t = torch.tensor(a, device='cpu')
     vids = [vid for vid in pjio.VALID_FORMATS if isinstance(vid, pjio.Video)]
     for vid in vids:
         for codec in vid.codecs:
             exp_name = f'__test_save_rgb_video_{codec}.{vid.ext}'
             save_video_test(a, vid.ext, codec, exp_name, tmp_path)
+            save_video_test(t, vid.ext, codec, exp_name, tmp_path)
 
 
 def test_save_video_8_bit_rgb(tmp_path):
@@ -418,8 +433,10 @@ def test_save_video_8_bit_rgb(tmp_path):
     a[0, :, :, 0] = 0xff
     a[1, :, :, 1] = 0xff
     a[2, :, :, 2] = 0xff
+    t = torch.tensor(a, device='cpu')
     vids = [vid for vid in pjio.VALID_FORMATS if isinstance(vid, pjio.Video)]
     for vid in vids:
         for codec in vid.codecs:
             exp_name = f'__test_save_rgb_video_{codec}.{vid.ext}'
             save_video_test(a, vid.ext, codec, exp_name, tmp_path)
+            save_video_test(t, vid.ext, codec, exp_name, tmp_path)

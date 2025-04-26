@@ -11,19 +11,28 @@ data is generated based on the distance from a pixel to the nearest point.
 .. autoclass:: pjimg.sources.OctaveWorleyCell
 
 """
+from math import sqrt
 from typing import Optional, Sequence
 
 import numpy as np
+import torch
 from numpy.typing import NDArray
 
 from pjimg.filters import gaussian_blur, unsharp_mask
 from pjimg.sources.model import Seed, Source
 from pjimg.sources.noise import Noise
-from pjimg.util import ImgAry, IntAry64, Loc, Size, lerp
+from pjimg.util import ImgAry, ImgTnsr, IntAry64, Loc, Size, lerp
+from pjimg.util.lerps import lerp_torch
+from pjimg.util.tensor import IdxMeshes, index_space
 
 
 # Names available for import.
 __all__ = ['OctaveWorley', 'OctaveWorleyCell', 'Worley', 'WorleyCell',]
+
+
+# Types.
+Seeds = NDArray[np.int32]
+TSeeds = torch.Tensor
 
 
 # Public classes.
@@ -76,17 +85,14 @@ class Worley(Noise):
         self, points: int,
         volume: Optional[Size] = None,
         origin: Loc = (0, 0, 0),
-        seed: Seed = None
+        *args, **kwargs
     ) -> None:
         self.points = int(points)
         self.volume = volume
         self.origin = origin
-        super().__init__(seed)
+        super().__init__(*args, **kwargs)
 
-    def fill(
-        self, size: Size,
-        loc: Loc = (0, 0, 0)
-    ) -> ImgAry:
+    def fill_array(self, size: Size, loc: Loc = (0, 0, 0)) -> ImgAry:
         """Fill a volume with image data.
 
         :param size: The size of the volume of image data to generate.
@@ -98,12 +104,31 @@ class Worley(Noise):
         seeds = self._place_seeds(size)
         return self._map_fill(seeds, size)
 
+    def fill_tensor(self, size: Size, loc: Loc = (0, 0, 0)) -> ImgTnsr:
+        """Fill a tensor with image data.
+
+        :param size: The size of the volume of image data to generate.
+        :param loc: (Optional.) How much to shift the starting point
+            for the noise generation along each axis.
+        :return: An :class:`numpy.ndarray` with image data.
+        :rtype: numpy.ndarray
+        """
+        seeds = self._place_seeds_tensor(size)
+        return self._map_fill_tensor(seeds, size)
+
     # Private methods.
     def _hypot(self, point: Loc, indices: IntAry64) -> ImgAry:
         axis_dist = [p - i for p, i in zip(point, indices)]
         return np.sqrt(sum(d ** 2 for d in axis_dist))
 
-    def _map_fill(self, seeds: NDArray[np.int32], size: Size) -> ImgAry:
+    def _hypot_tensor(self, point: Loc, indices: IdxMeshes) -> ImgTnsr:
+        axis_dist = [(p - i) ** 2 for p, i in zip(point, indices)]
+        summed = axis_dist[0].float()
+        for dist in axis_dist[1:]:
+            summed += dist.float()
+        return torch.sqrt(summed)
+
+    def _map_fill(self, seeds: Seeds, size: Size) -> ImgAry:
         """Map the value for each pixel in the noise."""
         indices = np.indices(size)
         max_dist = np.sqrt(sum(n ** 2 for n in size))
@@ -117,7 +142,22 @@ class Worley(Noise):
         act_max_dist = np.max(dist)
         return dist / act_max_dist
 
-    def _place_seeds(self, size: Size) -> NDArray[np.int32]:
+    def _map_fill_tensor(self, seeds: TSeeds, size: Size) -> ImgTnsr:
+        """Map the value for each pixel in the noise."""
+        # Index the space and create the distance grid.
+        meshes = index_space(size, device=self.device)
+        max_dist = sqrt(sum(n ** 2 for n in size))
+        dist = torch.zeros(size, device=self.device)
+        dist.fill_(max_dist)
+
+        for point in seeds:
+            work = self._hypot_tensor(point, meshes)
+            dist[work < dist] = work[work < dist]
+
+        act_max_dist = torch.max(dist)
+        return dist / act_max_dist
+
+    def _place_seeds(self, size: Size) -> Seeds:
         """Place the seeds within the overall volume of noise."""
         volume_size = self.volume if self.volume else size
         volume = np.array(volume_size, dtype=float)
@@ -131,6 +171,25 @@ class Worley(Noise):
         seeds = np.around(seeds * (volume - 1))
         seeds += np.array(self.origin)
         return seeds.astype(np.int32)
+
+    def _place_seeds_tensor(self, size: Size) -> TSeeds:
+        """Place the seeds within the overall volume of noise."""
+        volume_size = self.volume if self.volume else size
+        volume = torch.tensor(volume_size, device=self.device)
+
+        # Using the numpy random number generation to ensure
+        # reproducibility across generation methods. Though,
+        # this may slow things down.
+        raw_seeds = self._rng.random((self.points, 3), dtype=float)
+        seeds = torch.tensor(
+            raw_seeds,
+            dtype=torch.float32,
+            device=self.device
+        )
+
+        seeds = torch.round(seeds * (volume - 1))
+        seeds += torch.tensor(self.origin, device=self.device)
+        return seeds.int()
 
 
 class WorleyCell(Worley):
@@ -185,17 +244,11 @@ class WorleyCell(Worley):
        The image data created by the usage example.
 
     """
-    def __init__(
-        self, points: int,
-        volume: Optional[Size] = None,
-        origin: Loc = (0, 0, 0),
-        seed: Seed = None,
-        antialias: bool = False
-    ) -> None:
+    def __init__(self, antialias: bool = False, *args, **kwargs) -> None:
         self.antialias = antialias
-        super().__init__(points, volume, origin, seed)
+        super().__init__(*args, **kwargs)
 
-    def _map_fill(self, seeds: NDArray[np.int32], size: Size) -> ImgAry:
+    def _map_fill(self, seeds: Seeds, size: Size) -> ImgAry:
         """Map the value for each pixel in the noise."""
         # Assign a color for each seed.
         colors = [n / (self.points - 1) for n in range(self.points)]
@@ -248,8 +301,68 @@ class WorleyCell(Worley):
         # Return the noise.
         return a
 
+    def _map_fill_tensor(self, seeds: TSeeds, size: Size) -> ImgTnsr:
+        """Map the value for each pixel in the noise."""
+        # Assign a color for each seed.
+        colors = [n / (self.points - 1) for n in range(self.points)]
+        tcolors = torch.tensor(colors, device=self.device)
 
-class OctaveWorley(Source):
+        # Map all the distances to each point.
+        meshes = index_space(size, device=self.device)
+        max_dist = sqrt(sum(n ** 2 for n in size))
+        dists = torch.zeros((*size, self.points), device=self.device)
+        dists.fill_(max_dist)
+
+        # This line is a kludge to address a typing concern from Mypy.
+        # It seems like Mypy doesn't recognize that NDArray[np.int32]
+        # is multidimensional, which, fair enough, it isn't always.
+        # However, it seems to be OK with me assigning the type as
+        # Sequence[Loc] here despite the concern with letting the
+        # NDArray go into the for loop. Should try to fix this when I
+        # get more time.
+        seed_list: Sequence[Loc] = [seed for seed in seeds]
+
+        for i, seed in enumerate(seed_list):
+            dists[:, :, :, i] = self._hypot_tensor(seed, meshes)
+
+        # Get the closest color and then antialias the edges.
+        colormap = torch.argmin(dists, -1)
+        t = torch.take(tcolors, colormap.long())
+
+        if self.antialias:
+
+            # To antialias, we need the second lowest distance. To do that,
+            # first we scrub the lowest distances out of the distances.
+            ndists = torch.clone(dists).detach()
+            min_indices = torch.ravel(colormap)
+            ndists_shape = torch.tensor(ndists.shape, device=self.device)
+            rows = torch.prod(ndists_shape[:-1])
+            row_indices = (torch.arange(
+                int(rows),
+                dtype=torch.long,
+                device=self.device
+            ) * ndists_shape[-1])
+            min_row_indices = row_indices + min_indices
+            raveled = torch.ravel(ndists)
+            raveled[min_row_indices] = max_dist
+            ndists = raveled.reshape(ndists.shape)
+            ncolormap = torch.argmin(ndists, -1)
+            b = torch.take(tcolors, ncolormap.long())
+
+            # Now we need to figure out where there is a small difference
+            # between the distances.
+            x = torch.min(ndists, -1)[0] - torch.min(dists, -1)[0]
+            m = x < 1
+
+            # Interpolate the values of those edges.
+            x[m] = 1 - (x[m] / 2 + .5)
+            t[m] = lerp_torch(t[m], b[m], x[m])
+
+        # Return the noise.
+        return t
+
+
+class OctaveWorley(Noise):
     """Fill a space with octaves of Worley noise.
 
     Worley noise is a type of cellular noise. The color value of each
@@ -315,7 +428,7 @@ class OctaveWorley(Source):
         points: int = 10,
         volume: Optional[Size] = None,
         origin: Loc = (0, 0, 0),
-        seed: Seed = None
+        *args, **kwargs
     ) -> None:
         self.octaves = octaves
         self.persistence = persistence
@@ -324,12 +437,9 @@ class OctaveWorley(Source):
         self.points = points
         self.volume = volume
         self.origin = origin
-        self.seed = seed
+        super().__init__(*args, **kwargs)
 
-    def fill(
-        self, size: Sequence[int],
-        loc: Sequence[int] = (0, 0, 0)
-    ) -> ImgAry:
+    def fill_array(self, size: Size, loc: Loc = (0, 0, 0)) -> ImgAry:
         a = np.zeros(tuple(size), dtype=float)
         max_value = 0.0
         for i in range(self.octaves):
@@ -347,8 +457,27 @@ class OctaveWorley(Source):
         a /= max_value
         return a
 
+    def fill_tensor(self, size: Size, loc: Loc = (0, 0, 0)) -> ImgTnsr:
+        t = torch.zeros(tuple(size), dtype=torch.float32, device=self.device)
+        max_value = 0.0
+        for i in range(self.octaves):
+            amp = self.amplitude + (self.persistence * i)
+            freq = self.frequency * 2 ** i
+            points = self.points * freq
+            octave = Worley(
+                points=points,
+                volume=self.volume,
+                origin=self.origin,
+                seed=self.seed,
+                device=self.device
+            )
+            t += octave.fill_tensor(size, loc) * amp
+            max_value += amp
+        t /= max_value
+        return t
 
-class OctaveWorleyCell(Source):
+
+class OctaveWorleyCell(Noise):
     """Fill a space with octaves of Worley cell noise.
 
     Worley noise is a type of cellular noise. The color value of each
@@ -420,8 +549,8 @@ class OctaveWorleyCell(Source):
         points: int = 10,
         volume: Optional[Size] = None,
         origin: Loc = (0, 0, 0),
-        seed: Seed = None,
-        antialias: bool = False
+        antialias: bool = False,
+        *args, **kwargs
     ) -> None:
         self.octaves = octaves
         self.persistence = persistence
@@ -430,13 +559,10 @@ class OctaveWorleyCell(Source):
         self.points = points
         self.volume = volume
         self.origin = origin
-        self.seed = seed
         self.antialias = antialias
+        super().__init__(*args, **kwargs)
 
-    def fill(
-        self, size: Sequence[int],
-        loc: Sequence[int] = (0, 0, 0)
-    ) -> ImgAry:
+    def fill_array(self, size: Size, loc: Loc = (0, 0, 0)) -> ImgAry:
         a = np.zeros(tuple(size), dtype=float)
         max_value = 0.0
         for i in range(self.octaves):
@@ -454,3 +580,23 @@ class OctaveWorleyCell(Source):
             max_value += amp
         a /= max_value
         return a
+
+    def fill_tensor(self, size: Size, loc: Loc = (0, 0, 0)) -> ImgTnsr:
+        t = torch.zeros(tuple(size), dtype=torch.float32, device=self.device)
+        max_value = 0.0
+        for i in range(self.octaves):
+            amp = self.amplitude + (self.persistence * i)
+            freq = self.frequency * 2 ** i
+            points = self.points * freq
+            octave = WorleyCell(
+                points=points,
+                volume=self.volume,
+                origin=self.origin,
+                antialias=self.antialias,
+                seed=self.seed,
+                device=self.device
+            )
+            t += octave.fill_tensor(size, loc) * amp
+            max_value += amp
+        t /= max_value
+        return t

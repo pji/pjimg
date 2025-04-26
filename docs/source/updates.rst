@@ -20,14 +20,20 @@ The following were the updates in :mod:`pjimg` v0.1.0:
 
         *   Created time_trail.py example script for comparing
             performance of different source objects.
-        *   (Started.) Added tensor-based generation to all sources.
+        *   Added tensor-based generation to all sources.
         
-            *   (Started.) Added to Noises.
-            *   (Started.) Added to UnitNoises.
             *   Added to Perlins.
-            *   (Not started.) Added to Worleys.
             *   Added to Mazes.
-            *   (Not started.) Added to Tiles.
-            *   (Not started.) Added to Patterns.
+            *   Added to Noises.
+            *   Added to UnitNoises.
+
+            *   Added to Worleys.
+            *   Added to Tiles.
+            *   Added to Patterns.
         
+        *   Allow reading from and writing to tensors.
+
+        *   (Not started.) Allow direct filtering of tensors.
+        *   (Not started.) Allow direct easing of tensors.
+        *   (Not started.) Allow direct blending of tensors.
         *   (Started.) Create relevant unit tests.

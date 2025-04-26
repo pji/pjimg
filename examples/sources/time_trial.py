@@ -20,11 +20,12 @@ logging.basicConfig(level=logging.ERROR)
 logging.captureWarnings(True)
 
 
-DEVICES = ['', 'cpu', 'mps']
+DEVICES = ['cpu', 'mps', '']
 # SIZE = (1, 2160, 3840)
-# SIZE = (1, 1024, 768)
+SIZE = (1, 768, 1024)
 # SIZE = (1, 300, 300)
-SIZE = (1, 120, 120)
+# SIZE = (1, 120, 120)
+# SIZE = (1, 10, 10)
 
 
 def trial(src: srcs.Source, name: str, size: Size = SIZE) -> None:
@@ -66,14 +67,37 @@ if __name__ == '__main__':
 #         (srcs.Perlin, {'unit': unit, 'seed': seed, 'device': '',}),
 #         (srcs.OctaveUnitNoise, {'unit': unit, 'seed': seed, 'device': '',}),
 #         (srcs.OctavePerlin, {'unit': unit, 'seed': seed, 'device': '',}),
-#         (srcs.Maze, {'unit': (1, 30, 30), 'seed': seed, 'device': '',}),
+#         (srcs.Maze, {'unit': (1, 30, 30), 'seed': seed,}),
 #         (
 #             srcs.AnimatedMaze,
-#             {'unit': (1, 30, 30), 'delay': 4, 'linger': 5, 'seed': seed, 'device': '',},
+#             {
+#                 'unit': (1, 30, 30),
+#                 'delay': 4,
+#                 'linger': 5,
+#                 'seed': seed,
+#             },
 #             'mp4'
 #         ),
-#         (srcs.SolvedMaze, {'unit': (1, 30, 30), 'seed': seed, 'device': ''}),
-        (srcs.OctaveMaze, {'unit': (1, 30, 30), 'seed': seed, 'device': ''}),
-    ]
+#         (srcs.SolvedMaze, {'unit': (1, 30, 30), 'seed': seed,}),
+#         (srcs.OctaveMaze, {'unit': (1, 30, 30), 'seed': seed,}),
+#         (srcs.Worley, {'points': 10, 'seed': seed,}),
+#         (srcs.WorleyCell, {'points': 10, 'seed': seed,}),
+#         (srcs.OctaveWorley, {'points': 10, 'seed': seed,}),
+#         (srcs.OctaveWorleyCell, {'points': 10, 'seed': seed,}),
+#         (srcs.Tile, {'pattern': 'hexagon', 'radius': 56, 'gap': 4,}),
+#         (srcs.Box, {'origin': (0, 0, 0), 'dimensions': (1, 50, 50),}),
+#         (srcs.Gradient, {'direction': 'v', 'stops': [0, 0, .5, 1, 1, 0]}),
+#         (srcs.Hexes, {'radius': 30,}),
+#         (srcs.Lines, {}),
+#         (srcs.Radials, {'length': 15, 'growth': 'g',}),
+#         (srcs.Rays, {'count': 5,}),
+#         (srcs.Regular, {'sides': 5, 'rho': 4 * SIZE[1] / 10,}),
+#         (srcs.Rings, {'width': 20, 'radius': 1, 'gap': 20, 'count': 200}),
+#         (srcs.Solid, {'color': 0.20,}),
+#         (srcs.Spheres, {'radius': 50,}),
+#         (srcs.Spot, {'radius': 7 * SIZE[1] // 9,}),
+#         (srcs.Text, {'text': 'SPAM',}),
+#         (srcs.Waves, {'unit': SIZE[2] // 5,}),
+  ]
     for cls, kwargs, *ext in to_try:
         run_trial(cls, kwargs, ext) #, ['cpu',])

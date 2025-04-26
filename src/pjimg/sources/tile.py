@@ -11,13 +11,14 @@ from typing import Any, Optional, Sequence
 
 import cv2
 import numpy as np
+import torch
 from numpy.typing import NDArray
 
 from pjimg.sources.constants import DOWN, LEFT, RIGHT, UP
 from pjimg.sources.decorators import register
-from pjimg.sources.model import Seed, TilePattern
+from pjimg.sources.model import Seed, Source, TilePattern
 from pjimg.sources.noise import Noise
-from pjimg.util import ImgAry, IntAry, Loc, Size, X, Y, Z
+from pjimg.util import ImgAry, ImgTnsr, IntAry, Loc, Size, X, Y, Z
 from pjimg.util.util import translate_by_polar_coords
 
 
@@ -34,15 +35,6 @@ class Hexagon(TilePattern):
     """Tile with hexagons."""
     sides: int = 6
     mod_next_o: float = 2
-
-    def __init__(
-        self, size: Size,
-        vp: float,
-        gap: float,
-        rotation: float,
-        loc: Loc = (0, 0, 0)
-    ) -> None:
-        super().__init__(size, vp, gap, rotation, loc)
 
     @property
     def h_row(self) -> float:
@@ -62,15 +54,6 @@ class Octagon(TilePattern):
     """Tile with octagons."""
     sides: int = 8
     mod_next_o: float = 2
-
-    def __init__(
-        self, size: Size,
-        vp: float,
-        gap: float,
-        rotation: float,
-        loc: Loc = (0, 0, 0)
-    ) -> None:
-        super().__init__(size, vp, gap, rotation, loc)
 
     @property
     def h_row(self) -> float:
@@ -107,21 +90,22 @@ class Octagon(TilePattern):
         o -= self.vso
         return super().get_vertices(center, o, vp, sides, vso)
 
+    def get_vertices_tensor(
+        self, center: tuple[float, float],
+        o: float,
+        vp: Optional[float] = None,
+        sides: Optional[int] = None,
+        vso: Optional[float] = None
+    ) -> list[torch.Tensor]:
+        o -= self.vso
+        return super().get_vertices_tensor(center, o, vp, sides, vso)
+
 
 @register(tile_patterns)
 class OctagonWithSquares(TilePattern):
     """Tile with octagons."""
     sides: int = 8
     mod_next_o: float = 2
-
-    def __init__(
-        self, size: Size,
-        vp: float,
-        gap: float,
-        rotation: float,
-        loc: Loc = (0, 0, 0)
-    ) -> None:
-        super().__init__(size, vp, gap, rotation, loc)
 
     @property
     def h_row(self) -> float:
@@ -181,20 +165,41 @@ class OctagonWithSquares(TilePattern):
         # Return the shapes.
         return tiles
 
+    def get_vertices_tensor(
+        self, center: tuple[float, float],
+        o: float,
+        vp: Optional[float] = None,
+        sides: Optional[int] = None,
+        vso: Optional[float] = None
+    ) -> list[torch.Tensor]:
+        # Create the octagon.
+        o -= self.vso
+        oct_center = center[:]
+        tiles = super().get_vertices_tensor(oct_center, o, vp, sides, vso)
+
+        # Create the square.
+        o += self.vso
+        s1_center_o = 0
+        s1_center_x = self.get_next_center(oct_center, UP)[0][x]
+        s1_center_p = abs(oct_center[x] - s1_center_x)
+        s1_center = translate_by_polar_coords(
+            oct_center, s1_center_p, s1_center_o
+        )
+        s1_sp = s1_center_p - self.sp - self.gap
+        s1_p = s1_sp / np.cos(np.pi / 4)
+        s1_o = o + np.pi / 4
+        s1_vso = np.pi / 4
+        s1 = super().get_vertices_tensor(s1_center, s1_o, s1_p, 4, s1_vso)
+        tiles.extend(s1)
+
+        # Return the shapes.
+        return tiles
+
 
 @register(tile_patterns)
 class Square(TilePattern):
     """Tile with squares."""
     sides: int = 4
-
-    def __init__(
-        self, size: Size,
-        vp: float,
-        gap: float,
-        rotation: float,
-        loc: Loc = (0, 0, 0)
-    ) -> None:
-        super().__init__(size, vp, gap, rotation, loc)
 
 
 @register(tile_patterns)
@@ -202,15 +207,6 @@ class Triangle(TilePattern):
     """Tile with triangles."""
     sides: int = 3
     mod_next_o: float = 1 / 2
-
-    def __init__(
-        self, size: Size,
-        vp: float,
-        gap: float,
-        rotation: float,
-        loc: Loc = (0, 0, 0)
-    ) -> None:
-        super().__init__(size, vp, gap, rotation, loc)
 
     @property
     def cols(self) -> int:
@@ -256,6 +252,11 @@ class Triangle(TilePattern):
 # Source classes.
 class Tile(Noise):
     """Tile a space with polygons.
+
+    .. warning:
+        Due to the use of :mod:`cv2`, using tensors in the generation
+        of tiles is likely slower than using arrays. You can still do
+        it, but you'll get faster results if you don't.
 
     :param pattern: The tiling pattern to use when tiling the space.
         Valid values are available as the keys of the `sources.tile_patterns`
@@ -315,7 +316,7 @@ class Tile(Noise):
         color_img: Optional[ImgAry] = None,
         drop: float = 0.0,
         drop_img: Optional[ImgAry] = None,
-        seed: Seed = None
+        *args, **kwargs
     ) -> None:
         self.pattern = pattern
         self.radius = radius
@@ -325,9 +326,16 @@ class Tile(Noise):
         self.color_img = color_img
         self.drop = drop
         self.drop_img = drop_img
-        super().__init__(seed)
 
-    def fill(self, size: Size, loc: Loc = (0, 0, 0)) -> ImgAry:
+        # Tile uses cv2 for several calculations. cv2 cannot work
+        # natively with tensors. Apple silicon cannot handle converting
+        # tensors to arrays. So, we need to pass to Source that Apple
+        # GPUs can't be used.
+        self._disallowed_devices = ['mps',]
+
+        super().__init__(*args, **kwargs)
+
+    def fill_array(self, size: Size, loc: Loc = (0, 0, 0)) -> ImgAry:
         pattern_type = tile_patterns[self.pattern]
         pattern = pattern_type(                     # type: ignore
             size, self.radius, self.gap, self.rotation, loc
@@ -370,6 +378,45 @@ class Tile(Noise):
         a = np.tile(a, (size[Z], 1, 1))
         return a.astype(float) / 255
 
+    def fill_tensor(self, size: Size, loc: Loc = (0, 0, 0)) -> ImgTnsr:
+        pattern_type = tile_patterns[self.pattern]
+        pattern = pattern_type(                     # type: ignore
+            size, self.radius, self.gap, self.rotation, loc, self.device
+        )
+        color = int(self.color * 0xff)
+        line = cv2.LINE_AA
+
+        # Configure the tiling.
+        row_start = (pattern.y_start, pattern.x_start)
+        row_orient = pattern.orient_start
+        center = row_start
+        orient = row_orient
+
+        # Tile the polygons.
+        t = torch.zeros(size[1:], dtype=torch.uint8, device=self.device)
+        while center[y] < size[Y] + pattern.h_row:
+            while center[x] < size[X] + pattern.vp:
+
+                # Make polygons.
+                modo = orient + pattern.rotation
+                vertices = pattern.get_vertices_tensor(center, modo)
+                for polygon in vertices:
+                    self._draw_polygon_tensor(t, polygon, line)
+
+                # Find next polygon.
+                center, orient = pattern.get_next_center(center, orient)
+
+            # Find the next row.
+            row_start, row_orient = pattern.get_next_row_start(
+                row_start, row_orient
+            )
+            orient = row_orient
+            center = row_start
+
+        # Add back the Z axis and return.
+        t = torch.tile(t.unsqueeze(0), (size[Z], 1, 1))
+        return t.float() / 255
+
     # Private methods.
     def _draw_polygon(
         self, a: IntAry,
@@ -388,6 +435,28 @@ class Tile(Noise):
         if self._rng.random([1,])[0] > drop:
             cv2.fillConvexPoly(a, vertices, color=(color,), lineType=line)
 
+    def _draw_polygon_tensor(
+        self, t: torch.Tensor,
+        vertices: torch.Tensor,
+        line: int
+    ) -> None:
+        drop = self.drop
+        if self.drop_img is not None:
+            drop = 1 - average_color_in_shape_tensor(self.drop_img, vertices)
+
+        color = self.color
+        if self.color_img is not None:
+            color = average_color_in_shape_tensor(self.color_img, vertices)
+        color = int(color * 0xff)
+
+        if self._rng.random([1,])[0] > drop:
+            cv2.fillConvexPoly(
+                t.numpy(),
+                vertices.numpy(),
+                color=(color,),
+                lineType=line
+            )
+
 
 # Utility functions.
 def average_color_in_shape(
@@ -401,6 +470,23 @@ def average_color_in_shape(
 
     if not np.isnan(masked).all():
         return np.nanmean(masked)
+    return 0.0
+
+
+def average_color_in_shape_tensor(
+    t: ImgAry | ImgTnsr,
+    vertices: torch.Tensor,
+    device: str = 'cpu'
+) -> float:
+    if not isinstance(t, torch.Tensor):
+        t = torch.tensor(t, device=device)
+    t = t.squeeze()
+    mask = torch.zeros(t.shape, dtype=torch.uint8, device=device)
+    cv2.fillConvexPoly(mask.numpy(), vertices.numpy(), color=(0xff,))
+    masked = t[mask == 0xff]
+
+    if not torch.isnan(masked).all():
+        return float(torch.nanmean(masked))
     return 0.0
 
 

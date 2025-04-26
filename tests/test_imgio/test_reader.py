@@ -6,6 +6,7 @@ Unit tests for :mod:`pjimg.imgio.reader`.
 """
 import numpy as np
 import pytest as pt
+import torch
 
 from pjimg import imgio as pjio
 
@@ -21,12 +22,30 @@ def image(request):
 
 
 @pt.fixture
+def image_tensor(request):
+    """A common test for :func:`read_image`."""
+    path = request.node.get_closest_marker('path').args[0]
+    path = f'tests/test_imgio/data/{path}'
+    t = pjio.read_to_tensor(path)
+    return torch.round(t, decimals=2)
+
+
+@pt.fixture
 def image_as_vid(request):
     """A common test for :func:`read_image` with `as_video`."""
     path = request.node.get_closest_marker('path').args[0]
     path = f'tests/test_imgio/data/{path}'
     a = pjio.read_image(path, as_video=True)
     return np.around(a, 2)
+
+
+@pt.fixture
+def image_as_vid_tensor(request):
+    """A common test for :func:`read_image` with `as_video`."""
+    path = request.node.get_closest_marker('path').args[0]
+    path = f'tests/test_imgio/data/{path}'
+    t = pjio.read_image_to_tensor(path, as_video=True)
+    return torch.round(t, decimals=2)
 
 
 @pt.fixture
@@ -42,6 +61,12 @@ def video_data():
         a[:, :, :, c] *= diff_inc[c]
         a[:, :, :, c] += start_color[c]
     yield a.astype(np.uint8)
+
+
+@pt.fixture
+def video_data_tensor(video_data):
+    """An tensor of video data for testing."""
+    return torch.tensor(video_data, device='cpu')
 
 
 # Test cases.
@@ -176,6 +201,135 @@ class TestRead:
         assert (np.abs(a.astype(int) - video_data.astype(int)) <= 5).all()
 
 
+class TestReadToTensor:
+    @pt.mark.path('__test_save_grayscale_image.jpg')
+    def test_read_image_grayscale_jpg(self, image_tensor):
+        """Given the path to a grayscale JPG file, :func:`read_image`
+        return the image's data as an :class:`numpy.ndarray`.
+        """
+        assert (image_tensor == torch.tensor([[
+            [0., .5, 1.,],
+            [0., .5, 1.,],
+            [0., .5, 1.,],
+        ],], dtype=torch.float32, device='cpu')).all()
+
+    @pt.mark.path('__test_save_grayscale_image.png')
+    def test_read_image_grayscale_png(self, image_tensor):
+        """Given the path to a grayscale PNG file, :func:`read_image`
+        return the image's data as an :class:`numpy.ndarray`.
+        """
+        assert (image_tensor == torch.tensor([[
+            [0., .5, 1.,],
+            [0., .5, 1.,],
+            [0., .5, 1.,],
+        ],], dtype=torch.float32, device='cpu')).all()
+
+    @pt.mark.path('__test_save_grayscale_image.tiff')
+    def test_read_image_grayscale_tiff(self, image_tensor):
+        """Given the path to a grayscale TIFF file, :func:`read_image`
+        return the image's data as an :class:`numpy.ndarray`.
+        """
+        assert (image_tensor == torch.tensor([[
+            [0., .5, 1.,],
+            [0., .5, 1.,],
+            [0., .5, 1.,],
+        ],], dtype=torch.float32, device='cpu')).all()
+
+    @pt.mark.path('__test_save_grayscale_image.jpg')
+    def test_read_image_grayscale_jpg_as_vid(self, image_as_vid_tensor):
+        """Given the path to a grayscale JPG file, :func:`read_image`
+        return the image's data as an :class:`numpy.ndarray`.
+        """
+        assert (image_as_vid_tensor == torch.tensor([[
+            [0., .5, 1.,],
+            [0., .5, 1.,],
+            [0., .5, 1.,],
+        ],], dtype=torch.float32, device='cpu')).all()
+
+    @pt.mark.path('__test_save_rgb_image.jpg')
+    def test_read_image_rgb_jpg(self, image_tensor):
+        """Given the path to a RGB JPG file, :func:`read_image`
+        return the image's data as an :class:`numpy.ndarray`.
+        """
+        assert (image_tensor == torch.tensor([[[
+            [
+                [.92, .41, .66,],
+                [.92, .41, .66,],
+                [.92, .41, .66,],
+            ],
+            [
+                [.59, .08, .33,],
+                [.59, .08, .33,],
+                [.59, .08, .33,],
+            ],
+            [
+                [0., 1., .51,],
+                [0., 1., .51,],
+                [0., 1., .51,],
+            ],
+        ],],], dtype=torch.float32, device='cpu')).all()
+
+    @pt.mark.path('__test_save_rgb_image.png')
+    def test_read_image_rgb_png(self, image_tensor):
+        """Given the path to a RGB PNG file, :func:`read_image`
+        return the image's data as an :class:`numpy.ndarray`.
+        """
+        assert (image_tensor == torch.tensor([[
+            [
+                [1., .5, 0.,],
+                [1., .5, 0.,],
+                [1., .5, 0.,],
+            ],
+            [
+                [.5, 0., 1.,],
+                [.5, 0., 1.,],
+                [.5, 0., 1.,],
+            ],
+            [
+                [0., 1., .5,],
+                [0., 1., .5,],
+                [0., 1., .5,],
+            ],
+        ],])).all()
+
+    @pt.mark.path('__test_save_rgb_image.tiff')
+    def test_read_image_rgb_tiff(self, image_tensor):
+        """Given the path to a TIFF PNG file, :func:`read_image`
+        return the image's data as an :class:`numpy.ndarray`.
+        """
+        assert (image_tensor == torch.tensor([[
+            [
+                [1., .5, 0.,],
+                [1., .5, 0.,],
+                [1., .5, 0.,],
+            ],
+            [
+                [.5, 0., 1.,],
+                [.5, 0., 1.,],
+                [.5, 0., 1.,],
+            ],
+            [
+                [0., 1., .5,],
+                [0., 1., .5,],
+                [0., 1., .5,],
+            ],
+        ],])).all()
+
+    def test_read_color_mp4(self, video_data_tensor):
+        """Given a path to an MP4 file, :func:`read_video` should return the
+        contents of the video as a :class:`numpy.ndarray`.
+        """
+        path = 'tests/test_imgio/data/__test_read_color.mp4'
+        t = pjio.read_to_tensor(path)
+
+        # The compression makes it hard to predict the exact color values
+        # of each pixel in the output. The following checks to see if there
+        # is any variance greater than ~2%. The data type has to change to
+        # `int` because `numpy.uint8` is unsigned, so any negative values
+        # roll over.
+        assert (torch.abs(t.int() - video_data_tensor.int()) <= 5).all()
+
+
 class TestReadImage:
     @pt.mark.path('__test_save_rgb_image.jpg')
     def test_read_image_rgb_jpg_as_vid(self, image_as_vid):
@@ -225,6 +379,55 @@ class TestReadImage:
             _ = pjio.read_image(path)
 
 
+class TestReadImageToTensor:
+    @pt.mark.path('__test_save_rgb_image.jpg')
+    def test_read_image_rgb_jpg_as_vid(self, image_as_vid_tensor):
+        """Given the path to a RGB JPG file, :func:`read_image`
+        return the image's data as an :class:`numpy.ndarray`.
+        """
+        assert (image_as_vid_tensor == torch.tensor([[
+            [
+                [
+                    [.92, .41, .66,],
+                    [.92, .41, .66,],
+                    [.92, .41, .66,],
+                ],
+                [
+                    [.59, .08, .33,],
+                    [.59, .08, .33,],
+                    [.59, .08, .33,],
+                ],
+                [
+                    [0., 1., .51,],
+                    [0., 1., .51,],
+                    [0., 1., .51,],
+                ],
+            ],
+        ]], dtype=torch.float32, device='cpu')).all()
+
+    def test_read_image_file_does_not_exist(self):
+        """If given the path of a file that doesn't exist, :func:`save_image`
+        should raise a :class:`FileNotFoundError`.
+        """
+        path = 'tests/test_imgio/data/spam.jpg'
+        with pt.raises(
+            FileNotFoundError,
+            match=f'There is no file at {path}.'
+        ):
+            _ = pjio.read_image_to_tensor(path)
+
+    def test_read_image_file_not_readablet(self):
+        """If given the path of a file that isn't a readable image,
+        :func:`read_image` should raise a :class:`ValueError` exception.
+        """
+        path = 'tests/test_imgio/data/__test_not_image.txt'
+        with pt.raises(
+            ValueError,
+            match=f'The file at {path} cannot be read.'
+        ):
+            _ = pjio.read_image_to_tensor(path)
+
+
 class TestReadVideo:
     def test_read_video_color_mp4(self, video_data):
         """Given a path to an MP4 file, :func:`read_video` should return the
@@ -239,3 +442,19 @@ class TestReadVideo:
         # `int` because `numpy.uint8` is unsigned, so any negative values
         # roll over.
         assert (np.abs(a.astype(int) - video_data.astype(int)) <= 5).all()
+
+
+class TestReadVideoToTensor:
+    def test_read_video_color_mp4(self, video_data_tensor):
+        """Given a path to an MP4 file, :func:`read_video_to_tensor` should
+        return the contents of the video as a :class:`torch.tensor`.
+        """
+        path = 'tests/test_imgio/data/__test_read_color.mp4'
+        t = pjio.read_video_to_tensor(path)
+
+        # The compression makes it hard to predict the exact color values
+        # of each pixel in the output. The following checks to see if there
+        # is any variance greater than ~2%. The data type has to change to
+        # `int` because `numpy.uint8` is unsigned, so any negative values
+        # roll over.
+        assert (torch.abs(t.int() - video_data_tensor.int()) <= 5).all()

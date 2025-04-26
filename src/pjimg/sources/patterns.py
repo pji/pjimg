@@ -20,15 +20,17 @@ image and video data.
 .. autoclass:: pjimg.sources.Waves
 
 """
-from math import sqrt
-from typing import Callable, Literal, Optional, Sequence
+from math import pi, sqrt
+from typing import Callable, Literal, Optional, Sequence, overload
 
 import cv2
 import numpy as np
+import torch
 from PIL import Image, ImageDraw, ImageFont
 
 from pjimg.sources.model import Source
-from pjimg.util import ImgAry, Loc, Size, X, Y, Z
+from pjimg.util import ImgAry, ImgTnsr, Loc, Size, X, Y, Z
+from pjimg.util.tensor import IdxMeshes, hypot_3d, index_space
 from pjimg.util.util import find_center
 
 
@@ -37,6 +39,11 @@ __all__ = [
     'Box', 'Gradient', 'Hexes', 'Lines', 'Radials', 'Rays', 'Regular',
     'Rings', 'Solid', 'Spheres', 'Spot', 'Text', 'Waves',
 ]
+
+
+# Types.
+WaveWarp = Callable[[ImgAry], ImgAry]
+WaveWarpTnsr = Callable[[ImgTnsr], ImgTnsr]
 
 
 # Public classes.
@@ -49,37 +56,36 @@ class Box(Source):
         range 0 <= x <= 1.
     :return: A :class:`Box` object.
     :rtype: sources.patterns.Box
+    :usage:
+        Create an image of a gray rectangle in the middle of a
+        1280x720 image:
 
-    Usage::
+            >>> size = (1, 720, 1280)
+            >>> origin = (n // 4 for n in size)
+            >>> dimensions = (1, *(n // 2 for n in size[Y:]))
+            >>> source = Box(origin=origin, dimensions=dimensions, color=0.5)
+            >>> img = source.fill(size)
 
-        >>> # Create an image of a gray rectangle in the middle of a
-        >>> # 1280x720 image.
-        >>> size = (1, 720, 1280)
-        >>> origin = (n // 4 for n in size)
-        >>> dimensions = (1, *(n // 2 for n in size[Y:]))
-        >>> source = Box(origin=origin, dimensions=dimensions, color=0.5)
-        >>> img = source.fill(size)
+        .. figure:: images/box.jpg
+           :alt: An image of a gray rectangle in the middle of a 1280x720
+                 image.
 
-    .. figure:: images/box.jpg
-       :alt: An image of a gray rectangle in the middle of a 1280x720 image.
-
-       The image data created by the usage example.
+           The image data created by the usage example.
 
     """
     def __init__(
         self, origin: Loc,
-        dimensions: Sequence[int],
-        color: float = 1.0
+        dimensions: Size,
+        color: float = 1.0,
+        *args, **kwargs
     ) -> None:
         self.origin = origin
         self.dimensions = dimensions
         self.color = color
+        super().__init__(*args, **kwargs)
 
     # Public methods.
-    def fill(
-        self, size: Size,
-        loc: Loc = (0, 0, 0)
-    ) -> ImgAry:
+    def fill_array(self, size: Size, loc: Loc = (0, 0, 0)) -> ImgAry:
         """Fill a volume with image data.
 
         :param size: The size of the volume of image data to generate.
@@ -95,6 +101,22 @@ class Box(Source):
         a[tuple(slices)] = self.color
         return a
 
+    def fill_tensor(self, size: Size, loc: Loc = (0, 0, 0)) -> ImgTnsr:
+        """Fill a tensor with image data.
+
+        :param size: The size of the volume of image data to generate.
+        :param loc: (Optional.) How much to shift the starting point
+            for the noise generation along each axis.
+        :return: An :class:`torch.Tensor` with image data.
+        :rtype: torch.Tensor
+        """
+        t = super().fill_tensor(size, loc)
+        start = [n + o for n, o in zip(loc, self.origin)]
+        end = [s + d for s, d in zip(start, self.dimensions)]
+        slices = [slice(s, e) for s, e in zip(start, end)]
+        t[tuple(slices)] = self.color
+        return t
+
 
 class Gradient(Source):
     """Generate a simple gradient.
@@ -108,32 +130,34 @@ class Gradient(Source):
         of the stop.
     :return: :class:`Gradient` object.
     :rtype: sources.patterns.Gradient
+    :usage:
+        Create a horizontal gradient with multiple stops in a
+        1280x720 image.
 
-    Usage::
+            >>> size = (1, 720, 1280)
+            >>> stops = [
+            ...     0.1, 0.0,
+            ...     0.2, 1.0,
+            ...     0.3, 0.0,
+            ...     0.8, 1.0,
+            ...     0.9, 0.0,
+            ... ]
+            >>> source = Gradient(direction='h', stops=stops)
+            >>> img = source.fill(size)
 
-        >>> # Create a horizontal gradient with multiple stops in a
-        >>> # 1280x720 image.
-        >>> size = (1, 720, 1280)
-        >>> stops = [
-        ...     0.1, 0.0,
-        ...     0.2, 1.0,
-        ...     0.3, 0.0,
-        ...     0.8, 1.0,
-        ...     0.9, 0.0,
-        ... ]
-        >>> source = Gradient(direction='h', stops=stops)
-        >>> img = source.fill(size)
+        .. figure:: images/gradient.jpg
+           :alt: A horizontal gradient with multiple stops in a 1280x720
+                image.
 
-    .. figure:: images/gradient.jpg
-       :alt: A horizontal gradient with multiple stops in a 1280x720 image.
-
-       The image data created by the usage example.
+           The image data created by the usage example.
 
     """
     def __init__(
         self, direction: str = 'h',
-        stops: Sequence[float] = (0, 0, 1, 1)
+        stops: Sequence[float] = (0, 0, 1, 1),
+        *args, **kwargs
     ) -> None:
+        super().__init__(*args, **kwargs)
         self.direction = direction
 
         # Parse the stops for the gradient.
@@ -161,10 +185,7 @@ class Gradient(Source):
             self.stops.append([1, self.stops[-1][1]])
 
     # Public methods.
-    def fill(
-        self, size: Size,
-        loc: Loc = (0, 0, 0)
-    ) -> ImgAry:
+    def fill_array(self, size: Size, loc: Loc = (0, 0, 0)) -> ImgAry:
         """Fill a volume with image data.
 
         :param size: The size of the volume of image data to generate.
@@ -225,6 +246,68 @@ class Gradient(Source):
             a = np.tile(a, (1, size[Y], size[X]))
         return a
 
+    def fill_tensor(self, size: Size, loc: Loc = (0, 0, 0)) -> ImgTnsr:
+        """Fill a tensor with image data.
+
+        :param size: The size of the volume of image data to generate.
+        :param loc: (Optional.) How much to shift the starting point
+            for the noise generation along each axis.
+        :return: An :class:`torch.Tensor` with image data.
+        :rtype: torch.Tensor
+        """
+        # Map out the locations of the stops within the gradient.
+        if self.direction == 'h':
+            t_size = size[X]
+        elif self.direction == 'v':
+            t_size = size[Y]
+        elif self.direction == 't':
+            t_size = size[Z]
+
+        t = torch.arange(t_size, device=self.device) / (t_size - 1)
+        t_index = torch.clone(t).detach()
+        t_rev = 1 - t_index
+
+        # Interpolate the color values between the stops.
+        # To do this I need to know the percentage of distance each
+        # pixel represents. So, I need to do this in pairs.
+        left_stop = self.stops[0]
+        for right_stop in self.stops[1:]:
+
+            # Create an array mask that isolates the area between the
+            # two stops.
+            mask = torch.zeros(t.shape, dtype=torch.bool, device=self.device)
+            mask[t_index >= left_stop[0]] = True
+            mask[t_index > right_stop[0]] = False
+
+            # Determine where each pixel is within the area between
+            # the two stops.
+            distance = right_stop[0] - left_stop[0]
+            t[mask] = t_index[mask] - left_stop[0]
+            t[mask] = t[mask] / distance
+            t_rev[mask] = 1 - t[mask]
+
+            # Interpolate the color of the pixel based on its distance
+            # from each of those stops and the color of those stops.
+            t[mask] = t[mask] * right_stop[1]
+            t_rev[mask] = t_rev[mask] * left_stop[1]
+            t[mask] = t[mask] + t_rev[mask]
+
+            # The right stop for this part of the gradient is the left
+            # stop for the next part of the gradient.
+            left_stop = right_stop
+
+        # Run the easing function on the values and return the result.
+        if self.direction == 'h':
+            t = t.reshape(1, 1, t_size)
+            t = torch.tile(t, (size[Z], size[Y], 1))
+        elif self.direction == 'v':
+            t = t.reshape(1, t_size, 1)
+            t = torch.tile(t, (size[Z], 1, size[X]))
+        elif self.direction == 't':
+            t = t.reshape(t_size, 1, 1)
+            t = torch.tile(t, (1, size[Y], size[X]))
+        return t
+
 
 class Hexes(Source):
     """Fill a space with hexagonal cells.
@@ -241,35 +324,33 @@ class Hexes(Source):
         of a sphere.
     :return: A :class:`sources.Hexes` object.
     :rtype: sources.patterns.Hexes
+    :usage:
+        Create a hexagonal grid of cells in a 1280x720 image.
 
-    Usage::
+            >>> size = (1, 720, 1280)
+            >>> radius = size[Y] // 8
+            >>> source = Hexes(radius=radius)
+            >>> img = source.fill(size)
 
-        >>> # Create a hexagonal grid of cells in a 1280x720 image.
-        >>> size = (1, 720, 1280)
-        >>> radius = size[Y] // 8
-        >>> source = Hexes(radius=radius)
-        >>> img = source.fill(size)
+        .. figure:: images/hexes.jpg
+           :alt: A hexagonal grid of cells in a 1280x720 image.
 
-    .. figure:: images/hexes.jpg
-       :alt: A hexagonal grid of cells in a 1280x720 image.
-
-       The image data created by the usage example.
+           The image data created by the usage example.
 
     """
     def __init__(
         self, radius: int,
         cells: bool = True,
-        round: bool = False
+        round: bool = False,
+        *args, **kwargs
     ) -> None:
         self.cells = cells
         self.radius = radius
         self.round = round
+        super().__init__(*args, **kwargs)
 
     # Public methods.
-    def fill(
-        self, size: Sequence[int],
-        loc: Sequence[int] = (0, 0, 0)
-    ) -> ImgAry:
+    def fill_array(self, size: Size, loc: Loc = (0, 0, 0)) -> ImgAry:
         """Fill a volume with image data.
 
         :param size: The size of the volume of image data to generate.
@@ -313,6 +394,49 @@ class Hexes(Source):
             a = 1 - a
         return a
 
+    def fill_tensor(self, size: Size, loc: Loc = (0, 0, 0)) -> ImgTnsr:
+        """Fill a tensor with image data.
+
+        :param size: The size of the volume of image data to generate.
+        :param loc: (Optional.) How much to shift the starting point
+            for the noise generation along each axis.
+        :return: An :class:`torch.Tensor` with image data.
+        :rtype: torch.Tensor
+        """
+        # Place the centers of the hexagons.
+        seeds = []
+        x, y, row = 0.0, 0.0, 0.0
+        xstep: float = self.radius
+        ystep: float = sqrt(xstep ** 2 - (xstep / 2) ** 2)
+        while y <= size[Y] + ystep:
+            while x <= size[X] + xstep:
+                seeds.append((y, x))
+                x += xstep
+            y += ystep
+            row += 1
+            x = 0
+            if row % 2:
+                x += xstep / 2
+
+        # Map the distances to the points.
+        indices = index_space(size[1:], device=self.device)
+        max_dist = sqrt(sum(n ** 2 for n in size))
+        dist = torch.zeros(size[1:], dtype=torch.float32, device=self.device)
+        dist.fill_(max_dist)
+        for seed in seeds:
+            work = torch.hypot(*[p - i for p, i in zip(seed, indices)])
+            dist[work < dist] = work[work < dist]
+        act_max_dist = torch.max(dist)
+        t = dist / act_max_dist
+        t = torch.tile(t, (size[Z], 1, 1))
+        if not self.cells:
+            t[t > self.radius] = self.radius
+        if self.round:
+            t = torch.sqrt(1 - t ** 2)
+        else:
+            t = 1 - t
+        return t
+
 
 class Lines(Source):
     """Generate simple lines.
@@ -326,33 +450,32 @@ class Lines(Source):
         the value before passing it to this parameter.
     :return: :class:`Lines` object.
     :rtype: sources.patterns.Lines
+    :usage:
+        Create a series of vertical lines in a 1280x720 image.
 
-    Usage::
+            >>> size = (1, 720, 1280)
+            >>> length = (size[X] / 8) - (size[Y] / 64)
+            >>> source = Lines(direction='v', length=length)
+            >>> img = source.fill(size)
 
-        >>> # Create a series of vertical lines in a 1280x720 image.
-        >>> size = (1, 720, 1280)
-        >>> length = (size[X] / 8) - (size[Y] / 64)
-        >>> source = Lines(direction='v', length=length)
-        >>> img = source.fill(size)
+        .. figure:: images/lines.jpg
+           :alt: A picture of an image created from the output of
+                :class:`Lines`.
 
-    .. figure:: images/lines.jpg
-       :alt: A picture of an image created from the output of
-            :class:`Lines`.
+           The image data created by the usage example.
 
-       The image data created by the usage example.
     """
     def __init__(
         self, direction: str = 'h',
-        length: float = 64
+        length: float = 64,
+        *args, **kwargs
     ) -> None:
         self.direction = direction
         self.length = float(length)
+        super().__init__(*args, **kwargs)
 
     # Public methods.
-    def fill(
-        self, size: Sequence[int],
-        loc: Sequence[int] = (0, 0, 0)
-    ) -> ImgAry:
+    def fill_array(self, size: Size, loc: Loc = (0, 0, 0)) -> ImgAry:
         """Fill a volume with image data.
 
         :param size: The size of the volume of image data to generate.
@@ -375,6 +498,34 @@ class Lines(Source):
         values = (values / (period / 2))
         return values.astype(np.float64)
 
+    def fill_tensor(self, size: Size, loc: Loc = (0, 0, 0)) -> ImgTnsr:
+        """Fill a tensor with image data.
+
+        :param size: The size of the volume of image data to generate.
+        :param loc: (Optional.) How much to shift the starting point
+            for the noise generation along each axis.
+        :return: An :class:`torch.Tensor` with image data.
+        :rtype: torch.Tensor
+        """
+        meshes = index_space(
+            size,
+            loc,
+            dtype=torch.float32,
+            device=self.device
+        )
+        if self.direction == 'v':
+            values = meshes[X] + meshes[Z]
+        elif self.direction == 'h':
+            values = meshes[Y] + meshes[Z]
+        else:
+            values = meshes[X] + meshes[Y]
+
+        period = (self.length - 1)
+        values = values % period
+        values[values > period / 2] = period - values[values > period / 2]
+        values = (values / (period / 2))
+        return values.to(torch.float32)
+
 
 class Radials(Source):
     """Generates concentric radial gradients.
@@ -386,35 +537,33 @@ class Radials(Source):
         (geometric). Defaults to linear.
     :returns: :class:`Radials` object.
     :rtype: sources.patterns.Radials
+    :usage:
+        Create a series of concentric radial gradients in a
 
-    Usage::
+            >>> # 1280x720 images.
+            >>> size = (1, 720, 1280)
+            >>> length = size[Y] / 16
+            >>> source = Radials(length=length, growth='g')
+            >>> img = source.fill(size)
 
-        >>> # Create a series of concentric radial gradients in a
-        >>> # 1280x720 images.
-        >>> size = (1, 720, 1280)
-        >>> length = size[Y] / 16
-        >>> source = Radials(length=length, growth='g')
-        >>> img = source.fill(size)
+        .. figure:: images/radials.jpg
+           :alt: A series of concentric radial gradients in a 1280x720 image.
 
-    .. figure:: images/radials.jpg
-       :alt: A series of concentric radial gradients in a 1280x720 image.
-
-       The image data created by the usage example.
+           The image data created by the usage example.
 
     """
     def __init__(
         self, length: float,
-        growth: str = 'l'
+        growth: str = 'l',
+        *args, **kwargs
     ) -> None:
-        """Initialize an instance of Waves."""
+        """Initialize an instance of Radials."""
         self.length = float(length)
         self.growth = growth
+        super().__init__(*args, **kwargs)
 
     # Public methods.
-    def fill(
-        self, size: Size,
-        loc: Loc = (0, 0, 0)
-    ) -> ImgAry:
+    def fill_array(self, size: Size, loc: Loc = (0, 0, 0)) -> ImgAry:
         """Fill a volume with image data.
 
         :param size: The size of the volume of image data to generate.
@@ -453,6 +602,49 @@ class Radials(Source):
 
         return a
 
+    def fill_tensor(self, size: Size, loc: Loc = (0, 0, 0)) -> ImgTnsr:
+        """Fill a tensor with image data.
+
+        :param size: The size of the volume of image data to generate.
+        :param loc: (Optional.) How much to shift the starting point
+            for the noise generation along each axis.
+        :return: An :class:`torch.Tensor` with image data.
+        :rtype: torch.Tensor
+        """
+        # Map out the volume of space that will be created.
+        meshes = index_space(
+            size,
+            loc,
+            dtype=torch.float32,
+            device=self.device,
+            center=True
+        )
+
+        # Perform a spherical interpolation on the points in the
+        # volume and run the easing function on the results.
+        c = torch.hypot(meshes[X], meshes[Y])
+        if self.growth == 'l' or self.growth == 'linear':
+            t = c % self.length
+            t /= self.length
+            t = torch.abs(t - .5) * 2
+
+        elif self.growth == 'g' or self.growth == 'geometric':
+            t = super().fill_tensor(size, loc)
+            in_length = 0.0
+            out_length = self.length
+            while in_length < torch.max(c):
+                m = torch.ones(t.shape, dtype=torch.bool, device=self.device)
+                m[c < in_length] = False
+                m[c > out_length] = False
+                t[m] = c[m]
+                t[m] -= in_length
+                t[m] /= out_length - in_length
+                t[m] = torch.abs(t[m] - .5) * 2
+                in_length = out_length
+                out_length *= 2
+
+        return t
+
 
 class Rays(Source):
     """Create rays that generate from a central point.
@@ -479,16 +671,15 @@ class Rays(Source):
     """
     def __init__(
         self, count: int,
-        offset: float = 0
+        offset: float = 0,
+        *args, **kwargs
     ) -> None:
         self.count = int(count)
         self.offset = float(offset)
+        super().__init__(*args, **kwargs)
 
     # Public methods.
-    def fill(
-        self, size: Size,
-        loc: Loc = (0, 0, 0)
-    ) -> ImgAry:
+    def fill_array(self, size: Size, loc: Loc = (0, 0, 0)) -> ImgAry:
         """Fill a volume with image data.
 
         :param size: The size of the volume of image data to generate.
@@ -532,6 +723,53 @@ class Rays(Source):
         rays = np.tile(rays, (size[Z], 1, 1))
         return rays
 
+    def fill_tensor(self, size: Size, loc: Loc = (0, 0, 0)) -> ImgTnsr:
+        """Fill a tensor with image data.
+
+        :param size: The size of the volume of image data to generate.
+        :param loc: (Optional.) How much to shift the starting point
+            for the noise generation along each axis.
+        :return: An :class:`torch.Tensor` with image data.
+        :rtype: torch.Tensor
+        """
+        # Determine the angle from center for every point
+        # in the array.
+        meshes = index_space(
+            size,
+            loc,
+            dtype=torch.float32,
+            device=self.device,
+            center=True
+        )
+        x, y = meshes[X], meshes[Y]
+        angle = torch.zeros_like(x)
+        angle[x != 0] = torch.arctan(y[x != 0] / x[x != 0])
+
+        # Correct for inaccuracy of the arctan function when one or
+        # both of the coordinates is less than zero.
+        m = torch.zeros_like(x)
+        m[x < 0] += 1
+        m[y < 0] += 3
+        angle[m == 1] += pi
+        angle[m == 4] += pi
+        angle[m == 3] += 2 * pi
+
+        # Create the rays.
+        ray_angle = 2 * pi / self.count
+        offset = (self.offset * pi) % (2 * pi)
+        rays = (angle + offset) % ray_angle
+        rays /= ray_angle
+        rays = torch.abs(rays - .5) * 2
+
+        # Fill in the center if needed.
+        center = [(n - 1) / 2 + o for n, o in zip(size, loc)]
+        if center[X] % 1 == 0 and center[Y] % 1 == 0:
+            rays[int(center[Y]), int(center[X])] = 1
+
+        # Fill out the Z axis and return.
+        rays = torch.tile(rays, (size[Z], 1, 1))
+        return rays
+
 
 class Regular(Source):
     """Create a regular polygon.
@@ -545,18 +783,17 @@ class Regular(Source):
         `1.0`.
     :param antialias: (Optional.) Whether to antialias the edge
         of the polygon. Default is `True`.
+    :usage:
+        Create a pentagon in a 1280x720 image.
 
-    Usage::
+            >>> size = (1, 720, 1280)
+            >>> source = Regular(5, size[1] / 2)
+            >>> img = source.fill(size)
 
-        >>> # Create a pentagon in a 1280x720 image.
-        >>> size = (1, 720, 1280)
-        >>> source = Regular(5, size[1] / 2)
-        >>> img = source.fill(size)
+        .. figure:: images/regular.jpg
+           :alt: A pentagon in the center of a 1280x720 image.
 
-    .. figure:: images/regular.jpg
-       :alt: A pentagon in the center of a 1280x720 image.
-
-       The image data created by the usage example.
+           The image data created by the usage example.
 
     """
     def __init__(
@@ -565,8 +802,11 @@ class Regular(Source):
         rotate: float = 0.0,
         color: float = 1.0,
         bg_color: float = 0.0,
-        antialias: bool = False
+        antialias: bool = False,
+        *args, **kwargs
     ) -> None:
+        self._disallowed_devices = ['mps',]
+        super().__init__(*args, **kwargs)
         self.sides = sides
         self.rho = rho
         self.rotate = rotate
@@ -574,10 +814,7 @@ class Regular(Source):
         self.bg_color = bg_color
         self.antialias = antialias
 
-    def fill(
-        self, size: Size,
-        loc: Loc = (0, 0, 0)
-    ) -> ImgAry:
+    def fill_array(self, size: Size, loc: Loc = (0, 0, 0)) -> ImgAry:
         """Fill a volume with image data.
 
         :param size: The size of the volume of image data to generate.
@@ -610,6 +847,51 @@ class Regular(Source):
         a = np.tile(a, (size[Z], 1, 1))
         return a.astype(float) / 255
 
+    def fill_tensor(self, size: Size, loc: Loc = (0, 0, 0)) -> ImgTnsr:
+        """Fill a tensor with image data.
+
+        :param size: The size of the volume of image data to generate.
+        :param loc: (Optional.) How much to shift the starting point
+            for the noise generation along each axis.
+        :return: An :class:`torch.Tensor` with image data.
+        :rtype: torch.Tensor
+        """
+        # Calculate the vertices.
+        center = [n // 2 + o for n, o in zip(size, loc)]
+        angle = 2 * pi / self.sides
+        rho = self.rho
+        start = (3 * pi / 2 + self.rotate) % (2 * pi)
+        vertices = torch.tensor([[
+            (
+                rho * np.cos(start + i * angle) + center[2],
+                rho * np.sin(start + i * angle) + center[1],
+            )
+            for i in range(self.sides)
+        ]], dtype=torch.int32, device=self.device)
+
+        # Make the background.
+        t = torch.full(
+            size[1:],
+            fill_value=int(self.bg_color * 255),
+            dtype=torch.uint8,
+            device=self.device
+        )
+
+        # Make the shape.
+        color = int(self.color * 255)
+        line_type = cv2.LINE_8
+        if self.antialias:
+            line_type = cv2.LINE_AA
+        cv2.fillConvexPoly(
+            t.numpy(),
+            vertices.numpy(),
+            color=(color,),
+            lineType=line_type
+        )
+        t = t.unsqueeze(0)
+        t = torch.tile(t, (size[Z], 1, 1))
+        return t.to(torch.float32) / 255
+
 
 class Rings(Source):
     """Create a series of concentric circles.
@@ -630,22 +912,21 @@ class Rings(Source):
         compatibility with :mod:`pjinoise`.
     :return: :class:`Rings` object.
     :rtype: sources.patterns.Rings
+    :usage:
+        Create a series of concentric rings in a 1280x720 image.
 
-    Usage::
+            >>> size = (1, 720, 1280)
+            >>> radius = size[X] / 6
+            >>> width = size[X] / 12
+            >>> gap = size[X] / 18
+            >>> ct = 6
+            >>> source = Rings(radius=radius, width=width, gap=gap, count=ct)
+            >>> img = source.fill(size)
 
-        >>> # Create a series of concentric rings in a 1280x720 image.
-        >>> size = (1, 720, 1280)
-        >>> radius = size[X] / 6
-        >>> width = size[X] / 12
-        >>> gap = size[X] / 18
-        >>> count = 6
-        >>> source = Rings(radius=radius, width=width, gap=gap, count=count)
-        >>> img = source.fill(size)
+        .. figure:: images/rings.jpg
+           :alt: A series of concentric rings in a 1280.720 image.
 
-    .. figure:: images/rings.jpg
-       :alt: A series of concentric rings in a 1280.720 image.
-
-       The image data created by the usage example.
+           The image data created by the usage example.
 
     """
     def __init__(
@@ -653,9 +934,11 @@ class Rings(Source):
         width: float,
         gap: float = 0,
         count: int = 1,
-        count_offset: int = 0
+        count_offset: int = 0,
+        *args, **kwargs
     ) -> None:
         """Initialize an instance of Ring."""
+        super().__init__(*args, **kwargs)
         self.radius = float(radius)
         self.width = float(width)
         self.gap = float(gap)
@@ -663,10 +946,7 @@ class Rings(Source):
         self.count_offset = count_offset
 
     # Public methods.
-    def fill(
-        self, size: Size,
-        loc: Loc = (0, 0, 0)
-    ) -> ImgAry:
+    def fill_array(self, size: Size, loc: Loc = (0, 0, 0)) -> ImgAry:
         """Fill a volume with image data.
 
         :param size: The size of the volume of image data to generate.
@@ -696,6 +976,42 @@ class Rings(Source):
                 a[m] = 1 - a[m]
         return a
 
+    def fill_tensor(self, size: Size, loc: Loc = (0, 0, 0)) -> ImgTnsr:
+        """Fill a tensor with image data.
+
+        :param size: The size of the volume of image data to generate.
+        :param loc: (Optional.) How much to shift the starting point
+            for the noise generation along each axis.
+        :return: An :class:`torch.Tensor` with image data.
+        :rtype: torch.Tensor
+        """
+        # Map out the volume of space that will be created.
+        meshes = index_space(
+            (1, *size[Y:]),
+            loc,
+            device=self.device,
+            dtype=torch.float32,
+            center=True
+        )
+
+        # Perform a spherical interpolation on the points in the
+        # volume and run the easing function on the results.
+        c = torch.hypot(meshes[Y], meshes[X])
+        t = super().fill_tensor((1, *size[Y:]), loc)
+        for i in range(self.count):
+            radius = self.radius + self.gap * (i - self.count_offset)
+            if radius != 0:
+                working = torch.abs(c / radius - 1)
+                wr = self.width / 2 / radius
+                m = torch.zeros(
+                    working.shape,
+                    dtype=torch.bool,
+                    device=self.device
+                )
+                m[working <= wr] = True
+                t[m] = 1 - (working[m] * (radius / (self.width / 2)))
+        return torch.tile(t, (size[Z], 1, 1))
+
 
 class Solid(Source):
     """Fill a space with a solid color.
@@ -704,28 +1020,25 @@ class Solid(Source):
         is white. The values between are values of gray.
     :return: :class:`Solid` object.
     :rtype: pjinoise.sources.Solid
+    :usage:
+        Create a solid gray 1280x720 image.
 
-    Usage::
+            >>> size = (1, 1280, 720)
+            >>> source = Solid(color=0.25)
+            >>> img = source.fill(size)
 
-        >>> # Create a solid gray 1280x720 image.
-        >>> size = (1, 1280, 720)
-        >>> source = Solid(color=0.25)
-        >>> img = source.fill(size)
+        .. figure:: images/solid.jpg
+           :alt: A solid gray 1280x720 image.
 
-    .. figure:: images/solid.jpg
-       :alt: A solid gray 1280x720 image.
-
-       The image data created by the usage example.
+           The image data created by the usage example.
 
     """
-    def __init__(self, color: float) -> None:
+    def __init__(self, color: float, *args, **kwargs) -> None:
         self.color = float(color)
+        super().__init__(*args, **kwargs)
 
     # Public methods.
-    def fill(
-        self, size: Size,
-        loc: Loc = (0, 0, 0)
-    ) -> ImgAry:
+    def fill_array(self, size: Size, loc: Loc = (0, 0, 0)) -> ImgAry:
         """Fill a volume with image data.
 
         :param size: The size of the volume of image data to generate.
@@ -737,6 +1050,22 @@ class Solid(Source):
         a = np.zeros(size, dtype=float)
         a.fill(self.color)
         return a
+
+    def fill_tensor(self, size: Size, loc: Loc = (0, 0, 0)) -> ImgTnsr:
+        """Fill a tensor with image data.
+
+        :param size: The size of the volume of image data to generate.
+        :param loc: (Optional.) How much to shift the starting point
+            for the noise generation along each axis.
+        :return: An :class:`numpy.ndarray` with image data.
+        :rtype: numpy.ndarray
+        """
+        return torch.full(
+            size,
+            self.color,
+            dtype=torch.float32,
+            device=self.device
+        )
 
 
 class Spheres(Source):
@@ -757,37 +1086,35 @@ class Spheres(Source):
         of a sphere.
     :return: :class:`Spheres` object.
     :rtype: sources.patterns.Spheres
+    :usage:
+        Create a square grid of cells in a 1280x720 image.
 
-    Usage::
+            >>> size = (1, 720, 1280)
+            >>> radius = size[Y] / 16
+            >>> source = Spheres(radius=radius, offset='')
+            >>> img = source.fill(size)
 
-        >>> # Create a square grid of cells in a 1280x720 image.
-        >>> size = (1, 720, 1280)
-        >>> radius = size[Y] / 16
-        >>> source = Spheres(radius=radius, offset='')
-        >>> img = source.fill(size)
+        .. figure:: images/spheres.jpg
+           :alt: A square grid of cells in a 1280x720 image.
 
-    .. figure:: images/spheres.jpg
-       :alt: A square grid of cells in a 1280x720 image.
-
-       The image data created by the usage example.
+           The image data created by the usage example.
 
     """
     def __init__(
         self, radius: float,
         offset: str = '',
         cells: bool = False,
-        round: bool = True
+        round: bool = True,
+        *args, **kwargs
     ) -> None:
+        super().__init__(*args, **kwargs)
         self.cells = cells
         self.offset = offset
         self.radius = float(radius)
         self.round = round
 
     # Public methods.
-    def fill(
-        self, size: Size,
-        loc: Loc = (0, 0, 0)
-    ) -> ImgAry:
+    def fill_array(self, size: Size, loc: Loc = (0, 0, 0)) -> ImgAry:
         """Fill a volume with image data.
 
         :param size: The size of the volume of image data to generate.
@@ -852,6 +1179,105 @@ class Spheres(Source):
             a = 1 - a
         return a
 
+    def fill_tensor(self, size: Size, loc: Loc = (0, 0, 0)) -> ImgTnsr:
+        """Fill a tensor with image data.
+
+        :param size: The size of the volume of image data to generate.
+        :param loc: (Optional.) How much to shift the starting point
+            for the noise generation along each axis.
+        :return: An :class:`numpy.ndarray` with image data.
+        :rtype: numpy.ndarray
+        """
+        # Map out the volume of space that will be created.
+        meshes = index_space(
+            size,
+            loc,
+            dtype=torch.float32,
+            device=self.device
+        )
+        meshes = list(meshes)
+
+        # If configured, offset every other row, column, or plane by
+        # by the radius of the circle.
+        if self.offset == 'x':
+            mask = torch.zeros(
+                meshes[Y].shape,
+                dtype=torch.bool,
+                device=self.device
+            )
+            d = self.radius * 2
+            dd = d * 2
+            mask[meshes[Y] % dd < d] = True
+
+            # Create clones of the index meshes to avoid a deprecation
+            # message from torch.
+            x = meshes[X].clone().detach()
+            y = torch.clone(meshes[Y]).detach()
+
+            # Note: This used to be just subtracting the radius from
+            # a[X][~mask], but it stopped working. I'm not sure why.
+            # Maybe it never did, and my headache was keeping me from
+            # noticing it. Either way, this seems to work.
+            x[mask] = meshes[X][mask] + self.radius
+            y += self.radius
+
+            # Replace the originals with the clones to avoid the
+            # index_put_ warning from torch that occurs if we just
+            # perform the operation directly on the original.
+            meshes[X] = x
+            meshes[Y] = y
+
+        if self.offset == 'y':
+            mask = torch.zeros(
+                meshes[X].shape,
+                dtype=torch.bool,
+                device=self.device
+            )
+            d = self.radius * 2
+            dd = d * 2
+            mask[meshes[X] % dd < d] = True
+
+            # Create clones of the index meshes to avoid a deprecation
+            # message from torch.
+            x = meshes[X].clone().detach()
+            y = torch.clone(meshes[Y]).detach()
+
+            # Note: For some reason, this is not the same as just
+            # subtracting the radius from a[Y][mask]. I don't know
+            # why, and my headache is making me disinclined to look
+            # at the math.
+            x += self.radius
+            y[~mask] = meshes[Y][~mask] + self.radius
+
+            # Replace the originals with the clones to avoid the
+            # index_put_ warning from torch that occurs if we just
+            # perform the operation directly on the original.
+            meshes[X] = x
+            meshes[Y] = y
+
+        # Split the volume into unit cubes that are the size of the
+        # diameter of the circle. Then adjust the indicies to measure
+        # the distance to the nearest unit rather than the distance
+        # from the last unit.
+        meshes = [mesh % (self.radius * 2) for mesh in meshes]
+        for m in meshes:
+            m[m > self.radius] = self.radius * 2 - m[m > self.radius]
+
+        # Interpolate the unit distances through the sphere equation
+        # to generate the regularly spaced spheres in the volume.
+        # Then run the easing function on those spheres.
+        t = hypot_3d(meshes)
+        if self.cells:
+            t = (t / sqrt(3 * self.radius ** 2))
+        else:
+            t[t > self.radius] = self.radius
+            t /= self.radius
+        if self.round:
+            t = torch.sqrt(1 - t ** 2)
+        else:
+            t = 1 - t
+        return t
+
 
 class Spot(Source):
     """Fill a space with a spot.
@@ -859,29 +1285,26 @@ class Spot(Source):
     :param radius: The radius of the spot.
     :return: :class:`Spot` object.
     :rtype: sources.patterns.Spot
+    :usage:
+        Create a radial gradient centered in a 1280x720 image.
 
-    Usage::
+            >>> size = (1, 720, 1280)
+            >>> radius = size[Y] * 2 / 3
+            >>> source = Spot(radius=radius)
+            >>> img = source.fill(size)
 
-        >>> # Create a radial gradient centered in a 1280x720 image.
-        >>> size = (1, 720, 1280)
-        >>> radius = size[Y] * 2 / 3
-        >>> source = Spot(radius=radius)
-        >>> img = source.fill(size)
+        .. figure:: images/spot.jpg
+           :alt: A radial gradient centered in a 1280x720 image.
 
-    .. figure:: images/spot.jpg
-       :alt: A radial gradient centered in a 1280x720 image.
-
-       The image data created by the usage example.
+           The image data created by the usage example.
 
     """
     def __init__(self, radius: float, *args, **kwargs) -> None:
+        super().__init__(*args, **kwargs)
         self.radius = float(radius)
 
     # Public methods.
-    def fill(
-        self, size: Size,
-        loc: Loc = (0, 0, 0)
-    ) -> ImgAry:
+    def fill_array(self, size: Size, loc: Loc = (0, 0, 0)) -> ImgAry:
         """Fill a volume with image data.
 
         :param size: The size of the volume of image data to generate.
@@ -902,6 +1325,32 @@ class Spot(Source):
         a[a > 1] = 1
         a[a < 0] = 0
         return a
+
+    def fill_tensor(self, size: Size, loc: Loc = (0, 0, 0)) -> ImgTnsr:
+        """Fill a tensor with image data.
+
+        :param size: The size of the volume of image data to generate.
+        :param loc: (Optional.) How much to shift the starting point
+            for the noise generation along each axis.
+        :return: An :class:`numpy.ndarray` with image data.
+        :rtype: numpy.ndarray
+        """
+        # Map out the volume of space that will be created.
+        *_, idx_y, idx_x = index_space(
+            size=size,
+            loc=loc,
+            device=self.device,
+            dtype=torch.float32,
+            center=True
+        )
+
+        # Perform a spherical interpolation on the points in the
+        # volume and run the easing function on the results.
+        t = torch.hypot(idx_y, idx_x)
+        t = 1 - (t / sqrt(2 * self.radius ** 2))
+        t[t > 1] = 1
+        t[t < 0] = 0
+        return t
 
 
 class Text(Source):
@@ -934,31 +1383,30 @@ class Text(Source):
     :param stroke_color: (Optional.) The color to use for the stroke.
     :return: A :class:`Text` object.
     :rtype: sources.patterns.Text
+    :usage:
+        Create the word "SPAM" in a 1280x720 image.
 
-    Usage::
+            >>> size = (1, 720, 1280)
+            >>> origin = (size[X] / 2 - 107, size[Y] / 2 - 52)
+            >>> source = Text(
+            ...     text='SPAM',
+            ...     font='Helvetica',
+            ...     size=72,
+            ...     face=1,
+            ...     layout_engine='basic',
+            ...     origin=origin,
+            ...     fill_color=0.75,
+            ...     bg_color=0.25,
+            ...     align='center',
+            ...     stroke_width=5,
+            ...     stroke_fill=0x00
+            ... )
+            >>> img = source.fill(size)
 
-        >>> # Create the word "SPAM" in a 1280x720 image.
-        >>> size = (1, 720, 1280)
-        >>> origin = (size[X] / 2 - 107, size[Y] / 2 - 52)
-        >>> source = Text(
-        ...     text='SPAM',
-        ...     font='Helvetica',
-        ...     size=72,
-        ...     face=1,
-        ...     layout_engine='basic',
-        ...     origin=origin,
-        ...     fill_color=0.75,
-        ...     bg_color=0.25,
-        ...     align='center',
-        ...     stroke_width=5,
-        ...     stroke_fill=0x00
-        ... )
-        >>> img = source.fill(size)
+        .. figure:: images/text.jpg
+           :alt: The word "SPAM" in a 1280x720 image.
 
-    .. figure:: images/text.jpg
-       :alt: The word "SPAM" in a 1280x720 image.
-
-       The image data created by the usage example.
+           The image data created by the usage example.
 
     """
     def __init__(
@@ -977,8 +1425,10 @@ class Text(Source):
         spacing_mode: str = 'proportional',
         align: Literal['left', 'center', 'right'] = 'left',
         stroke_width: int = 0,
-        stroke_fill: int = 0
+        stroke_fill: int = 0,
+        *args, **kwargs
     ) -> None:
+        super().__init__(*args, **kwargs)
         self.text = text
         self.font = font
         self.size = size
@@ -1016,10 +1466,7 @@ class Text(Source):
         )
 
     # Public methods.
-    def fill(
-        self, size: Size,
-        loc: Loc = (0, 0, 0)
-    ) -> ImgAry:
+    def fill_array(self, size: Size, loc: Loc = (0, 0, 0)) -> ImgAry:
         """Fill a volume with image data.
 
         :param size: The size of the volume of image data to generate.
@@ -1060,6 +1507,47 @@ class Text(Source):
 
         return a
 
+    def fill_tensor(self, size: Size, loc: Loc = (0, 0, 0)) -> ImgTnsr:
+        """Fill a volume with image data.
+
+        :param size: The size of the volume of image data to generate.
+        :param loc: (Optional.) How much to shift the starting point
+            for the noise generation along each axis.
+        :return: An :class:`numpy.ndarray` with image data.
+        :rtype: numpy.ndarray
+        """
+        # Set up parameters for the text generation.
+        origin = (
+            self.origin[0] + loc[Y],
+            self.origin[1] + loc[X],
+        )
+        start = self.start - loc[Z]
+        end = size[Z]
+        if self.duration is not None:
+            end = start + self.duration
+
+        # Generate the text.
+        img = Image.new('L', (size[X], size[Y]), self.bg_color)
+        draw = ImageDraw.Draw(img)
+        draw.text(
+            xy=origin,
+            text=self.text,
+            fill=self.fill_color,
+            font=self._font,
+            anchor=None,
+            spacing=self.spacing,
+            align=self.align,
+            stroke_width=self.stroke_width,
+            stroke_fill=self.stroke_fill
+        )
+
+        # Add the text to the frames and return.
+        t = super().fill_tensor(size, loc)
+        a = np.array(img, dtype=np.float32) / 0xff
+        for frame in t[:end]:
+            frame[:] = torch.tensor(a, device=self.device)
+        return t
+
 
 class Waves(Source):
     """Generates wave patterns using a cosine function.
@@ -1080,37 +1568,40 @@ class Waves(Source):
         a central point in a circular pattern. Defaults to `False`.
     :return: :class:`Waves` object.
     :rtype: sources.patterns.Waves
+    :usage:
+        Create a wave pattern in a 1280x720 image.
 
-    Usage::
+            >>> size = (1, 720, 1280)
+            >>> unit = 1279
+            >>> angle = 30.0
+            >>> wavelength = 5.0
+            >>> source = Waves(unit, angle=angle, wavelength=wavelength)
+            >>> img = source.fill(size)
 
-        >>> # Create a wave pattern in a 1280x720 image.
-        >>> size = (1, 720, 1280)
-        >>> unit = 1279
-        >>> angle = 30.0
-        >>> wavelength = 5.0
-        >>> source = Waves(unit, angle=angle, wavelength=wavelength)
-        >>> img = source.fill(size)
+        .. figure:: images/waves.jpg
+           :alt: Create a wave pattern in a 1280x720 image.
 
-    .. figure:: images/waves.jpg
-       :alt: Create a wave pattern in a 1280x720 image.
-
-       The image data created by the usage example.
+           The image data created by the usage example.
 
     """
     def __init__(
         self, unit: int = 1279,
         angle: float = 0,
         wavelength: float = 1,
-        warp: Optional[Callable[[ImgAry], ImgAry]] = None,
-        radial: bool = False
+        warp: Optional[WaveWarp] = None,
+        warp_tensor: Optional[WaveWarpTnsr] = None,
+        radial: bool = False,
+        *args, **kwargs
     ) -> None:
+        super().__init__(*args, **kwargs)
         self.unit = unit
         self.angle = angle
         self.wavelength = wavelength
         self.warp = warp
+        self.warp_tensor = warp_tensor
         self.radial = radial
 
-    def fill(self, size: Size, loc: Loc = (0, 0, 0)) -> ImgAry:
+    def fill_array(self, size: Size, loc: Loc = (0, 0, 0)) -> ImgAry:
         x = self.angle / 90
         indices = np.indices(size, dtype=float)
         indices = shift_index_origin(indices, loc)
@@ -1141,6 +1632,38 @@ class Waves(Source):
         a = (np.cos(f * a) + 1) / 2
         return a
 
+    def fill_tensor(self, size: Size, loc: Loc = (0, 0, 0)) -> ImgTnsr:
+        x = self.angle / 90
+        f = (2 * pi) / self.wavelength
+
+        # Set the angle of the wave.
+        if not self.radial:
+            meshes = index_space(size, loc, self.device, torch.float32)
+            t = meshes[X] * (1 - x) + meshes[Y] * x
+
+            # Factors in the Z axis for video. The pace of change
+            # over the Z axis should probably be something that can
+            # be set.
+            if size[Z] > 1:
+                t += meshes[Z] * (self.unit / 48)
+
+        else:
+            meshes = index_space(size, loc, self.device, torch.float32, True)
+            t = torch.hypot(meshes[Y], meshes[X])
+
+        # Break the grid into units.
+        t /= self.unit
+
+        # Modify how the wave evolves using the acceleration function.
+        if self.warp_tensor:
+            t = self.warp_tensor(t)
+        elif self.warp:
+            a = self.warp(t.numpy())
+            t = torch.tensor(a)
+
+        # Return the wave.
+        return (torch.cos(f * t) + 1) / 2
+
 
 # Utility functions.
 def center_index_origin(indices: ImgAry) -> ImgAry:
@@ -1159,7 +1682,23 @@ def index_to_distance_from_origin(indices: ImgAry) -> ImgAry:
     return np.sqrt(indices[X] ** 2 + indices[Y] ** 2)
 
 
-def shift_index_origin(indices: ImgAry, shifts: Sequence[int]) -> ImgAry:
+@overload
+def shift_index_origin(
+    indices: IdxMeshes,
+    shifts: Sequence[int]
+) -> IdxMeshes:
+    ...
+
+
+@overload
+def shift_index_origin(
+    indices: ImgAry,
+    shifts: Sequence[int]
+) -> ImgAry:
+    ...
+
+
+def shift_index_origin(indices, shifts):
     """Adjust the values in an indices array to move the origin point."""
     for axis, shift in enumerate(shifts):
         indices[axis] -= shift

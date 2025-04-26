@@ -55,10 +55,10 @@ class Noise(Source):
     """
     def __init__(
         self, seed: Seed = None,
-        device: str = ''
+        *args, **kwargs
     ) -> None:
         """Initialize an instance of Noise."""
-        self.device = device
+        super().__init__(*args, **kwargs)
 
         # Store the seed for potential serialization.
         self.seed = seed
@@ -85,26 +85,7 @@ class Noise(Source):
         return value
 
     # Public methods.
-    def fill(
-        self, size: Size,
-        loc: Loc = (0, 0, 0)
-    ) -> ImgAry:
-        """Fill a volume with image data.
-
-        :param size: The size of the volume of image data to generate.
-        :param loc: (Optional.) How much to shift the starting point
-            for the noise generation along each axis.
-        :return: An :class:`numpy.ndarray` with image data.
-        :rtype: numpy.ndarray
-        """
-        if self.device:
-            return self.fill_tensor(size, loc).cpu().numpy()
-        return self.fill_array(size, loc)
-
-    def fill_array(
-        self, size: Size,
-        loc: Loc = (0, 0, 0)
-    ) -> ImgAry:
+    def fill_array(self, size: Size, loc: Loc = (0, 0, 0)) -> ImgAry:
         """Fill a volume with image data.
 
         :param size: The size of the volume of image data to generate.
